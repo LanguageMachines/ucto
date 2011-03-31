@@ -1,0 +1,167 @@
+0.4.4 - 2011-MM-DD
+
+FIXME!
+
+
+0.4.3 - 2011-03-19
+
+[ Ko van der Sloot ]
+* src/ucto.cxx: fixed --passthru problem
+* tests/testpassthru.ok: test now works
+
+[ Joost van Baal ]
+* NEWS: record changes and releases
+
+
+0.4.2 - 2011-03-17
+
+[ Ko van der Sloot ]
+* include/ucto/tokenize.h, src/tokenize.cxx,
+  src/unicode.cxx: passes -pedantic
+* configure.ac: some cleanup, bumped version
+* include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx:
+  added (hidden) --passthru option
+* [r8842] tests/passthru.txt, tests/testall, tests/testpassthru,
+  added a passthru test.
+  has t0 be tested :)
+* include/ucto/tokenize.h, src/tokenize.cxx: make compiler
+  more happy
+* docs/ucto.1: added description, smal update
+
+
+0.4.1 - 2011-03-11
+
+[ Ko van der Sloot ]
+* src/tokenize.cxx: fixed regexp and error messag
+* config/tokconfig-nl, src/tokenize.cxx: added the
+  possiblity to ste the order of RULES in the config file
+* tests/bug0063.nl.tok.V, tests/bug0063.nl.txt: added a
+  test for bug63
+  Not sure about the 'correct' solution
+* docs/ucto.1: updated man page
+
+[ Maarten van Gompel ]
+* src/tokenize.cxx: fixed passthruline (skip=t) bug, FoLiA XSL has to be
+  local unfortunately
+* tests/bug0063.nl.tok.V: override
+* config/tokconfig-nl, src/tokenize.cxx,
+  tests/bug0052.nl.tok.V, tests/normalisation.nl.tok.V,
+  tests/test.nl.tok.V: fix bug0063
+
+0.4.0 - 2011-03-04
+
+[ Maarten van Gompel ]
+* logo.svg: added logo
+
+
+0.3.7 - 2011-03-01
+
+[ Ko van der Sloot ]
+* [r8636] tests/testoption1.ok, tests/testusage.ok: these tests
+  give a different outcome now.
+* [r8318] src/tokenize.cxx: added experimental code to use the -n
+  option ( output one sentence per line) also to process the input
+  one sentence per line
+* [r8317] tests/bug0054.nl.tok.V, tests/bug0054.nl.txt: testcase
+  for bug0054
+
+[ Maarten van Gompel ]
+* [r8618] include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx:
+  sentence per line input and output: two modes
+* [r8617] src/tokenize.cxx, tests/bug0048.nl.tok.V,
+  tests/bug0054.nl.tok.V: Fixed bug 54
+* [r8615] src/tokenize.cxx, tests/abbreviations.nl.tok.V,
+  tests/nu.nl.tok.V, tests/test.nl.tok.V: fixes
+* [r8614] src/tokenize.cxx: FoLiA improvement
+
+
+0.3.6 - 2011-02-12
+
+[ Ko van der Sloot ]
+* tests/: more tests added
+* configure.ac, include/ucto/tokenize.h, src/tokenize.cxx,
+  src/ucto.cxx, tests/testnormalisation: added possibility to set
+  the inputEncoding breaks ucto user interface!
+
+
+0.3.5 - 2011-02-10
+
+[ Ko van der Sloot ]
+* src/ucto.cxx: fix memory leak
+* include/ucto/tokenize.h, include/ucto/unicode.h,
+  src/Makefile.am, src/tokenize.cxx, src/ucto.cxx, src/unicode.cxx,
+  include/ucto/tokenize.h, src/unicode.cxx: added copyright notice
+* include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx: -f option
+  now works
+* config/tokconfig-nl, include/ucto/tokenize.h, src/tokenize.cxx,
+  src/ucto.cxx: added support for ligature filtering and Unicode
+  normalizing.  a bit rough still
+* tests/: more tests added
+* ucto.pc.in: now uses ucto-icu.pc
+
+[ Maarten van Gompel ]
+* configure.ac: version bump
+
+
+0.3.4 - 2011-01-27
+
+[ Joost van Baal ]
+* Makefile.am, configure.ac, icu.pc.in, ucto-icu.pc.in: rename icu.pc to
+  ucto-icu.pc: be sure we wont suffer from filename clashes in the future.
+  Once Debian and other distos ship icu 4.6's usr/lib/pkgconfig/icu-io.pc
+  (released 2010-12-02) we can get rid of our local copy.
+
+[ Ko van der Sloot ]
+* tests/: more tests added
+
+[ Maarten van Gompel ]
+* include/ucto/tokenize.h, src/tokenize.cxx: Updates in FoLiA support
+
+0.3.3 - 2011-01-27
+
+[ Joost van Baal ]
+* Various bugfixes
+
+0.3.2 - 2011-01-27
+
+[ Ko van der Sloot ]
+* Various bugfixes
+
+0.3.1 - 2011-01-26
+
+[ Ko van der Sloot ]
+* Various bugfixes
+
+0.3.0 - 2011-01-26
+
+[ Maarten van Gompel ]
+* tests/: Added lots of tests
+* configure.ac, include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx:
+  major refactoring. Improved buffering, less unnecessary storing of
+  token/sentence vectors in memory. Improved quote support.
+* include/ucto/tokenize.h, src/tokenize.cxx: Ucto now remembers if a token
+  was spaced or not in the original. Enabling ucto to recontruct the original
+  text exactly.
+* include/ucto/tokenize.h, src/tokenize.cxx: Added quote detection support
+* include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx: Added preliminary
+  FoLiA XML output support in ucto
+* include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx: Big API overhaul
+
+[ Peter Berck ]
+* config/Makefile.am, config/tokconfig-sv Added Swedish tokconfig 
+
+[ Ko van der Sloot ]
+* config/tokconfig-nl, src/tokenize.cxx: read QUOTES from config file
+* src/ucto.cxx: refuse to run when inputfile is bad
+* docs/ucto.1: added a simple 'man' page
+* src/ucto.cxx: added al -p switch to disable paragraph
+  detection
+
+0.0.1 - 2010-12-25
+
+- First snapshot release
+
+unreleased - 09-12-2010
+
+- started to create a separate package
+

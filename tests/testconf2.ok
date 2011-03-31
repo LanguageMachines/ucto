@@ -1,0 +1,6 @@
+configdir = 
+configfile = ./stuk2.cfg
+inputfile = 
+outputfile = 
+Initiating tokeniser...
+ucto: config file :Invalid regular expression '\p{N}{4}-\p{N}{1,2}-\p{A}{1,2}', no compiling possible

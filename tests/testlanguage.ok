@@ -1,0 +1,6 @@
+configdir = 
+configfile = tokconfig-xyz
+inputfile = 
+outputfile = 
+Initiating tokeniser...
+ucto: config file :Cannot read Tokeniser settingsfile tokconfig-xyz

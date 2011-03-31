@@ -1,0 +1,2 @@
+Hij zegt: "Dit is de eerste zin. Dit is de tweede zin.", en loopt verder.
+Hij zei: "Dit is de eerste zin. Dit is de tweede zin.".

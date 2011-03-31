@@ -1,0 +1,46 @@
+# $Id$
+# $URL$
+Package: ucto
+Version: 0.4.3
+Revision: 1
+Depends: %N-shlibs (= %v-%r)
+BuildDepends: libicu36-dev
+DescPackaging: <<
+This package was built on i386 running Darwin / Mac OS X v. 10.6.0,
+using fink 0.29.19-51.
+<<
+Description: Unicode Tokenizer
+Source: http://ilk.uvt.nl/downloads/pub/software/ucto-%v.tar.gz
+Source-Checksum: SHA1(c7fd906ca9fbbaad26ef48542cce23e91085fd55)
+InstallScript: <<
+ make install DESTDIR=%d
+<<
+SplitOff: <<
+  Package: %N-shlibs
+  Files: lib/libucto.1.dylib
+  Shlibs: %p/lib/libucto.1.dylib 2.0.0 %n (>= 0.3.6-1)
+<<
+SplitOff2: <<
+  Package: %N-dev
+  Depends: %N-shlibs (= %v-%r)
+  BuildDependsOnly: true
+  Files: lib/libucto.dylib include/ucto lib/pkgconfig
+<<
+DocFiles: AUTHORS ChangeLog NEWS README TODO
+DescDetail: <<
+Ucto can tokenize UTF-8 encoded text files (i.e. separate words from
+punctuation, split sentences, generate n-grams), and  offers several other
+basic preprocessing steps (change case, count words/characters and reverse
+lines) that make your text suited for further processing such as indexing,
+part-of-speech tagging, or machine translation.
+
+Ucto is a product of the ILK Research Group, Tilburg University (The
+Netherlands).
+
+If you are interested in machine parsing of UTF-8 encoded text files, e.g. to
+do scientific research in natural language processing, ucto will likely be of
+use to you.
+<<
+License: GPL
+Maintainer: Joost van Baal <joostvb-ilk@ad1810.com>
+Homepage: http://ilk.uvt.nl/ucto/

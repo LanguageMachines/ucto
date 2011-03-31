@@ -1,0 +1,8 @@
+#/bin/sh
+# $Id: testlanguage 8059 2011-01-27 16:18:49Z sloot $
+# $URL: https://ilk.uvt.nl/svn/trunk/sources/ucto/trunk/tests/testlanguage $
+
+exe=../src/ucto
+
+$exe -L nl encoding2.nl
+$exe -L nl -e LATIN1 encoding2.nl

@@ -1,0 +1,6 @@
+Hij zegt: "Dit
+is
+een quote
+over meerdere
+regels!",
+en loopt verder.

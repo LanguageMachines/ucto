@@ -1,0 +1,6 @@
+configdir = 
+configfile = tokconfig-nl
+inputfile = nonexistentfile.echtniet
+outputfile = 
+Error: problems opening inputfile nonexistentfile.echtniet
+Courageously refusing to start...

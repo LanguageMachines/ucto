@@ -1,0 +1,2 @@
+URL=(?i:https?|ftps?|nfs|sshfs|gopher|smb)://[\p{L}\p{N}]+(?:[[:punct:]]+[\p{L}\p{N}]+)+
+URL-WWW=www\.[\p{L}\p{N}]+(?:[[:punct:]]+[\p{L}\p{N}]+)+

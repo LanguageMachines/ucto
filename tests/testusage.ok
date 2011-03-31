@@ -1,0 +1,22 @@
+lt-ucto: invalid option -- 'Z'
+Usage: 
+	ucto [[options]] [input-file] [[output-file]]
+Options:
+	-c <configfile> - Explicitly specify a configuration file
+	-d <value>      - set debug level
+	-e <string>     - set input encoding (default UTF8)
+	-N <string>     - set output normalization (default NFC)
+	-f              - Disable filtering of special characters
+	-L <language>   - Automatically selects a configuration file by language code
+	-l              - Convert to all lowercase
+	-u              - Convert to all uppercase
+	-n              - One sentence per line (output)
+	-m              - One sentence per line (input)
+	-V              - Verbose mode
+	-s <string>     - End-of-Sentence marker (default: <utt>)
+	-P              - Disable paragraph detection
+	-S              - Disable sentence detection!
+	-Q              - Disable quote detection
+	-v              - Show version information
+	-x <DocID>      - Output FoLiA XML, use the specified Document ID
+	                  (-x disables usage of most other options: -nulPQVsS)

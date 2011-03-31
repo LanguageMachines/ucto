@@ -1,0 +1,5 @@
+Test van UTF8 encoding (ook wel UTF-8 genoemd).
+
+Er zijn twéé manieren om accenten te zetten:
+de e met acute accent: é
+en de e met een combining acute accent: é

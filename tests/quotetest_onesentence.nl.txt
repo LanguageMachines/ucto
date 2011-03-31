@@ -1,0 +1,2 @@
+Hij zegt: "Dit is een zin.", en loopt verder.
+Hij zei: "Dit is een zin.".

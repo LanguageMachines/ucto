@@ -1,0 +1,7 @@
+#/bin/sh
+# $Id$
+# $URL$
+
+exe=../src/ucto
+
+$exe -Z

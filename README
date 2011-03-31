@@ -1,0 +1,5 @@
+Ucto can tokenize UTF-8 encoded text files (i.e. separate words from punctuation and split sentences), and offers several other basic preprocessing steps such as changing case that make your text suited for further processing such as indexing, part-of-speech tagging, or machine translation. Ucto comes with tokenisation rules for English, Dutch, French and Italian, but can be easily extended to suit other languages.
+
+Ucto is a product of the ILK Research Group, Tilburg University (The Netherlands).
+
+If you are interested in machine parsing of UTF-8 encoded text files, e.g. to do scientific research in natural language processing, ucto will likely be of use to you.

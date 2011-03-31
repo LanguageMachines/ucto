@@ -1,0 +1,10 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: icu
+Version: @ICU_VERSION@
+Description: Icu pkg-config script stub (icu 4.6 will bring it to us, someday)
+Libs: @ICU_LIBPATH@ @ICU_LIBS@ @ICU_IOLIBS@
+Cflags: @ICU_CPPSEARCHPATH@

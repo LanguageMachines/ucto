@@ -1,0 +1,20 @@
+#/bin/sh
+# $Id: testlanguage 8059 2011-01-27 16:18:49Z sloot $
+# $URL: https://ilk.uvt.nl/svn/trunk/sources/ucto/trunk/tests/testlanguage $
+
+exe=../src/ucto
+
+$exe -L nl -N NONE normalisation.nl.txt
+$exe -L nl -N NONE -f normalisation.nl.txt
+
+$exe -L nl -N NFC normalisation.nl.txt
+$exe -L nl -N NFC -f normalisation.nl.txt
+
+$exe -L nl -N NFD normalisation.nl.txt
+$exe -L nl -N NFD -f normalisation.nl.txt
+
+$exe -L nl -N NFKC normalisation.nl.txt
+$exe -L nl -N NFKC -f normalisation.nl.txt
+
+$exe -L nl -N NFKD normalisation.nl.txt
+$exe -L nl -N NFKD -f normalisation.nl.txt

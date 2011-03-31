@@ -1,0 +1,913 @@
+'	PUNCTUATION	NOSPACE BEGINOFSENTENCE NEWPARAGRAPH 
+Hoge	WORD	
+concentratie	WORD	
+lood	WORD	
+was	WORD	
+uitschieter	WORD	
+'	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Uitgegeven	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+11:21	TIME	
+Laatst	WORD	
+gewijzigd	WORD	
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+11:39	TIME	ENDOFSENTENCE 
+
+BILTHOVEN	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+-	PUNCTUATION	
+In	WORD	
+de	WORD	
+Mariapolder	WORD	
+vlakbij	WORD	
+Moerdijk	WORD	
+is	WORD	
+op	WORD	
+de	WORD	
+dag	WORD	
+van	WORD	
+de	WORD	
+brand	WORD	
+bij	WORD	
+Chemie-Pack	WORD-COMPOUND	
+veel	WORD	
+meer	WORD	
+lood	WORD	
+gemeten	WORD	
+in	WORD	
+neergedaalde	WORD	
+roetdeeltjes	WORD	
+dan	WORD	
+is	WORD	
+toegestaan	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Het	WORD	BEGINOFSENTENCE 
+betreft	WORD	
+vermoedelijk	WORD	
+een	WORD	
+eenmalige	WORD	
+uitschieter	WORD	
+,	PUNCTUATION	NOSPACE 
+aldus	WORD	
+een	WORD	
+woordvoerder	WORD	
+van	WORD	
+het	WORD	
+RIVM	WORD	
+woensdag	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Op	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+de	WORD	
+dag	WORD	
+van	WORD	
+de	WORD	
+brand	WORD	
+werd	WORD	
+879	NUMBER	
+mg	WORD	
+/	PUNCTUATION	NOSPACE 
+kg	WORD	NOSPACE 
+lood	WORD	
+gemeten	WORD	
+,	PUNCTUATION	NOSPACE 
+terwijl	WORD	
+0,5	NUMBER	
+mg	WORD	
+/	PUNCTUATION	NOSPACE 
+kg	WORD	NOSPACE 
+normaal	WORD	
+is	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Een	WORD	BEGINOFSENTENCE 
+dag	WORD	
+later	WORD	
+werd	WORD	
+er	WORD	
+veel	WORD	
+minder	WORD	
+lood	WORD	
+gevonden	WORD	
+,	PUNCTUATION	NOSPACE 
+namelijk	WORD	
+2,0	NUMBER	
+mg	WORD	NOSPACE 
+kg.	ABBREVIATION-KNOWN	ENDOFSENTENCE 
+
+Boeren	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+in	WORD	
+de	WORD	
+omgeving	WORD	
+van	WORD	
+Moerdijk	WORD	
+hebben	WORD	
+geklaagd	WORD	
+dat	WORD	
+hun	WORD	
+koeien	WORD	
+diarree	WORD	
+hebben	WORD	
+doordat	WORD	
+zij	WORD	
+gras	WORD	
+met	WORD	
+lood	WORD	
+zouden	WORD	
+hebben	WORD	
+gegeten	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Volgens	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+het	WORD	
+RIVM	WORD	
+hebben	WORD	
+de	WORD	
+mensen	WORD	
+die	WORD	
+monsters	WORD	
+hebben	WORD	
+genomen	WORD	
+bij	WORD	
+de	WORD	
+Mariapolder	WORD	
+,	PUNCTUATION	NOSPACE 
+daar	WORD	
+geen	WORD	
+koeien	WORD	
+gezien	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Bovendien	WORD	BEGINOFSENTENCE 
+is	WORD	
+boeren	WORD	
+afgeraden	WORD	
+om	WORD	
+hun	WORD	
+vee	WORD	
+buiten	WORD	
+te	WORD	
+laten	WORD	
+grazen	WORD	
+,	PUNCTUATION	NOSPACE 
+aldus	WORD	
+de	WORD	
+zegsman	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Het	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+RIVM	WORD	
+wil	WORD	
+niet	WORD	
+speculeren	WORD	
+over	WORD	
+de	WORD	
+vraag	WORD	
+of	WORD	
+het	WORD	
+lood	WORD	
+dat	WORD	
+is	WORD	
+vrijgekomen	WORD	
+bij	WORD	
+de	WORD	
+brand	WORD	
+in	WORD	
+Moerdijk	WORD	
+,	PUNCTUATION	NOSPACE 
+schadelijk	WORD	
+is	WORD	
+voor	WORD	
+de	WORD	
+volksgezondheid	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Ook	WORD	BEGINOFSENTENCE 
+wil	WORD	
+de	WORD	
+woordvoerder	WORD	
+niet	WORD	
+ingaan	WORD	
+op	WORD	
+de	WORD	
+vraag	WORD	
+of	WORD	
+de	WORD	
+metingen	WORD	
+naar	WORD	
+de	WORD	
+aanwezigheid	WORD	
+van	WORD	
+lood	WORD	
+niet	WORD	
+in	WORD	
+een	WORD	
+veel	WORD	
+groter	WORD	
+gebied	WORD	
+hadden	WORD	
+moeten	WORD	
+plaatsvinden	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Rehn	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+wil	WORD	
+dat	WORD	
+EU-noodfonds	WORD-COMPOUND	
+meer	WORD	
+kan	WORD	
+lenen	WORD	ENDOFSENTENCE 
+
+Uitgegeven	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+10:29	TIME	
+Laatst	WORD	
+gewijzigd	WORD	
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+10:35	TIME	ENDOFSENTENCE 
+
+BRUSSEL	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+-	PUNCTUATION	
+Het	WORD	
+EU-noodfonds	WORD-COMPOUND	
+,	PUNCTUATION	NOSPACE 
+waarop	WORD	
+eurolanden	WORD	
+in	WORD	
+nood	WORD	
+een	WORD	
+beroep	WORD	
+kunnen	WORD	
+doen	WORD	
+,	PUNCTUATION	NOSPACE 
+moet	WORD	
+meer	WORD	
+geld	WORD	
+kunnen	WORD	
+lenen	WORD	
+op	WORD	
+de	WORD	
+kapitaalmarkt	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Eurocommissaris	WORD	BEGINOFSENTENCE 
+Olli	WORD	
+Rehn	WORD	
+(	PUNCTUATION	NOSPACE 
+Monetair	WORD	
+Beleid	WORD	
+)	PUNCTUATION	NOSPACE 
+schrijft	WORD	
+dat	WORD	
+woensdag	WORD	
+in	WORD	
+een	WORD	
+opiniestuk	WORD	
+in	WORD	
+de	WORD	
+Britse	WORD	
+zakenkrant	WORD	
+Financial	WORD	
+Times	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+©	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+ANP	WORD	
+Het	WORD	
+fonds	WORD	
+bevat	WORD	
+in	WORD	
+totaal	WORD	
+garanties	WORD	
+voor	WORD	
+750	NUMBER	
+miljard	WORD	
+euro	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Daarvan	WORD	BEGINOFSENTENCE 
+is	WORD	
+250	NUMBER	
+miljard	WORD	
+euro	WORD	
+afkomstig	WORD	
+van	WORD	
+het	WORD	
+Internationaal	WORD	
+Monetair	WORD	
+Fonds	WORD	
+(	PUNCTUATION	NOSPACE 
+IMF	WORD	
+)	PUNCTUATION	NOSPACE 
+en	WORD	
+60	NUMBER	
+miljard	WORD	
+van	WORD	
+de	WORD	
+Europese	WORD	
+Commissie	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Voor	WORD	BEGINOFSENTENCE 
+de	WORD	
+overige	WORD	
+440	NUMBER	
+miljard	WORD	
+staan	WORD	
+de	WORD	
+eurolanden	WORD	
+garant	WORD	
+.	PUNCTUATION	ENDOFSENTENCE 
+
+Zij	WORD	BEGINOFSENTENCE 
+hanteren	WORD	
+echter	WORD	
+zeer	WORD	
+strenge	WORD	
+voorwaarden	WORD	
+,	PUNCTUATION	NOSPACE 
+waardoor	WORD	
+ze	WORD	
+in	WORD	
+werkelijkheid	WORD	
+slechts	WORD	
+250	NUMBER	
+miljard	WORD	
+euro	WORD	
+kunnen	WORD	
+lenen	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Rehn	WORD	BEGINOFSENTENCE 
+wil	WORD	
+de	WORD	
+garantievoorwaarden	WORD	
+versoepelen	WORD	
+,	PUNCTUATION	NOSPACE 
+waardoor	WORD	
+het	WORD	
+te	WORD	
+lenen	WORD	
+bedrag	WORD	
+toeneemt	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Het	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+onderwerp	WORD	
+komt	WORD	
+begin	WORD	
+volgende	WORD	
+week	WORD	
+ter	WORD	
+sprake	WORD	
+tijdens	WORD	
+een	WORD	
+bijeenkomst	WORD	
+van	WORD	
+de	WORD	
+EU-ministers	WORD-COMPOUND	
+van	WORD	
+Financiën	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Volgens	WORD	BEGINOFSENTENCE 
+een	WORD	
+ingewijde	WORD	
+verzet	WORD	
+Nederland	WORD	
+zich	WORD	
+niet	WORD	
+tegen	WORD	
+het	WORD	
+plan	WORD	
+van	WORD	
+Rehn	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Verhoging	WORD	BEGINOFSENTENCE ENDOFSENTENCE NEWPARAGRAPH 
+
+Tijdens	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+het	WORD	
+beraad	WORD	
+van	WORD	
+de	WORD	
+EU-ministers	WORD-COMPOUND	
+zal	WORD	
+waarschijnlijk	WORD	
+ook	WORD	
+weer	WORD	
+worden	WORD	
+gesproken	WORD	
+over	WORD	
+een	WORD	
+verhoging	WORD	
+van	WORD	
+het	WORD	
+EU-noodfonds	WORD-COMPOUND	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+IMF	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+en	WORD	
+Europese	WORD	
+Centrale	WORD	
+Bank	WORD	
+toonden	WORD	
+zich	WORD	
+daar	WORD	
+eind	WORD	
+vorig	WORD	
+jaar	WORD	
+voorstander	WORD	
+van	WORD	
+,	PUNCTUATION	NOSPACE 
+evenals	WORD	
+toenmalig	WORD	
+EU-voorzitter	WORD-COMPOUND	
+België	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Maar	WORD	BEGINOFSENTENCE 
+Duitsland	WORD	
+vond	WORD	
+een	WORD	
+groter	WORD	
+noodfonds	WORD	
+niet	WORD	
+nodig	WORD	
+,	PUNCTUATION	NOSPACE 
+evenmin	WORD	
+als	WORD	
+Nederland	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Minister	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+Jan	WORD	
+Kees	WORD	
+de	WORD	
+Jager	WORD	
+van	WORD	
+Financiën	WORD	
+wees	WORD	
+erop	WORD	
+dat	WORD	
+tot	WORD	
+dusver	WORD	
+alleen	WORD	
+Ierland	WORD	
+een	WORD	
+beroep	WORD	
+heeft	WORD	
+gedaan	WORD	
+op	WORD	
+het	WORD	
+fonds	WORD	
+,	PUNCTUATION	NOSPACE 
+zodat	WORD	
+er	WORD	
+nog	WORD	
+bijna	WORD	
+700	NUMBER	
+miljard	WORD	
+in	WORD	
+zit	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Ook	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+Griekenland	WORD	
+kreeg	WORD	
+een	WORD	
+noodlening	WORD	
+van	WORD	
+de	WORD	
+overige	WORD	
+eurolanden	WORD	
+en	WORD	
+het	WORD	
+IMF	WORD	
+,	PUNCTUATION	NOSPACE 
+maar	WORD	
+dat	WORD	
+gebeurde	WORD	
+voor	WORD	
+het	WORD	
+noodfonds	WORD	
+werd	WORD	
+ingesteld	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Beurzen	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+zetten	WORD	
+opmars	WORD	
+voort	WORD	ENDOFSENTENCE 
+
+Uitgegeven	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+08:14	TIME	
+Laatst	WORD	
+gewijzigd	WORD	
+:	PUNCTUATION	NOSPACE 
+12	NUMBER	
+januari	WORD	
+2011	NUMBER	
+11:55	TIME	ENDOFSENTENCE 
+
+AMSTERDAM	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+-	PUNCTUATION	
+De	WORD	
+aandelenmarkten	WORD	
+in	WORD	
+Europa	WORD	
+hebben	WORD	
+woensdag	WORD	
+de	WORD	
+opmars	WORD	
+van	WORD	
+een	WORD	
+dag	WORD	
+eerder	WORD	
+voortgezet	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Beleggers	WORD	BEGINOFSENTENCE 
+zijn	WORD	
+optimistisch	WORD	
+gestemd	WORD	
+over	WORD	
+de	WORD	
+obligatieveiling	WORD	
+door	WORD	
+Portugal	WORD	
+later	WORD	
+op	WORD	
+de	WORD	
+dag	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE 
+euro	WORD	
+klom	WORD	
+weer	WORD	
+terug	WORD	
+tot	WORD	
+boven	WORD	
+de	WORD	
+1,30	NUMBER	
+dollar	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+AEX-index	WORD-COMPOUND	
+in	WORD	
+Amsterdam	WORD	
+stond	WORD	
+tegen	WORD	
+het	WORD	
+middaguur	WORD	
+0,7	NUMBER	
+procent	WORD	
+hoger	WORD	
+op	WORD	
+360,70	NUMBER	
+punten	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE 
+MidKap	WORD	
+won	WORD	
+0,8	NUMBER	
+procent	WORD	
+tot	WORD	
+648,89	NUMBER	
+punten	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE 
+beurzen	WORD	
+in	WORD	
+Parijs	WORD	
+en	WORD	
+Frankfurt	WORD	
+gingen	WORD	
+tot	WORD	
+1,5	NUMBER	
+procent	WORD	
+omhoog	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE 
+Londense	WORD	
+beurs	WORD	
+bleef	WORD	
+wat	WORD	
+achter	WORD	
+met	WORD	
+een	WORD	
+winst	WORD	
+van	WORD	
+0,5	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Portugal	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+gaat	WORD	
+woensdag	WORD	
+voor	WORD	
+1,25	NUMBER	
+miljard	WORD	
+euro	WORD	
+aan	WORD	
+obligaties	WORD	
+veilen	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Daarbij	WORD	BEGINOFSENTENCE 
+zal	WORD	
+vooral	WORD	
+worden	WORD	
+gelet	WORD	
+op	WORD	
+de	WORD	
+rente	WORD	
+waartegen	WORD	
+de	WORD	
+leningen	WORD	
+worden	WORD	
+geplaatst	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+'	PUNCTUATION	NOSPACE BEGINOFSENTENCE NEWPARAGRAPH 
+'	PUNCTUATION	
+De	WORD	
+markt	WORD	
+heeft	WORD	
+vertrouwen	WORD	
+dat	WORD	
+de	WORD	
+obligatieplaatsing	WORD	
+goed	WORD	
+zal	WORD	
+verlopen	WORD	
+'	PUNCTUATION	NOSPACE 
+'	PUNCTUATION	
+,	PUNCTUATION	NOSPACE 
+aldus	WORD	
+beleggingsadviseur	WORD	
+Sijmen	WORD	
+Plomp	WORD	
+van	WORD	
+VPV	WORD	
+Bankiers	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Later	WORD	BEGINOFSENTENCE 
+deze	WORD	
+week	WORD	
+komen	WORD	
+ook	WORD	
+Spanje	WORD	
+en	WORD	
+Italië	WORD	
+met	WORD	
+obligatieveilingen	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+'	PUNCTUATION	NOSPACE BEGINOFSENTENCE 
+'	PUNCTUATION	
+Dit	WORD	
+is	WORD	
+een	WORD	
+goede	WORD	
+testcase	WORD	
+voor	WORD	
+de	WORD	
+markt	WORD	
+'	PUNCTUATION	NOSPACE 
+'	PUNCTUATION	
+,	PUNCTUATION	NOSPACE 
+aldus	WORD	
+Plomp	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Financiële	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+fondsen	WORD	ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+financiële	WORD	
+fondsen	WORD	
+trokken	WORD	
+de	WORD	
+kar	WORD	
+in	WORD	
+Europa	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+ING	WORD	BEGINOFSENTENCE 
+won	WORD	
+1,8	NUMBER	
+procent	WORD	
+en	WORD	
+Aegon	WORD	
+ging	WORD	
+1,3	NUMBER	
+procent	WORD	
+vooruit	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+In	WORD	BEGINOFSENTENCE 
+Madrid	WORD	
+deden	WORD	
+de	WORD	
+banken	WORD	
+het	WORD	
+bijzonder	WORD	
+goed	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Santander	WORD	BEGINOFSENTENCE 
+klom	WORD	
+6,9	NUMBER	
+procent	WORD	
+en	WORD	
+BBVA	WORD	
+steeg	WORD	
+6,5	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Het	WORD	BEGINOFSENTENCE 
+Duitse	WORD	
+Commerzbank	WORD	
+noteerde	WORD	
+in	WORD	
+Frankfurt	WORD	
+2,7	NUMBER	
+procent	WORD	
+hoger	WORD	
+en	WORD	
+Deutsche	WORD	
+Bank	WORD	
+steeg	WORD	
+2,6	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+In	WORD	BEGINOFSENTENCE 
+Parijs	WORD	
+ging	WORD	
+BNP	WORD	
+Paribas	WORD	
+3,6	NUMBER	
+procent	WORD	
+vooruit	WORD	
+en	WORD	
+Crédit	WORD	
+Agricole	WORD	
+won	WORD	
+3,3	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Société	WORD	BEGINOFSENTENCE 
+Générale	WORD	
+boekte	WORD	
+een	WORD	
+winst	WORD	
+van	WORD	
+4,5	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Spyker	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+Cars	WORD	ENDOFSENTENCE 
+
+In	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+Amsterdam	WORD	
+was	WORD	
+Spyker	WORD	
+Cars	WORD	
+opnieuw	WORD	
+een	WORD	
+opvallende	WORD	
+stijger	WORD	
+met	WORD	
+een	WORD	
+koerswinst	WORD	
+van	WORD	
+17,4	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Dinsdag	WORD	BEGINOFSENTENCE 
+steeg	WORD	
+het	WORD	
+aandeel	WORD	
+al	WORD	
+33	NUMBER	
+procent	WORD	
+in	WORD	
+waarde	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Volgens	WORD	BEGINOFSENTENCE 
+analisten	WORD	
+profiteert	WORD	
+Spyker	WORD	
+van	WORD	
+de	WORD	
+positieve	WORD	
+geluiden	WORD	
+die	WORD	
+Duitse	WORD	
+autofabrikanten	WORD	
+als	WORD	
+BMW	WORD	
+,	PUNCTUATION	NOSPACE 
+Audi	WORD	
+en	WORD	
+Mercedes-Benz	WORD-COMPOUND	
+hebben	WORD	
+laten	WORD	
+horen	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+TNT	WORD	BEGINOFSENTENCE 
+wist	WORD	
+munt	WORD	
+te	WORD	
+slaan	WORD	
+uit	WORD	
+de	WORD	
+geplande	WORD	
+overname	WORD	
+van	WORD	
+postbedrijf	WORD	
+SelektMail	WORD	
+door	WORD	
+Sandd	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Analisten	WORD	BEGINOFSENTENCE 
+denken	WORD	
+dat	WORD	
+TNT	WORD	
+kan	WORD	
+profiteren	WORD	
+van	WORD	
+minder	WORD	
+prijsdruk	WORD	
+door	WORD	
+het	WORD	
+wegvallen	WORD	
+van	WORD	
+een	WORD	
+concurrent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+TNT	WORD	BEGINOFSENTENCE 
+steeg	WORD	
+3,1	NUMBER	
+procent	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+De	WORD	BEGINOFSENTENCE 
+euro	WORD	
+noteerde	WORD	
+1,3020	NUMBER	
+dollar	WORD	
+tegen	WORD	
+1,2970	NUMBER	
+dollar	WORD	
+bij	WORD	
+het	WORD	
+slot	WORD	
+op	WORD	
+dinsdag	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Dat	WORD	BEGINOFSENTENCE 
+was	WORD	
+het	WORD	
+laagste	WORD	
+niveau	WORD	
+in	WORD	
+vier	WORD	
+maanden	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+
