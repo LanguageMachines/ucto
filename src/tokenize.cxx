@@ -378,9 +378,8 @@ namespace Tokenizer {
   }
   
   void TokenizerClass::outputXMLFooter( ostream& OUT, bool in_paragraph) {
-    if (in_paragraph) OUT << "    </p>\n";    
-	OUT <<  " </text>\n"
-	<<  "</FoLiA>\n";
+    if (in_paragraph) 
+      OUT << "    </p>\n </text>\n</FoLiA>\n";
   }
   
   void TokenizerClass::outputTokensXML( ostream& OUT, 
@@ -425,12 +424,12 @@ namespace Tokenizer {
 	OUT << "      <w xml:id=\"" << docid << ".p." << count_p 
 	    << ".s." << count_s << ".w." << count_w 
 	    << "\" class=\"" + *tokens[i].type + "\" space=\"no\"><t>" 
-	    << tokens[i].us << "</t></w>" << endl;	    
+	    << UnicodeToUTF8(tokens[i].us) << "</t></w>" << endl;	    
       } else {
 	OUT << "      <w xml:id=\"" << docid << ".p." << count_p 
 	    << ".s." << count_s << ".w." << count_w 
 	    << "\" class=\"" + *tokens[i].type + "\"><t>" 
-	    << tokens[i].us << "</t></w>" << endl;	    
+	    << UnicodeToUTF8(tokens[i].us) << "</t></w>" << endl;	    
       }
       if (tokens[i].role & BEGINQUOTE) {
 	count_q++;
@@ -474,12 +473,12 @@ namespace Tokenizer {
       }
       if (lowercase) {
 	UnicodeString s = tokens[i].us;
-	OUT << s.toLower();
+	OUT << UnicodeToUTF8( s.toLower() );
       } else if (uppercase) {
 	UnicodeString s = tokens[i].us;
-          OUT << s.toUpper();
+	OUT << UnicodeToUTF8( s.toUpper() );
       } else {
-	OUT << tokens[i].us;
+	OUT << UnicodeToUTF8( tokens[i].us );
       }      
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
       if (tokens[i].role & BEGINQUOTE) quotelevel++;
