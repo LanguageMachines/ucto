@@ -114,7 +114,7 @@ namespace Tokenizer {
     else {
       map<UChar,UnicodeString>::const_iterator it=q.the_map.begin();
       while ( it != q.the_map.end() ){
-	os << UnicodeString(it->first) << "\t" << it->second << endl;
+	os << UnicodeToUTF8(UnicodeString(it->first)) << "\t" << it->second << endl;
 	++it;
       }
     }
