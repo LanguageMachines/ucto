@@ -1,0 +1,45 @@
+Amu	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+vertelt	WORD	
+:	PUNCTUATION	NOSPACE 
+Hier	WORD	
+zie	WORD	
+je	WORD	
+hoe	WORD	
+ik	WORD	
+de	WORD	
+schors	WORD	
+van	WORD	
+een	WORD	
+tak	WORD	
+van	WORD	
+de	WORD	
+kaneelboom	WORD	
+schraap	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Uit	WORD	BEGINOFSENTENCE 
+ons	WORD	
+land	WORD	
+komen	WORD	
+de	WORD	
+bekende	WORD	
+kaneelstokjes	WORD	
+,	PUNCTUATION	NOSPACE 
+maar	WORD	
+ook	WORD	
+andere	WORD	
+specerijen	WORD	
+die	WORD	
+in	WORD	
+Europa	WORD	
+veel	WORD	
+gebruikt	WORD	
+worden	WORD	
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+Waar	WORD	BEGINOFSENTENCE 
+woont	WORD	
+Amu	WORD	
+?	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+
+

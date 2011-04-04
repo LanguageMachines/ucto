@@ -340,6 +340,7 @@ namespace Tokenizer {
 	  for (int i = 0; i < numS; i++) {
 	    int begin, end;
 	    if (!getSentence(i, begin, end)) {
+          if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
 	      throw uRangeError("Sentence index"); //should never happen
 	    }
 	    /* ******* Begin process sentence  ********** */
@@ -573,7 +574,7 @@ namespace Tokenizer {
 	  tokens[begin].role |= BEGINOFSENTENCE;
 	}
       }
-      if ((forceentirebuffer) && (i == size - 1)) {
+      if ((forceentirebuffer) && (i == size - 1) && !(tokens[i].role & ENDOFSENTENCE))  {
 	//last token of buffer
 	count++;
 	tokens[i].role |= ENDOFSENTENCE;
