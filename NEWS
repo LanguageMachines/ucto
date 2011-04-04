@@ -1,4 +1,7 @@
 0.4.4 - 2011-03-31
+[ Maarten van Gompel]
+* fixed "fatal error: ucto: out of range :No sentence exists with the specified index" problem. (Bug 65)
+
 [ Ko van der Sloot ]
 * Fixed terrible bug. Unicode strings were output in the current locale.
   But we advertise UTF8
