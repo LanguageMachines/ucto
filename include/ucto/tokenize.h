@@ -35,8 +35,8 @@
 
 namespace Tokenizer {
 
-  static std::string Version() { return VERSION; };
-  static std::string VersionName() { return PACKAGE_STRING; };
+  std::string Version() { return VERSION; };
+  std::string VersionName() { return PACKAGE_STRING; };
 
   //enum RuleTrigger { PUNCTUATION, PERIOD, NUMBER }; //TODO: implement
     
