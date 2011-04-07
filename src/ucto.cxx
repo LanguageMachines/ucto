@@ -25,6 +25,7 @@
   or send mail to:
       Timbl@uvt.nl
 */
+#include <cstdlib>
 #include <cstring>
 #include <getopt.h>
 #include <string>
@@ -112,22 +113,22 @@ int main( int argc, char *argv[] ){
     case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'V': verbose = true; break;
-	case 'v': cout << "Ucto - Unicode Tokenizer - version " << VERSION << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return 0;
+	case 'v': cout << "Ucto - Unicode Tokenizer - version " << VERSION << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
-	default: usage(); return 0;
+	default: usage(); return EXIT_SUCCESS;
 	}
     }
   }
   catch ( exception &e ){
     cerr << "Error in option '" << char(opt) << "' : " << e.what() << endl << endl;
     usage();
-    return 0;
+    return EXIT_FAILURE;
   }
 
   if ( !passThru ){
     if ( !c_file.empty() && !L_file.empty()) {
       cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
-      return 2;
+      return EXIT_FAILURE;
     }
     if ( !c_file.empty() )
       cfile = c_file;
@@ -136,7 +137,7 @@ int main( int argc, char *argv[] ){
     else { 
       cerr << "Error: Please specify either a language (-L) or a configuration file (-c)" << endl;
       usage();
-      return 2;
+      return EXIT_FAILURE;
     }
   }
   
@@ -145,7 +146,7 @@ int main( int argc, char *argv[] ){
   
   if ((!ifile.empty()) && (ifile == ofile)) {
     cerr << "Error: Output file equals input file! Courageously refusing to start..."  << endl;
-    return 2;
+    return EXIT_FAILURE;
   }
 
   if ( !passThru ){
@@ -163,7 +164,7 @@ int main( int argc, char *argv[] ){
     if ( !IN || !IN->good() ){
       cerr << "Error: problems opening inputfile " << ifile << endl;
       cerr << "Courageously refusing to start..."  << endl;
-      return 2;
+      return EXIT_FAILURE;
     }
   }
   ostream *OUT = 0;
@@ -207,7 +208,7 @@ int main( int argc, char *argv[] ){
   }
   catch ( exception &e ){
     cerr << e.what() << endl;
-    return 0;
+    return EXIT_FAILURE;
   }
   
 }
