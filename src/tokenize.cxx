@@ -46,6 +46,7 @@
 #include "unicode/ustream.h"
 #include "unicode/regex.h"
 #include "ucto/unicode.h"
+#include "config.h"
 #include "ucto/tokenize.h"
 
 using namespace std;
@@ -53,6 +54,10 @@ using namespace std;
 #define Log 
 
 namespace Tokenizer {
+
+  std::string Version() { return VERSION; };
+  std::string VersionName() { return PACKAGE_STRING; };
+
   
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
   
