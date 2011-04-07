@@ -30,9 +30,13 @@
 #include <map>
 #include <sstream>
 #include <stdexcept>
+#include "config.h"
 #include "ucto/unicode.h"
 
 namespace Tokenizer {
+
+  static std::string Version() { return VERSION; };
+  static std::string VersionName() { return PACKAGE_STRING; };
 
   //enum RuleTrigger { PUNCTUATION, PERIOD, NUMBER }; //TODO: implement
     

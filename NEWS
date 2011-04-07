@@ -1,3 +1,9 @@
+0.4.5 - 2011-04-07
+
+[ Ko vd Sloot ]
+* on failue, ucto didn't use the right exit code. 0 == SUCCESS (on most systems)
+* added functions to display version info.
+
 0.4.4 - 2011-03-31
 [ Maarten van Gompel]
 * fixed "fatal error: ucto: out of range :No sentence exists with the specified index" problem. (Bug 65)

@@ -33,7 +33,6 @@
 #include <fstream>
 #include "ucto/tokenize.h"
 #include <unistd.h>
-#include "config.h"
 
 using namespace std;
 using namespace Tokenizer;
@@ -113,7 +112,7 @@ int main( int argc, char *argv[] ){
     case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'V': verbose = true; break;
-	case 'v': cout << "Ucto - Unicode Tokenizer - version " << VERSION << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
+	case 'v': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
 	default: usage(); return EXIT_SUCCESS;
 	}
