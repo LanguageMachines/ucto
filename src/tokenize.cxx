@@ -374,7 +374,7 @@ namespace Tokenizer {
   void TokenizerClass::outputXMLHeader( ostream& OUT) {
     OUT << "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<?xml-stylesheet type=\"text/xsl\" href=\"folia.xsl\"?>\n"
       //TODO: add metadata support: xmlns:imdi="http://www.mpi.nl/IMDI/Schema/IMDI"
-	<< "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xsi:schemaLocation=\"http://ilk.uvt.nl/folia folia.xsd\" xml:id=\"" + docid + "\">\n"
+	<< "<FoLiA xmlns=\"http://ilk.uvt.nl/folia\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xml:id=\"" + docid + "\">\n"
     << " <metadata>\n"
 	<< "  <annotations>\n"
 	<< "   <token-annotation set=\"" << settingsfilename << "\" annotator=\"ucto\" annotatortype=\"auto\" />\n"
