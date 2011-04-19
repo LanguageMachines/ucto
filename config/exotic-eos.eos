@@ -1,0 +1,75 @@
+
+# Character: ;
+# Name: GREEK QUESTION MARK
+# Code: 894 (0x37e) 
+\u037e
+
+# Character: ؟
+# Name: ARABIC QUESTION MARK
+# Code: 1567 (0x61f) 
+\u061f
+
+# Character: 。
+# Name: IDEOGRAPHIC FULL STOP
+# Code: 12290 (0x3002) 
+\u3002
+
+# Character: ｡
+# Name: HALFWIDTH IDEOGRAPHIC FULL STOP
+# Code: 65377 (0xff61) 
+\uff61
+
+# Character: ？
+# Name: FULLWIDTH QUESTION MARK
+# Code: 65311 (0xff1f) 
+\uff1f
+
+# Character: ！
+# Name: FULLWIDTH EXCLAMATION MARK
+# Code: 65281 (0xff01) 
+\uff01
+
+# Character: ।
+# Name: DEVANAGARI DANDA
+# Code: 2404 (0x964) 
+\u0964
+
+# Character: ։
+# Name: ARMENIAN FULL STOP
+# Code: 1417 (0x589) 
+\u0589
+
+# Character: ՞
+# Name: ARMENIAN QUESTION MARK
+# Code: 1374 (0x55e) 
+\u055e
+
+# Character: ።
+# Name: ETHIOPIC FULL STOP
+# Code: 4962 (0x1362) 
+\u1362
+
+# Character: ᙮
+# Name: CANADIAN SYLLABICS FULL STOP
+# Code: 5742 (0x166e) 
+\u166e
+
+# Character: ។
+# Name: KHMER SIGN KHAN
+# Code: 6100 (0x17d4) 
+\u17d4
+
+# Character: ៕
+# Name: KHMER SIGN BARIYOOSAN
+# Code: 6101 (0x17d5) 
+\u17d5
+
+# Character: ᠃
+# Name: MONGOLIAN FULL STOP
+# Code: 6147 (0x1803) 
+\u1803
+
+# Character: ᠉
+# Name: MONGOLIAN MANCHU FULL STOP
+# Code: 6153 (0x1809) 
+\u1809

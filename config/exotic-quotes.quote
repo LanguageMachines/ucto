@@ -1,0 +1,11 @@
+# all quotes must be entered as pairs of open en close quotes
+# separated by a ||
+# When more opening quotes match a single closing quote (or visa versa)
+# they must be aggregated in one string!
+« »
+‹ ›
+「 」
+『 』
+〈 〉
+《 》
+【 】
