@@ -1284,6 +1284,35 @@ namespace Tokenizer {
     }    
     return true;
   }
+
+  bool TokenizerClass::readeosmarkers( const string& fname) {
+    if ( tokDebug > 0 )
+      *theErrLog << "%include " << fname << endl;
+    ifstream f(fname.c_str());
+    if ( !f ){
+      return false;
+    }    
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 )
+	    *theErrLog << "include line = " << rawline << endl;
+	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
+	       ( line.startsWith("\\U") && line.length() == 10 ) ){
+	    UnicodeString uit = line.unescape();
+	    if ( uit.isEmpty() ){
+	      throw uConfigError( "Invalid EOSMARKERS entry: " + line );
+	    }
+	    eosmarkers += uit;
+	  }
+	}
+      }
+    }    
+    return true;
+  }
   
   ConfigMode getMode( const UnicodeString& line ) {
     ConfigMode mode = NONE;
@@ -1419,6 +1448,13 @@ namespace Tokenizer {
 	    string file = rawline.substr( 9 );
 	    file = dir + file + ".quote";
 	    if ( !readquotes( file ) )
+	      throw uConfigError( "%include '" + file + "' failed" );
+	  }
+	    break;
+	  case EOSMARKERS:{
+	    string file = rawline.substr( 9 );
+	    file = dir + file + ".eos";
+	    if ( !readeosmarkers( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;

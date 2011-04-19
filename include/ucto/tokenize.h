@@ -262,6 +262,7 @@ namespace Tokenizer {
     bool readrules( const std::string& );
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );
+    bool readeosmarkers( const std::string& );
     
     //Don't use this in normal processing, use flushSentences instead
     void clear() { tokens.clear(); quotes.clearStack(); };
