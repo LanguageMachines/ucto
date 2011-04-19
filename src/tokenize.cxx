@@ -1415,18 +1415,21 @@ namespace Tokenizer {
 	    }
 	      break;
 	    case FILTER: {
+	      UnicodeString open = "";
+	      UnicodeString close = "";
 	      int splitpoint = line.indexOf(" ");
 	      if ( splitpoint == -1 )
 		splitpoint = line.indexOf("\t");
 	      if ( splitpoint == -1 ){
-		throw uConfigError( "invalid FILTER entry: " + line  
-				    + " (missing whitespace)" );
+		open = line;
 	      }
-	      UnicodeString open = UnicodeString( line, 0,splitpoint);
-	      UnicodeString close = UnicodeString( line, splitpoint+1);
+	      else {
+		open = UnicodeString( line, 0,splitpoint);
+		close = UnicodeString( line, splitpoint+1);
+	      }
 	      open = open.trim().unescape();
 	      close = close.trim().unescape();
-	      if ( open.length() != 1 || close.isEmpty() ){
+	      if ( open.length() != 1 ){
 		throw uConfigError( "invalid FILTER entry: " + line );
 	      }
 	      else {
