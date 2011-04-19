@@ -1205,6 +1205,86 @@ namespace Tokenizer {
     return true;
   }
 
+  bool TokenizerClass::readfilters( const string& fname) {
+    if ( tokDebug > 0 )
+      *theErrLog << "%include " << fname << endl;
+    ifstream f(fname.c_str());
+    if ( !f ){
+      return false;
+    }    
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 )
+	    *theErrLog << "include line = " << rawline << endl;
+	  
+	  UnicodeString open = "";
+	  UnicodeString close = "";
+	  int splitpoint = line.indexOf(" ");
+	  if ( splitpoint == -1 )
+	    splitpoint = line.indexOf("\t");
+	  if ( splitpoint == -1 ){
+	    open = line;
+	  }
+	  else {
+	    open = UnicodeString( line, 0,splitpoint);
+	    close = UnicodeString( line, splitpoint+1);
+	  }
+	  open = open.trim().unescape();
+	  close = close.trim().unescape();
+	  if ( open.length() != 1 ){
+	    throw uConfigError( "invalid FILTER entry: " + line );
+	  }
+	  else {
+	    filter.add( open[0], close );
+	  }
+	}
+      }
+    }    
+    return true;
+  }
+  
+  bool TokenizerClass::readquotes( const string& fname) {
+    if ( tokDebug > 0 )
+      *theErrLog << "%include " << fname << endl;
+    ifstream f(fname.c_str());
+    if ( !f ){
+      return false;
+    }    
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 )
+	    *theErrLog << "include line = " << rawline << endl;
+	  int splitpoint = line.indexOf(" ");
+	  if ( splitpoint == -1 )
+	    splitpoint = line.indexOf("\t");
+	  if ( splitpoint == -1 ){
+	    throw uConfigError( "invalid QUOTES entry: " + line  
+				+ " (missing whitespace)" );
+	  }
+	  UnicodeString open = UnicodeString( line, 0,splitpoint);
+	  UnicodeString close = UnicodeString( line, splitpoint+1);
+	  open = open.trim().unescape();
+	  close = close.trim().unescape();
+	  if ( open.isEmpty() || close.isEmpty() ){
+	    throw uConfigError( "invalid QUOTES entry: " + line );
+	  }
+	  else {
+	    quotes.add( open, close );
+	  }
+	}
+      }
+    }    
+    return true;
+  }
+  
   ConfigMode getMode( const UnicodeString& line ) {
     ConfigMode mode = NONE;
     if (line == "[RULES]") {
@@ -1320,13 +1400,30 @@ namespace Tokenizer {
       string rawline;
       while ( getline(f,rawline) ){
 	if ( rawline.find( "%include" ) != string::npos ){
-	  if ( mode != RULES )
-	    throw uConfigError( string("%include only valid for [RULES] section" ) );
-	  else {
+	  switch ( mode ){
+	  case RULES: {
 	    string file = rawline.substr( 9 );
 	    file = dir + file + ".rule";
 	    if ( !readrules( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
+	  }
+	    break;
+	  case FILTER:{
+	    string file = rawline.substr( 9 );
+	    file = dir + file + ".filter";
+	    if ( !readfilters( file ) )
+	      throw uConfigError( "%include '" + file + "' failed" );
+	  }
+	    break;
+	  case QUOTES:{
+	    string file = rawline.substr( 9 );
+	    file = dir + file + ".quote";
+	    if ( !readquotes( file ) )
+	      throw uConfigError( "%include '" + file + "' failed" );
+	  }
+	    break;
+	  default:
+	    throw uConfigError( string("%include not implemented for this section" ) );
 	  }
 	  continue;
 	}

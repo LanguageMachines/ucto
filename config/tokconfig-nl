@@ -566,17 +566,7 @@ zw
 zwemb
 
 [FILTER]
-æ ae
-Æ AE
-œ oe
-Œ OE
-ĳ ij
-Ĳ IJ
-ﬂ fl
-ﬀ ff
-ﬃ ffi
-ﬄ ffl
-ß ss
+%include ligatures
 \u00AD
 
 [EOSMARKERS]
@@ -596,16 +586,6 @@ zwemb
 # \u000A
 
 [QUOTES]
-# all quotes must be entered as pairs of open en close quotes
-# separated by a ||
-# When more opening quotes match a single closing quote (or visa versa)
-# they must be aggregated in one string!
-« »
-‘ ’
-“„‟ ”
-‹ ›
-「 」
-『 』
-〈 〉
-《 》
-【 】
+%include standard-quotes
+%include exotic-quotes
+
