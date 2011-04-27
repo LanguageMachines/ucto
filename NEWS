@@ -1,4 +1,8 @@
-0.4.5 - 2011-04-07
+
+
+0.4.5 - 2011-04-27
+[ Maarten van Gompel]
+* Added sentenceperline support for PassThru mode , improved sentenceperline support for normal mode
 
 [ Ko vd Sloot ]
 * on failue, ucto didn't use the right exit code. 0 == SUCCESS (on most systems)
