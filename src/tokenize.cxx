@@ -802,7 +802,13 @@ namespace Tokenizer {
   
   void TokenizerClass::detectSentenceBounds( const int offset ){
     //find sentences
-    const int size = tokens.size();
+    const int size = tokens.size();    
+          
+    if (sentenceperlineinput) {
+      tokens[offset].role |= BEGINOFSENTENCE;
+      tokens[size - 1].role |= ENDOFSENTENCE;
+    }
+    
     for (int i = offset; i < size; i++) {
       if ((offset == 0) && (sentencesignal)) {
 	tokens[i].role |= BEGINOFSENTENCE;
@@ -840,7 +846,7 @@ namespace Tokenizer {
 	      //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
 	      if ((i > 0) && (tokens[i-1].role & TEMPENDOFSENTENCE))
 		 tokens[i-1].role ^= TEMPENDOFSENTENCE;
-	  } else { //No quotes on stack
+	  } else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
 	      sentencesignal = true;
 	      if ((tokDebug > 1 )) 
 		*Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
@@ -936,6 +942,11 @@ namespace Tokenizer {
 	  } else {
 	    tokens.push_back( Token( type, word ) );
 	  }
+    }   
+     
+    if (sentenceperlineinput) {
+	tokens[0].role |= BEGINOFSENTENCE;
+	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
     }
   }
 
@@ -977,6 +988,7 @@ namespace Tokenizer {
       bool reset = false;
       //iterate over all characters
       UnicodeString word;
+
       for ( int i=0; i < input.length(); ++i ) {
 	UChar c = input[i];
 	if (reset) { //reset values for new word
@@ -997,7 +1009,8 @@ namespace Tokenizer {
 	  }
 	  int expliciteosfound = -1;
 	  if ( word.length() >= explicit_eos_marker.length() ) {
-	    expliciteosfound = word.lastIndexOf(explicit_eos_marker);	    
+	    expliciteosfound = word.lastIndexOf(explicit_eos_marker);		    
+	        
 	    if (expliciteosfound != -1) { //( word == explicit_eos_marker ) {
 	      if (tokDebug >= 2) 
 		*Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
@@ -1023,7 +1036,7 @@ namespace Tokenizer {
 		tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	      }			
 	    }
-	  }	
+	  }			    
 	  if ((word.length() > 0) && (expliciteosfound == -1)) {	    
 	    if (!tokenizeword) {	      
 		//single character or nothing tokenisable found, so no need to tokenize anything
