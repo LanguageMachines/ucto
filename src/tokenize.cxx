@@ -1615,7 +1615,8 @@ namespace Tokenizer {
       rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})")); 
       }*/
     if (!abbrev_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("ABBREVIATION-KNOWN",  "(?i)(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbrev_pattern + ")\\.)(?:\\Z|\\P{L})")); //case insensitive
+      rules.insert(rules.begin(), new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbrev_pattern + ")\\.)(?:\\Z|\\P{L})")); 
+      // was case insensitive, but seems a bad idea
     }
     if (!token_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(?i)^(" + token_pattern + ")(?:\\p{P}*)?$")); // (?:\\Z|\\P{L})")); 
