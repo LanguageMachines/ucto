@@ -1409,8 +1409,8 @@ namespace Tokenizer {
     //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
     // }
   }
-  
-  bool TokenizerClass::readsettings( const string& dir, const string& fname) {
+
+  bool TokenizerClass::readsettings( const string& cdir, const string& fname) {
 
     ConfigMode mode = NONE;
     
@@ -1426,12 +1426,16 @@ namespace Tokenizer {
     vector<UnicodeString> rules_order;
 
     string conffile;
+    string dir;
     if ( fname.find("/") != string::npos ){
       // ignore dir when fname seems a relative or absolute path
       // maybe a bit rude?
       conffile = fname;
+      string::size_type pos = fname.rfind("/");
+      dir = fname.substr( 0, pos+1 );
     }
     else {
+      dir = cdir;
       conffile = dir + fname;
     }
     ifstream f(conffile.c_str());
