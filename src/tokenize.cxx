@@ -879,7 +879,7 @@ namespace Tokenizer {
       delete rules[i];
     }
   }
-
+  
   void TokenizerClass::passthruLine( const string& input, bool& bos ) {
     if (tokDebug) *Log(theErrLog) << "[passthruLine] input: line=[" << input << "]" << endl;
     bool alpha = false, num = false, punct = false;
@@ -888,7 +888,9 @@ namespace Tokenizer {
       UChar c = input[i];    
       
       if ( u_isspace(c)) {
+	if (tokDebug) *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
 	if ( word == explicit_eos_marker ) {
+	  word = "";
 	  if (!tokens.empty()) 
 	    tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	  bos = true;
@@ -926,24 +928,30 @@ namespace Tokenizer {
       }    
     }
     if (word != "") {
-	  const UnicodeString *type;
-	  if (alpha && !num && !punct) {
-	    type = &type_word;
-	  } else if (num && !alpha && !punct) {
-	    type = &type_number;                
-	  } else if (punct && !alpha && !num) {
-	    type = &type_punctuation;                    
-	  } else {
-	    type = &type_unknown;                
-	  }
-    	  if (bos) {
-	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
-	    bos = false;
-	  } else {
-	    tokens.push_back( Token( type, word ) );
-	  }
-    }   
-     
+      if ( word == explicit_eos_marker ) {
+	word = "";
+	if (!tokens.empty()) 
+	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+      }
+      else {
+	const UnicodeString *type;
+	if (alpha && !num && !punct) {
+	  type = &type_word;
+	} else if (num && !alpha && !punct) {
+	  type = &type_number;                
+	} else if (punct && !alpha && !num) {
+	  type = &type_punctuation;                    
+	} else {
+	  type = &type_unknown;                
+	}
+	if (bos) {
+	  tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
+	  bos = false;
+	} else {
+	  tokens.push_back( Token( type, word ) );
+	}
+      }   
+    }
     if (sentenceperlineinput) {
 	tokens[0].role |= BEGINOFSENTENCE;
 	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
