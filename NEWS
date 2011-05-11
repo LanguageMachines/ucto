@@ -1,4 +1,7 @@
-
+0.4.6 - 2011-05-xx
+[Ko van der Sloot]
+* changed the regexp for KNOWN-ABBREVIATIONS to case sensitive
+* fixed include file handling for non-standard locations
 
 0.4.5 - 2011-04-27
 [ Maarten van Gompel]
