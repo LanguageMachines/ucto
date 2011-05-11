@@ -5,7 +5,7 @@
 OK="\033[1;32m OK  \033[0m"
 FAIL="\033[1;31m  FAILED  \033[0m"
 
-for file in testusage testlanguage testconf1 testconf2 \
+for file in testusage testlanguage testconf1 testconf2 testinclude \
    	    testfiles1 testfiles2 testoption1 testoption2 \
 	    testnormalisation testencoding2 testpassthru
 do if test -x $file
