@@ -129,8 +129,15 @@ int main( int argc, char *argv[] ){
       cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
       return EXIT_FAILURE;
     }
-    if ( !c_file.empty() )
+    if ( !c_file.empty() ){
       cfile = c_file;
+      if ( cfile.find("/") != string::npos ){
+	// override 'system' dir when cfile seems a relative or absolute path
+	string::size_type pos = cfile.rfind("/");
+	cdir = cfile.substr( 0, pos+1 );
+	cfile = cfile.substr( pos+1 );
+      }
+    }
     else if ( !L_file.empty() )
       cfile = L_file;
     else { 
