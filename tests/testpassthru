@@ -5,3 +5,5 @@
 exe=../src/ucto
 
 $exe -V --passthru passthru.txt
+
+$exe -V --passthru passthru2.txt
