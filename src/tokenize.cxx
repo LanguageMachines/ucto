@@ -971,8 +971,9 @@ namespace Tokenizer {
       throw uCodingError( "string decoding failed: (invalid inputEncoding '" 
 			  + inputEncoding + "' ?)" );
     }
-    else
+    else {
       return tokenizeLine( uinputstring );
+    }
   }  
   
   int TokenizerClass::tokenizeLine( const UnicodeString& originput ){ 
@@ -986,10 +987,9 @@ namespace Tokenizer {
     if (tokDebug) 
       *Log(theErrLog) << "[tokenizeLine] filtered input: line=[" 
 		      << UnicodeToUTF8( input ) << "]" << endl;
-    
     const int begintokencount = tokens.size();    
     if (tokDebug) *Log(theErrLog) << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
-    
+
     if ( !input.isBogus() ){ //only tokenize valid input
       bool tokenizeword = false;
       bool possible_abbreviation = false;
@@ -1080,9 +1080,11 @@ namespace Tokenizer {
       *theErrLog << "ERROR: Invalid UTF-8 in line!" << endl;
     }
     int numNewTokens = tokens.size() - begintokencount;
-    if (paragraphsignal) {
+    if ( numNewTokens > 0 ){
+      if (paragraphsignal) {
  	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
 	paragraphsignal = false;
+      }
     }
     if ( detectBounds )
       detectSentenceBounds( begintokencount );  //find sentence boundaries
