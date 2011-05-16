@@ -2,6 +2,7 @@
 [Ko van der Sloot]
 * changed the regexp for KNOWN-ABBREVIATIONS to case sensitive
 * fixed include file handling for non-standard locations
+* fixed a problem with NON-Unix files. ucto would crash on a line with just '\r'
 
 0.4.5 - 2011-04-27
 [ Maarten van Gompel]
