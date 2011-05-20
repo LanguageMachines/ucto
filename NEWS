@@ -1,3 +1,7 @@
+0.4.7 - (not released yet, feel free to add more stuff)
+[ Maarten van Gompel ]
+* Fix: proper XML entities in FoLiA output
+
 0.4.6 - 2011-05-17
 [Ko van der Sloot]
 * changed the regexp for KNOWN-ABBREVIATIONS to case sensitive

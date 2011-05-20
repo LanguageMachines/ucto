@@ -388,6 +388,15 @@ namespace Tokenizer {
     if (in_paragraph) 
       OUT << "    </p>\n </text>\n</FoLiA>\n";
   }
+
+  UnicodeString xmlescape(UnicodeString s_in) {
+      UnicodeString s = s_in;      
+      s = s.findAndReplace("&","&amp;");
+      s = s.findAndReplace("\"","&quot;");
+      s = s.findAndReplace("<","&lt;");
+      s = s.findAndReplace(">","&gt;");
+      return s;
+  }
   
   void TokenizerClass::outputTokensXML( ostream& OUT, 
 					const size_t begin, const size_t end, 
@@ -431,12 +440,12 @@ namespace Tokenizer {
 	OUT << "      <w xml:id=\"" << docid << ".p." << count_p 
 	    << ".s." << count_s << ".w." << count_w 
 	    << "\" class=\"" + UnicodeToUTF8( *tokens[i].type ) + "\" space=\"no\"><t>" 
-	    << UnicodeToUTF8(tokens[i].us) << "</t></w>" << endl;	    
+	    << UnicodeToUTF8(xmlescape(tokens[i].us)) << "</t></w>" << endl;	    
       } else {
 	OUT << "      <w xml:id=\"" << docid << ".p." << count_p 
 	    << ".s." << count_s << ".w." << count_w 
 	    << "\" class=\"" + UnicodeToUTF8(*tokens[i].type ) + "\"><t>" 
-	    << UnicodeToUTF8(tokens[i].us) << "</t></w>" << endl;	    
+	    << UnicodeToUTF8(xmlescape(tokens[i].us)) << "</t></w>" << endl;	    
       }
       if (tokens[i].role & BEGINQUOTE) {
 	count_q++;
