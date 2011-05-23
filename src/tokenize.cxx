@@ -1191,6 +1191,7 @@ namespace Tokenizer {
 	      if ( tokDebug >= 4 )
 		*Log(theErrLog) << "\tTOKEN match[" << m << "] = " 
 				<< UnicodeToUTF8( matches[m] )<< endl; 
+	      if ( post.length() > 0 ) space = false;
 	      tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
 	    }
 	  }
