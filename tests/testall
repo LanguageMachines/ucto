@@ -7,7 +7,8 @@ FAIL="\033[1;31m  FAILED  \033[0m"
 
 for file in testusage testlanguage testconf1 testconf2 testinclude \
    	    testfiles1 testfiles2 testoption1 testoption2 \
-	    testnormalisation testencoding2 testpassthru
+	    testnormalisation testencoding2 testpassthru \
+	    testfolia
 do if test -x $file
    then 
    	\rm -f $file.diff
