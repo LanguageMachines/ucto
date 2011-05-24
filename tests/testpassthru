@@ -7,3 +7,7 @@ exe=../src/ucto
 $exe -V --passthru passthru.txt
 
 $exe -V --passthru passthru2.txt
+
+$exe -V --passthru encoding.nl.txt
+
+$exe -V --passthru encoding2.nl -e LATIN1

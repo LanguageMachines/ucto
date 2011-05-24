@@ -1,0 +1,33 @@
+# /bin/sh -x
+# $Id: testall 10156 2011-05-23 07:49:16Z sloot $
+# $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/tests/testall $
+
+OK="\033[1;32m OK  \033[0m"
+FAIL="\033[1;31m  FAILED  \033[0m"
+
+file=$1
+
+if test -x $file
+   then 
+   	\rm -f $file.diff
+	\rm -f testoutput/$file.tmp
+	\rm -f testoutput/$file.err*
+	\rm -f testoutput/$file.diff
+   	echo -n "testing  $file "
+	./$file > testoutput/$file.tmp 2> testoutput/$file.err.1
+	diff testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
+	if [ $? -ne 0 ];
+	then sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
+	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
+	     if [ $? -ne 0 ];
+	     then echo -e $FAIL;
+	     	  echo "differences logged in testoutput/$file.diff";
+	     	  echo "stderr messages logged in testoutput/$file.err";
+	     else echo -e $OK
+	     	  \rm -f testoutput/$file.diff
+	     	  \rm -f testoutput/$file.err
+	     fi
+	else echo -e $OK
+	fi
+fi
+
