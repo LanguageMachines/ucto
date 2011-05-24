@@ -318,6 +318,13 @@ namespace Tokenizer {
     return old;
   }
   
+  void stripCR( string& s ){
+    string::size_type pos = s.rfind( '\r' );
+    if ( pos != string::npos ){
+      s.erase( pos );
+    }
+  }
+
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
       bool firstoutput = true;
       bool in_paragraph = false; //for XML
@@ -327,6 +334,7 @@ namespace Tokenizer {
       string line;      
       do {	    
 	done = !getline( IN, line );
+	stripCR( line );
 	if ( sentenceperlineinput )
 	  line += string(" ") + UnicodeToUTF8(explicit_eos_marker);
 	int numS;
@@ -1091,7 +1099,7 @@ namespace Tokenizer {
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
       if (paragraphsignal) {
- 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
+	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
 	paragraphsignal = false;
       }
     }
