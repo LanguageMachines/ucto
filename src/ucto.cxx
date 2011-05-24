@@ -53,6 +53,7 @@ void usage(){
        << "\t-m              - One sentence per line (input)" << endl
        << "\t-V              - Verbose mode" << endl
        << "\t-s <string>     - End-of-Sentence marker (default: <utt>)" << endl
+       << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
        << "\t-Q              - Disable quote detection" << endl

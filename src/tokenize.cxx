@@ -897,11 +897,22 @@ namespace Tokenizer {
     }
   }
   
-  void TokenizerClass::passthruLine( const string& input, bool& bos ) {
+  void TokenizerClass::passthruLine( const string& s, bool& bos ) {
+    UnicodeString input;
+    try {
+      input = UnicodeString( s.c_str(), s.length(), inputEncoding.c_str() );
+    } catch ( exception &e) {
+      throw uCodingError( "Unexpected character found in input. " + string(e.what() )
+			  + "Make sure input is valid UTF-8!" );
+    }
+    if ( input.isBogus() ){
+      throw uCodingError( "string decoding failed: (invalid inputEncoding '" 
+			  + inputEncoding + "' ?)" );
+    }
     if (tokDebug) *Log(theErrLog) << "[passthruLine] input: line=[" << input << "]" << endl;
     bool alpha = false, num = false, punct = false;
     UnicodeString word;
-    for ( size_t i=0; i < input.length(); ++i ) {
+    for ( int i=0; i < input.length(); ++i ) {
       UChar c = input[i];    
       
       if ( u_isspace(c)) {
