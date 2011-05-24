@@ -1,6 +1,12 @@
 0.4.7 - (not released yet, feel free to add more stuff)
 [ Maarten van Gompel ]
 * Fix: proper XML entities in FoLiA output
+* fixed bug77 (the NOSPACE bug)
+
+[Ko van der Sloot]
+* fixed passthru encoding problem
+* fixed problem with CRLF separated lines (bug 78)
+
 
 0.4.6 - 2011-05-17
 [Ko van der Sloot]
