@@ -7,8 +7,8 @@ is	WORD
 te	WORD	
 vinden	WORD	
 op	WORD	
-http://proycon.anaproy.nl	URL	
-.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+http://proycon.anaproy.nl	URL	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
 
 Per	WORD	BEGINOFSENTENCE 
 e-mail	WORD-COMPOUND	
@@ -19,7 +19,7 @@ bereiken	WORD
 op	WORD	
 proycon@anaproy.nl	E-MAIL	
 of	WORD	
-m.van.gompel@uvt.nl	E-MAIL	
-.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+m.van.gompel@uvt.nl	E-MAIL	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
 
 

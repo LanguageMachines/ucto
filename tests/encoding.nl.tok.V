@@ -8,7 +8,7 @@ ook	WORD
 wel	WORD	
 UTF	WORD	NOSPACE 
 -8	NUMBER	
-genoemd	WORD	
+genoemd	WORD	NOSPACE 
 )	PUNCTUATION	NOSPACE 
 .	PUNCTUATION	ENDOFSENTENCE 
 
@@ -19,14 +19,14 @@ manieren	WORD
 om	WORD	
 accenten	WORD	
 te	WORD	
-zetten	WORD	
-:	PUNCTUATION	NOSPACE 
+zetten	WORD	NOSPACE 
+:	PUNCTUATION	
 de	WORD	
 e	WORD	
 met	WORD	
 acute	WORD	
-accent	WORD	
-:	PUNCTUATION	NOSPACE 
+accent	WORD	NOSPACE 
+:	PUNCTUATION	
 é	WORD	
 en	WORD	
 de	WORD	
@@ -35,8 +35,8 @@ met	WORD
 een	WORD	
 combining	WORD	
 acute	WORD	
-accent	WORD	
-:	PUNCTUATION	NOSPACE 
+accent	WORD	NOSPACE 
+:	PUNCTUATION	
 é	WORD	ENDOFSENTENCE 
 
 
