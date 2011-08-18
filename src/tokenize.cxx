@@ -244,15 +244,17 @@ namespace Tokenizer {
     quotes.push_back( quote );
   }
 
+
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
-    int res = -1;
-    for ( size_t i = 0; i < quotestack.size(); ++i ) {
+    //for ( size_t i = 0; i < quotestack.size(); ++i ) {
+    if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;	
+    for ( size_t i = quotestack.size() - 1; i >= 0; i-- ) {
       if ( open.indexOf( quotestack[i] ) >= 0 ){
 	stackindex = i;
 	return quoteindexstack[i];
       }
     }
-    return res;
+    return -1;
   }
 
   UnicodeString Quoting::lookupOpen( const UnicodeString &q ) const {
@@ -715,6 +717,7 @@ namespace Tokenizer {
     //resolve a quote        
     int stackindex = -1;
     int beginindex = quotes.lookup( open, stackindex );
+
     
 
     if (beginindex >= 0) {
@@ -726,8 +729,7 @@ namespace Tokenizer {
     
       
       //We have a quote!
-      tokens[beginindex].role |= BEGINQUOTE;
-      tokens[endindex].role |= ENDQUOTE;
+
       
       /*if ((endindex - 1 > beginindex) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
 	//Set proper BOS markers
@@ -741,13 +743,27 @@ namespace Tokenizer {
       
       //resolve sentences within quote, all sentences must be full sentences:
       int beginsentence = beginindex + 1;
+      int expectingend = 0;
+      int subquote = 0;
       for (int i = beginsentence; i < endindex; i++) {
-	if (tokens[i].role & TEMPENDOFSENTENCE) {			    
-	    tokens[i].role ^= TEMPENDOFSENTENCE;
-	    tokens[i].role |= ENDOFSENTENCE;
-	    tokens[beginsentence].role |= BEGINOFSENTENCE;
-	    beginsentence = i + 1;
+	if (tokens[i].role & BEGINQUOTE) subquote++;
+	
+	if (subquote == 0) {
+		
+	    if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
+	    if (tokens[i].role & ENDOFSENTENCE) expectingend--;
+	    
+	    if (tokens[i].role & TEMPENDOFSENTENCE) {			    
+		tokens[i].role ^= TEMPENDOFSENTENCE;
+		tokens[i].role |= ENDOFSENTENCE;
+		tokens[beginsentence].role |= BEGINOFSENTENCE;
+		beginsentence = i + 1;
+	    }
+	    	
 	}
+	
+	if (tokens[i].role & ENDQUOTE) subquote--;
+	
 	/*  
 	if (tokens[i].role & BEGINOFSENTENCE) {
 	  if (i - 1 > beginindex)
@@ -759,7 +775,21 @@ namespace Tokenizer {
 	}*/
        }
 	    
-	  
+        if ((expectingend == 0) && (subquote == 0)) {
+	   //ok, all good, mark the quote:
+	    tokens[beginindex].role |= BEGINQUOTE;
+	    tokens[endindex].role |= ENDQUOTE;	   
+	} else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
+	    //missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
+	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
+	    tokens[endindex - 1].role |= ENDOFSENTENCE;	    
+	    //mark the quote
+	    tokens[beginindex].role |= BEGINQUOTE;
+	    tokens[endindex].role |= ENDQUOTE;	   
+	} else {
+	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
+	    //something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
+	}
 	
       
       

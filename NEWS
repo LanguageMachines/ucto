@@ -2,6 +2,8 @@
 [ Maarten van Gompel ]
 * Fix: proper XML entities in FoLiA output
 * fixed bug77 (the NOSPACE bug)
+* Fix: Nested quote problem (2011-08-18)
+* Improved protection against unbalanced quotes/sentences (2011-08-18)
 
 [Ko van der Sloot]
 * fixed passthru encoding problem

@@ -1,0 +1,123 @@
+‘	PUNCTUATION	NOSPACE BEGINOFSENTENCE NEWPARAGRAPH BEGINQUOTE 
+Diezelfde	WORD	BEGINOFSENTENCE 
+tram	WORD	
+stond	WORD	
+altijd	WORD	
+op	WORD	
+de	WORD	
+Markt	WORD	
+klaar	WORD	
+na	WORD	
+de	WORD	
+tienuurse	WORD	
+Mis	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+Met	WORD	BEGINOFSENTENCE 
+mijn	WORD	
+zusje	WORD	
+Anneke	WORD	
+sprongen	WORD	
+wij	WORD	
+op	WORD	
+de	WORD	
+achterste	WORD	
+wagon	WORD	
+met	WORD	
+de	WORD	
+bedoeling	WORD	
+er	WORD	
+aan	WORD	
+de	WORD	
+andere	WORD	
+kant	WORD	
+meteen	WORD	
+weer	WORD	
+uit	WORD	
+te	WORD	
+stappen	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+Maar	WORD	BEGINOFSENTENCE 
+op	WORD	
+het	WORD	
+moment	WORD	
+dat	WORD	
+ik	WORD	
+er	WORD	
+af	WORD	
+sprong	WORD	
+reed	WORD	
+de	WORD	
+tram	WORD	
+weg	WORD	
+en	WORD	
+zat	WORD	
+Anneke	WORD	
+er	WORD	
+nog	WORD	
+in	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+En	WORD	BEGINOFSENTENCE 
+die	WORD	
+allemaal	WORD	
+schreeuwen	WORD	
+en	WORD	
+janken	WORD	
+tegen	WORD	
+mij	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+‘	PUNCTUATION	NOSPACE BEGINOFSENTENCE BEGINQUOTE 
+Blijf	WORD	
+nou	WORD	
+maar	WORD	
+zitten	WORD	NOSPACE 
+’	PUNCTUATION	NOSPACE ENDQUOTE 
+,	PUNCTUATION	
+riep	WORD	
+ik	WORD	
+nog	WORD	
+en	WORD	
+ik	WORD	
+rende	WORD	
+snel	WORD	
+door	WORD	
+de	WORD	
+Klappeijstraat	WORD	
+over	WORD	
+het	WORD	
+Schapendriesplein	WORD	
+en	WORD	
+door	WORD	
+het	WORD	
+Doelenstraatje	WORD	
+en	WORD	
+de	WORD	
+Kleine	WORD	
+Braak	WORD	
+naar	WORD	
+de	WORD	
+Heuvel	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+Ik	WORD	BEGINOFSENTENCE 
+was	WORD	
+er	WORD	
+nog	WORD	
+eerder	WORD	
+dan	WORD	
+de	WORD	
+tram	WORD	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+En	WORD	BEGINOFSENTENCE 
+ons	WORD	
+An	WORD	
+gelukkig	WORD	
+dat	WORD	
+ik	WORD	
+haar	WORD	
+daar	WORD	
+weer	WORD	
+kon	WORD	
+opvangen	WORD	NOSPACE 
+.	PUNCTUATION	NOSPACE ENDOFSENTENCE 
+’	PUNCTUATION	ENDOFSENTENCE ENDQUOTE 
+
+
