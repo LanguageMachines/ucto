@@ -57,6 +57,7 @@ namespace Tokenizer {
 
   std::string Version() { return VERSION; };
   std::string VersionName() { return PACKAGE_STRING; };
+  string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
   
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
@@ -1479,7 +1480,7 @@ namespace Tokenizer {
     // }
   }
 
-  bool TokenizerClass::readsettings( const string& dir, const string& fname ) {
+  bool TokenizerClass::readsettings( const string& fname ) {
 
     ConfigMode mode = NONE;
     
@@ -1494,7 +1495,18 @@ namespace Tokenizer {
 
     vector<UnicodeString> rules_order;
 
-    string conffile = dir + fname;
+    string confdir;
+    string conffile = confdir + fname;
+    if ( fname.find_first_of( "/" ) != string::npos ){
+      // override 'system' dir when cfile seems a relative or absolute path
+      string::size_type pos = fname.rfind("/");
+      confdir = fname.substr( 0, pos+1 );
+      conffile = fname;
+    }
+    else {
+      confdir = defaultConfigDir;
+      conffile = confdir + fname;
+    }
     ifstream f(conffile.c_str());
     if ( !f ){
       return false;
@@ -1506,28 +1518,28 @@ namespace Tokenizer {
 	  switch ( mode ){
 	  case RULES: {
 	    string file = rawline.substr( 9 );
-	    file = dir + file + ".rule";
+	    file = confdir + file + ".rule";
 	    if ( !readrules( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;
 	  case FILTER:{
 	    string file = rawline.substr( 9 );
-	    file = dir + file + ".filter";
+	    file = confdir + file + ".filter";
 	    if ( !readfilters( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;
 	  case QUOTES:{
 	    string file = rawline.substr( 9 );
-	    file = dir + file + ".quote";
+	    file = confdir + file + ".quote";
 	    if ( !readquotes( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;
 	  case EOSMARKERS:{
 	    string file = rawline.substr( 9 );
-	    file = dir + file + ".eos";
+	    file = confdir + file + ".eos";
 	    if ( !readeosmarkers( file ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
@@ -1700,10 +1712,10 @@ namespace Tokenizer {
     return true;
   }
   
-  bool TokenizerClass::init( const string& cdir, const string& fname ){
+  bool TokenizerClass::init( const string& fname ){
     *Log(theErrLog) << "Initiating tokeniser...\n";
-    if (!readsettings( cdir, fname)) {
-      throw uConfigError( "Cannot read Tokeniser settingsfile "+ cdir + fname );
+    if (!readsettings( fname)) {
+      throw uConfigError( "Cannot read Tokeniser settingsfile "+ fname );
       return false;
     }
     settingsfilename = fname;

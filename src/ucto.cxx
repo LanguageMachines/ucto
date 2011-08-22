@@ -78,7 +78,6 @@ int main( int argc, char *argv[] ){
   string docid = "untitleddoc";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string cdir = string(SYSCONF_PATH) + "/ucto/";
   string cfile = "tokconfig-en";
   string ifile;
   string ofile;
@@ -132,12 +131,6 @@ int main( int argc, char *argv[] ){
     }
     if ( !c_file.empty() ){
       cfile = c_file;
-      if ( cfile.find("/") != string::npos ){
-	// override 'system' dir when cfile seems a relative or absolute path
-	string::size_type pos = cfile.rfind("/");
-	cdir = cfile.substr( 0, pos+1 );
-	cfile = cfile.substr( pos+1 );
-      }
     }
     else if ( !L_file.empty() )
       cfile = L_file;
@@ -157,7 +150,6 @@ int main( int argc, char *argv[] ){
   }
 
   if ( !passThru ){
-    cerr << "configdir = " << cdir << endl;
     cerr << "configfile = " << cfile << endl;
   }
   cerr << "inputfile = "  << ifile << endl;
@@ -190,7 +182,7 @@ int main( int argc, char *argv[] ){
     }
     else {
       // init exept for passthru mode
-      tokenizer.init( cdir, cfile );
+      tokenizer.init( cfile );
     }
 
     tokenizer.setEosMarker( eosmarker );

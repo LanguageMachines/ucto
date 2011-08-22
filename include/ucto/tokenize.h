@@ -136,7 +136,7 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string&, const std::string& );
+    bool init( const std::string& );
     void setErrorLog( std::ostream *os ) { theErrLog = os; };
     
     //Tokenize from input stream to output stream
@@ -258,7 +258,7 @@ namespace Tokenizer {
     bool resolveQuote( int, const UnicodeString& );
     bool detectEos( UChar );
 
-    bool readsettings( const std::string&, const std::string& );
+    bool readsettings( const std::string& );
     bool readrules( const std::string& );
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );
