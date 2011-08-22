@@ -1,5 +1,4 @@
-configdir = ./
-configfile = small.cfg
+configfile = ./small.cfg
 inputfile = small.txt
 outputfile = 
 Initiating tokeniser...

@@ -1,5 +1,4 @@
-configdir = ./
-configfile = stuk2.cfg
+configfile = ./stuk2.cfg
 inputfile = 
 outputfile = 
 Initiating tokeniser...

@@ -1,4 +1,3 @@
-configdir = 
 configfile = tokconfig-nl
 inputfile = nonexistentfile.echtniet
 outputfile = 
