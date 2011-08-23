@@ -56,7 +56,7 @@ void usage(){
        << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
-       << "\t-Q              - Disable quote detection" << endl
+       << "\t-Q              - Enable quote detection (experimental)" << endl
        << "\t-v              - Show version information" << endl
        << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID" << endl
        << "\t                  (-x disables usage of most other options: -nulPQVsS)" << endl;
@@ -69,7 +69,7 @@ int main( int argc, char *argv[] ){
   bool sentenceperlineoutput = false;
   bool sentenceperlineinput = false;
   bool paragraphdetection = true;
-  bool quotedetection = true;
+  bool quotedetection = false;
   bool dofiltering = true;
   bool splitsentences = true;
   bool xmlout = false;
@@ -101,7 +101,7 @@ int main( int argc, char *argv[] ){
 	case 'e': inputEncoding = optarg; break;
 	case 'f': dofiltering = false; break;
 	case 'P': paragraphdetection = false; break;
-	case 'Q': quotedetection = false; break;
+	case 'Q': quotedetection = true; break;
 	case 'c': c_file = optarg; break;
 	case 's': eosmarker = optarg; break;
 	case 'S': splitsentences = false; break;

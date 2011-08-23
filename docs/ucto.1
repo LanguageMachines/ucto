@@ -1,4 +1,4 @@
-.TH ucto 1 "2011 march 14"
+.TH ucto 1 "2011 august 23"
 
 .SH NAME
 ucto - Unicode Tokenizer
@@ -59,6 +59,11 @@ Assume one sentence per line on input
 Emit one sentence per line on output
 .RE
 
+.BR --passthru    
+.RS
+Don't tokenize, but perform input decoding and simple token role detection
+.RE
+
 .B -P
 .RS
 Disable Paragraph Detection
@@ -66,7 +71,7 @@ Disable Paragraph Detection
 
 .B -Q
 .RS
-Disable Quote Detection
+Enable Quote Detection. (this is experimental and may lead to unexpected results)
 .RE
 
 .B -S

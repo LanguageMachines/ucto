@@ -8,7 +8,9 @@
 [Ko van der Sloot]
 * fixed passthru encoding problem
 * fixed problem with CRLF separated lines (bug 78)
-
+* configdir vs. config file hassle moved more inside. simpler API now.
+* -Q option works reversed now. -Q Enables Quote detection. 
+  Quote detection apears to be very hard and fragile.
 
 0.4.6 - 2011-05-17
 [Ko van der Sloot]

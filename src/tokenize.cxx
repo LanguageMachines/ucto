@@ -774,24 +774,24 @@ namespace Tokenizer {
 	  if (i + 1 < endindex)
 	    tokens[i+1].role |= BEGINOFSENTENCE;
 	}*/
-       }
+      }
 	    
-        if ((expectingend == 0) && (subquote == 0)) {
-	   //ok, all good, mark the quote:
-	    tokens[beginindex].role |= BEGINQUOTE;
-	    tokens[endindex].role |= ENDQUOTE;	   
-	} else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
-	    //missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
-	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
-	    tokens[endindex - 1].role |= ENDOFSENTENCE;	    
-	    //mark the quote
-	    tokens[beginindex].role |= BEGINQUOTE;
-	    tokens[endindex].role |= ENDQUOTE;	   
-	} else {
-	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
-	    //something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
-	}
-	
+      if ((expectingend == 0) && (subquote == 0)) {
+	//ok, all good, mark the quote:
+	tokens[beginindex].role |= BEGINQUOTE;
+	tokens[endindex].role |= ENDQUOTE;	   
+      } else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
+	//missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
+	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
+	tokens[endindex - 1].role |= ENDOFSENTENCE;	    
+	//mark the quote
+	tokens[beginindex].role |= BEGINQUOTE;
+	tokens[endindex].role |= ENDQUOTE;	   
+      } else {
+	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
+	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
+      }
+      
       
       
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
