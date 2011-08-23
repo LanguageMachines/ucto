@@ -71,7 +71,7 @@ for f in glob.glob(mask):
     if not os.path.isfile(id + '.' + lang + '.tok.V'):
         print color_text("MISSING", 'RED', True)  
         continue
-    cmd = VG+'../src/.libs/ucto -V -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err'
+    cmd = VG+'../src/.libs/ucto -Q -V -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err'
     #print cmd
     retcode = os.system(cmd)
     if retcode != 0:

@@ -17,7 +17,7 @@ Options:
 	--passthru      - Don't tokenize, but perform input decoding and simple token role detection
 	-P              - Disable paragraph detection
 	-S              - Disable sentence detection!
-	-Q              - Disable quote detection
+	-Q              - Enable quote detection (experimental)
 	-v              - Show version information
 	-x <DocID>      - Output FoLiA XML, use the specified Document ID
 	                  (-x disables usage of most other options: -nulPQVsS)
