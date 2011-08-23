@@ -308,7 +308,7 @@ namespace Tokenizer {
     inputEncoding( "UTF-8" ), eosmark("<utt>"), 
     theErrLog(&cerr), 
     tokDebug(0), verbose(false), 
-    detectBounds(true), detectQuotes(true), doFilter(true), detectPar(true),
+    detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
     paragraphsignal(true),sentencesignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
