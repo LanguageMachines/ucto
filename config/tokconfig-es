@@ -18,7 +18,7 @@ ABBREVIATION=\p{L}{1,3}(?:\.\p{L}{1,3})+\.?
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
 
 #Homogeneous punctuation (ellipsis etc)
-PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
+PUNCTUATION-MULTI=(?:\.|\-|[!\?¡¿]){2,}
 
 #Fechas
 DATE=\p{N}{1,2}[-/]\p{N}{1,2}[-/]\p{N}{2,4}
