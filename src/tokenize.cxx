@@ -247,13 +247,16 @@ namespace Tokenizer {
 
 
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
-    //for ( size_t i = 0; i < quotestack.size(); ++i ) {
     if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;	
-    for ( size_t i = quotestack.size() - 1; i >= 0; i-- ) {
-      if ( open.indexOf( quotestack[i] ) >= 0 ){
-	stackindex = i;
-	return quoteindexstack[i];
+    vector<UChar>::reverse_iterator it = quotestack.rbegin();
+    size_t i = quotestack.size();
+    while ( it != quotestack.rend() ){
+      if ( open.indexOf( *it ) >= 0 ){
+	stackindex = i-1;
+	return quoteindexstack[stackindex];
       }
+      --i;
+      ++it;
     }
     return -1;
   }
@@ -1051,7 +1054,6 @@ namespace Tokenizer {
 
     if ( !input.isBogus() ){ //only tokenize valid input
       bool tokenizeword = false;
-      bool possible_abbreviation = false;
       bool reset = false;
       //iterate over all characters
       UnicodeString word;
@@ -1127,11 +1129,6 @@ namespace Tokenizer {
 	  
 	  //there is punctuation or digits in this word, mark to run through tokeniser
 	  tokenizeword = true; 
-	}
-	if (c == '.') {
-	  possible_abbreviation = true;
-	} else {
-	  possible_abbreviation = false;
 	}
       }        	
     } else {
