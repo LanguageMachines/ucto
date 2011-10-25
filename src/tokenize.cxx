@@ -55,8 +55,8 @@ using namespace std;
 
 namespace Tokenizer {
 
-  std::string Version() { return VERSION; };
-  std::string VersionName() { return PACKAGE_STRING; };
+  std::string Version() { return VERSION; }
+  std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
   
