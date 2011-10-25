@@ -58,7 +58,6 @@ namespace Tokenizer {
   std::string Version() { return VERSION; }
   std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
-
   
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
   
@@ -244,7 +243,6 @@ namespace Tokenizer {
     quote.closeQuote = c;
     quotes.push_back( quote );
   }
-
 
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
     if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;	
@@ -722,29 +720,15 @@ namespace Tokenizer {
     int stackindex = -1;
     int beginindex = quotes.lookup( open, stackindex );
 
-    
-
     if (beginindex >= 0) {
       if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote found, begin="<< beginindex << ", end="<< endindex << endl;
 
       if (beginindex > endindex) {
 	throw uRangeError( "Begin index for quote is higher than end index!" );
       }    
-    
-      
+
       //We have a quote!
 
-      
-      /*if ((endindex - 1 > beginindex) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
-	//Set proper BOS markers
-	tokens[beginindex+1].role |= BEGINOFSENTENCE;
-      }*/
-      
-      /*if (tokens[endindex].role & BEGINOFSENTENCE) {
-	//final quote can never be begin of sentence, undo:
-	tokens[endindex].role ^= BEGINOFSENTENCE;
-      }*/
-      
       //resolve sentences within quote, all sentences must be full sentences:
       int beginsentence = beginindex + 1;
       int expectingend = 0;
@@ -752,31 +736,29 @@ namespace Tokenizer {
       for (int i = beginsentence; i < endindex; i++) {
 	if (tokens[i].role & BEGINQUOTE) subquote++;
 	
-	if (subquote == 0) {
-		
-	    if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
-	    if (tokens[i].role & ENDOFSENTENCE) expectingend--;
-	    
-	    if (tokens[i].role & TEMPENDOFSENTENCE) {			    
-		tokens[i].role ^= TEMPENDOFSENTENCE;
-		tokens[i].role |= ENDOFSENTENCE;
-		tokens[beginsentence].role |= BEGINOFSENTENCE;
-		beginsentence = i + 1;
-	    }
-	    	
+	if (subquote == 0) {	  
+	  if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
+	  if (tokens[i].role & ENDOFSENTENCE) expectingend--;
+	  
+	  if (tokens[i].role & TEMPENDOFSENTENCE) {			    
+	    tokens[i].role ^= TEMPENDOFSENTENCE;
+	    tokens[i].role |= ENDOFSENTENCE;
+	    tokens[beginsentence].role |= BEGINOFSENTENCE;
+	    beginsentence = i + 1;
+	  }	  
 	}
 	
 	if (tokens[i].role & ENDQUOTE) subquote--;
 	
 	/*  
-	if (tokens[i].role & BEGINOFSENTENCE) {
-	  if (i - 1 > beginindex)
+	    if (tokens[i].role & BEGINOFSENTENCE) {
+	    if (i - 1 > beginindex)
 	    tokens[i-1].role |= ENDOFSENTENCE;
-	}
-	if (tokens[i].role & ENDOFSENTENCE) {
-	  if (i + 1 < endindex)
+	    }
+	    if (tokens[i].role & ENDOFSENTENCE) {
+	    if (i + 1 < endindex)
 	    tokens[i+1].role |= BEGINOFSENTENCE;
-	}*/
+	    }*/
       }
 	    
       if ((expectingend == 0) && (subquote == 0)) {
@@ -794,8 +776,6 @@ namespace Tokenizer {
 	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
 	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
       }
-      
-      
       
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
       quotes.eraseAtPos( stackindex );
@@ -1711,7 +1691,7 @@ namespace Tokenizer {
   
   bool TokenizerClass::init( const string& fname ){
     *Log(theErrLog) << "Initiating tokeniser...\n";
-    if (!readsettings( fname)) {
+    if (!readsettings( fname) ) {
       throw uConfigError( "Cannot read Tokeniser settingsfile "+ fname );
       return false;
     }
