@@ -4,7 +4,7 @@
 # $URL$
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.4.9], [timbl@uvt.nl])
+AC_INIT([ucto], [0.4.8], [timbl@uvt.nl])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -39,6 +39,13 @@ AC_LANG([C++])
 if test $prefix = "NONE"; then
    prefix="$ac_default_prefix"
 fi
+
+# ugly hack when PKG_CONFIG_PATH isn't defined.
+# couldn't get it to work otherwise
+if test "x$PKG_CONFIG_PATH" = x; then
+    export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
+fi
+
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
 AC_ARG_WITH(icu,
@@ -60,6 +67,22 @@ else
   AC_MSG_ERROR("ICU support is required")
 fi
 
+PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
+CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
+LIBS="$LIBS $XML2_LIBS"
+
+AC_ARG_WITH(folia,
+       [  --with-folia=DIR       use libfolia installed in <DIR>; 
+               note that you can install folia in a non-default directory with
+               ./configure --prefix=<DIR> in the folia installation directory],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
+AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
+PKG_CHECK_MODULES([folia], [folia >= 0.3] )
+CXXFLAGS="$CXXFLAGS $folia_CFLAGS"
+LIBS="$LIBS $folia_LIBS"
+
+
 # Checks for library functions.
 
 AC_OUTPUT([
@@ -70,7 +93,6 @@ AC_OUTPUT([
   config/Makefile
   docs/Makefile
   src/Makefile
-  tests/Makefile
   include/Makefile
   include/ucto/Makefile
 ])

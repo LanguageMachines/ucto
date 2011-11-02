@@ -32,6 +32,7 @@
 #include <stdexcept>
 #include "config.h"
 #include "ucto/unicode.h"
+#include "libfolia/document.h"
 
 namespace Tokenizer {
 
@@ -138,6 +139,9 @@ namespace Tokenizer {
     ~TokenizerClass();
     bool init( const std::string& );
     void setErrorLog( std::ostream *os ) { theErrLog = os; };
+
+    //Tokenize from input stream to FoLiA document
+    folia::Document tokenize( std::istream& );
     
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
@@ -243,12 +247,8 @@ namespace Tokenizer {
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
     
     
-    void outputXMLHeader( std::ostream& );
-    void outputXMLFooter( std::ostream&, bool);
-    //bool outputSentenceXML(std::ostream*, unsigned int);
-    
     void outputTokens( std::ostream&, const size_t, const size_t, const bool = false) const;
-    void outputTokensXML( std::ostream&, const size_t, const size_t, bool&);
+    void outputTokensXML( folia::Document& , const size_t, const size_t, bool&);
     
   private:
     void tokenizeWord( const UnicodeString&, bool);
@@ -315,11 +315,6 @@ namespace Tokenizer {
     bool passthru;
 
     std::string settingsfilename;
-    
-    //Counters for xml output
-    int count_p;
-    int count_s;
-    int count_w;    
     
     std::string docid; //document ID (UTF-8), necessary for XML output  
   };

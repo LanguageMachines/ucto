@@ -30,26 +30,10 @@
 #include <ostream>
 #include <map>
 #include <stdexcept>
+#include "libfolia/foliautils.h"
 #include "ucto/unicode.h"
 
 using namespace std;
-
-// add two convenient fuctiond to the std:: namespace
-UnicodeString UTF8ToUnicode( const string& s ){
-  return UnicodeString( s.c_str(), s.length(), "UTF-8" );
-}
-
-string UnicodeToUTF8( const UnicodeString& s ){
-  string result;
-  int len = s.length();
-  if ( len > 0 ){
-    char *buf = new char[len*6+1];
-    s.extract( 0, len, buf, len*6, "UTF-8" );
-    result = buf;
-    delete [] buf;
-  }
-  return result;
-}
 
 namespace Tokenizer {
 
@@ -114,7 +98,7 @@ namespace Tokenizer {
     else {
       map<UChar,UnicodeString>::const_iterator it=q.the_map.begin();
       while ( it != q.the_map.end() ){
-	os << UnicodeToUTF8(UnicodeString(it->first)) << "\t" << it->second << endl;
+	os << folia::UnicodeToUTF8(UnicodeString(it->first)) << "\t" << it->second << endl;
 	++it;
       }
     }

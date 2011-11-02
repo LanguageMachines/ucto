@@ -1,55 +1,121 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xml:id="foliatest">
- <metadata>
-  <annotations>
-   <token-annotation set="tokconfig-nl" annotator="ucto" annotatortype="auto" />
-  </annotations>
- </metadata>
- <text xml:id="foliatest.text">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v0.4">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
+    </annotations>
+  </metadata>
+  <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
-     <s xml:id="foliatest.p.1.s.1">
-      <w xml:id="foliatest.p.1.s.1.w.1" class="WORD"><t>Die</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.2" class="WORD"><t>is</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.3" class="WORD"><t>een</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.4" class="WORD"><t>testje</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.5" class="WORD"><t>voor</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.6" class="WORD"><t>het</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.7" class="WORD"><t>FoLiA</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.8" class="WORD" space="no"><t>formaat</t></w>
-      <w xml:id="foliatest.p.1.s.1.w.9" class="PUNCTUATION"><t>.</t></w>
-     </s>
-     <s xml:id="foliatest.p.1.s.2">
-      <w xml:id="foliatest.p.1.s.2.w.1" class="WORD"><t>We</t></w>
-      <w xml:id="foliatest.p.1.s.2.w.2" class="WORD"><t>zijn</t></w>
-      <w xml:id="foliatest.p.1.s.2.w.3" class="PUNCTUATION" space="no"><t>&quot;</t></w>
-      <quote xml:id="foliatest.p.1.s.2.quote.1">
-           <w xml:id="foliatest.p.1.s.2.w.4" class="WORD" space="no"><t>errug</t></w>
-      </quote>
-      <w xml:id="foliatest.p.1.s.2.w.5" class="PUNCTUATION"><t>&quot;</t></w>
-      <w xml:id="foliatest.p.1.s.2.w.6" class="WORD" space="no"><t>benieuwd</t></w>
-      <w xml:id="foliatest.p.1.s.2.w.7" class="PUNCTUATION"><t>.</t></w>
-     </s>
+      <s xml:id="foliatest.p.1.s.1">
+        <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
+          <t>Die</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.2" class="WORD">
+          <t>is</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.3" class="WORD">
+          <t>een</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.4" class="WORD">
+          <t>testje</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.5" class="WORD">
+          <t>voor</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.6" class="WORD">
+          <t>het</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.7" class="WORD">
+          <t>FoLiA</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.8" class="WORD" space="no">
+          <t>formaat</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.1.w.9" class="PUNCTUATION">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="foliatest.p.1.s.2">
+        <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
+          <t>We</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.2.w.2" class="WORD">
+          <t>zijn</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.2.w.3" class="PUNCTUATION" space="no">
+          <t>"</t>
+        </w>
+        <quote xml:id="foliatest.p.1.s.2.quote.1">
+          <w xml:id="foliatest.p.1.s.2.w.4" class="WORD" space="no">
+            <t>errug</t>
+          </w>
+        </quote>
+        <w xml:id="foliatest.p.1.s.2.w.5" class="PUNCTUATION">
+          <t>"</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.2.w.6" class="WORD" space="no">
+          <t>benieuwd</t>
+        </w>
+        <w xml:id="foliatest.p.1.s.2.w.7" class="PUNCTUATION">
+          <t>.</t>
+        </w>
+      </s>
     </p>
     <p xml:id="foliatest.p.2">
-     <s xml:id="foliatest.p.2.s.1">
-      <w xml:id="foliatest.p.2.s.1.w.1" class="WORD"><t>De</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.2" class="WORD"><t>vraag</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.3" class="WORD"><t>is</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.4" class="WORD"><t>ook</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.5" class="WORD"><t>of</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.6" class="WORD" space="no"><t>V</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.7" class="PUNCTUATION" space="no"><t>&amp;</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.8" class="WORD"><t>D</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.9" class="WORD"><t>goed</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.10" class="WORD" space="no"><t>gaan</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.11" class="PUNCTUATION"><t>,</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.12" class="WORD"><t>of</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.13" class="UNKNOWN" space="no"><t>&lt;</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.14" class="WORD" space="no"><t>dit</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.15" class="UNKNOWN" space="no"><t>&gt;</t></w>
-      <w xml:id="foliatest.p.2.s.1.w.16" class="PUNCTUATION"><t>.</t></w>
-     </s>
+      <s xml:id="foliatest.p.2.s.1">
+        <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
+          <t>De</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.2" class="WORD">
+          <t>vraag</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.3" class="WORD">
+          <t>is</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.4" class="WORD">
+          <t>ook</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.5" class="WORD">
+          <t>of</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.6" class="WORD" space="no">
+          <t>V</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.7" class="PUNCTUATION" space="no">
+          <t>&amp;</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.8" class="WORD">
+          <t>D</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.9" class="WORD">
+          <t>goed</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.10" class="WORD" space="no">
+          <t>gaan</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.11" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.12" class="WORD">
+          <t>of</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.13" class="UNKNOWN" space="no">
+          <t>&lt;</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.14" class="WORD" space="no">
+          <t>dit</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.15" class="UNKNOWN" space="no">
+          <t>&gt;</t>
+        </w>
+        <w xml:id="foliatest.p.2.s.1.w.16" class="PUNCTUATION">
+          <t>.</t>
+        </w>
+      </s>
     </p>
- </text>
+  </text>
 </FoLiA>
+
+

@@ -71,7 +71,7 @@ for f in glob.glob(mask):
     if not os.path.isfile(id + '.' + lang + '.tok.V'):
         print color_text("MISSING", 'RED', True)  
         continue
-    cmd = VG+'../src/.libs/ucto -Q -V -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err'
+    cmd = VG+'../src/.libs/ucto -Q -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err'
     #print cmd
     retcode = os.system(cmd)
     if retcode != 0:
@@ -92,7 +92,7 @@ for f in glob.glob(mask):
             #print 'diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff'
             os.system('diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff')
             #VERBOSE RUN:
-            os.system('../src/ucto -d ' + str(DEBUGLEVEL) + ' -V -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
+            os.system('../src/ucto -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
 
 if log:
     print "--------------------------"

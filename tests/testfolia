@@ -1,6 +1,6 @@
 #/bin/sh
-# $Id: testfolia 12939 2011-08-23 09:34:22Z sloot $
-# $URL: https://ilk.uvt.nl/svn/sources/ucto/branches/libfolia-branch/tests/testfolia $
+# $Id$
+# $URL$
 
 exe=../src/ucto
 

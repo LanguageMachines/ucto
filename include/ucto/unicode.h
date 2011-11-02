@@ -37,10 +37,6 @@
 #include "unicode/unistr.h"
 #include "unicode/normlzr.h"
 
-// add two convenient fuctiond to the std:: namespace
-UnicodeString UTF8ToUnicode( const std::string& );
-std::string UnicodeToUTF8( const UnicodeString& );
-
 namespace Tokenizer {
 
   class UnicodeNormalizer {

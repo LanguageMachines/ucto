@@ -1,8 +1,8 @@
-0.4.8 - 2011-**-**
-[ Ko van der Sloot]
-  * made it "-pedantic proof" again.
+0.4.8 2011-11-02
+[Ko vd sloot]
+ * use libfolia to generate folia XML
 
-0.4.7 - 2011-08-23
+0.4.7 - (not released yet, feel free to add more stuff)
 [ Maarten van Gompel ]
 * Fix: proper XML entities in FoLiA output
 * fixed bug77 (the NOSPACE bug)

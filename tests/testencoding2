@@ -1,6 +1,6 @@
 #/bin/sh
-# $Id: testlanguage 8059 2011-01-27 16:18:49Z sloot $
-# $URL: https://ilk.uvt.nl/svn/trunk/sources/ucto/trunk/tests/testlanguage $
+# $Id$
+# $URL$
 
 exe=../src/ucto
 

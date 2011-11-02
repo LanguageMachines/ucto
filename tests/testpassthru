@@ -1,13 +1,13 @@
 #/bin/sh
-# $Id: testoption1 8059 2011-01-27 16:18:49Z sloot $
-# $URL: https://ilk.uvt.nl/svn/trunk/sources/ucto/trunk/tests/testoption1 $
+# $Id$
+# $URL$
 
 exe=../src/ucto
 
-$exe -V --passthru passthru.txt
+$exe -v --passthru passthru.txt
 
-$exe -V --passthru passthru2.txt
+$exe -v --passthru passthru2.txt
 
-$exe -V --passthru encoding.nl.txt
+$exe -v --passthru encoding.nl.txt
 
-$exe -V --passthru encoding2.nl -e LATIN1
+$exe -v --passthru encoding2.nl -e LATIN1

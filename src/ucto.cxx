@@ -51,13 +51,13 @@ void usage(){
        << "\t-u              - Convert to all uppercase" << endl       
        << "\t-n              - One sentence per line (output)" << endl
        << "\t-m              - One sentence per line (input)" << endl
-       << "\t-V              - Verbose mode" << endl
+       << "\t-v              - Verbose mode" << endl
        << "\t-s <string>     - End-of-Sentence marker (default: <utt>)" << endl
        << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
        << "\t-Q              - Enable quote detection (experimental)" << endl
-       << "\t-v              - Show version information" << endl
+       << "\t-V              - Show version information" << endl
        << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID" << endl
        << "\t                  (-x disables usage of most other options: -nulPQVsS)" << endl;
 }
@@ -111,8 +111,8 @@ int main( int argc, char *argv[] ){
 	case 'n': sentenceperlineoutput = true; break;
     case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
-	case 'V': verbose = true; break;
-	case 'v': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
+	case 'v': verbose = true; break;
+	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
 	default: usage(); return EXIT_SUCCESS;
 	}
