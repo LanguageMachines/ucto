@@ -93,6 +93,7 @@ AC_OUTPUT([
   config/Makefile
   docs/Makefile
   src/Makefile
+  tests/Makefile
   include/Makefile
   include/ucto/Makefile
 ])
