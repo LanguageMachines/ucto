@@ -1,0 +1,27 @@
+This is a test. This test consist of multiple sentences, paragraphs, and words. The current paragraph has three sentences.
+
+This is the second
+paragraph of the test. In this
+paragraph the
+sentence are split over
+multiple lines, but we
+won't notice that!
+
+I'm sure that I won't have any tokenisation errors here, you'll see if only you'd pay attention! We're sure we've already seen such examples before. My father's house is nice.
+
+The prime minister, i.e. Mr. Cameron, has his office in Downing Street number 10.
+
+I called the office of BuyMyStuff Ltd. today, but he was n/a at the time.
+
+'t is nobler to drink tea than coffee, don't you think?
+
+FIRE!!!
+
+Using www.google.com you can find my homepage on http://proycon.anaproy.nl.
+My date of birth is 12/15/1982.
+
+Please submit your idea(s) to goodideas@westealyourideas.co.uk.
+
+Today, the 27th of November 2009 at 12:00, he won exactly $500,000.00 in the lottery.
+
+Caesar's last words were: "Et tu? Brute?", after he'd been betrayed.
