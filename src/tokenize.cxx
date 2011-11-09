@@ -142,6 +142,7 @@ namespace Tokenizer {
     post = "";
     results.clear();
     if ( matcher ){
+      //      cerr << "start matcher [" << line << "]" << endl;
       matcher->reset( line );
       if ( matcher->find() ){
 	// cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
@@ -1182,6 +1183,7 @@ namespace Tokenizer {
     matches.clear();
     pre = "";
     post = "";
+    //    cerr << "\nrule " << *this << endl;
     if ( regexp && regexp->match_all( line, pre, post ) ){
       int num = regexp->NumOfMatches();
       if ( num >=1 ){
@@ -1707,7 +1709,11 @@ namespace Tokenizer {
     //TODO: Make order dynamically configurable?
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "(?i)\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?i)(?:\\Z|\\P{L})")); 
+      // NB: (?i) is not used for the whole expression because of icu bug 8824
+      //     see http://bugs.icu-project.org/trac/ticket/8824
+      //     If you want mixed case Ordinals, you have to enumerate them all
+      //     in the config file
     }
     /*if (!unit_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})")); 
@@ -1723,7 +1729,10 @@ namespace Tokenizer {
       rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{L}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "(?i)(\\p{L}+(?:" + withsuffix_pattern + "))(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?i)(?:\\Z|\\P{L})")); 
+      // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
+      //     see http://bugs.icu-project.org/trac/ticket/8824
+      //     normally (?i) could be used in front and (\\p{L}) would do.
     }
     if (!prefix_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{L}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
