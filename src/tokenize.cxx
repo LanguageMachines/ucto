@@ -471,7 +471,7 @@ namespace Tokenizer {
 	  for (int i = 0; i < numS; i++) {
 	    int begin, end;
 	    if (!getSentence(i, begin, end)) {
-          if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
+              if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
 	      throw uRangeError("Sentence index"); //should never happen
 	    }
 	    /* ******* Begin process sentence  ********** */
@@ -536,12 +536,17 @@ namespace Tokenizer {
 	}
     }
     
+    if (root_is_sentence) {
+	lastS = root;
+    }
+    
     for ( size_t i = begin; i <= end; i++) {
 	
-      if ((!root_is_paragraph) && ((tokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
+      if (((!root_is_paragraph) && (!root_is_sentence)) && ((tokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
 	if ( in_paragraph )
 	  root = root->parent();
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
 	folia::AbstractElement *p = new folia::Paragraph( root->doc(),
 							  "id='" + root->doc()->id()
 							  + ".p." 
@@ -553,21 +558,21 @@ namespace Tokenizer {
 	quotelevel = 0;
       }
       if (tokens[i].role & ENDQUOTE) {
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of quote";
 	quotelevel--;
 	root = root->parent();
 	//	cerr << "ENDQUOTE, terug naar " << root << endl;
       }
       if ((tokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
-	folia::AbstractElement *s = new folia::Sentence( root->doc(),
-							 "generate_id='" 
-							 + root->id() + "'" );
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating sentence" << endl;
+	folia::AbstractElement *s = new folia::Sentence( root->doc(),"generate_id='" + root->id() + "'" );
 	// cerr << "created " << s << endl;
 	root->append( s );
 	root = s;
 	lastS = s;
       }	
-      string args = "generate_id='" + lastS->id() + "',"  + " class= '"
-	+ folia::UnicodeToUTF8( *tokens[i].type ) + "'";
+      if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating word element for " << tokens[i].us << endl;
+      string args = "generate_id='" + lastS->id() + "',"  + " class= '" + folia::UnicodeToUTF8( *tokens[i].type ) + "'";
       if (tokens[i].role & NOSPACE) {
 	args += ", space='no'";
       }
@@ -576,15 +581,16 @@ namespace Tokenizer {
       //      cerr << "created " << w << " text= " <<  tokens[i].us << endl;
       root->append( w );
       if (tokens[i].role & BEGINQUOTE) {
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element";
 	lastS = root;
-	folia::AbstractElement *q = new folia::Quote( root->doc(),
-					"generate_id='" + root->id() + "'" );
+	folia::AbstractElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
 	//	cerr << "created " << q << endl;
 	root->append( q );
 	root = q;
 	quotelevel++;
       }    
       if ( (tokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence";
 	root = root->parent();
 	//	cerr << "endsentence, terug naar " << root << endl;
       }
