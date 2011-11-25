@@ -380,6 +380,63 @@ namespace Tokenizer {
     return doc;
   }
   
+  
+  bool TokenizerClass::tokenize(folia::Document & doc ) {
+      doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
+      bool result = false;
+      for (int i = 0; i < doc.size(); i++) {
+	   result = tokenize(doc[i]) || result;
+      }      
+      return result;
+  }
+  
+  
+  bool TokenizerClass::tokenize(folia::AbstractElement * element) {
+    if (element->hastext()) {
+	if (element->isinstance(folia::Paragraph_t)) {
+	    //tokenize paragraph: check for absence of sentences
+	    vector<folia::AbstractElement*> sentences = element->sentences();
+	    if (sentences.size() == 0) {
+		//no sentences yet, good
+		//NOT IMPLEMENTED YET
+		return true;
+	    } else {
+		//recursion step for other elements
+		for (int i = 0; i < element->size(); i++) {
+		    tokenize(element->index(i));
+		}		
+		return false;
+	    }
+	} else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
+	    //tokenize sentence: check for absence of words
+	    vector<folia::AbstractElement*> words = element->words();
+	    if (words.size() == 0) {
+		//no words yet, good. tokenize this sentence
+		UnicodeString line = element->stricttext() + explicit_eos_marker;
+		tokenizeLine(line);		
+		int numS = countSentences();	
+		//ignore EOL data, we have by definition only one sentence:
+		for (int i = 0; i < numS; i++) {
+		    int begin, end;
+		    if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
+		    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
+		    bool dummy = false; //very ugly, I know
+		    outputTokensXML(element,begin,end,dummy,false,true);		    
+		}
+		return true;
+	    }
+	} else {
+	    //recursion step for other elements
+	    for (int i = 0; i < element->size(); i++) {
+		tokenize(element->index(i));
+	    }
+	    return false;
+	}
+    }
+  }
+  
+  
+  
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
       bool firstoutput = true;
       bool in_paragraph = false; //for XML
@@ -452,27 +509,41 @@ namespace Tokenizer {
   void TokenizerClass::outputTokensXML( folia::Document& doc,
 					const size_t begin, const size_t end, 
 					bool& in_paragraph ) {	
-    short quotelevel = 0;
+    
     folia::AbstractElement *root = doc.doc()->index(0);
     if (end >= tokens.size()) {
       throw uRangeError("End index for outputTokensXML exceeds available buffer length" );
     }
-    static int parCount;
-    folia::AbstractElement *lastS = 0;
-    if ( !in_paragraph ){
-      parCount = 0;
-    }
-    else {
-      root = root->rindex(0);
-    }
+    
+    outputTokensXML(root,begin,end,in_paragraph);    
+  }
 
+
+
+  void TokenizerClass::outputTokensXML( folia::AbstractElement * root,
+					const size_t begin, const size_t end, 
+					bool& in_paragraph, bool root_is_paragraph, bool root_is_sentence) {
+    short quotelevel = 0;
+    folia::AbstractElement *lastS = 0;
+
+    static int parCount = 0;    
+    if ((!root_is_paragraph) && (!root_is_sentence)) {
+	if ( !in_paragraph ){
+	  parCount = 0;
+	}
+	else {
+	  root = root->rindex(0);
+	}
+    }
+    
     for ( size_t i = begin; i <= end; i++) {
-      if ((tokens[i].role & NEWPARAGRAPH) || (!in_paragraph)) {	    
+	
+      if ((!root_is_paragraph) && ((tokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
 	if ( in_paragraph )
 	  root = root->parent();
 	folia::AbstractElement *p = new folia::Paragraph( root->doc(),
-							  "id='" + doc.id()
+							  "id='" + root->doc()->id()
 							  + ".p." 
 							  + toString(parCount) 
 							  + "'" );
@@ -486,7 +557,7 @@ namespace Tokenizer {
 	root = root->parent();
 	//	cerr << "ENDQUOTE, terug naar " << root << endl;
       }
-      if (tokens[i].role & BEGINOFSENTENCE) {
+      if ((tokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	folia::AbstractElement *s = new folia::Sentence( root->doc(),
 							 "generate_id='" 
 							 + root->id() + "'" );
@@ -513,13 +584,16 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }    
-      if ( (tokens[i].role & ENDOFSENTENCE) ){
+      if ( (tokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	root = root->parent();
 	//	cerr << "endsentence, terug naar " << root << endl;
       }
       in_paragraph = true;
     }
   }
+  
+  
+  
   
   ostream& operator<<( ostream& os, const TokenRole& tok ){
     if ( tok & NOSPACE) os << "NOSPACE ";

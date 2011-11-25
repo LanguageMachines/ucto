@@ -143,6 +143,11 @@ namespace Tokenizer {
     //Tokenize from input stream to FoLiA document
     folia::Document tokenize( std::istream& );
     
+    //tokenize folia document
+    bool tokenize(folia::Document& );
+    //..or one element thereof:
+    bool tokenize(folia::AbstractElement *);
+    
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
@@ -239,9 +244,11 @@ namespace Tokenizer {
     
     std::string getDocID() { return docid; }
     bool getXMLOutput() { return xmlout; }
+    bool getXMLInput() { return xmlin; }
     
     
     bool setXMLOutput(bool b, std::string id) { bool t = xmlout; docid = id; xmlout = b; return t; }
+    bool setXMLInput(bool b) { bool t = xmlin; xmlin = b; return t; }
     
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
@@ -249,7 +256,7 @@ namespace Tokenizer {
     
     void outputTokens( std::ostream&, const size_t, const size_t, const bool = false) const;
     void outputTokensXML( folia::Document& , const size_t, const size_t, bool&);
-    
+    void outputTokensXML( folia::AbstractElement * root, const size_t begin, const size_t end,  bool& in_paragraph, bool root_is_paragraph=false, bool root_is_sentence=false);
   private:
     void tokenizeWord( const UnicodeString&, bool);
     
@@ -312,6 +319,7 @@ namespace Tokenizer {
     bool lowercase;
     bool uppercase;
     bool xmlout;  
+    bool xmlin;  
     bool passthru;
 
     std::string settingsfilename;

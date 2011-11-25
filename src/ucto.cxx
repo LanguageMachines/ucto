@@ -59,6 +59,7 @@ void usage(){
        << "\t-Q              - Enable quote detection (experimental)" << endl
        << "\t-V              - Show version information" << endl
        << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID" << endl
+       << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t                  (-x disables usage of most other options: -nulPQVsS)" << endl;
 }
 
@@ -72,6 +73,7 @@ int main( int argc, char *argv[] ){
   bool quotedetection = false;
   bool dofiltering = true;
   bool splitsentences = true;
+  bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
   string eosmarker = "<utt>";
@@ -92,7 +94,7 @@ int main( int argc, char *argv[] ){
   bool passThru = false;
   try {
     while ((opt = getopt_long( argc, argv, 
-			       "d:e:fhlPQunmN:vVSL:c:s:x:",
+			       "d:e:fhlPQunmN:vVSL:c:s:x:F",
 			       longOpts, &longOpt )) != -1) {
       switch (opt)
 	{  
@@ -100,6 +102,7 @@ int main( int argc, char *argv[] ){
 	case 'd': debug = stringTo<int>(optarg); break;
 	case 'e': inputEncoding = optarg; break;
 	case 'f': dofiltering = false; break;
+    case 'F': xmlin = true; break;
 	case 'P': paragraphdetection = false; break;
 	case 'Q': quotedetection = true; break;
 	case 'c': c_file = optarg; break;
@@ -156,22 +159,25 @@ int main( int argc, char *argv[] ){
   cerr << "outputfile = " << ofile << endl;
 
   istream *IN = 0;
-  if ( ifile.empty() )
-    IN = &cin;
-  else {
-    IN = new ifstream( ifile.c_str() );
-    if ( !IN || !IN->good() ){
-      cerr << "Error: problems opening inputfile " << ifile << endl;
-      cerr << "Courageously refusing to start..."  << endl;
-      return EXIT_FAILURE;
+  if (!xmlin) {    
+        if ( ifile.empty() )
+        IN = &cin;
+        else {
+        IN = new ifstream( ifile.c_str() );
+        if ( !IN || !IN->good() ){
+          cerr << "Error: problems opening inputfile " << ifile << endl;
+          cerr << "Courageously refusing to start..."  << endl;
+          return EXIT_FAILURE;
+        }
+        }
+  }
+
+    ostream *OUT = 0;
+    if ( ofile.empty() )
+        OUT = &cout;
+    else {
+        OUT = new ofstream( ofile.c_str() );
     }
-  }
-  ostream *OUT = 0;
-  if ( ofile.empty() )
-    OUT = &cout;
-  else {
-    OUT = new ofstream( ofile.c_str() );
-  }
 
   try {  
     TokenizerClass tokenizer;
@@ -198,12 +204,23 @@ int main( int argc, char *argv[] ){
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
     tokenizer.setXMLOutput(xmlout, docid);
+    tokenizer.setXMLInput(xmlin);
 
-    tokenizer.tokenize(IN,OUT);
-    if ( OUT != &cout )
-      delete OUT;
-    if ( IN != &cin )
-      delete IN;
+    if (xmlin) {
+        folia::Document doc;
+        doc.readFromFile(ifile);
+        tokenizer.tokenize(doc);
+        *OUT << doc << endl;
+    } else {
+        tokenizer.tokenize(IN,OUT);
+        if ( OUT != &cout )
+            delete OUT;
+        if ( IN != &cin )
+            delete IN;
+    }
+
+    
+    
   }
   catch ( exception &e ){
     cerr << e.what() << endl;
