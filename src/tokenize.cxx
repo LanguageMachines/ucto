@@ -384,37 +384,35 @@ namespace Tokenizer {
   bool TokenizerClass::tokenize(folia::Document & doc ) {
       doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
       bool result = false;
-      for (int i = 0; i < doc.size(); i++) {
-	   result = tokenize(doc[i]) || result;
+      for (int i = 0; i < doc.doc()->size(); i++) {
+	  if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
+	  result = tokenize(doc.doc()->index(i)) || result;
       }      
       return result;
   }
   
   
   bool TokenizerClass::tokenize(folia::AbstractElement * element) {
+    if (element->isinstance(folia::Word_t)) return false;
+    if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
     if (element->hastext()) {
 	if (element->isinstance(folia::Paragraph_t)) {
 	    //tokenize paragraph: check for absence of sentences
 	    vector<folia::AbstractElement*> sentences = element->sentences();
 	    if (sentences.size() == 0) {
 		//no sentences yet, good
-		//NOT IMPLEMENTED YET
+		//TODO: NOT IMPLEMENTED YET
 		return true;
-	    } else {
-		//recursion step for other elements
-		for (int i = 0; i < element->size(); i++) {
-		    tokenize(element->index(i));
-		}		
-		return false;
-	    }
+	    } 
 	} else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
 	    //tokenize sentence: check for absence of words
 	    vector<folia::AbstractElement*> words = element->words();
 	    if (words.size() == 0) {
+		if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
 		//no words yet, good. tokenize this sentence
-		UnicodeString line = element->stricttext() + explicit_eos_marker;
+		UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
 		tokenizeLine(line);		
-		int numS = countSentences();	
+		int numS = countSentences(true); //force buffer to empty
 		//ignore EOL data, we have by definition only one sentence:
 		for (int i = 0; i < numS; i++) {
 		    int begin, end;
@@ -423,16 +421,19 @@ namespace Tokenizer {
 		    bool dummy = false; //very ugly, I know
 		    outputTokensXML(element,begin,end,dummy,false,true);		    
 		}
+		flushSentences(numS);	
 		return true;
+	    } else {
+		return false;
 	    }
-	} else {
-	    //recursion step for other elements
-	    for (int i = 0; i < element->size(); i++) {
-		tokenize(element->index(i));
-	    }
-	    return false;
 	}
     }
+    //recursion step for other elements
+    if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing children of FoLiA element " << element->id() << endl;
+    for (int i = 0; i < element->size(); i++) {
+	tokenize(element->index(i));
+    }
+    return false;
   }
   
   
