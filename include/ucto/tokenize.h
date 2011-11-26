@@ -147,6 +147,7 @@ namespace Tokenizer {
     bool tokenize(folia::Document& );
     //..or one element thereof:
     bool tokenize(folia::AbstractElement *);
+    bool tokenize(folia::AbstractElement *, bool, bool); //more specific variant, will be called by the one above
     
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );

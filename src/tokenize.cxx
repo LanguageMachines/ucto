@@ -393,7 +393,7 @@ namespace Tokenizer {
   
   
   bool TokenizerClass::tokenize(folia::AbstractElement * element) {
-    if (element->isinstance(folia::Word_t)) return false;
+    if (element->isinstance(folia::Word_t) || element->isinstance(folia::TextContent_t)) return false;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
     if (element->hastext()) {
 	if (element->isinstance(folia::Paragraph_t)) {
@@ -401,31 +401,31 @@ namespace Tokenizer {
 	    vector<folia::AbstractElement*> sentences = element->sentences();
 	    if (sentences.size() == 0) {
 		//no sentences yet, good
-		//TODO: NOT IMPLEMENTED YET
+		tokenize(element,true,false);
 		return true;
 	    } 
 	} else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
 	    //tokenize sentence: check for absence of words
 	    vector<folia::AbstractElement*> words = element->words();
 	    if (words.size() == 0) {
-		if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
-		//no words yet, good. tokenize this sentence
-		UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
-		tokenizeLine(line);		
-		int numS = countSentences(true); //force buffer to empty
-		//ignore EOL data, we have by definition only one sentence:
-		for (int i = 0; i < numS; i++) {
-		    int begin, end;
-		    if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
-		    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-		    bool dummy = false; //very ugly, I know
-		    outputTokensXML(element,begin,end,dummy,false,true);		    
-		}
-		flushSentences(numS);	
+		tokenize(element,false,true);
 		return true;
 	    } else {
 		return false;
 	    }
+	} else {
+	    vector<folia::AbstractElement*> paragraphs = element->paragraphs();
+	    if (paragraphs.size() == 0) {
+		vector<folia::AbstractElement*> sentences = element->sentences();
+		if (sentences.size() == 0) {
+		    vector<folia::AbstractElement*> words = element->words();
+		    if (words.size() == 0) {
+			tokenize(element,false,false);
+			return true;			
+		    }
+		}
+	    }
+	    return false;
 	}
     }
     //recursion step for other elements
@@ -436,6 +436,22 @@ namespace Tokenizer {
     return false;
   }
   
+  bool TokenizerClass::tokenize(folia::AbstractElement * element, bool root_is_paragraph, bool root_is_sentence) {
+        if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
+	//no words yet, good. tokenize this sentence
+	UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
+	tokenizeLine(line);		
+	int numS = countSentences(true); //force buffer to empty
+	//ignore EOL data, we have by definition only one sentence:
+	for (int i = 0; i < numS; i++) {
+	    int begin, end;
+	    if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
+	    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
+	    bool dummy = false; //very ugly, I know
+	    outputTokensXML(element,begin,end,dummy,false,true);		    
+	}
+	flushSentences(numS);	
+  }
   
   
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
