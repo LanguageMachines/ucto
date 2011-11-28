@@ -60,7 +60,7 @@ void usage(){
        << "\t-V              - Show version information" << endl
        << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID" << endl
        << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
-       << "\t                  (-x disables usage of most other options: -nulPQVsS)" << endl;
+       << "\t                  (-x and -F disable usage of most other options: -nulPQVsS)" << endl;
 }
 
 int main( int argc, char *argv[] ){
@@ -102,7 +102,7 @@ int main( int argc, char *argv[] ){
 	case 'd': debug = stringTo<int>(optarg); break;
 	case 'e': inputEncoding = optarg; break;
 	case 'f': dofiltering = false; break;
-    case 'F': xmlin = true; break;
+	case 'F': xmlin = true; break;
 	case 'P': paragraphdetection = false; break;
 	case 'Q': quotedetection = true; break;
 	case 'c': c_file = optarg; break;
@@ -112,7 +112,7 @@ int main( int argc, char *argv[] ){
 	case 'u': touppercase = true; break;
 	case 'l': tolowercase = true; break;
 	case 'n': sentenceperlineoutput = true; break;
-    case 'm': sentenceperlineinput = true; break;
+	case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'v': verbose = true; break;
 	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
@@ -157,28 +157,28 @@ int main( int argc, char *argv[] ){
   }
   cerr << "inputfile = "  << ifile << endl;
   cerr << "outputfile = " << ofile << endl;
-
+  
   istream *IN = 0;
   if (!xmlin) {    
-        if ( ifile.empty() )
-        IN = &cin;
-        else {
-        IN = new ifstream( ifile.c_str() );
-        if ( !IN || !IN->good() ){
-          cerr << "Error: problems opening inputfile " << ifile << endl;
-          cerr << "Courageously refusing to start..."  << endl;
-          return EXIT_FAILURE;
-        }
-        }
-  }
-
-    ostream *OUT = 0;
-    if ( ofile.empty() )
-        OUT = &cout;
+    if ( ifile.empty() )
+      IN = &cin;
     else {
-        OUT = new ofstream( ofile.c_str() );
+      IN = new ifstream( ifile.c_str() );
+      if ( !IN || !IN->good() ){
+	cerr << "Error: problems opening inputfile " << ifile << endl;
+	cerr << "Courageously refusing to start..."  << endl;
+	return EXIT_FAILURE;
+      }
     }
-
+  }
+  
+  ostream *OUT = 0;
+  if ( ofile.empty() )
+    OUT = &cout;
+  else {
+    OUT = new ofstream( ofile.c_str() );
+  }
+  
   try {  
     TokenizerClass tokenizer;
     // set debug first, so init() can be debugged too
