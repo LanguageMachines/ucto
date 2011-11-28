@@ -4,5 +4,7 @@
 
 exe=../src/ucto
 
-$exe -L nl -F folia.xml
+$exe -L nl -F folia1.xml
+$exe -L nl -F folia2.xml
+$exe -L nl -F folia3.xml
 
