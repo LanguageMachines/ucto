@@ -207,20 +207,17 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLInput(xmlin);
 
     if (xmlin) {
-        folia::Document doc;
-        doc.readFromFile(ifile);
-        tokenizer.tokenize(doc);
-        *OUT << doc << endl;
+      folia::Document doc;
+      doc.readFromFile(ifile);
+      tokenizer.tokenize(doc);
+      *OUT << doc << endl;
     } else {
-        tokenizer.tokenize(IN,OUT);
-        if ( OUT != &cout )
-            delete OUT;
-        if ( IN != &cin )
-            delete IN;
+      tokenizer.tokenize(IN,OUT);
+      if ( OUT != &cout )
+	delete OUT;
+      if ( IN != &cin )
+	delete IN;
     }
-
-    
-    
   }
   catch ( exception &e ){
     cerr << e.what() << endl;

@@ -381,14 +381,16 @@ namespace Tokenizer {
   }
   
   
-  bool TokenizerClass::tokenize(folia::Document & doc ) {
-      doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-      bool result = false;
-      for ( size_t i = 0; i < doc.doc()->size(); i++) {
-	  if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
-	  result = tokenize(doc.doc()->index(i)) || result;
-      }      
-      return result;
+  bool TokenizerClass::tokenize( folia::Document& doc ) {
+    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
+    bool result = false;
+    if (tokDebug >= 2) *Log(theErrLog) << "tokenize doc " << doc << endl;
+
+    for ( size_t i = 0; i < doc.doc()->size(); i++) {
+      if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
+      result = tokenize(doc.doc()->index(i)) || result;
+    }      
+    return result;
   }
   
   
@@ -442,12 +444,12 @@ namespace Tokenizer {
 	tokenizeLine(line);		
 	int numS = countSentences(true); //force buffer to empty
 	//ignore EOL data, we have by definition only one sentence:
+	bool in_par = false; //very ugly, I know
 	for (int i = 0; i < numS; i++) {
 	    int begin, end;
 	    if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
 	    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-	    bool dummy = false; //very ugly, I know
-	    outputTokensXML(element,begin,end,dummy,root_is_paragraph,root_is_sentence);
+	    outputTokensXML(element,begin,end,in_par,root_is_paragraph,root_is_sentence);
 	}
 	flushSentences(numS);	
 	if (numS > 0)
@@ -540,19 +542,24 @@ namespace Tokenizer {
 
 
 
-  void TokenizerClass::outputTokensXML( folia::AbstractElement * root,
+  void TokenizerClass::outputTokensXML( folia::AbstractElement *root,
 					const size_t begin, const size_t end, 
-					bool& in_paragraph, bool root_is_paragraph, bool root_is_sentence) {
+					bool& in_paragraph, 
+					bool root_is_paragraph,
+					bool root_is_sentence) {
     short quotelevel = 0;
     folia::AbstractElement *lastS = 0;
 
-    static int parCount = 0;    
+    static int parCount = 0;    // Isn't this FATAL when multithreading?
+    if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     if ((!root_is_paragraph) && (!root_is_sentence)) {
 	if ( !in_paragraph ){
 	  parCount = 0;
+	  if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] reset parCount to 0" << endl;
 	}
 	else {
 	  root = root->rindex(0);
+	  if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] root changed to " << root << endl;
 	}
     }
     
