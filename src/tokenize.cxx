@@ -384,7 +384,7 @@ namespace Tokenizer {
   bool TokenizerClass::tokenize(folia::Document & doc ) {
       doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
       bool result = false;
-      for (int i = 0; i < doc.doc()->size(); i++) {
+      for ( size_t i = 0; i < doc.doc()->size(); i++) {
 	  if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
 	  result = tokenize(doc.doc()->index(i)) || result;
       }      
@@ -430,7 +430,7 @@ namespace Tokenizer {
     }
     //recursion step for other elements
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing children of FoLiA element " << element->id() << endl;
-    for (int i = 0; i < element->size(); i++) {
+    for ( size_t i = 0; i < element->size(); i++) {
 	tokenize(element->index(i));
     }
     return false;
