@@ -21,4 +21,5 @@ Options:
 	-Q              - Enable quote detection (experimental)
 	-V              - Show version information
 	-x <DocID>      - Output FoLiA XML, use the specified Document ID
+	-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised.
 	                  (-x disables usage of most other options: -nulPQVsS)
