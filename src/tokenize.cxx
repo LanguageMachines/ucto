@@ -441,7 +441,6 @@ namespace Tokenizer {
 	UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
 	tokenizeLine(line);		
 	int numS = countSentences(true); //force buffer to empty
-	bool result = false;
 	//ignore EOL data, we have by definition only one sentence:
 	for (int i = 0; i < numS; i++) {
 	    int begin, end;
