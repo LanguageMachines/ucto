@@ -438,19 +438,23 @@ namespace Tokenizer {
   
   bool TokenizerClass::tokenize(folia::AbstractElement * element, bool root_is_paragraph, bool root_is_sentence) {
         if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
-	//no words yet, good. tokenize this sentence
 	UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
 	tokenizeLine(line);		
 	int numS = countSentences(true); //force buffer to empty
+	bool result = false;
 	//ignore EOL data, we have by definition only one sentence:
 	for (int i = 0; i < numS; i++) {
 	    int begin, end;
 	    if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
 	    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
 	    bool dummy = false; //very ugly, I know
-	    outputTokensXML(element,begin,end,dummy,false,true);		    
+	    outputTokensXML(element,begin,end,dummy,root_is_paragraph,root_is_sentence);
 	}
 	flushSentences(numS);	
+	if (numS > 0)
+	 return true;
+        else
+	 return false;
   }
   
   
