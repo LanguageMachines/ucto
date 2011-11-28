@@ -9,7 +9,8 @@
     <div xml:id="WR-P-E-J-0000000001.div0.1">
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
-          <t>Dit is een test.\nGaat deze datum: 28-11-2011 goed?"</t>
+          <t>Dit is een test.
+Gaat deze datum: 28-11-2011 goed?</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD">
             <t>Dit</t>
           </w>
@@ -22,35 +23,29 @@
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD" space="no">
             <t>test</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION">
             <t>.</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="PUNCTUATION">
-            <t>\</t>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="WORD">
+            <t>Gaat</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="WORD">
-            <t>nGaat</t>
-          </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
             <t>deze</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD" space="no">
             <t>datum</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="PUNCTUATION">
             <t>:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="DATE">
             <t>28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="WORD" space="no">
             <t>goed</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="PUNCTUATION">
             <t>?</t>
-          </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="PUNCTUATION">
-            <t>"</t>
           </w>
         </s>
       </head>
@@ -69,7 +64,8 @@
   <text xml:id="WR-P-E-J-0000000001.text">
     <div xml:id="WR-P-E-J-0000000001.div0.1">
       <p xml:id="WR-P-E-J-0000000001.div0.1.p.1">
-        <t>Dit is een test.\nGaat deze datum: 28-11-2011 goed?</t>
+        <t>Dit is een test.
+Gaat deze datum: 28-11-2011 goed?</t>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD">
             <t>Dit</t>
@@ -83,33 +79,30 @@
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.4" class="WORD" space="no">
             <t>test</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2">
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.1" class="PUNCTUATION">
-            <t>\</t>
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.1" class="WORD">
+            <t>Gaat</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.2" class="WORD">
-            <t>nGaat</t>
-          </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.3" class="WORD">
             <t>deze</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.4" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.3" class="WORD" space="no">
             <t>datum</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.5" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.4" class="PUNCTUATION">
             <t>:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.6" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.5" class="DATE">
             <t>28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.7" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.6" class="WORD" space="no">
             <t>goed</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.8" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.7" class="PUNCTUATION">
             <t>?</t>
           </w>
         </s>
@@ -128,7 +121,8 @@
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <div xml:id="WR-P-E-J-0000000001.div0.1">
-      <t>Dit is een test.\nGaat deze datum: 28-11-2011 goed?</t>
+      <t>Dit is een test.
+Gaat deze datum: 28-11-2011 goed?</t>
       <p xml:id="WR-P-E-J-0000000001.p.1">
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD">
@@ -143,33 +137,30 @@
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4" class="WORD" space="no">
             <t>test</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="PUNCTUATION">
-            <t>\</t>
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD">
+            <t>Gaat</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2" class="WORD">
-            <t>nGaat</t>
-          </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3" class="WORD">
             <t>deze</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3" class="WORD" space="no">
             <t>datum</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4" class="PUNCTUATION">
             <t>:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5" class="DATE">
             <t>28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6" class="WORD" space="no">
             <t>goed</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.8" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7" class="PUNCTUATION">
             <t>?</t>
           </w>
         </s>
