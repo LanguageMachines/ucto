@@ -400,7 +400,7 @@ namespace Tokenizer {
     if (element->hastext()) {
 	if (element->isinstance(folia::Paragraph_t)) {
 	    //tokenize paragraph: check for absence of sentences
-	    vector<folia::FoliaElement*> sentences = element->sentences();
+	    vector<folia::Sentence*> sentences = element->sentences();
 	    if (sentences.size() == 0) {
 		//no sentences yet, good
 		tokenize(element,true,false);
@@ -408,7 +408,7 @@ namespace Tokenizer {
 	    } 
 	} else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
 	    //tokenize sentence: check for absence of words
-	    vector<folia::FoliaElement*> words = element->words();
+	    vector<folia::Word*> words = element->words();
 	    if (words.size() == 0) {
 		tokenize(element,false,true);
 		return true;
@@ -416,11 +416,11 @@ namespace Tokenizer {
 		return false;
 	    }
 	} else {
-	    vector<folia::FoliaElement*> paragraphs = element->paragraphs();
+	    vector<folia::Paragraph*> paragraphs = element->paragraphs();
 	    if (paragraphs.size() == 0) {
-		vector<folia::FoliaElement*> sentences = element->sentences();
+		vector<folia::Sentence*> sentences = element->sentences();
 		if (sentences.size() == 0) {
-		    vector<folia::FoliaElement*> words = element->words();
+		    vector<folia::Word*> words = element->words();
 		    if (words.size() == 0) {
 			tokenize(element,false,false);
 			return true;			
