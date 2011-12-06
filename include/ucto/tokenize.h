@@ -146,8 +146,8 @@ namespace Tokenizer {
     //tokenize folia document
     bool tokenize(folia::Document& );
     //..or one element thereof:
-    bool tokenize(folia::AbstractElement *);
-    bool tokenize(folia::AbstractElement *, bool, bool); //more specific variant, will be called by the one above
+    bool tokenize(folia::FoliaElement *);
+    bool tokenize(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
     
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
@@ -257,7 +257,7 @@ namespace Tokenizer {
     
     void outputTokens( std::ostream&, const size_t, const size_t, const bool = false) const;
     void outputTokensXML( folia::Document& , const size_t, const size_t, bool&);
-    void outputTokensXML( folia::AbstractElement * root, const size_t begin, const size_t end,  bool& in_paragraph, bool root_is_paragraph=false, bool root_is_sentence=false);
+    void outputTokensXML( folia::FoliaElement * root, const size_t begin, const size_t end,  bool& in_paragraph, bool root_is_paragraph=false, bool root_is_sentence=false);
   private:
     void tokenizeWord( const UnicodeString&, bool);
     

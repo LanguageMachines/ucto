@@ -339,7 +339,7 @@ namespace Tokenizer {
     folia::Document doc( "id='" + docid + "'" );
     doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
     doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-    folia::AbstractElement *text = new folia::Text( "id='" + docid + ".text'" );
+    folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     string line;      
     do {	    
@@ -394,13 +394,13 @@ namespace Tokenizer {
   }
   
   
-  bool TokenizerClass::tokenize(folia::AbstractElement * element) {
+  bool TokenizerClass::tokenize(folia::FoliaElement * element) {
     if (element->isinstance(folia::Word_t) || element->isinstance(folia::TextContent_t)) return false;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
     if (element->hastext()) {
 	if (element->isinstance(folia::Paragraph_t)) {
 	    //tokenize paragraph: check for absence of sentences
-	    vector<folia::AbstractElement*> sentences = element->sentences();
+	    vector<folia::FoliaElement*> sentences = element->sentences();
 	    if (sentences.size() == 0) {
 		//no sentences yet, good
 		tokenize(element,true,false);
@@ -408,7 +408,7 @@ namespace Tokenizer {
 	    } 
 	} else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
 	    //tokenize sentence: check for absence of words
-	    vector<folia::AbstractElement*> words = element->words();
+	    vector<folia::FoliaElement*> words = element->words();
 	    if (words.size() == 0) {
 		tokenize(element,false,true);
 		return true;
@@ -416,11 +416,11 @@ namespace Tokenizer {
 		return false;
 	    }
 	} else {
-	    vector<folia::AbstractElement*> paragraphs = element->paragraphs();
+	    vector<folia::FoliaElement*> paragraphs = element->paragraphs();
 	    if (paragraphs.size() == 0) {
-		vector<folia::AbstractElement*> sentences = element->sentences();
+		vector<folia::FoliaElement*> sentences = element->sentences();
 		if (sentences.size() == 0) {
-		    vector<folia::AbstractElement*> words = element->words();
+		    vector<folia::FoliaElement*> words = element->words();
 		    if (words.size() == 0) {
 			tokenize(element,false,false);
 			return true;			
@@ -438,7 +438,7 @@ namespace Tokenizer {
     return false;
   }
   
-  bool TokenizerClass::tokenize(folia::AbstractElement * element, bool root_is_paragraph, bool root_is_sentence) {
+  bool TokenizerClass::tokenize(folia::FoliaElement * element, bool root_is_paragraph, bool root_is_sentence) {
         if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
 	UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
 	tokenizeLine(line);		
@@ -468,7 +468,7 @@ namespace Tokenizer {
       if ( xmlout ){
 	doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
 	doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-	folia::AbstractElement *text = new folia::Text( "id='" + docid + ".text'" );
+	folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
 	doc.append( text );
       }
       string line;      
@@ -532,7 +532,7 @@ namespace Tokenizer {
 					const size_t begin, const size_t end, 
 					bool& in_paragraph ) {	
     
-    folia::AbstractElement *root = doc.doc()->index(0);
+    folia::FoliaElement *root = doc.doc()->index(0);
     if (end >= tokens.size()) {
       throw uRangeError("End index for outputTokensXML exceeds available buffer length" );
     }
@@ -542,13 +542,13 @@ namespace Tokenizer {
 
 
 
-  void TokenizerClass::outputTokensXML( folia::AbstractElement *root,
+  void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 					const size_t begin, const size_t end, 
 					bool& in_paragraph, 
 					bool root_is_paragraph,
 					bool root_is_sentence) {
     short quotelevel = 0;
-    folia::AbstractElement *lastS = 0;
+    folia::FoliaElement *lastS = 0;
 
     static int parCount = 0;    // Isn't this FATAL when multithreading?
     if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
@@ -574,7 +574,7 @@ namespace Tokenizer {
 	if ( in_paragraph )
 	  root = root->parent();
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
-	folia::AbstractElement *p = new folia::Paragraph( root->doc(),
+	folia::FoliaElement *p = new folia::Paragraph( root->doc(),
 							  "id='" + root->doc()->id()
 							  + ".p." 
 							  + toString(parCount) 
@@ -592,7 +592,7 @@ namespace Tokenizer {
       }
       if ((tokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating sentence" << endl;
-	folia::AbstractElement *s = new folia::Sentence( root->doc(),"generate_id='" + root->id() + "'" );
+	folia::FoliaElement *s = new folia::Sentence( root->doc(),"generate_id='" + root->id() + "'" );
 	// cerr << "created " << s << endl;
 	root->append( s );
 	root = s;
@@ -603,14 +603,14 @@ namespace Tokenizer {
       if (tokens[i].role & NOSPACE) {
 	args += ", space='no'";
       }
-      folia::AbstractElement *w = new folia::Word( root->doc(), args );
+      folia::FoliaElement *w = new folia::Word( root->doc(), args );
       w->settext( folia::UnicodeToUTF8( tokens[i].us ) );
       //      cerr << "created " << w << " text= " <<  tokens[i].us << endl;
       root->append( w );
       if (tokens[i].role & BEGINQUOTE) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element";
 	lastS = root;
-	folia::AbstractElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
+	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
 	//	cerr << "created " << q << endl;
 	root->append( q );
 	root = q;
