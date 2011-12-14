@@ -32,6 +32,7 @@
 #include <iostream>
 #include <fstream>
 #include "ucto/tokenize.h"
+#include "libfolia/folia.h"
 #include <unistd.h>
 
 using namespace std;
@@ -115,7 +116,9 @@ int main( int argc, char *argv[] ){
 	case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'v': verbose = true; break;
-	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; return EXIT_SUCCESS;
+	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; 
+	  cout << "based on [" << folia::VersionName() << "]" << endl;
+	  return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
 	default: usage(); return EXIT_SUCCESS;
 	}
