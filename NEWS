@@ -1,3 +1,7 @@
+0.4.9 2011-12-21
+[Ko vd sloot]
+ * reworked and more folia integration
+
 0.4.8 2011-11-02
 [Ko vd sloot]
  * use libfolia to generate folia XML
