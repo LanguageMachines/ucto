@@ -1,7 +1,7 @@
 /*
   $Id$
   $URL$
-  Copyright (c) 1998 - 2011
+  Copyright (c) 1998 - 2012
   ILK  -  Tilburg University
   CNTS -  University of Antwerp
  
@@ -116,7 +116,7 @@ int main( int argc, char *argv[] ){
 	case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'v': verbose = true; break;
-	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2011, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; 
+	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2012, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; 
 	  cout << "based on [" << folia::VersionName() << "]" << endl;
 	  return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
