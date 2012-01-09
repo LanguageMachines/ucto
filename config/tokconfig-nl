@@ -30,7 +30,8 @@ INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
 #retain initials
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
 
-SMILEY=^(?:>?[:;]['`^]?[-~]*[)}\](\\/\[{Ss\$PpDd]+)$
+#SMILEY=^(?:>?[:;]['`^]?[-~]*[)}\](\\/\[{Ss\$PpDd]+)$
+SMILEY=^(?:[oO>}\])]?)(?:[\:;8][',]?[-\^]?(?:[sSdDpPcCoO#@*$|]|\)\)?|\{|\[|\(\(?)=?)$
 
 #Homogeneous punctuation (ellipsis etc)
 PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
