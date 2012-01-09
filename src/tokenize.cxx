@@ -115,8 +115,10 @@ namespace Tokenizer {
     UParseError errorInfo;
     pattern = RegexPattern::compile( pat, 0, errorInfo, u_stat );
     if ( U_FAILURE(u_stat) ){
-      failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat) +
-	"', at position " + toString( errorInfo.offset );	
+      failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat)
+	+ "' ";
+      if ( errorInfo.offset >0 )
+	failString += ", at position " + toString( errorInfo.offset );	
       throw uConfigError(failString);
     }
     else {
