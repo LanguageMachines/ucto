@@ -116,7 +116,7 @@ namespace Tokenizer {
     pattern = RegexPattern::compile( pat, 0, errorInfo, u_stat );
     if ( U_FAILURE(u_stat) ){
       failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat) +
-	"', no compiling possible";	
+	"', at position " + toString( errorInfo.offset );	
       throw uConfigError(failString);
     }
     else {
