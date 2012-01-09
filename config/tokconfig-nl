@@ -8,6 +8,7 @@ NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
 [RULES]
 %include url
 %include e-mail
+%include smiley
 
 #Ex (oud)-studente(s)
 WORD-PARPREFIX-PARSUFFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{Pd}]?\p{L}+\p{Pe})
@@ -31,7 +32,6 @@ INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
 
 #SMILEY=^(?:>?[:;]['`^]?[-~]*[)}\](\\/\[{Ss\$PpDd]+)$
-SMILEY=^(?:[oO>}\])]?)(?:[\:;8][',]?[-\^]?(?:[sSdDpPcCoO#@*$|]|\)\)?|\{|\[|\(\(?)=?)$
 
 #Homogeneous punctuation (ellipsis etc)
 PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
