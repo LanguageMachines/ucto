@@ -144,14 +144,14 @@ namespace Tokenizer {
     post = "";
     results.clear();
     if ( matcher ){
-      //      cerr << "start matcher [" << line << "]" << endl;
+      //  *Log(theErrLog) << "start matcher [" << line << "]" << endl;
       matcher->reset( line );
       if ( matcher->find() ){
-	// cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
+	// *Log(theErrLog) << "matched " << folia::UnicodeToUTF8(line) << endl;
 	int start = -1;
 	int end = 0;
 	for ( int i=0; i <= matcher->groupCount(); ++i ){
-	  // cerr << "group " << i << endl;
+	  // *Log(theErrLog) << "group " << i << endl;
 	  u_stat = U_ZERO_ERROR;
 	  start = matcher->start( i, u_stat );
 	  if (!U_FAILURE(u_stat)){
@@ -163,19 +163,19 @@ namespace Tokenizer {
 	    break;
 	  if ( start > end ){
 	    pre = UnicodeString( line, end, start );
-	    // cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+	    // *Log(theErrLog) << "found pre " << folia::UnicodeToUTF8(pre) << endl;
 	  }
 	  end = matcher->end( i, u_stat );
 	  if (!U_FAILURE(u_stat)){
 	    results.push_back( UnicodeString( line, start, end - start ) );
-	    // cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+	    // *Log(theErrLog) << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
 	  }
 	  else
 	    break;
 	}
 	if ( end < line.length() ){
 	  post = UnicodeString( line, end );
-	  // cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+	  // *Log(theErrLog) << "found post " << folia::UnicodeToUTF8(post) << endl;
 	}
 	return true;
       }
@@ -581,7 +581,7 @@ namespace Tokenizer {
 							  + ".p." 
 							  + toString(parCount) 
 							  + "'" );
-	//	cerr << "created " << p << endl;
+	//	*Log(theErrLog) << "created " << p << endl;
 	root->append( p );
 	root = p;
 	quotelevel = 0;
@@ -590,12 +590,12 @@ namespace Tokenizer {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of quote";
 	quotelevel--;
 	root = root->parent();
-	//	cerr << "ENDQUOTE, terug naar " << root << endl;
+	//	*Log(theErrLog) << "ENDQUOTE, terug naar " << root << endl;
       }
       if ((tokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating sentence" << endl;
 	folia::FoliaElement *s = new folia::Sentence( root->doc(),"generate_id='" + root->id() + "'" );
-	// cerr << "created " << s << endl;
+	// *Log(theErrLog) << "created " << s << endl;
 	root->append( s );
 	root = s;
 	lastS = s;
@@ -607,13 +607,13 @@ namespace Tokenizer {
       }
       folia::FoliaElement *w = new folia::Word( root->doc(), args );
       w->settext( folia::UnicodeToUTF8( tokens[i].us ) );
-      //      cerr << "created " << w << " text= " <<  tokens[i].us << endl;
+      //      *Log(theErrLog) << "created " << w << " text= " <<  tokens[i].us << endl;
       root->append( w );
       if (tokens[i].role & BEGINQUOTE) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element";
 	lastS = root;
 	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
-	//	cerr << "created " << q << endl;
+	//	*Log(theErrLog) << "created " << q << endl;
 	root->append( q );
 	root = q;
 	quotelevel++;
@@ -621,7 +621,7 @@ namespace Tokenizer {
       if ( (tokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence";
 	root = root->parent();
-	//	cerr << "endsentence, terug naar " << root << endl;
+	//	*Log(theErrLog) << "endsentence, terug naar " << root << endl;
       }
       in_paragraph = true;
     }
@@ -650,9 +650,9 @@ namespace Tokenizer {
     for ( size_t i = begin; i <= end; i++) {
       if ((detectPar) && (tokens[i].role & NEWPARAGRAPH) && (!verbose) && (!firstoutput)) {
 	if (sentenceperlineoutput) {
-	  OUT << "\n";
+	  OUT << endl;
 	} else {
-	  OUT << "\n\n";
+	  OUT << endl << endl;
 	}
       }
       if (lowercase) {
@@ -675,10 +675,10 @@ namespace Tokenizer {
       if (quotelevel == 0) {
 	if (tokens[i].role & ENDOFSENTENCE) {
 	  if (verbose) {
-	    OUT << "\n";
+	    OUT << endl;
 	  } else {
 	    if (sentenceperlineoutput) {
-	      OUT << "\n";
+	      OUT << endl;
 	    } else {
 	      UnicodeString tmp = folia::UTF8ToUnicode( eosmark );
 	      OUT << " " + tmp;
@@ -1239,7 +1239,7 @@ namespace Tokenizer {
 	      }
 	      if (!tokens.empty()) {
 		if (tokDebug >= 2) 
-		  *Log(theErrLog) << "[tokenizeLine] Assigned EOS\n";
+		  *Log(theErrLog) << "[tokenizeLine] Assigned EOS" << endl;
 		tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	      }			
 	    }
@@ -1292,7 +1292,7 @@ namespace Tokenizer {
     matches.clear();
     pre = "";
     post = "";
-    //    cerr << "\nrule " << *this << endl;
+    //    *Log( theErrLog) << endl << "rule " << *this << endl;
     if ( regexp && regexp->match_all( line, pre, post ) ){
       int num = regexp->NumOfMatches();
       if ( num >=1 ){
@@ -1317,10 +1317,10 @@ namespace Tokenizer {
 	*Log(theErrLog) << "   [tokenizeWord] Found explicit EOS marker" << endl;
       if (!tokens.empty()) {
 	if (tokDebug >= 2) 
-	  *Log(theErrLog) << "   [tokenizeWord] Assigned EOS\n";
+	  *Log(theErrLog) << "   [tokenizeWord] Assigned EOS" << endl;
 	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
       } else {
-	*Log(theErrLog) << "[WARNING] Found explicit EOS marker by itself, this will have no effect!\n"; 
+	*Log(theErrLog) << "[WARNING] Found explicit EOS marker by itself, this will have no effect!" << endl; 
       }
       return;
     }
@@ -1578,7 +1578,8 @@ namespace Tokenizer {
     }
   }
 
-  void sortRules( vector<Rule *>& rules, vector<UnicodeString>& sort ){
+  void TokenizerClass::sortRules( vector<Rule *>& rules, 
+				  vector<UnicodeString>& sort ){
     // *Log(theErrLog) << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
@@ -1597,14 +1598,14 @@ namespace Tokenizer {
 	  ++it;
 	}
 	if ( !found ){
-	  cerr << "RULE-ORDER specified for undefined RULE '" 
-	       << folia::UnicodeToUTF8( sort[i] ) << "'" << endl;
+	  *Log(theErrLog) << "RULE-ORDER specified for undefined RULE '" 
+			  << folia::UnicodeToUTF8( sort[i] ) << "'" << endl;
 	}
       }
       vector<Rule*>::iterator it = rules.begin();
       while ( it != rules.end() ){
-	cerr << "NU RULE-ORDER specified for RULE '" 
-	     << folia::UnicodeToUTF8((*it)->id) << "'" << endl;
+	*Log(theErrLog) << "NU RULE-ORDER specified for RULE '" 
+			<< folia::UnicodeToUTF8((*it)->id) << "'" << endl;
 	result.push_back( *it );
 	++it;
       }
@@ -1856,7 +1857,7 @@ namespace Tokenizer {
   }
   
   bool TokenizerClass::init( const string& fname ){
-    *Log(theErrLog) << "Initiating tokeniser...\n";
+    *Log(theErrLog) << "Initiating tokeniser..." << endl;
     if (!readsettings( fname ) ) {
       throw uConfigError( "Cannot read Tokeniser settingsfile "+ fname );
       return false;

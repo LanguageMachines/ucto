@@ -325,7 +325,9 @@ namespace Tokenizer {
 
     std::string settingsfilename;
     
-    std::string docid; //document ID (UTF-8), necessary for XML output  
+    std::string docid; //document ID (UTF-8), necessary for XML output 
+  private:
+    void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
   };
 
   template< typename T >
