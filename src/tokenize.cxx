@@ -1694,6 +1694,9 @@ namespace Tokenizer {
 	    mode = getMode( line );
 	  }
 	  else {
+	    if ( line[0] == '\\' && line.length() > 1 && line[1] == '[' ){
+	      line = UnicodeString( line, 1 );
+	    }
 	    switch( mode ){
 	    case RULES: {
 	      const int splitpoint = line.indexOf("=");

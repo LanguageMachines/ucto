@@ -60,9 +60,9 @@ UNKNOWN=.
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-['`’]s
-['`’]t
-['`’]n
+\['`’]s
+\['`’]t
+\['`’]n
 
 [ORDINALS]
 e
@@ -72,11 +72,11 @@ er
 
 
 [TOKENS]
-['`’]s
-['`’]k
-['`’]m
-['`’]n
-['`’]t
+\['`’]s
+\['`’]k
+\['`’]m
+\['`’]n
+\['`’]t
 
 [UNITS]
 km
