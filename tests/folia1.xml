@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
+  <metadata type="imdi">
+    <annotations>
+      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
+    </annotations>
+  </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
-      <div xml:id="WR-P-E-J-0000000001.div0.1">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">
         <head xml:id="WR-P-E-J-0000000001.head.1">
           <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
 	    <t>Dit is een test.&#xA;Gaat deze datum: 28-11-2011 goed?</t>

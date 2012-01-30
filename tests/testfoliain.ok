@@ -1,12 +1,13 @@
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.6" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.7" version="0.8">
   <metadata type="native">
     <annotations>
+      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
-    <div xml:id="WR-P-E-J-0000000001.div0.1">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <t>Dit is een test.
@@ -55,14 +56,15 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.6" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.7" version="0.8">
   <metadata type="native">
     <annotations>
+      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
-    <div xml:id="WR-P-E-J-0000000001.div0.1">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="tsja">
       <p xml:id="WR-P-E-J-0000000001.div0.1.p.1">
         <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
@@ -113,14 +115,15 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.6" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.7" version="0.8">
   <metadata type="native">
     <annotations>
+      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
-    <div xml:id="WR-P-E-J-0000000001.div0.1">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="div">
       <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
       <p xml:id="WR-P-E-J-0000000001.p.1">
