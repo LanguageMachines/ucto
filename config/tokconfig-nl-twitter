@@ -31,9 +31,9 @@ INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
 #retain initials
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
 
-HASHTAG=#[\p{L}\p{Mn}]+
+HASHTAG=#[\p{L}\p{Mn}\p{N}_\-]+
 
-ADDRESSEE=@[\p{L}\p{Mn}]+
+ADDRESSEE=@[\p{L}\p{Mn}\p{N}_\-]+
 
 #Homogeneous punctuation (ellipsis etc)
 PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
