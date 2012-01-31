@@ -1,4 +1,12 @@
-0.5.0 2011-01-09
+0.5.1 2012-01-31
+[Ko vd Sloot]
+* added 'escape' possibility for regexps that start with a [
+* better debugging output
+
+[Maarten van Gompel]
+* added better rules for apostrophs in ATTACHEDSUFFIX and TOKENS
+
+0.5.0 2012-01-09
 [Ko vd Sloot]
 * added a different and more powerpull SMILEY rule. Which happens also to work
   on older ICU versions

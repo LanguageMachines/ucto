@@ -20,6 +20,8 @@ Options:
 	-S              - Disable sentence detection!
 	-Q              - Enable quote detection (experimental)
 	-V              - Show version information
-	-x <DocID>      - Output FoLiA XML, use the specified Document ID
+	-x <DocID>      - Output FoLiA XML, use the specified Document ID (obsolete)
 	-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised.
+	-X              - Output FoLiA XML, use the Document ID specified with --id=
+	--id <DocID>    - use the specified Document ID to label the FoLia doc.
 	                  (-x and -F disable usage of most other options: -nulPQVsS)

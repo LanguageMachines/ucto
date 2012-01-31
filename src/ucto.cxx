@@ -59,8 +59,10 @@ void usage(){
        << "\t-S              - Disable sentence detection!" << endl
        << "\t-Q              - Enable quote detection (experimental)" << endl
        << "\t-V              - Show version information" << endl
-       << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID" << endl
+       << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
        << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t-X              - Output FoLiA XML, use the Document ID specified with --id=" << endl
+       << "\t--id <DocID>    - use the specified Document ID to label the FoLia doc." << endl
        << "\t                  (-x and -F disable usage of most other options: -nulPQVsS)" << endl;
 }
 
@@ -88,6 +90,7 @@ int main( int argc, char *argv[] ){
   string L_file;
 
   static struct option longOpts[] = { { "passthru", 0, 0, 1 },
+				      { "id", 1, 0, 2 },
 				      { 0,0,0,0} };
 
   int opt;
@@ -95,7 +98,7 @@ int main( int argc, char *argv[] ){
   bool passThru = false;
   try {
     while ((opt = getopt_long( argc, argv, 
-			       "d:e:fhlPQunmN:vVSL:c:s:x:F",
+			       "d:e:fhlPQunmN:vVSL:c:s:x:FX",
 			       longOpts, &longOpt )) != -1) {
       switch (opt)
 	{  
@@ -120,6 +123,8 @@ int main( int argc, char *argv[] ){
 	  cout << "based on [" << folia::VersionName() << "]" << endl;
 	  return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
+	case 'X': xmlout = true; break;
+	case 2: docid = optarg; break;
 	default: usage(); return EXIT_SUCCESS;
 	}
     }
