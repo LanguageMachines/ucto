@@ -1,0 +1,152 @@
+
+\documentclass{report}
+
+\usepackage{epsf}
+\usepackage{a4wide}
+\usepackage{palatino}
+\usepackage{fullname}
+\usepackage{url}
+
+
+\author{Maarten van Gompel \and Ko van der Sloot$^*$ \and
+	Antal van den Bosch \\ \ \\
+	Center for Language Studies \\
+	Radboud University Nijmegen \\ \\
+
+	(*) Induction of Linguistic Knowledge Research Group\\
+	Department of Communication and Information Sciences\\ 
+        Tilburg University \\ \\
+             
+        P.O. Box 90153, NL-5000 LE, Tilburg, The Netherlands \\ 
+        URL: http://ilk.uvt.nl\thanks{This document is available from
+	http://ilk.uvt.nl/downloads/pub/papers/ilk.1201.pdf. All rights reserved
+	Induction of Linguistic Knowledge, Tilburg University and 
+        Radboud University Nijmegen.}}
+
+\title{{\huge Ucto: Unicode Tokeniser} \\ \vspace*{0.5cm}
+{\bf version 0.5.1} \\ \vspace*{0.5cm}{\huge Reference Guide}\\
+\vspace*{1cm} {\it ILK Technical Report -- ILK 12-01}}
+
+%better paragraph indentation
+\parindent 0pt
+\parskip 9pt
+
+\begin{document}
+
+\pagenumbering{roman} 
+
+\maketitle
+
+\tableofcontents
+
+\chapter*{Introduction}
+
+Tokenisation is a process in which text is segmented into the various sentence and word tokens that consistute the text. Most notably, words are separated from any punctuation attached to them and sentence boundaries are detected. Tokenisation is a common and necessary pre-processing step for almost any Natural Language Processing task, and preceeds further processing such as Part-of-Speech tagging, lemmatisation or syntactic parsing. 
+
+Whilst tokenisation may at first seem a trivial problem, it does certainly pose challenges. For example, the detection of sentence boundaries is complicated by the usage of periods in for example abbreviations and the usage of capital letters in proper names. Furthermore, tokens may be contracted in constructions such as ``I'm'', ``you're'', ``father's'', a tokeniser will generally split those.
+
+Ucto is an advanced rule-based tokeniser. The tokenisation rules used by ucto are implemented as regular expressions and read from external configuration files, making ucto flexible and mostly language-independent. Configuration files can be further customised for specific needs and for languages not yet supported. Tokenisation rules have been developed primary for Dutch, but configurations for English, German, French, Italian, and Swedish are also provided. Ucto features great unicode support, in fact the very name is derived from this feature. Ucto is designed to handle UTF-8 encoded text exclusively, though conversions can always be done prior and after invoking ucto. Ucto is not just a standalone program, but is also a C++ library that you can use in your own software. 
+
+This reference guide is structured as follows. In Chapter~\ref{license} you can find the terms of the license according to which you are allowed to use, copy, and modify MBT. The subsequent chapter gives instructions on how to install the software on your computer.  Next, Chapter~\ref{tutorial} offers a tutorial and information about the different parameters of the system. 
+
+\chapter{GNU General Public License}
+\label{license}
+\pagenumbering{arabic} 
+
+Ucto is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free
+Software Foundation; either version 3 of the License, or (at your option) any later version.
+
+Ucto is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with Ucto.  If not, see $<$http://www.gnu.org/licenses/$>$.
+
+In publication of research that makes use of the Software, a citation should be given of: {\em ``Maarten van Gompel, Ko van der Sloot, Antal van den Bosch (2010). Ucto: Unicode Tokeniser. Reference Guide. ILK Technical Report 12-01, \\ Available from {\tt http://ilk.uvt.nl/downloads/pub/papers/ilk.1201.pdf}''}
+
+For information about commercial licenses for the Software, contact {\tt timbl@uvt.nl}, or send your request to:
+
+Prof. dr.~Antal van den Bosch\\
+Centre for Language Studies\\
+Faculty of Arts \\
+Radboud University Nijmegen \\
+P.O. Box 9103 \\
+6500 HD Nijmegen \\ 
+The Netherlands \\
+Em-ail: a.vandenbosch@let.ru.nl 
+
+\pagestyle{headings}
+
+\chapter{Installation}
+\vspace{-1cm}
+
+
+You can get the Ucto package as a gzipped tar archive from:
+
+{\tt http://ilk.uvt.nl/ucto}
+
+Following the links from that page, you can download the archive, which contains the complete C++ source code for the program, tokeniser configurations for various language, the license and this documentation. On most recent Debian and Ubuntu systems, ucto can be found in the respective software repositories and can be installed with a simple:
+
+{\tt \$ apt-get install ucto}    
+
+If this is the case, you can skip the remainder of this section. If you however install from the source archive, the compilation and installation should also be relatively straightforward on most UNIX systems, and will be explained in the remainder of this section. 
+
+Ucto depends on the {\tt libicu} library, obtainable from {\tt http://site.icu-project.org/} but also present in the package manager of all major Linux distributions. It will not compile without it.
+
+To install the package on your computer, unpack the downloaded file:
+
+{\tt \$ tar -xvzf ucto-0.5.1.tar.gz}
+
+This will make a directory {\tt ucto-0.5.1} under your current directory.
+
+Change directory to the ucto-0.5.1 directory and configure the package by typing
+
+{\tt \$ cd ucto-0.5.1}
+
+{\tt \$ ./configure}
+
+
+Note: It is possible to install Ucto in a different location than the global default using the \texttt{--prefix=<dir>} option, but this tends to make further operations (such as compiling higher-level packages like Frog\footnote{\url{http://ilk.uvt.nl/frog}}) more complicated. It involves using the {\tt --with-ucto=} option in configure. 
+ 
+Anyway: after {\tt configure} you can build Mbt:
+
+{\tt \$ make}
+
+and (as recommended) install:
+
+{\tt \$ make install }
+
+If the process was completed successfully, you should now have
+executable file named {\tt ucto} in the installation directory
+({\tt /usr/local/bin} by default, we will assume this in the reaminder of this section), and a dynamic library {\tt libucto.so} in
+the library directory ({\tt /usr/local/lib/}). The configuration files for the tokeniser can be found in {\tt /usr/local/etc/ucto/}.
+
+Ucto should now be ready for use. Reopen your terminal and issue the {\tt ucto} command to verify this. If not found, you may need to add the installation directory ({\tt /usr/local/bin} to your \$PATH. 
+
+That's all!
+
+The e-mail address for problems with the installation, bug reports,
+comments and questions is {\tt timbl@uvt.nl}.
+
+%\chapter{Changes}
+%\label{changes}
+%\section{From version 3.1 to 3.2}
+
+%\begin{itemize}
+%\item Mbt is based on both Timbl and TimblServer. MBT used to depend
+%  only on Timbl, but Timbl's server functionality was moved to a
+%  separate package, TimblServer, that acts as a wrapper around
+%  Timbl. Thus, TimblServer depends on Timbl.  In the future, it is
+%  likely that also a separate MbtServer package will be released. Mbt
+%  itself will then based on Timbl, once again.
+%\item Some small bugs have been fixed.
+
+%\end{itemize}
+
+\chapter{Tutorial and Reference}
+\label{tutorial}
+
+%Yet to write
+
+%\bibliographystyle{fullname}
+%\bibliography{../../ilkbib/ilk}
+
+\end{document}
