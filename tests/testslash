@@ -1,0 +1,8 @@
+#/bin/sh
+# $Id$
+# $URL$
+
+exe=../src/ucto
+
+$exe -L nl -F slashes.xml
+
