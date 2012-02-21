@@ -44,7 +44,7 @@ NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
 
 #Times
-TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N})?(?i:am|pm)?
+TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N})?(am|pm|AM|PM)?
 
 #retain digits, including those starting with initial period (.22), and negative numbers
 NUMBER=-?(?:[\.,]?\p{N}+)+

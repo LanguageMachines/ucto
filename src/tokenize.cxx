@@ -1823,7 +1823,7 @@ namespace Tokenizer {
     //TODO: Make order dynamically configurable?
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?i)(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})")); 
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     If you want mixed case Ordinals, you have to enumerate them all
@@ -1837,22 +1837,22 @@ namespace Tokenizer {
       // was case insensitive, but seems a bad idea
     }
     if (!token_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(?i)^(" + token_pattern + ")(?:\\p{P}*)?$")); // (?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
     }    
     if (!withprefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{L}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?i)(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\P{Lu}|\\P{Ll})")); 
       // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     normally (?i) could be used in front and (\\p{L}) would do.
     }
     if (!prefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{L}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
+      rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "(?i)(\\p{L}+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("SUFFIX", "(\\p{Lu}|\\p{Ll}+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
     }
     //rules.insert(rules.begin(), new Rule("EOSMARKER", "(?:.*)?(" + *explicit_eos_marker + ")(?:.*)?")); 
 
