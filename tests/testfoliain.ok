@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.8" version="0.8">
-  <metadata type="native">
+  <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
       <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
@@ -169,6 +169,30 @@ Gaat deze datum: 28-11-2011 goed?</t>
         </s>
       </p>
     </div>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.8" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
+      <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
+    </annotations>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <event xml:id="WR-P-E-J-0000000001.event.139" actor="chatter110" begindatetime="2004-04-09T13:21:54" class="message">
+      <t>tot zo</t>
+      <s xml:id="WR-P-E-J-0000000001.event.139.s.1">
+        <w xml:id="WR-P-E-J-0000000001.event.139.s.1.w.1" class="WORD">
+          <t>tot</t>
+        </w>
+        <w xml:id="WR-P-E-J-0000000001.event.139.s.1.w.2" class="WORD">
+          <t>zo</t>
+        </w>
+      </s>
+    </event>
   </text>
 </FoLiA>
 
