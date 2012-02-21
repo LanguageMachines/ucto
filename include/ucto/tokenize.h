@@ -322,6 +322,8 @@ namespace Tokenizer {
     bool xmlout;  
     bool xmlin;  
     bool passthru;
+    
+    int parCount;
 
     std::string settingsfilename;
     
