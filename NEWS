@@ -1,7 +1,11 @@
-0.5.1 2012-01-31
+0.5.1 2012-02-27
 [Ko vd Sloot]
 * added 'escape' possibility for regexps that start with a [
 * better debugging output
+* removed all (?i) stuff from regexps. This attempts to avoid an ICU bug
+* added -X en --id= options
+* adapted to libfolia 0.8 (/tests too!)
+* some cleanup and refactoring
 
 [Maarten van Gompel]
 * added better rules for apostrophs in ATTACHEDSUFFIX and TOKENS
