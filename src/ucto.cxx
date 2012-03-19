@@ -220,7 +220,7 @@ int main( int argc, char *argv[] ){
       tokenizer.tokenize(doc);
       *OUT << doc << endl;
     } else {
-      tokenizer.tokenize(IN,OUT);
+      tokenizer.tokenize( *IN, *OUT );
       if ( OUT != &cout )
 	delete OUT;
       if ( IN != &cin )
