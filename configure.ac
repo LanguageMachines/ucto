@@ -85,12 +85,12 @@ AC_ARG_WITH(folia,
        [  --with-folia=DIR       use libfolia installed in <DIR>; 
                note that you can install folia in a non-default directory with
                ./configure --prefix=<DIR> in the folia installation directory],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
+       [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH"],
+       [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
 AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
-PKG_CHECK_MODULES([folia], [folia >= 0.8] )
-CXXFLAGS="$CXXFLAGS $folia_CFLAGS"
-LIBS="$LIBS $folia_LIBS"
+PKG_CHECK_MODULES([folia], [folia >= 0.9] )
+CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
+LIBS="$folia_LIBS $LIBS"
 
 
 # Checks for library functions.
