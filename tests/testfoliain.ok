@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
@@ -56,7 +56,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
@@ -115,7 +115,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
   <metadata type="native">
     <annotations>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
@@ -174,7 +174,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>

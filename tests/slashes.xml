@@ -15,7 +15,7 @@
 	    <t cls='\'>Text 2 </t>
 	  </s>
           <s xml:id="WR-P-E-J-0000000001.head.1.s.3">
-	    <event actor='proycon2\\\' cls='event'></event>
+	    <event xml:id="Ping" actor='proycon2\\\' cls='event'></event>
 	  </s>
 	</head>
       </div>
