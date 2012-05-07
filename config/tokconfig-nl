@@ -31,8 +31,6 @@ INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
 #retain initials
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
 
-#SMILEY=^(?:>?[:;]['`^]?[-~]*[)}\](\\/\[{Ss\$PpDd]+)$
-
 #Homogeneous punctuation (ellipsis etc)
 PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 
@@ -44,7 +42,7 @@ NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
 
 #Times
-TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N})?(am|pm|AM|PM)?
+TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
 
 #retain digits, including those starting with initial period (.22), and negative numbers
 NUMBER=-?(?:[\.,]?\p{N}+)+
