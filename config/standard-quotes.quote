@@ -1,7 +1,8 @@
 # all quotes must be entered as pairs of open en close quotes
-# separated by a ||
+# separated by a space
 # When more opening quotes match a single closing quote (or visa versa)
 # they must be aggregated in one string!
+# the ambiguous quotes " and ' are handled automaticly
 
 ‘ ’
 “„‟ ”
