@@ -1,0 +1,9 @@
+#/bin/sh
+# $Id: testnormalisation 13508 2011-11-02 15:44:17Z sloot $
+# $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/tests/testnormalisation $
+
+exe=../src/ucto
+
+$exe -L nl -Q -v qtest.nl
+
+$exe -L nl -Q -v qtest.spec 

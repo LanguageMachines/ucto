@@ -1,3 +1,7 @@
+‘Borsthaar,’ zegt Hakim.
+
+'Borsthaar,' zegt Hakim.
+
 Hij zegt: "hallo", en loopt verder.
 
 Hij zegt: "Dit is een zin.", en loopt verder.
