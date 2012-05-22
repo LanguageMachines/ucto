@@ -970,6 +970,13 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	quotes.push( i, c );
       }
+    } else if ((c == '\'') ) {
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
+      if (!resolveQuote(i,c)) {
+	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
+	quotes.push( i, c );
+      }
     } else {
       UnicodeString close = quotes.lookupOpen( c );
       if ( !close.isEmpty() ){ // we have a opening quote
