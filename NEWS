@@ -1,3 +1,6 @@
+[Folgert Karsdorp]
+* Fixed quote detection, added tests
+
 0.5.2 2012-03-29
 [Ko vd Sloot]
 * some small changes. Made it work with libfolia 0.9
