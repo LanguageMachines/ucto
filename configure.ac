@@ -10,7 +10,8 @@ AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADER([config.h])
 
-AC_DEFINE_DIR([SYSCONF_PATH], sysconfdir, sysconfdir)
+SYSCONFDIR=$sysconfdir
+AC_SUBST([SYSCONFDIR])
 
 if test x"${CXXFLAGS+set}" = xset; then
   # the user set CXXFLAGS; don't override it.
