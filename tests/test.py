@@ -92,7 +92,7 @@ for f in glob.glob(mask):
             #print 'diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff'
             os.system('diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff')
             #VERBOSE RUN:
-            os.system('../src/ucto -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
+            os.system('../src/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
 
 if log:
     print "--------------------------"

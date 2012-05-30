@@ -688,9 +688,12 @@ namespace Tokenizer {
 	}
       }
       if ( (i <= end) && (!verbose) ) {
-	if (!( (tokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
-	  OUT << " ";  
-	}
+	    if (!( (tokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
+	       OUT << " ";
+	    //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
+	    } else if ((quotelevel > 0) && (sentenceperlineoutput)) {
+	       OUT << " ";  
+	    }
       }
     } 
   }
@@ -706,11 +709,11 @@ namespace Tokenizer {
       if (tokens[i].role & ENDQUOTE) quotelevel--;	
       sentence += folia::UnicodeToUTF8(tokens[i].us);
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	sentence += " " + eosmark;
-	sentences.push_back(sentence);
-	sentence = "";
+	    sentence += " " + eosmark;
+	    sentences.push_back(sentence);
+	    sentence = "";
       } else if (i < size) {
-	sentence += " ";
+	    sentence += " ";
       }
     }
     if (!sentence.empty()) {
@@ -805,20 +808,24 @@ namespace Tokenizer {
     short quotelevel = 0;
     begin = 0;
     for (int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;      
       if (tokens[i].role & ENDQUOTE) quotelevel--;	
       if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
-	begin = i;
+	    begin = i;
+      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESYLTS IN DUPLICATE OUTPUT
+      //} else if ((tokens[i].role & BEGINOFSENTENCE) && (tokens[i].role & BEGINQUOTE) && (i > 0) && (tokens[i-1].role & ENDOFSENTENCE)) {
+       // begin = i;
       }
+      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	if (count == index) {
-	  end = i;
-	  if (!(tokens[begin].role & BEGINOFSENTENCE)) //sanity check
-	    tokens[begin].role |= BEGINOFSENTENCE;
-	  return true;
-	}
-	count++;
+	    if (count == index) {
+	        end = i;
+	        if (!(tokens[begin].role & BEGINOFSENTENCE)) //sanity check
+        	    tokens[begin].role |= BEGINOFSENTENCE;
+	        return true;
+	   }
+       count++;
       }	
     }  
     return false;
@@ -872,6 +879,24 @@ namespace Tokenizer {
       return (tokens[tokens.size() - 1].role & ENDOFSENTENCE);
   }
   
+  
+  //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN EOS. 
+  //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
+  //BECAUSE: '"Hoera!", zei de man' MUST NOT BE SPLIT ON ','..
+  bool quoteEos( UChar c ){
+        bool is_eos = false;
+        UBlockCode s = ublock_getCode(c);
+        //test for languages that distinguish case
+        if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+          if ( u_isupper(c) || u_istitle(c) ) {
+	        //next 'word' starts with more punctuation or with uppercase
+	        is_eos = true;
+          }        
+        }
+        return is_eos;
+  }
+  
+  
   bool TokenizerClass::resolveQuote(int endindex, const UnicodeString& open ) {
     //resolve a quote        
     int stackindex = -1;
@@ -890,22 +915,23 @@ namespace Tokenizer {
       int beginsentence = beginindex + 1;
       int expectingend = 0;
       int subquote = 0;
+      int size = tokens.size();
       for (int i = beginsentence; i < endindex; i++) {
-	if (tokens[i].role & BEGINQUOTE) subquote++;
+	    if (tokens[i].role & BEGINQUOTE) subquote++;
 	
-	if (subquote == 0) {
-	  if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
-	  if (tokens[i].role & ENDOFSENTENCE) expectingend--;
-	  
-	  if (tokens[i].role & TEMPENDOFSENTENCE) {			    
-	    tokens[i].role ^= TEMPENDOFSENTENCE;
-	    tokens[i].role |= ENDOFSENTENCE;
-	    tokens[beginsentence].role |= BEGINOFSENTENCE;
-	    beginsentence = i + 1;
-	  }
-	}
+	    if (subquote == 0) {
+	      if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
+	      if (tokens[i].role & ENDOFSENTENCE) expectingend--;
+	      
+	      if (tokens[i].role & TEMPENDOFSENTENCE) {			    
+	        tokens[i].role ^= TEMPENDOFSENTENCE;
+	        tokens[i].role |= ENDOFSENTENCE;
+	        tokens[beginsentence].role |= BEGINOFSENTENCE;
+	        beginsentence = i + 1;
+	      }
+	    }
 	
-	if (tokens[i].role & ENDQUOTE) subquote--;
+	    if (tokens[i].role & ENDQUOTE) subquote--;
 	
 	/*  
 	    if (tokens[i].role & BEGINOFSENTENCE) {
@@ -920,20 +946,30 @@ namespace Tokenizer {
 	
 	  
       if ((expectingend == 0) && (subquote == 0)) {
-	//ok, all good, mark the quote:
-	tokens[beginindex].role |= BEGINQUOTE;
-	tokens[endindex].role |= ENDQUOTE;	   
+	    //ok, all good, mark the quote:
+	    tokens[beginindex].role |= BEGINQUOTE;
+	    tokens[endindex].role |= ENDQUOTE;	   
       } else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
-	//missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
-	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
-	tokens[endindex - 1].role |= ENDOFSENTENCE;	    
-	//mark the quote
-	tokens[beginindex].role |= BEGINQUOTE;
-	tokens[endindex].role |= ENDQUOTE;	   
+	    //missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
+	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
+	    tokens[endindex - 1].role |= ENDOFSENTENCE;	    
+	    //mark the quote
+	    tokens[beginindex].role |= BEGINQUOTE;
+	    tokens[endindex].role |= ENDQUOTE;	   
       } else {
-	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
-	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
+	    if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
+	    //something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
       }      
+      //FBK: ENDQUOTES NEED TO BE MARKED AS ENDOFSENTENCE IF THE PREVIOUS TOKEN
+      //WAS AN ENDOFSENTENCE. OTHERWISE THE SENTENCES WILL NOT BE SPLIT.
+      if ((tokens[endindex].role & ENDQUOTE) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
+        //FBK: CHECK FOR EOS AFTER QUOTES
+        if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS 
+            ((endindex + 1 < size) && (quoteEos(tokens[endindex+1].us[0])))) {
+                //tokens[endindex-1].role ^= ENDOFSENTENCE;
+                tokens[endindex].role |= ENDOFSENTENCE; 
+            }
+      }
       
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
       quotes.eraseAtPos( stackindex );
@@ -960,6 +996,10 @@ namespace Tokenizer {
     }
     return is_eos;
   }
+  
+  
+  
+  
 
   void TokenizerClass::detectQuoteBounds( const int i, const UChar c ) {
     //Detect Quotation marks
