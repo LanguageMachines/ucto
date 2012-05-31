@@ -879,6 +879,24 @@ namespace Tokenizer {
       return (tokens[tokens.size() - 1].role & ENDOFSENTENCE);
   }
   
+  // FBK: return true if character is a quote.
+  bool TokenizerClass::u_isquote(UChar c) {
+      bool quote = false;
+      if ((c == '"') || ( UnicodeString(c) == "＂")) {
+          quote = true;
+      } else {
+          UnicodeString opening = quotes.lookupOpen( c );
+          if (!opening.isEmpty()) {
+              quote = true;
+          } else {
+              UnicodeString closing = quotes.lookupClose( c );
+              if (!closing.isEmpty()) {
+                  quote = true;
+              }
+          }
+      }
+      return quote;
+  }
   
   //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN EOS. 
   //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
@@ -895,7 +913,6 @@ namespace Tokenizer {
         }
         return is_eos;
   }
-  
   
   bool TokenizerClass::resolveQuote(int endindex, const UnicodeString& open ) {
     //resolve a quote        
@@ -968,9 +985,11 @@ namespace Tokenizer {
             ((endindex + 1 < size) && (quoteEos(tokens[endindex+1].us[0])))) {
                 //tokens[endindex-1].role ^= ENDOFSENTENCE;
                 tokens[endindex].role |= ENDOFSENTENCE; 
-            }
+        // FBK: check if next token is a quote        
+        } else if ((endindex + 1 < size) && (u_isquote(tokens[endindex+1].us[0]))) {
+                tokens[endindex].role |= ENDOFSENTENCE;
+        }
       }
-      
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
       quotes.eraseAtPos( stackindex );
       return true;
@@ -998,9 +1017,6 @@ namespace Tokenizer {
   }
   
   
-  
-  
-
   void TokenizerClass::detectQuoteBounds( const int i, const UChar c ) {
     //Detect Quotation marks
     if ((c == '"') || ( UnicodeString(c) == "＂") ) {
