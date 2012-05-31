@@ -265,6 +265,7 @@ namespace Tokenizer {
     
     bool resolveQuote( int, const UnicodeString& );
     bool detectEos( UChar );
+    bool u_isquote( UChar );
 
     bool readsettings( const std::string& );
     bool readrules( const std::string& );
