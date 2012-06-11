@@ -79,7 +79,7 @@ for f in glob.glob(mask):
         if retcode == 2: # lame attempt to bail out on ^C
             break
     else:
-        retcode = os.system('diff -q ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > /dev/null')
+        retcode = os.system('diff -q testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > /dev/null')
         if retcode == 0:
             if VG:
                 checkVGsummary( id, lang )
@@ -89,8 +89,8 @@ for f in glob.glob(mask):
             print color_text("FAILED", 'RED', True)
             log += "testoutput/" + id + '.' + lang + '.diff\n'
             log += "testoutput/" + id + '.' + lang + '.err\n'
-            #print 'diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff'
-            os.system('diff ' + id + '.' + lang + '.tok.V testoutput/' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff')
+            #print 'diff testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff'
+            os.system('diff testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff')
             #VERBOSE RUN:
             os.system('../src/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
 
