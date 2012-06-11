@@ -20,23 +20,23 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   For more information and updates, see:
-      http://ilk.uvt.nl/frog
+  http://ilk.uvt.nl/frog
 */
 
 /* ************************************
-* 
-*  Original version by Maarten van Gompel, ILK, Tilburg University
-*     proycon AT anaproy DOT nl
-*
-*     Tilburg University
-*
-*     Licensed under GPLv3
-*
-*     v0.2 - 2010-05-11
-*     v0.3 - 2010-05-19 - Migration from GLIB to ICU, by Ko van der Sloot
-*     v0.4 - 2010-12-10 - promoted into a separate module
-*
-************************************ */
+ * 
+ *  Original version by Maarten van Gompel, ILK, Tilburg University
+ *     proycon AT anaproy DOT nl
+ *
+ *     Tilburg University
+ *
+ *     Licensed under GPLv3
+ *
+ *     v0.2 - 2010-05-11
+ *     v0.3 - 2010-05-19 - Migration from GLIB to ICU, by Ko van der Sloot
+ *     v0.4 - 2010-12-10 - promoted into a separate module
+ *
+ ************************************ */
 
 #include <cstring>
 #include <cstdlib>
@@ -673,27 +673,26 @@ namespace Tokenizer {
       }
       if (tokens[i].role & ENDQUOTE) quotelevel--;
       
-      if (quotelevel == 0) {
-	if (tokens[i].role & ENDOFSENTENCE) {
-	  if (verbose) {
+      if (tokens[i].role & ENDOFSENTENCE) {
+	if (verbose) {
+	  OUT << endl;
+	} 
+	else if (quotelevel == 0) {
+	  if (sentenceperlineoutput) {
 	    OUT << endl;
 	  } else {
-	    if (sentenceperlineoutput) {
-	      OUT << endl;
-	    } else {
-	      UnicodeString tmp = folia::UTF8ToUnicode( eosmark );
-	      OUT << " " + tmp;
-	    }
+	    UnicodeString tmp = folia::UTF8ToUnicode( eosmark );
+	    OUT << " " + tmp;
 	  }
 	}
       }
       if ( (i <= end) && (!verbose) ) {
-	    if (!( (tokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
-	       OUT << " ";
-	    //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
-	    } else if ((quotelevel > 0) && (sentenceperlineoutput)) {
-	       OUT << " ";  
-	    }
+	if (!( (tokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
+	  OUT << " ";
+	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
+	} else if ((quotelevel > 0) && (sentenceperlineoutput)) {
+	  OUT << " ";  
+	}
       }
     } 
   }
@@ -709,11 +708,11 @@ namespace Tokenizer {
       if (tokens[i].role & ENDQUOTE) quotelevel--;	
       sentence += folia::UnicodeToUTF8(tokens[i].us);
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	    sentence += " " + eosmark;
-	    sentences.push_back(sentence);
-	    sentence = "";
+	sentence += " " + eosmark;
+	sentences.push_back(sentence);
+	sentence = "";
       } else if (i < size) {
-	    sentence += " ";
+	sentence += " ";
       }
     }
     if (!sentence.empty()) {
@@ -734,39 +733,39 @@ namespace Tokenizer {
     const int size = tokens.size();
     int begin = 0;
     for (int i = begin; i < size; i++) {
-        if (tokDebug >= 5)
-	        *Log(theErrLog) << "[countSentences] buffer#" <<i 
-			    << " word=[" << folia::UnicodeToUTF8( tokens[i].us) 
-			    << "] role=" << tokens[i].role 
-			    << ", quotelevel="<< quotelevel << endl;
-        if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-        if (tokens[i].role & BEGINQUOTE) quotelevel++;
-        if (tokens[i].role & ENDQUOTE) quotelevel--;	
-        if ((forceentirebuffer) && (tokens[i].role & TEMPENDOFSENTENCE) && (quotelevel == 0)) {
-	        //we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
-	        //Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
-	        tokens[i].role ^= TEMPENDOFSENTENCE;
-	        tokens[i].role |= ENDOFSENTENCE;
-	        if (!(tokens[begin].role & BEGINOFSENTENCE)) {
-	            tokens[begin].role |= BEGINOFSENTENCE;
-	        }
-        }
-        if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	        begin = i + 1;
-	        count++;
-	        if (tokDebug >= 5) 
-	            *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " found" << endl;
-	        if ((begin < size) && !(tokens[begin].role & BEGINOFSENTENCE)) {
-	            tokens[begin].role |= BEGINOFSENTENCE;
-	        }
-        }
-        if ((forceentirebuffer) && (i == size - 1) && !(tokens[i].role & ENDOFSENTENCE))  {
-	        //last token of buffer
-	        count++;
-	        tokens[i].role |= ENDOFSENTENCE;
-	        if (tokDebug >= 5) 
-	            *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;	    
-        }
+      if (tokDebug >= 5)
+	*Log(theErrLog) << "[countSentences] buffer#" <<i 
+			<< " word=[" << folia::UnicodeToUTF8( tokens[i].us) 
+			<< "] role=" << tokens[i].role 
+			<< ", quotelevel="<< quotelevel << endl;
+      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
+      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & ENDQUOTE) quotelevel--;	
+      if ((forceentirebuffer) && (tokens[i].role & TEMPENDOFSENTENCE) && (quotelevel == 0)) {
+	//we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
+	//Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
+	tokens[i].role ^= TEMPENDOFSENTENCE;
+	tokens[i].role |= ENDOFSENTENCE;
+	if (!(tokens[begin].role & BEGINOFSENTENCE)) {
+	  tokens[begin].role |= BEGINOFSENTENCE;
+	}
+      }
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	begin = i + 1;
+	count++;
+	if (tokDebug >= 5) 
+	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " found" << endl;
+	if ((begin < size) && !(tokens[begin].role & BEGINOFSENTENCE)) {
+	  tokens[begin].role |= BEGINOFSENTENCE;
+	}
+      }
+      if ((forceentirebuffer) && (i == size - 1) && !(tokens[i].role & ENDOFSENTENCE))  {
+	//last token of buffer
+	count++;
+	tokens[i].role |= ENDOFSENTENCE;
+	if (tokDebug >= 5) 
+	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;	    
+      }
     }
     return count;
   }
@@ -808,23 +807,23 @@ namespace Tokenizer {
     short quotelevel = 0;
     begin = 0;
     for (int i = 0; i < size; i++) {
-        if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;      
-        if (tokens[i].role & ENDQUOTE) quotelevel--;	
-        if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
-	        begin = i;
-        }
-        //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-        if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;      
+      if (tokens[i].role & ENDQUOTE) quotelevel--;	
+      if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
+	begin = i;
+      }
+      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
+      if (tokens[i].role & BEGINQUOTE) quotelevel++;
       
-        if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	        if (count == index) {
-	            end = i;
-	            if (!(tokens[begin].role & BEGINOFSENTENCE)) //sanity check
-        	        tokens[begin].role |= BEGINOFSENTENCE;
-	            return true;
-	        }
-            count++;
-        }	
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	if (count == index) {
+	  end = i;
+	  if (!(tokens[begin].role & BEGINOFSENTENCE)) //sanity check
+	    tokens[begin].role |= BEGINOFSENTENCE;
+	  return true;
+	}
+	count++;
+      }	
     }  
     return false;
   }
@@ -879,37 +878,37 @@ namespace Tokenizer {
   
   // FBK: return true if character is a quote.
   bool TokenizerClass::u_isquote(UChar c) {
-      bool quote = false;
-      if ((c == '"') || ( UnicodeString(c) == "＂") || (c == '\'')) {
-          quote = true;
+    bool quote = false;
+    if ((c == '"') || ( UnicodeString(c) == "＂") || (c == '\'')) {
+      quote = true;
+    } else {
+      UnicodeString opening = quotes.lookupOpen( c );
+      if (!opening.isEmpty()) {
+	quote = true;
       } else {
-          UnicodeString opening = quotes.lookupOpen( c );
-          if (!opening.isEmpty()) {
-              quote = true;
-          } else {
-              UnicodeString closing = quotes.lookupClose( c );
-              if (!closing.isEmpty()) {
-                  quote = true;
-              }
-          }
+	UnicodeString closing = quotes.lookupClose( c );
+	if (!closing.isEmpty()) {
+	  quote = true;
+	}
       }
-      return quote;
+    }
+    return quote;
   }
   
   //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN BOS. 
   //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
   //BECAUSE: '"Hoera!", zei de man' MUST NOT BE SPLIT ON ','..
   bool is_BOS( UChar c ){
-        bool is_bos = false;
-        UBlockCode s = ublock_getCode(c);
-        //test for languages that distinguish case
-        if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
-          if ( u_isupper(c) || u_istitle(c) ) {
-	        //next 'word' starts with more punctuation or with uppercase
-	        is_bos = true;
-          }        
-        }
-        return is_bos;
+    bool is_bos = false;
+    UBlockCode s = ublock_getCode(c);
+    //test for languages that distinguish case
+    if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+      if ( u_isupper(c) || u_istitle(c) ) {
+	//next 'word' starts with more punctuation or with uppercase
+	is_bos = true;
+      }        
+    }
+    return is_bos;
   }
   
   bool TokenizerClass::resolveQuote(int endindex, const UnicodeString& open ) {
@@ -932,27 +931,27 @@ namespace Tokenizer {
       int subquote = 0;
       int size = tokens.size();
       for (int i = beginsentence; i < endindex; i++) {
-	      if (tokens[i].role & BEGINQUOTE) subquote++;
-
-	      if (subquote == 0) {
-	          if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
-	          if (tokens[i].role & ENDOFSENTENCE) expectingend--;
-	      
-	          if (tokens[i].role & TEMPENDOFSENTENCE) {	
-	              tokens[i].role ^= TEMPENDOFSENTENCE;
-	              tokens[i].role |= ENDOFSENTENCE;
-	              tokens[beginsentence].role |= BEGINOFSENTENCE;
-	              beginsentence = i + 1;
-	          }
-	      // In case of nested quoted sentences, such as:
-	      //    MvD: "Nou, Van het Gouden Been ofzo herinner ik mij als kind: 'Waar is mijn gouden been?'"
-	      // the BEGINOFSENTENCE is only set for the inner quoted sentence 'Waar is mijn gouden been'. However,
-	      // Wwe also need one for the outser sentence.
-          } else if ((tokens[i].role & ENDQUOTE) && (tokens[i].role & ENDOFSENTENCE)) {
-              tokens[beginsentence].role |= BEGINOFSENTENCE;
-              beginsentence = i + 1;
-          }
-          if (tokens[i].role & ENDQUOTE) subquote--;
+	if (tokens[i].role & BEGINQUOTE) subquote++;
+	
+	if (subquote == 0) {
+	  if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
+	  if (tokens[i].role & ENDOFSENTENCE) expectingend--;
+	  
+	  if (tokens[i].role & TEMPENDOFSENTENCE) {	
+	    tokens[i].role ^= TEMPENDOFSENTENCE;
+	    tokens[i].role |= ENDOFSENTENCE;
+	    tokens[beginsentence].role |= BEGINOFSENTENCE;
+	    beginsentence = i + 1;
+	  }
+	  // In case of nested quoted sentences, such as:
+	  //    MvD: "Nou, Van het Gouden Been ofzo herinner ik mij als kind: 'Waar is mijn gouden been?'"
+	  // the BEGINOFSENTENCE is only set for the inner quoted sentence 'Waar is mijn gouden been'. However,
+	  // We also need one for the outser sentence.
+	} else if ((tokens[i].role & ENDQUOTE) && (tokens[i].role & ENDOFSENTENCE)) {
+	  tokens[beginsentence].role |= BEGINOFSENTENCE;
+	  beginsentence = i + 1;
+	}
+	if (tokens[i].role & ENDQUOTE) subquote--;
 	/*  
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	    if (i - 1 > beginindex)
@@ -964,19 +963,19 @@ namespace Tokenizer {
 	    }*/
       }
       if ((expectingend == 0) && (subquote == 0)) {
-	      //ok, all good, mark the quote:
-	      tokens[beginindex].role |= BEGINQUOTE;
-	      tokens[endindex].role |= ENDQUOTE;	   
+	//ok, all good, mark the quote:
+	tokens[beginindex].role |= BEGINQUOTE;
+	tokens[endindex].role |= ENDQUOTE;	   
       } else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
-	      //missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
-	      if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
-	      tokens[endindex - 1].role |= ENDOFSENTENCE;	    
-	      //mark the quote
-	      tokens[beginindex].role |= BEGINQUOTE;
-	      tokens[endindex].role |= ENDQUOTE;	   
+	//missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
+	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
+	tokens[endindex - 1].role |= ENDOFSENTENCE;	    
+	//mark the quote
+	tokens[beginindex].role |= BEGINQUOTE;
+	tokens[endindex].role |= ENDQUOTE;	   
       } else {
-	      if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
-	    //something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
+	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
+	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
       }      
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
       quotes.eraseAtPos( stackindex );
@@ -986,15 +985,15 @@ namespace Tokenizer {
         //FBK: CHECK FOR EOS AFTER QUOTES
         if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS 
             ((endindex + 1 < size) && (is_BOS(tokens[endindex+1].us[0])))) {
-            //tokens[endindex-1].role ^= ENDOFSENTENCE;
-            tokens[endindex].role |= ENDOFSENTENCE; 
-        // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS        
+	  //tokens[endindex-1].role ^= ENDOFSENTENCE;
+	  tokens[endindex].role |= ENDOFSENTENCE; 
+	  // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS        
         } else if ((endindex + 2 < size) && (u_isquote(tokens[endindex+1].us[0])) && (is_BOS(tokens[endindex+2].us[0]))) {
-            tokens[endindex].role |= ENDOFSENTENCE;
-        // If the current token is an ENDQUOTE and the next token is a quote and also the last token,
-        // the current token is an EOS.
+	  tokens[endindex].role |= ENDOFSENTENCE;
+	  // If the current token is an ENDQUOTE and the next token is a quote and also the last token,
+	  // the current token is an EOS.
         } else if ((endindex + 2 == size) && (u_isquote(tokens[endindex+1].us[0]))) {
-            tokens[endindex].role |= ENDOFSENTENCE;
+	  tokens[endindex].role |= ENDOFSENTENCE;
         }
       }
       return true;
@@ -1025,33 +1024,33 @@ namespace Tokenizer {
   void TokenizerClass::detectQuoteBounds( const int i, const UChar c ) {
     //Detect Quotation marks
     if ((c == '"') || ( UnicodeString(c) == "＂") ) {
-        if (tokDebug > 1 )
-	        *Log(theErrLog) << "[detectQuoteBounds] Standard double-quote (ambiguous) found @i="<< i << endl;
-        if (!resolveQuote(i,c)) {
-	        if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
-	        quotes.push( i, c );
-        }
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectQuoteBounds] Standard double-quote (ambiguous) found @i="<< i << endl;
+      if (!resolveQuote(i,c)) {
+	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
+	quotes.push( i, c );
+      }
     } else if ((c == '\'') ) {
-        if (tokDebug > 1 )
-	        *Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
-        if (!resolveQuote(i,c)) {
-	        if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
-	        quotes.push( i, c );
-        }
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
+      if (!resolveQuote(i,c)) {
+	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
+	quotes.push( i, c );
+      }
     } else {
-        UnicodeString close = quotes.lookupOpen( c );
-        if ( !close.isEmpty() ){ // we have a opening quote
-	        if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;	      
-	        quotes.push( i, c ); // remember it
-        } else {
-	        UnicodeString open = quotes.lookupClose( c );	
-	        if ( !open.isEmpty() ) { // we have a closeing quote
-	            if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;	      
-	            if (!resolveQuote(i, open )) // resolve the matching opening
-	                if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
-	    //} else if (UnicodeString(c) == "―") {
+      UnicodeString close = quotes.lookupOpen( c );
+      if ( !close.isEmpty() ){ // we have a opening quote
+	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;	      
+	quotes.push( i, c ); // remember it
+      } else {
+	UnicodeString open = quotes.lookupClose( c );	
+	if ( !open.isEmpty() ) { // we have a closeing quote
+	  if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;	      
+	  if (!resolveQuote(i, open )) // resolve the matching opening
+	    if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
+	  //} else if (UnicodeString(c) == "―") {
 	  //TODO: Implement
-	    }
+	}
       }
     }
   }
@@ -1061,64 +1060,64 @@ namespace Tokenizer {
     const int size = tokens.size();    
           
     if (sentenceperlineinput) {
-        tokens[offset].role |= BEGINOFSENTENCE;
-        tokens[size - 1].role |= ENDOFSENTENCE;
+      tokens[offset].role |= BEGINOFSENTENCE;
+      tokens[size - 1].role |= ENDOFSENTENCE;
     }
     
     for (int i = offset; i < size; i++) {
-        if ((offset == 0) && (sentencesignal)) {
-	        tokens[i].role |= BEGINOFSENTENCE;
-	        sentencesignal = false;
-        }
-        if (tokDebug > 1 )
-	        *Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
-			                << folia::UnicodeToUTF8( tokens[i].us ) 
-			                <<"] role=" << tokens[i].role << endl;
-        if ( tokens[i].type->startsWith("PUNCTUATION") ) { //TODO: make comparison more efficient?
-	        UChar c = tokens[i].us[0]; 
-	        bool is_eos = false;
-	        if (c == '.') {	
-	            if (i + 1 == size) {	//No next character? 
-	                is_eos = true; //Newline after period
-	            } else {
-	            // check next token for eos
-	                is_eos = checkEos(tokens[i+1].us[0] );
-	            }
-	        } else { //no period
-	        //Check for other EOS markers
-	            if ( eosmarkers.indexOf( c ) >= 0 )
-	                is_eos = true;
-	        }
-	        if (is_eos) {
-	            if ((detectQuotes) && (!quotes.emptyStack())) {
-	                if ((tokDebug > 1 )) 
-	                    *Log(theErrLog) << "[detectSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
-	                //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
-	                tokens[i].role |= TEMPENDOFSENTENCE;
-	                //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
-	                if ((i > 0) && (tokens[i-1].role & TEMPENDOFSENTENCE))
-	                    tokens[i-1].role ^= TEMPENDOFSENTENCE;
-	            } else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
-	                sentencesignal = true;
-	                if ((tokDebug > 1 )) 
-	                    *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
-	                tokens[i].role |= ENDOFSENTENCE;
-	                //if this is the end of the sentence, the next token is the beginning of a new one
-	                if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
-	                    tokens[i+1].role |= BEGINOFSENTENCE;
-	                //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	                if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	                    tokens[i-1].role ^= ENDOFSENTENCE; 
-	                    if (tokens[i].role & BEGINOFSENTENCE) {
-		                    tokens[i].role ^= BEGINOFSENTENCE;
-	                    }
-	                }   		
-	            }	  	  
-	        } else if (detectQuotes) {
-	        //check for other bounds
-	            detectQuoteBounds(i,c);
-	        }
-        }
+      if ((offset == 0) && (sentencesignal)) {
+	tokens[i].role |= BEGINOFSENTENCE;
+	sentencesignal = false;
+      }
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
+			<< folia::UnicodeToUTF8( tokens[i].us ) 
+			<<"] role=" << tokens[i].role << endl;
+      if ( tokens[i].type->startsWith("PUNCTUATION") ) { //TODO: make comparison more efficient?
+	UChar c = tokens[i].us[0]; 
+	bool is_eos = false;
+	if (c == '.') {	
+	  if (i + 1 == size) {	//No next character? 
+	    is_eos = true; //Newline after period
+	  } else {
+	    // check next token for eos
+	    is_eos = checkEos(tokens[i+1].us[0] );
+	  }
+	} else { //no period
+	  //Check for other EOS markers
+	  if ( eosmarkers.indexOf( c ) >= 0 )
+	    is_eos = true;
+	}
+	if (is_eos) {
+	  if ((detectQuotes) && (!quotes.emptyStack())) {
+	    if ((tokDebug > 1 )) 
+	      *Log(theErrLog) << "[detectSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
+	    //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
+	    tokens[i].role |= TEMPENDOFSENTENCE;
+	    //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
+	    if ((i > 0) && (tokens[i-1].role & TEMPENDOFSENTENCE))
+	      tokens[i-1].role ^= TEMPENDOFSENTENCE;
+	  } else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
+	    sentencesignal = true;
+	    if ((tokDebug > 1 )) 
+	      *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
+	    tokens[i].role |= ENDOFSENTENCE;
+	    //if this is the end of the sentence, the next token is the beginning of a new one
+	    if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
+	      tokens[i+1].role |= BEGINOFSENTENCE;
+	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
+	    if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
+	      tokens[i-1].role ^= ENDOFSENTENCE; 
+	      if (tokens[i].role & BEGINOFSENTENCE) {
+		tokens[i].role ^= BEGINOFSENTENCE;
+	      }
+	    }   		
+	  }	  	  
+	} else if (detectQuotes) {
+	  //check for other bounds
+	  detectQuoteBounds(i,c);
+	}
+      }
     }
   }    
   
