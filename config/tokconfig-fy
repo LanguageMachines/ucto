@@ -59,10 +59,6 @@ UNKNOWN=.
 
 [PREFIXES]
 
-[ATTACHEDSUFFIXES]
-\['`’]s
-\['`’]t
-\['`’]n
 
 [ORDINALS]
 e
@@ -77,6 +73,7 @@ ste
 \['`’]n
 \['`’]t
 \['`’]d
+\['`’]e
 
 [UNITS]
 km
@@ -304,7 +301,7 @@ kub
 kw
 l
 L
-Lat
+Latherman
 Lem
 lidw
 lit
