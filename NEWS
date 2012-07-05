@@ -1,5 +1,9 @@
+0.5.3 2012-07-05
 [Folgert Karsdorp]
 * Fixed quote detection, added tests
+[Ko van der Sloot]
+* changed verbose output slightly
+* fixed id's in folia output
 
 0.5.2 2012-03-29
 [Ko vd Sloot]
