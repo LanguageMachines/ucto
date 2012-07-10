@@ -587,7 +587,7 @@ namespace Tokenizer {
 	quotelevel = 0;
       }
       if (tokens[i].role & ENDQUOTE) {
-	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of quote";
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of quote" << endl;
 	quotelevel--;
 	root = root->parent();
 	lastS = root;
@@ -616,7 +616,7 @@ namespace Tokenizer {
       //      *Log(theErrLog) << "created " << w << " text= " <<  tokens[i].us << endl;
       root->append( w );
       if (tokens[i].role & BEGINQUOTE) {
-	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element";
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
 	//	*Log(theErrLog) << "created " << q << endl;
 	root->append( q );
@@ -624,7 +624,7 @@ namespace Tokenizer {
 	quotelevel++;
       }    
       if ( (tokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
-	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence";
+	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
 	root = root->parent();
 	lastS = root;
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] back to " << root->classname() << endl;
