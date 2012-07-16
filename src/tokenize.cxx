@@ -144,14 +144,14 @@ namespace Tokenizer {
     post = "";
     results.clear();
     if ( matcher ){
-      //  *Log(theErrLog) << "start matcher [" << line << "]" << endl;
+      // cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
       matcher->reset( line );
       if ( matcher->find() ){
-	// *Log(theErrLog) << "matched " << folia::UnicodeToUTF8(line) << endl;
+	// cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
 	int start = -1;
 	int end = 0;
 	for ( int i=0; i <= matcher->groupCount(); ++i ){
-	  // *Log(theErrLog) << "group " << i << endl;
+	  // cerr << "group " << i << endl;
 	  u_stat = U_ZERO_ERROR;
 	  start = matcher->start( i, u_stat );
 	  if (!U_FAILURE(u_stat)){
@@ -163,19 +163,19 @@ namespace Tokenizer {
 	    break;
 	  if ( start > end ){
 	    pre = UnicodeString( line, end, start );
-	    // *Log(theErrLog) << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+	    // cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
 	  }
 	  end = matcher->end( i, u_stat );
 	  if (!U_FAILURE(u_stat)){
 	    results.push_back( UnicodeString( line, start, end - start ) );
-	    // *Log(theErrLog) << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+	    // cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
 	  }
 	  else
 	    break;
 	}
 	if ( end < line.length() ){
 	  post = UnicodeString( line, end );
-	  // *Log(theErrLog) << "found post " << folia::UnicodeToUTF8(post) << endl;
+	  // cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
 	}
 	return true;
       }
@@ -1410,7 +1410,8 @@ namespace Tokenizer {
 	}
       } 
       tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) ); 
-    } else {
+    } 
+    else {
       for ( unsigned int i = 0; i < rules.size(); i++) {
 	if ( tokDebug >= 4)
 	  *Log(theErrLog) << "\tTESTING " << folia::UnicodeToUTF8( rules[i]->id )
@@ -1896,7 +1897,9 @@ namespace Tokenizer {
       // was case insensitive, but seems a bad idea
     }
     if (!token_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
+      //      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
+      // removed ^ in front. this fixes bug94
+      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(" + token_pattern + ")(?:\\p{P}*)?$"));
     }    
     if (!withprefix_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
