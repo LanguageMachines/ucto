@@ -335,7 +335,6 @@ namespace Tokenizer {
   }
 
   folia::Document TokenizerClass::tokenize( istream& IN ) {
-    bool in_paragraph = false; //for XML
     bool done = false;
     bool bos = true;
     parCount = 0;
@@ -345,6 +344,7 @@ namespace Tokenizer {
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     string line;      
+    bool in_paragraph = false; //for XML
     do {	    
       done = !getline( IN, line );
       stripCR( line );
@@ -527,15 +527,6 @@ namespace Tokenizer {
     } else {
       OUT << endl;
     }
-  }
-  
-  UnicodeString xmlescape(UnicodeString s_in) {
-    UnicodeString s = s_in;      
-    s = s.findAndReplace("&","&amp;");
-    s = s.findAndReplace("\"","&quot;");
-    s = s.findAndReplace("<","&lt;");
-    s = s.findAndReplace(">","&gt;");
-    return s;
   }
   
   void TokenizerClass::outputTokensXML( folia::Document& doc,
