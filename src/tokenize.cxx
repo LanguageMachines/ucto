@@ -372,8 +372,9 @@ namespace Tokenizer {
 	  }
 	  /* ******* Begin process sentence  ********** */
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-	  outputTokensXML( doc, begin, end, in_paragraph );
+	  saveTokens( begin, end );
 	}
+	outputTokensXML( doc, in_paragraph );
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -454,8 +455,9 @@ namespace Tokenizer {
       int begin, end;
       if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
       if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-      outputTokensXML(element,begin,end,in_par,root_is_paragraph,root_is_sentence);
+      saveTokens( begin, end );
     }
+    outputTokensXML(element, in_par,root_is_paragraph,root_is_sentence);
     flushSentences(numS);	
     if (numS > 0)
       return true;
@@ -504,13 +506,15 @@ namespace Tokenizer {
 	  }
 	  /* ******* Begin process sentence  ********** */
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-	  if (xmlout) {
-	    outputTokensXML( doc, begin, end, in_paragraph );
-	  } else {
-	    outputTokens(OUT, begin, end, firstoutput );
-	    firstoutput = false;
-	  }	       
+	  saveTokens( begin, end );
 	}
+	if (xmlout) {
+	  outputTokensXML( doc, in_paragraph );
+	} 
+	else {
+	  outputTokens( OUT, firstoutput );
+	  firstoutput = false;
+	}	       
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -535,21 +539,15 @@ namespace Tokenizer {
   }
   
   void TokenizerClass::outputTokensXML( folia::Document& doc,
-					const size_t begin, const size_t end, 
 					bool& in_paragraph ) {	
     
     folia::FoliaElement *root = doc.doc()->index(0);
-    if (end >= tokens.size()) {
-      throw uRangeError("End index for outputTokensXML exceeds available buffer length" );
-    }
-    
-    outputTokensXML(root,begin,end,in_paragraph);    
+    outputTokensXML(root,in_paragraph);    
   }
 
 
 
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					const size_t begin, const size_t end, 
 					bool& in_paragraph, 
 					bool root_is_paragraph,
 					bool root_is_sentence) {
@@ -559,7 +557,7 @@ namespace Tokenizer {
     //static int parCount = 0;    // Isn't this FATAL when multithreading?
     if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     
-       
+    
     if ((!root_is_paragraph) && (!root_is_sentence)) { 
       if ( in_paragraph ){
 	root = root->rindex(0);
@@ -571,9 +569,9 @@ namespace Tokenizer {
       lastS = root;
     }
     
-    for ( size_t i = begin; i <= end; i++) {
+    for ( size_t i=0; i < outTokens.size(); i++) {
       
-      if (((!root_is_paragraph) && (!root_is_sentence)) && ((tokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
+      if (((!root_is_paragraph) && (!root_is_sentence)) && ((outTokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
 	if ( in_paragraph )
 	  root = root->parent();
@@ -586,7 +584,7 @@ namespace Tokenizer {
 	root = p;
 	quotelevel = 0;
       }
-      if (tokens[i].role & ENDQUOTE) {
+      if ( outTokens[i].role & ENDQUOTE) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of quote" << endl;
 	quotelevel--;
 	root = root->parent();
@@ -594,7 +592,7 @@ namespace Tokenizer {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] back to " << root->classname() << endl;
 
       }
-      if ((tokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
+      if (( outTokens[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating sentence in '" << root->id() << "' ()" << endl;
 	folia::KWargs args;
 	args["generate_id"] = root->id();
@@ -604,18 +602,18 @@ namespace Tokenizer {
 	root = s;
 	lastS = root;
       }	
-      if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating word element for " << tokens[i].us << endl;
+      if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating word element for " << outTokens[i].us << endl;
       folia::KWargs args;
       args["generate_id"] = lastS->id();
-      args["class"] = folia::UnicodeToUTF8( *tokens[i].type );
-      if (tokens[i].role & NOSPACE) {
+      args["class"] = folia::UnicodeToUTF8( *outTokens[i].type );
+      if ( outTokens[i].role & NOSPACE) {
 	args["space"]= "no";
       }
       folia::FoliaElement *w = new folia::Word( root->doc(), args );
-      w->settext( folia::UnicodeToUTF8( tokens[i].us ) );
-      //      *Log(theErrLog) << "created " << w << " text= " <<  tokens[i].us << endl;
+      w->settext( folia::UnicodeToUTF8( outTokens[i].us ) );
+      //      *Log(theErrLog) << "created " << w << " text= " <<  outTokens[i].us << endl;
       root->append( w );
-      if (tokens[i].role & BEGINQUOTE) {
+      if ( outTokens[i].role & BEGINQUOTE) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
 	//	*Log(theErrLog) << "created " << q << endl;
@@ -623,7 +621,7 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }    
-      if ( (tokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
+      if ( ( outTokens[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
 	root = root->parent();
 	lastS = root;
@@ -631,6 +629,7 @@ namespace Tokenizer {
       }
       in_paragraph = true;
     }
+    outTokens.clear();
   }
   
   ostream& operator<<( ostream& os, const TokenRole& tok ){
@@ -642,16 +641,21 @@ namespace Tokenizer {
     if ( tok & ENDQUOTE) os << "ENDQUOTE ";		
     return os;
   }
-
-  void TokenizerClass::outputTokens( ostream& OUT, 
-				     const size_t begin, const size_t end, 
-				     const bool firstoutput ) const {
-    short quotelevel = 0;
+  
+  void TokenizerClass::saveTokens( const size_t begin, const size_t end ){
     if (end >= tokens.size()) {
       throw uRangeError( "End index for outputTokens exceeds available buffer length" );
     }
-    for ( size_t i = begin; i <= end; i++) {
-      if ((detectPar) && (tokens[i].role & NEWPARAGRAPH) && (!verbose) && (!firstoutput)) {
+    for ( size_t i=begin; i <= end; ++i ){
+      outTokens.push_back( tokens[i] );
+    }
+  }
+
+  void TokenizerClass::outputTokens( ostream& OUT, 
+				     const bool firstoutput ) {
+    short quotelevel = 0;
+    for ( size_t i = 0; i < outTokens.size(); i++) {
+      if ((detectPar) && (outTokens[i].role & NEWPARAGRAPH) && (!verbose) && (!firstoutput)) {
 	if (sentenceperlineoutput) {
 	  OUT << endl;
 	} else {
@@ -659,23 +663,23 @@ namespace Tokenizer {
 	}
       }
       if (lowercase) {
-	UnicodeString s = tokens[i].us;
+	UnicodeString s = outTokens[i].us;
 	OUT << folia::UnicodeToUTF8( s.toLower() );
       } else if (uppercase) {
-	UnicodeString s = tokens[i].us;
+	UnicodeString s = outTokens[i].us;
 	OUT << folia::UnicodeToUTF8( s.toUpper() );
       } else {
-	OUT << folia::UnicodeToUTF8( tokens[i].us );
+	OUT << folia::UnicodeToUTF8( outTokens[i].us );
       }      
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if ( outTokens[i].role & NEWPARAGRAPH) quotelevel = 0;
+      if ( outTokens[i].role & BEGINQUOTE) quotelevel++;
       if (verbose) {
-	OUT << "\t" +  folia::UnicodeToUTF8( *tokens[i].type ) + "\t" 
-	    << tokens[i].role << endl;
+	OUT << "\t" +  folia::UnicodeToUTF8( *outTokens[i].type ) + "\t" 
+	    << outTokens[i].role << endl;
       }
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
+      if ( outTokens[i].role & ENDQUOTE) quotelevel--;
       
-      if (tokens[i].role & ENDOFSENTENCE) {
+      if ( outTokens[i].role & ENDOFSENTENCE) {
 	if (verbose) {
 	  OUT << endl;
 	} 
@@ -688,8 +692,8 @@ namespace Tokenizer {
 	  }
 	}
       }
-      if ( (i <= end) && (!verbose) ) {
-	if (!( (tokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
+      if ( (i < outTokens.size() ) && (!verbose) ) {
+	if (!( ( outTokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
 	  OUT << " ";
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
 	} else if ((quotelevel > 0) && (sentenceperlineoutput)) {
@@ -697,6 +701,7 @@ namespace Tokenizer {
 	}
       }
     } 
+    outTokens.clear();
   }
   
   vector<string> TokenizerClass::getSentences() const {
@@ -866,7 +871,8 @@ namespace Tokenizer {
     stringstream TMPOUT;
     const bool t = verbose;
     verbose = false;
-    outputTokens( TMPOUT, begin,end, firstoutput);
+    saveTokens( begin, end );
+    outputTokens( TMPOUT, firstoutput);
     verbose = t;
     return TMPOUT.str(); 
   }

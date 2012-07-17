@@ -255,9 +255,10 @@ namespace Tokenizer {
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
     
     
-    void outputTokens( std::ostream&, const size_t, const size_t, const bool = false) const;
-    void outputTokensXML( folia::Document& , const size_t, const size_t, bool&);
-    void outputTokensXML( folia::FoliaElement * root, const size_t begin, const size_t end,  bool& in_paragraph, bool root_is_paragraph=false, bool root_is_sentence=false);
+    void saveTokens( const size_t, const size_t );
+    void outputTokens( std::ostream&, const bool = false);
+    void outputTokensXML( folia::Document& , bool&);
+    void outputTokensXML( folia::FoliaElement *, bool& , bool root_is_paragraph=false, bool root_is_sentence=false);
   private:
     void tokenizeWord( const UnicodeString&, bool);
     
@@ -284,6 +285,7 @@ namespace Tokenizer {
 
     std::string eosmark;
     std::vector<Token> tokens;
+    std::vector<Token> outTokens;
         
     std::vector<Rule *> rules;
     std::ostream *theErrLog;
