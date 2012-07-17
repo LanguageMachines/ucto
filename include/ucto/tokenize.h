@@ -278,7 +278,8 @@ namespace Tokenizer {
 
     bool tokenizeElement(folia::FoliaElement *);
     bool tokenizeElement(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
-
+    bool tokenizeParagraph( folia::FoliaElement * );
+    bool tokenizeSentence( folia::FoliaElement * );
     Quoting quotes;
     UnicodeFilter filter;
     UnicodeNormalizer normalizer;    

@@ -378,7 +378,8 @@ namespace Tokenizer {
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
-      } else {
+      } 
+      else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
       }	
     } while (!done);
@@ -400,27 +401,33 @@ namespace Tokenizer {
   
   
   bool TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
-    if (element->isinstance(folia::Word_t) || element->isinstance(folia::TextContent_t)) return false;
+    if ( element->isinstance(folia::Word_t) 
+	 || element->isinstance(folia::TextContent_t)) 
+      return false;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
-    if (element->hastext()) {
-      if (element->isinstance(folia::Paragraph_t)) {
+    if ( element->hastext() ) {
+      if ( element->isinstance(folia::Paragraph_t) ) {
 	//tokenize paragraph: check for absence of sentences
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() == 0) {
 	  //no sentences yet, good
-	  tokenizeElement( element,true,false);
+	  tokenizeParagraph( element );
 	  return true;
 	} 
-      } else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
+      } 
+      else if ( ( element->isinstance(folia::Sentence_t) ) 
+		|| ( element->isinstance(folia::Head_t) ) ) {
 	//tokenize sentence: check for absence of words
 	vector<folia::Word*> words = element->words();
 	if (words.size() == 0) {
-	  tokenizeElement( element,false,true);
+	  tokenizeSentence( element );
 	  return true;
-	} else {
+	} 
+	else {
 	  return false;
 	}
-      } else {
+      } 
+      else {
 	vector<folia::Paragraph*> paragraphs = element->paragraphs();
 	if (paragraphs.size() == 0) {
 	  vector<folia::Sentence*> sentences = element->sentences();
@@ -442,6 +449,14 @@ namespace Tokenizer {
       tokenizeElement( element->index(i));
     }
     return false;
+  }
+
+  bool TokenizerClass::tokenizeParagraph( folia::FoliaElement *element ){
+    return tokenizeElement( element, true, false );
+  }
+  
+  bool TokenizerClass::tokenizeSentence( folia::FoliaElement *element ){
+    return tokenizeElement( element, false, true );
   }
   
   bool TokenizerClass::tokenizeElement( folia::FoliaElement *element, 
@@ -491,7 +506,8 @@ namespace Tokenizer {
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
-      } else {
+      } 
+      else {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
@@ -520,13 +536,15 @@ namespace Tokenizer {
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
-      } else {
+      } 
+      else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
       }	
     } while (!done);
     if (xmlout) {
       OUT << doc << endl;
-    } else {
+    } 
+    else {
       OUT << endl;
     }
   }
@@ -651,17 +669,20 @@ namespace Tokenizer {
       if ((detectPar) && (outTokens[i].role & NEWPARAGRAPH) && (!verbose) && (!firstoutput)) {
 	if (sentenceperlineoutput) {
 	  OUT << endl;
-	} else {
+	} 
+	else {
 	  OUT << endl << endl;
 	}
       }
       if (lowercase) {
 	UnicodeString s = outTokens[i].us;
 	OUT << folia::UnicodeToUTF8( s.toLower() );
-      } else if (uppercase) {
+      } 
+      else if (uppercase) {
 	UnicodeString s = outTokens[i].us;
 	OUT << folia::UnicodeToUTF8( s.toUpper() );
-      } else {
+      } 
+      else {
 	OUT << folia::UnicodeToUTF8( outTokens[i].us );
       }      
       if ( outTokens[i].role & NEWPARAGRAPH) quotelevel = 0;
@@ -679,7 +700,8 @@ namespace Tokenizer {
 	else if (quotelevel == 0) {
 	  if (sentenceperlineoutput) {
 	    OUT << endl;
-	  } else {
+	  } 
+	  else {
 	    UnicodeString tmp = folia::UTF8ToUnicode( eosmark );
 	    OUT << " " + tmp;
 	  }
@@ -689,7 +711,8 @@ namespace Tokenizer {
 	if (!( ( outTokens[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
 	  OUT << " ";
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
-	} else if ((quotelevel > 0) && (sentenceperlineoutput)) {
+	} 
+	else if ((quotelevel > 0) && (sentenceperlineoutput)) {
 	  OUT << " ";  
 	}
       }
@@ -711,7 +734,8 @@ namespace Tokenizer {
 	sentence += " " + eosmark;
 	sentences.push_back(sentence);
 	sentence = "";
-      } else if (i < size) {
+      } 
+      else if (i < size) {
 	sentence += " ";
       }
     }
@@ -788,7 +812,8 @@ namespace Tokenizer {
     if (begin == size) {
       tokens.clear();
       quotes.clearStack();
-    } else {
+    } 
+    else {
       tokens.erase (tokens.begin(),tokens.begin()+begin);
       if (!quotes.emptyStack()) {
 	quotes.flushStack( begin );
@@ -844,7 +869,8 @@ namespace Tokenizer {
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (selectsentence == count) {
 	  return sentence;
-	} else {
+	} 
+	else {
 	  count++;
 	}
       }
@@ -882,11 +908,13 @@ namespace Tokenizer {
     bool quote = false;
     if ((c == '"') || ( UnicodeString(c) == "＂") || (c == '\'')) {
       quote = true;
-    } else {
+    }
+    else {
       UnicodeString opening = quotes.lookupOpen( c );
       if (!opening.isEmpty()) {
 	quote = true;
-      } else {
+      } 
+      else {
 	UnicodeString closing = quotes.lookupClose( c );
 	if (!closing.isEmpty()) {
 	  quote = true;
@@ -948,7 +976,9 @@ namespace Tokenizer {
 	  //    MvD: "Nou, Van het Gouden Been ofzo herinner ik mij als kind: 'Waar is mijn gouden been?'"
 	  // the BEGINOFSENTENCE is only set for the inner quoted sentence 'Waar is mijn gouden been'. However,
 	  // We also need one for the outser sentence.
-	} else if ((tokens[i].role & ENDQUOTE) && (tokens[i].role & ENDOFSENTENCE)) {
+	} 
+	else if ( (tokens[i].role & ENDQUOTE) 
+		  && (tokens[i].role & ENDOFSENTENCE)) {
 	  tokens[beginsentence].role |= BEGINOFSENTENCE;
 	  beginsentence = i + 1;
 	}
@@ -967,14 +997,16 @@ namespace Tokenizer {
 	//ok, all good, mark the quote:
 	tokens[beginindex].role |= BEGINQUOTE;
 	tokens[endindex].role |= ENDQUOTE;	   
-      } else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
+      } 
+      else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
 	//missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
 	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
 	tokens[endindex - 1].role |= ENDOFSENTENCE;	    
 	//mark the quote
 	tokens[beginindex].role |= BEGINQUOTE;
 	tokens[endindex].role |= ENDQUOTE;	   
-      } else {
+      } 
+      else {
 	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
 	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
       }      
@@ -989,16 +1021,22 @@ namespace Tokenizer {
 	  //tokens[endindex-1].role ^= ENDOFSENTENCE;
 	  tokens[endindex].role |= ENDOFSENTENCE; 
 	  // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS        
-        } else if ((endindex + 2 < size) && (u_isquote(tokens[endindex+1].us[0])) && (is_BOS(tokens[endindex+2].us[0]))) {
+        } 
+	else if ( (endindex + 2 < size) 
+		  && (u_isquote(tokens[endindex+1].us[0])) 
+		  && (is_BOS(tokens[endindex+2].us[0]))) {
 	  tokens[endindex].role |= ENDOFSENTENCE;
 	  // If the current token is an ENDQUOTE and the next token is a quote and also the last token,
 	  // the current token is an EOS.
-        } else if ((endindex + 2 == size) && (u_isquote(tokens[endindex+1].us[0]))) {
+        } 
+	else if ( (endindex + 2 == size) 
+		  && (u_isquote(tokens[endindex+1].us[0]))) {
 	  tokens[endindex].role |= ENDOFSENTENCE;
         }
       }
       return true;
-    } else {
+    } 
+    else {
       return false;
     }    
   }
@@ -1014,7 +1052,8 @@ namespace Tokenizer {
 	//next 'word' starts with more punctuation or with uppercase
 	is_eos = true;
       }
-    } else {
+    } 
+    else {
       // just normal ASCII punctuation
       is_eos = true;
     }
@@ -1031,25 +1070,29 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	quotes.push( i, c );
       }
-    } else if ((c == '\'') ) {
+    } 
+    else if ((c == '\'') ) {
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
       if (!resolveQuote(i,c)) {
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	quotes.push( i, c );
       }
-    } else {
+    } 
+    else {
       UnicodeString close = quotes.lookupOpen( c );
       if ( !close.isEmpty() ){ // we have a opening quote
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;	      
 	quotes.push( i, c ); // remember it
-      } else {
+      } 
+      else {
 	UnicodeString open = quotes.lookupClose( c );	
 	if ( !open.isEmpty() ) { // we have a closeing quote
 	  if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;	      
 	  if (!resolveQuote(i, open )) // resolve the matching opening
 	    if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
-	  //} else if (UnicodeString(c) == "―") {
+	  //} 
+	  // else if (UnicodeString(c) == "―") {
 	  //TODO: Implement
 	}
       }
@@ -1080,11 +1123,13 @@ namespace Tokenizer {
 	if (c == '.') {	
 	  if (i + 1 == size) {	//No next character? 
 	    is_eos = true; //Newline after period
-	  } else {
+	  }
+	  else {
 	    // check next token for eos
 	    is_eos = checkEos(tokens[i+1].us[0] );
 	  }
-	} else { //no period
+	} 
+	else { //no period
 	  //Check for other EOS markers
 	  if ( eosmarkers.indexOf( c ) >= 0 )
 	    is_eos = true;
@@ -1098,7 +1143,8 @@ namespace Tokenizer {
 	    //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
 	    if ((i > 0) && (tokens[i-1].role & TEMPENDOFSENTENCE))
 	      tokens[i-1].role ^= TEMPENDOFSENTENCE;
-	  } else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
+	  } 
+	  else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
 	    sentencesignal = true;
 	    if ((tokDebug > 1 )) 
 	      *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
@@ -1114,7 +1160,8 @@ namespace Tokenizer {
 	      }
 	    }   		
 	  }	  	  
-	} else if (detectQuotes) {
+	} 
+	else if (detectQuotes) {
 	  //check for other bounds
 	  detectQuoteBounds(i,c);
 	}
@@ -1153,21 +1200,26 @@ namespace Tokenizer {
 	  if (!tokens.empty()) 
 	    tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	  bos = true;
-	} else {        
+	} 
+	else {        
 	  const UnicodeString *type;
 	  if (alpha && !num && !punct) {
 	    type = &type_word;
-	  } else if (num && !alpha && !punct) {
+	  } 
+	  else if (num && !alpha && !punct) {
 	    type = &type_number;                
-	  } else if (punct && !alpha && !num) {
+	  } 
+	  else if (punct && !alpha && !num) {
 	    type = &type_punctuation;                    
-	  } else {
+	  } 
+	  else {
 	    type = &type_unknown;                
 	  }
 	  if (bos) {
 	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
 	    bos = false;
-	  } else {
+	  } 
+	  else {
 	    tokens.push_back( Token( type, word ) );
 	  }
 	  alpha = false;
@@ -1175,12 +1227,15 @@ namespace Tokenizer {
 	  punct = false;
           word = "";
 	}
-      } else {
+      } 
+      else {
 	if ( u_isalpha(c)) {
 	  alpha = true;
-	} else if (u_ispunct(c)) {
+	} 
+	else if (u_ispunct(c)) {
 	  punct = true;
-	} else if (u_isdigit(c)) {
+	} 
+	else if (u_isdigit(c)) {
 	  num = true;
 	}            
 	word += c;
@@ -1196,17 +1251,21 @@ namespace Tokenizer {
 	const UnicodeString *type;
 	if (alpha && !num && !punct) {
 	  type = &type_word;
-	} else if (num && !alpha && !punct) {
+	} 
+	else if (num && !alpha && !punct) {
 	  type = &type_number;                
-	} else if (punct && !alpha && !num) {
+	} 
+	else if (punct && !alpha && !num) {
 	  type = &type_punctuation;                    
-	} else {
+	}
+	else {
 	  type = &type_unknown;                
 	}
 	if (bos) {
 	  tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
 	  bos = false;
-	} else {
+	}
+	else {
 	  tokens.push_back( Token( type, word ) );
 	}
       }   
@@ -1261,7 +1320,8 @@ namespace Tokenizer {
 	  reset = false;
 	  if (!u_isspace(c)) word = c; else word = "";
 	  tokenizeword = false;
-	} else {
+	} 
+	else {
 	  if (!u_isspace(c)) word += c;
 	}
 	if ( u_isspace(c) || i == input.length()-1 ){
@@ -1270,7 +1330,8 @@ namespace Tokenizer {
 			    << folia::UnicodeToUTF8( word ) << "]" << endl;
 	  if ( i == input.length()-1 ) {
 	    if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
-	  } else { // isspace
+	  } 
+	  else { // isspace
 	    //word.remove(word.length()-1);
 	  }
 	  int expliciteosfound = -1;
@@ -1310,7 +1371,8 @@ namespace Tokenizer {
 		*Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
 				<< folia::UnicodeToUTF8( word ) << "]" << endl;;
 	      tokens.push_back( Token( &type_word, word ) );
-	    } else {
+	    } 
+	    else {
 	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: [" 
 				<< folia::UnicodeToUTF8( word ) << "]" << endl;
@@ -1319,7 +1381,8 @@ namespace Tokenizer {
 	  }
 	  //reset values for new word
 	  reset = true;        
-	} else if ( u_ispunct(c) || u_isdigit(c)) {
+	}
+	else if ( u_ispunct(c) || u_isdigit(c)) {
 	  if (tokDebug) 
 	    *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
 			    << folia::UnicodeToUTF8( word ) << "]" << endl;
@@ -1328,7 +1391,8 @@ namespace Tokenizer {
 	  tokenizeword = true; 
 	}
       }        	
-    } else {
+    } 
+    else {
       //ELSE print error message
       *theErrLog << "ERROR: Invalid UTF-8 in line!" << endl;
     }
@@ -1378,7 +1442,8 @@ namespace Tokenizer {
 	if (tokDebug >= 2) 
 	  *Log(theErrLog) << "   [tokenizeWord] Assigned EOS" << endl;
 	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
-      } else {
+      } 
+      else {
 	*Log(theErrLog) << "[WARNING] Found explicit EOS marker by itself, this will have no effect!" << endl; 
       }
       return;
@@ -1392,19 +1457,25 @@ namespace Tokenizer {
       if ( u_ispunct(c)) {
 	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
 	  type = &type_currency;
-	} else {
+	} 
+	else {
 	  type = &type_punctuation;
 	}
-      } else if ( u_isalpha(c)) {
+      } 
+      else if ( u_isalpha(c)) {
 	type = &type_word;
-      } else if ( u_isdigit(c)) {
+      }
+      else if ( u_isdigit(c)) {
 	type = &type_number;
-      } else if ( u_isspace(c)) {
+      }
+      else if ( u_isspace(c)) {
 	return;
-      } else {
+      }
+      else {
 	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
 	  type = &type_currency;
-	} else {
+	} 
+	else {
 	  type = &type_unknown;
 	}
       } 
@@ -1597,29 +1668,41 @@ namespace Tokenizer {
     ConfigMode mode = NONE;
     if (line == "[RULES]") {
       mode = RULES;
-    } else if (line == "[RULE-ORDER]") {
+    } 
+    else if (line == "[RULE-ORDER]") {
       mode = RULEORDER;
-    } else if (line == "[ABBREVIATIONS]") {
+    } 
+    else if (line == "[ABBREVIATIONS]") {
       mode = ABBREVIATIONS;
-    } else if (line == "[ATTACHEDPREFIXES]") {
+    }
+    else if (line == "[ATTACHEDPREFIXES]") {
       mode = ATTACHEDPREFIXES;
-    } else if (line == "[ATTACHEDSUFFIXES]") {
+    }
+    else if (line == "[ATTACHEDSUFFIXES]") {
       mode = ATTACHEDSUFFIXES;
-    } else if (line == "[PREFIXES]") {
+    }
+    else if (line == "[PREFIXES]") {
       mode = PREFIXES;
-    } else if (line == "[SUFFIXES]") {
+    }
+    else if (line == "[SUFFIXES]") {
       mode = SUFFIXES;
-    } else if (line == "[TOKENS]") {
+    }
+    else if (line == "[TOKENS]") {
       mode = TOKENS;
-    } else if (line == "[UNITS]") {
+    } 
+    else if (line == "[UNITS]") {
       mode = UNITS;
-    } else if (line == "[ORDINALS]") {
+    }
+    else if (line == "[ORDINALS]") {
       mode = ORDINALS;
-    } else if (line == "[EOSMARKERS]") {
+    }
+    else if (line == "[EOSMARKERS]") {
       mode = EOSMARKERS;
-    } else if (line == "[QUOTES]") {
+    }
+    else if (line == "[QUOTES]") {
       mode = QUOTES;
-    } else if (line == "[FILTER]") {
+    }
+    else if (line == "[FILTER]") {
       mode = FILTER;
     }
     return mode;
