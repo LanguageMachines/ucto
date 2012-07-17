@@ -374,7 +374,7 @@ namespace Tokenizer {
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
 	  saveTokens( begin, end );
 	}
-	outputTokensXML( doc, in_paragraph );
+	outputTokensDoc( doc, in_paragraph );
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -393,13 +393,13 @@ namespace Tokenizer {
 
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
-      result = tokenize(doc.doc()->index(i)) || result;
+      result = tokenizeElement(doc.doc()->index(i)) || result;
     }      
     return result;
   }
   
   
-  bool TokenizerClass::tokenize(folia::FoliaElement * element) {
+  bool TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
     if (element->isinstance(folia::Word_t) || element->isinstance(folia::TextContent_t)) return false;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
     if (element->hastext()) {
@@ -408,14 +408,14 @@ namespace Tokenizer {
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() == 0) {
 	  //no sentences yet, good
-	  tokenize(element,true,false);
+	  tokenizeElement( element,true,false);
 	  return true;
 	} 
       } else if ( (element->isinstance(folia::Sentence_t)) || (element->isinstance(folia::Head_t)) ) {
 	//tokenize sentence: check for absence of words
 	vector<folia::Word*> words = element->words();
 	if (words.size() == 0) {
-	  tokenize(element,false,true);
+	  tokenizeElement( element,false,true);
 	  return true;
 	} else {
 	  return false;
@@ -428,7 +428,7 @@ namespace Tokenizer {
 	    vector<folia::Word*> words = element->words();
 	    if (words.size() == 0) {
 	      bool treat_as_paragraph = element->isinstance(folia::Event_t);
-	      tokenize(element,treat_as_paragraph,false);
+	      tokenizeElement( element,treat_as_paragraph,false);
 	      return true;			
 	    }
 	  }
@@ -439,24 +439,26 @@ namespace Tokenizer {
     //recursion step for other elements
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing children of FoLiA element " << element->id() << endl;
     for ( size_t i = 0; i < element->size(); i++) {
-      tokenize(element->index(i));
+      tokenizeElement( element->index(i));
     }
     return false;
   }
   
-  bool TokenizerClass::tokenize(folia::FoliaElement * element, bool root_is_paragraph, bool root_is_sentence) {
+  bool TokenizerClass::tokenizeElement( folia::FoliaElement *element, 
+					bool root_is_paragraph, 
+					bool root_is_sentence) {
     if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
     UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
     tokenizeLine(line);		
     int numS = countSentences(true); //force buffer to empty
     //ignore EOL data, we have by definition only one sentence:
-    bool in_par = false; //very ugly, I know
     for (int i = 0; i < numS; i++) {
       int begin, end;
       if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
       if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
       saveTokens( begin, end );
     }
+    bool in_par = false; //very ugly, I know
     outputTokensXML(element, in_par,root_is_paragraph,root_is_sentence);
     flushSentences(numS);	
     if (numS > 0)
@@ -509,7 +511,7 @@ namespace Tokenizer {
 	  saveTokens( begin, end );
 	}
 	if (xmlout) {
-	  outputTokensXML( doc, in_paragraph );
+	  outputTokensDoc( doc, in_paragraph );
 	} 
 	else {
 	  outputTokens( OUT, firstoutput );
@@ -529,7 +531,7 @@ namespace Tokenizer {
     }
   }
   
-  void TokenizerClass::outputTokensXML( folia::Document& doc,
+  void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					bool& in_paragraph ) {	
     
     folia::FoliaElement *root = doc.doc()->index(0);

@@ -145,9 +145,6 @@ namespace Tokenizer {
     
     //tokenize folia document
     bool tokenize(folia::Document& );
-    //..or one element thereof:
-    bool tokenize(folia::FoliaElement *);
-    bool tokenize(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
     
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
@@ -257,8 +254,6 @@ namespace Tokenizer {
     
     void saveTokens( const size_t, const size_t );
     void outputTokens( std::ostream&, const bool = false);
-    void outputTokensXML( folia::Document& , bool&);
-    void outputTokensXML( folia::FoliaElement *, bool& , bool root_is_paragraph=false, bool root_is_sentence=false);
   private:
     void tokenizeWord( const UnicodeString&, bool);
     
@@ -276,6 +271,13 @@ namespace Tokenizer {
     
     //Don't use this in normal processing, use flushSentences instead
     void clear() { tokens.clear(); quotes.clearStack(); };
+
+    void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
+    void outputTokensDoc( folia::Document& , bool& );
+    void outputTokensXML( folia::FoliaElement *, bool& , bool root_is_paragraph=false, bool root_is_sentence=false);
+
+    bool tokenizeElement(folia::FoliaElement *);
+    bool tokenizeElement(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
 
     Quoting quotes;
     UnicodeFilter filter;
@@ -325,14 +327,10 @@ namespace Tokenizer {
     bool xmlout;  
     bool xmlin;  
     bool passthru;
-    
     int parCount;
 
     std::string settingsfilename;
-    
     std::string docid; //document ID (UTF-8), necessary for XML output 
-  private:
-    void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
   };
 
   template< typename T >
