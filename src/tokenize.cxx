@@ -435,7 +435,7 @@ namespace Tokenizer {
 	else {
 	  return false;
 	}
-      } 
+      }
       else {
 	vector<folia::Paragraph*> paragraphs = element->paragraphs();
 	if (paragraphs.size() == 0) {
@@ -443,7 +443,6 @@ namespace Tokenizer {
 	  if (sentences.size() == 0) {
 	    vector<folia::Word*> words = element->words();
 	    if (words.size() == 0) {
-	      bool treat_as_paragraph = element->isinstance(folia::Event_t);
 	      tokenizeElement2( element );
 	      return true;			
 	    }
@@ -494,7 +493,6 @@ namespace Tokenizer {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
 
-    //static int parCount = 0;    // Isn't this FATAL when multithreading?
     if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     
     bool root_is_sentence = false;
