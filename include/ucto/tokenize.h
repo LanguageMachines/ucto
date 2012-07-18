@@ -147,6 +147,7 @@ namespace Tokenizer {
     bool tokenize(folia::Document& );
     
     //Tokenize from input stream to output stream
+    void tokenizeStream( std::istream&  );
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
       // for backward compatability

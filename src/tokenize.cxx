@@ -333,8 +333,8 @@ namespace Tokenizer {
       s.erase( pos );
     }
   }
-
-  folia::Document TokenizerClass::tokenize( istream& IN ) {
+  
+  void TokenizerClass::tokenizeStream( istream& IN ) {
     bool done = false;
     bool bos = true;
     string line;      
@@ -375,6 +375,10 @@ namespace Tokenizer {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
       }	
     } while (!done);
+  }
+  
+  folia::Document TokenizerClass::tokenize( istream& IN ) {
+    tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
     outputTokensDoc( doc );
     return doc;
@@ -477,46 +481,7 @@ namespace Tokenizer {
   
   
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    bool done = false;
-    bool bos = true;
-    string line;      
-    do {	    
-      done = !getline( IN, line );
-      stripCR( line );
-      if ( sentenceperlineinput )
-	line += string(" ") + folia::UnicodeToUTF8(explicit_eos_marker);
-      int numS;
-      if ( (done) || (line.empty()) ){
-	signalParagraph();
-	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
-      } 
-      else {
-	if ( passthru )
-	  passthruLine( line, bos );
-	else
-	  tokenizeLine( line ); 
-	numS = countSentences(); //count full sentences in token buffer	    
-      }			
-      if ( numS > 0 ) { //process sentences 
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
-	for (int i = 0; i < numS; i++) {
-	  int begin, end;
-	  if (!getSentence(i, begin, end)) {
-	    if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
-	    throw uRangeError("Sentence index"); //should never happen
-	  }
-	  /* ******* Begin process sentence  ********** */
-	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-	  saveTokens( begin, end );
-	}
-	//clear processed sentences from buffer
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	flushSentences(numS);	    
-      } 
-      else {
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
-      }	
-    } while (!done);
+    tokenizeStream( IN );
     if (xmlout) {
       folia::Document doc( "id='" + docid + "'" );
       outputTokensDoc( doc );
