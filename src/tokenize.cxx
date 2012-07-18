@@ -374,7 +374,7 @@ namespace Tokenizer {
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
 	  saveTokens( begin, end );
 	}
-	outputTokensDoc( doc, in_paragraph );
+	outputTokensDoc( doc );
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -473,8 +473,7 @@ namespace Tokenizer {
       if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
       saveTokens( begin, end );
     }
-    bool in_par = false; //very ugly, I know
-    outputTokensXML(element, in_par,root_is_paragraph,root_is_sentence);
+    outputTokensXML(element, root_is_paragraph,root_is_sentence);
     flushSentences(numS);	
     if (numS > 0)
       return true;
@@ -484,8 +483,6 @@ namespace Tokenizer {
   
   
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    bool firstoutput = true;
-    bool in_paragraph = false; //for XML
     bool done = false;
     bool bos = true;
     folia::Document doc( "id='" + docid + "'" );
@@ -526,13 +523,6 @@ namespace Tokenizer {
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
 	  saveTokens( begin, end );
 	}
-	if (xmlout) {
-	  outputTokensDoc( doc, in_paragraph );
-	} 
-	else {
-	  outputTokens( OUT, firstoutput );
-	  firstoutput = false;
-	}	       
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -542,24 +532,23 @@ namespace Tokenizer {
       }	
     } while (!done);
     if (xmlout) {
+      outputTokensDoc( doc );
       OUT << doc << endl;
     } 
     else {
+      outputTokens( OUT );
       OUT << endl;
     }
   }
   
-  void TokenizerClass::outputTokensDoc( folia::Document& doc,
-					bool& in_paragraph ) {	
-    
+  void TokenizerClass::outputTokensDoc( folia::Document& doc ){    
     folia::FoliaElement *root = doc.doc()->index(0);
-    outputTokensXML(root,in_paragraph);    
+    outputTokensXML(root);    
   }
 
 
 
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					bool& in_paragraph, 
 					bool root_is_paragraph,
 					bool root_is_sentence) {
     short quotelevel = 0;
@@ -568,7 +557,7 @@ namespace Tokenizer {
     //static int parCount = 0;    // Isn't this FATAL when multithreading?
     if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     
-    
+    bool in_paragraph = false;
     if ((!root_is_paragraph) && (!root_is_sentence)) { 
       if ( in_paragraph ){
 	root = root->rindex(0);
@@ -662,11 +651,10 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::outputTokens( ostream& OUT, 
-				     const bool firstoutput ) {
+  void TokenizerClass::outputTokens( ostream& OUT ){ 
     short quotelevel = 0;
     for ( size_t i = 0; i < outTokens.size(); i++) {
-      if ((detectPar) && (outTokens[i].role & NEWPARAGRAPH) && (!verbose) && (!firstoutput)) {
+      if ((detectPar) && (outTokens[i].role & NEWPARAGRAPH) && (!verbose) && (i != 0) ) {
 	if (sentenceperlineoutput) {
 	  OUT << endl;
 	} 
@@ -878,8 +866,7 @@ namespace Tokenizer {
     return sentence;
   }
 
-  string TokenizerClass::getSentenceString( unsigned int i, 
-					    const bool firstoutput ) {
+  string TokenizerClass::getSentenceString( unsigned int i ){
     int begin, end;
     if (!getSentence(i,begin,end)) {
       throw uRangeError( "No sentence exists with the specified index: " 
@@ -891,7 +878,7 @@ namespace Tokenizer {
     const bool t = verbose;
     verbose = false;
     saveTokens( begin, end );
-    outputTokens( TMPOUT, firstoutput);
+    outputTokens( TMPOUT );
     verbose = t;
     return TMPOUT.str(); 
   }

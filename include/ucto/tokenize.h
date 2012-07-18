@@ -173,7 +173,7 @@ namespace Tokenizer {
     std::vector<Token*> getSentence( int );    
     
     //Get the sentence with the specified index as a string (UTF-8 encoded)
-    std::string getSentenceString( unsigned int, const bool = false);
+    std::string getSentenceString( unsigned int );
     
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences() const;
@@ -253,7 +253,7 @@ namespace Tokenizer {
     
     
     void saveTokens( const size_t, const size_t );
-    void outputTokens( std::ostream&, const bool = false);
+    void outputTokens( std::ostream& );
   private:
     void tokenizeWord( const UnicodeString&, bool);
     
@@ -273,8 +273,8 @@ namespace Tokenizer {
     void clear() { tokens.clear(); quotes.clearStack(); };
 
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
-    void outputTokensDoc( folia::Document& , bool& );
-    void outputTokensXML( folia::FoliaElement *, bool& , bool root_is_paragraph=false, bool root_is_sentence=false);
+    void outputTokensDoc( folia::Document& );
+    void outputTokensXML( folia::FoliaElement *, bool root_is_paragraph=false, bool root_is_sentence=false);
 
     bool tokenizeElement(folia::FoliaElement *);
     bool tokenizeElement(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
@@ -322,7 +322,6 @@ namespace Tokenizer {
     bool sentenceperlineinput;
     
 
-    bool firstoutput;
     bool lowercase;
     bool uppercase;
     bool xmlout;  
