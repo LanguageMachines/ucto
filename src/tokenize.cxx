@@ -337,14 +337,7 @@ namespace Tokenizer {
   folia::Document TokenizerClass::tokenize( istream& IN ) {
     bool done = false;
     bool bos = true;
-    parCount = 0;
-    folia::Document doc( "id='" + docid + "'" );
-    doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
-    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-    folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
-    doc.append( text );
     string line;      
-    bool in_paragraph = false; //for XML
     do {	    
       done = !getline( IN, line );
       stripCR( line );
@@ -374,7 +367,6 @@ namespace Tokenizer {
 	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
 	  saveTokens( begin, end );
 	}
-	outputTokensDoc( doc );
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);	    
@@ -383,6 +375,8 @@ namespace Tokenizer {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
       }	
     } while (!done);
+    folia::Document doc( "id='" + docid + "'" );
+    outputTokensDoc( doc );
     return doc;
   }
   
@@ -485,14 +479,6 @@ namespace Tokenizer {
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     bool done = false;
     bool bos = true;
-    folia::Document doc( "id='" + docid + "'" );
-    if ( xmlout ){
-      parCount = 0;
-      doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
-      doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-      folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
-      doc.append( text );
-    }
     string line;      
     do {	    
       done = !getline( IN, line );
@@ -532,6 +518,7 @@ namespace Tokenizer {
       }	
     } while (!done);
     if (xmlout) {
+      folia::Document doc( "id='" + docid + "'" );
       outputTokensDoc( doc );
       OUT << doc << endl;
     } 
@@ -542,6 +529,11 @@ namespace Tokenizer {
   }
   
   void TokenizerClass::outputTokensDoc( folia::Document& doc ){    
+    doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
+    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
+    folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
+    doc.append( text );
+    parCount = 0;
     folia::FoliaElement *root = doc.doc()->index(0);
     outputTokensXML(root);    
   }
