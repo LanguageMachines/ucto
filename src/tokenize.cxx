@@ -383,7 +383,19 @@ namespace Tokenizer {
     outputTokensDoc( doc );
     return doc;
   }
-  
+    
+  void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
+    tokenizeStream( IN );
+    if (xmlout) {
+      folia::Document doc( "id='" + docid + "'" );
+      outputTokensDoc( doc );
+      OUT << doc << endl;
+    } 
+    else {
+      outputTokens( OUT );
+      OUT << endl;
+    }
+  }
   
   bool TokenizerClass::tokenize( folia::Document& doc ) {
     doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
@@ -392,11 +404,10 @@ namespace Tokenizer {
 
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
-      result = tokenizeElement(doc.doc()->index(i)) || result;
-    }      
+      result = tokenizeElement(doc.doc()->index(i)) && result;
+    }
     return result;
   }
-  
   
   bool TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
     if ( element->isinstance(folia::Word_t) 
@@ -409,7 +420,7 @@ namespace Tokenizer {
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() == 0) {
 	  //no sentences yet, good
-	  tokenizeParagraph( element );
+	  tokenizeElement2( element );
 	  return true;
 	} 
       } 
@@ -418,7 +429,7 @@ namespace Tokenizer {
 	//tokenize sentence: check for absence of words
 	vector<folia::Word*> words = element->words();
 	if (words.size() == 0) {
-	  tokenizeSentence( element );
+	  tokenizeElement2( element );
 	  return true;
 	} 
 	else {
@@ -433,7 +444,7 @@ namespace Tokenizer {
 	    vector<folia::Word*> words = element->words();
 	    if (words.size() == 0) {
 	      bool treat_as_paragraph = element->isinstance(folia::Event_t);
-	      tokenizeElement( element,treat_as_paragraph,false);
+	      tokenizeElement2( element );
 	      return true;			
 	    }
 	  }
@@ -449,17 +460,7 @@ namespace Tokenizer {
     return false;
   }
 
-  bool TokenizerClass::tokenizeParagraph( folia::FoliaElement *element ){
-    return tokenizeElement( element, true, false );
-  }
-  
-  bool TokenizerClass::tokenizeSentence( folia::FoliaElement *element ){
-    return tokenizeElement( element, false, true );
-  }
-  
-  bool TokenizerClass::tokenizeElement( folia::FoliaElement *element, 
-					bool root_is_paragraph, 
-					bool root_is_sentence) {
+  bool TokenizerClass::tokenizeElement2( folia::FoliaElement *element ){
     if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
     UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
     tokenizeLine(line);		
@@ -471,26 +472,12 @@ namespace Tokenizer {
       if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
       saveTokens( begin, end );
     }
-    outputTokensXML(element, root_is_paragraph,root_is_sentence);
+    outputTokensXML( element );
     flushSentences(numS);	
     if (numS > 0)
       return true;
     else
       return false;
-  }
-  
-  
-  void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    tokenizeStream( IN );
-    if (xmlout) {
-      folia::Document doc( "id='" + docid + "'" );
-      outputTokensDoc( doc );
-      OUT << doc << endl;
-    } 
-    else {
-      outputTokens( OUT );
-      OUT << endl;
-    }
   }
   
   void TokenizerClass::outputTokensDoc( folia::Document& doc ){    
@@ -503,31 +490,26 @@ namespace Tokenizer {
     outputTokensXML(root);    
   }
 
-
-
-  void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					bool root_is_paragraph,
-					bool root_is_sentence) {
+  void TokenizerClass::outputTokensXML( folia::FoliaElement *root ){
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
 
     //static int parCount = 0;    // Isn't this FATAL when multithreading?
     if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     
-    bool in_paragraph = false;
-    if ((!root_is_paragraph) && (!root_is_sentence)) { 
-      if ( in_paragraph ){
-	root = root->rindex(0);
-	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] root changed to " << root << endl;
-      }
-    }
-    
-    if (root_is_sentence) {
+    bool root_is_sentence = false;
+    bool root_is_paragraph = false;
+    if ( root->isinstance( folia::Sentence_t ) ){
       lastS = root;
+      root_is_sentence = true;
     }
-    
-    for ( size_t i=0; i < outTokens.size(); i++) {
-      
+    else if ( root->isinstance( folia::Paragraph_t )
+	      || root->isinstance( folia::Event_t ) ){
+      root_is_paragraph = true;
+    }
+
+    bool in_paragraph = false;
+    for ( size_t i=0; i < outTokens.size(); i++) {      
       if (((!root_is_paragraph) && (!root_is_sentence)) && ((outTokens[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
 	if ( in_paragraph )

@@ -275,12 +275,9 @@ namespace Tokenizer {
 
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document& );
-    void outputTokensXML( folia::FoliaElement *, bool root_is_paragraph=false, bool root_is_sentence=false);
-
-    bool tokenizeElement(folia::FoliaElement *);
-    bool tokenizeElement(folia::FoliaElement *, bool, bool); //more specific variant, will be called by the one above
-    bool tokenizeParagraph( folia::FoliaElement * );
-    bool tokenizeSentence( folia::FoliaElement * );
+    void outputTokensXML( folia::FoliaElement * );
+    bool tokenizeElement( folia::FoliaElement * );
+    bool tokenizeElement2( folia::FoliaElement * ); //more specific variant, will be called by the one above
     Quoting quotes;
     UnicodeFilter filter;
     UnicodeNormalizer normalizer;    
