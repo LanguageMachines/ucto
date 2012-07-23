@@ -358,10 +358,7 @@ namespace Tokenizer {
       if ( numS > 0 ) { //process sentences 
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	for (int i = 0; i < numS; i++) {
-	  if ( !getSentence( i ) ) {
-	    if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
-	    throw uRangeError("Sentence index"); //should never happen
-	  }
+	  getSentence( i );
 	}
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
@@ -472,7 +469,7 @@ namespace Tokenizer {
     int numS = countSentences(true); //force buffer to empty
     //ignore EOL data, we have by definition only one sentence:
     for (int i = 0; i < numS; i++) {
-      if ( !getSentence( i ) ) throw uRangeError("Sentence index"); //should never happen
+      getSentence( i );
     }
     outputTokensXML( element );
     flushSentences(numS);	
@@ -635,16 +632,6 @@ namespace Tokenizer {
     outTokens.clear();
   }
   
-  vector<string> TokenizerClass::getSentences() {
-    vector<string> sentences;
-    int numS = countSentences(true); //force buffer to empty
-    for (int i = 0; i < numS; i++) {
-      string tmp = getSentenceString( i );
-      sentences.push_back( tmp );
-    }
-    return sentences;
-  }
-  
   int TokenizerClass::countSentences(bool forceentirebuffer) {
     //Return the number of *completed* sentences in the token buffer
     
@@ -753,23 +740,34 @@ namespace Tokenizer {
 	count++;
       }	
     }  
+    throw uRangeError( "No sentence exists with the specified index: " 
+		       + toString( index ) );
     return false;
   }
   
   string TokenizerClass::getSentenceString( unsigned int i ){
-    if ( !getSentence( i ) ) {
-      throw uRangeError( "No sentence exists with the specified index: " 
-			 + toString( i ) );
+    if ( getSentence( i ) ) {
+      //This only makes sense in non-verbose mode, force verbose=false
+      stringstream TMPOUT;
+      const bool tv = verbose;
+      verbose = false;
+      outputTokens( TMPOUT );
+      verbose = tv;
+      return TMPOUT.str(); 
     }
-    //This only makes sense in non-verbose mode, force verbose=false
-    stringstream TMPOUT;
-    const bool tv = verbose;
-    verbose = false;
-    outputTokens( TMPOUT );
-    verbose = tv;
-    return TMPOUT.str(); 
+    return "";
   }
   
+  vector<string> TokenizerClass::getSentences() {
+    vector<string> sentences;
+    int numS = countSentences(true); //force buffer to empty
+    for (int i = 0; i < numS; i++) {
+      string tmp = getSentenceString( i );
+      sentences.push_back( tmp );
+    }
+    return sentences;
+  }  
+
   bool TokenizerClass::terminatesWithEOS( ) const {
     if ( tokens.size() < 1 )
       return false;
