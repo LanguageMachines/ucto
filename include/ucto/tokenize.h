@@ -147,7 +147,7 @@ namespace Tokenizer {
     bool tokenize(folia::Document& );
     
     //Tokenize from input stream to output stream
-    void tokenizeStream( std::istream&  );
+    std::vector<Token> tokenizeStream( std::istream& );
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
       // for backward compatability
@@ -244,7 +244,7 @@ namespace Tokenizer {
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
     
-    void outputTokens( std::ostream& );
+    void outputTokens( std::ostream&, const std::vector<Token>& ) const;
   private:
     void tokenizeWord( const UnicodeString&, bool);
     
@@ -264,13 +264,13 @@ namespace Tokenizer {
     void clear() { tokens.clear(); quotes.clearStack(); };
 
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
-    void outputTokensDoc( folia::Document& );
-    void outputTokensXML( folia::FoliaElement * );
+    void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
+    void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );         
-    //Store the sentence with the specified index in the outToken vector;
-    bool getSentence( int );
-    
+    //return the sentence with the specified index in a Token vector;
+    std::vector<Token> getSentence( int );
+
     Quoting quotes;
     UnicodeFilter filter;
     UnicodeNormalizer normalizer;    
@@ -279,8 +279,6 @@ namespace Tokenizer {
 
     std::string eosmark;
     std::vector<Token> tokens;
-    std::vector<Token> outTokens;
-        
     std::vector<Rule *> rules;
     std::ostream *theErrLog;
 
@@ -318,7 +316,6 @@ namespace Tokenizer {
     bool xmlout;  
     bool xmlin;  
     bool passthru;
-    int parCount;
 
     std::string settingsfilename;
     std::string docid; //document ID (UTF-8), necessary for XML output 
