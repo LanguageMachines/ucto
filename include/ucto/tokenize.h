@@ -165,19 +165,11 @@ namespace Tokenizer {
     int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
     int flushSentences(const int); //Flush n sentences from buffer (does some extra validation as well)
     
-    
-    
-    //Get the begin and end index of the sentence with the specified index
-    bool getSentence( int, int& begin, int& end );
-    
-    //Get the sentence with the specified index as a vector of tokens
-    std::vector<Token*> getSentence( int );    
-    
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
     
     //Get all sentences as a vector of strings (UTF-8 encoded)
-    std::vector<std::string> getSentences() const;
+    std::vector<std::string> getSentences();
             
     void detectSentenceBounds( const int offset = 0 );
     void detectQuoteBounds( const int, const UChar);
@@ -252,8 +244,6 @@ namespace Tokenizer {
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
     
-    
-    void saveTokens( const size_t, const size_t );
     void outputTokens( std::ostream& );
   private:
     void tokenizeWord( const UnicodeString&, bool);
@@ -277,7 +267,10 @@ namespace Tokenizer {
     void outputTokensDoc( folia::Document& );
     void outputTokensXML( folia::FoliaElement * );
     void tokenizeElement( folia::FoliaElement * );
-    void tokenizeSentenceElement( folia::FoliaElement * ); 
+    void tokenizeSentenceElement( folia::FoliaElement * );         
+    //Store the sentence with the specified index in the outToken vector;
+    bool getSentence( int );
+    
     Quoting quotes;
     UnicodeFilter filter;
     UnicodeNormalizer normalizer;    

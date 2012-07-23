@@ -53,7 +53,7 @@
 
 using namespace std;
 
-#define Log 
+#define Log
 
 namespace Tokenizer {
 
@@ -358,14 +358,10 @@ namespace Tokenizer {
       if ( numS > 0 ) { //process sentences 
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	for (int i = 0; i < numS; i++) {
-	  int begin, end;
-	  if (!getSentence(i, begin, end)) {
+	  if ( !getSentence( i ) ) {
 	    if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] ERROR: Sentence index " << i << " is out of range!!" << endl;
 	    throw uRangeError("Sentence index"); //should never happen
 	  }
-	  /* ******* Begin process sentence  ********** */
-	  if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-	  saveTokens( begin, end );
 	}
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
@@ -414,47 +410,52 @@ namespace Tokenizer {
       return;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
     if ( element->hastext() ) {
-      // We have an element which contains text. That;s nice
+      // We have an element which contains text. That's nice
       // now we must see wether some 'formatting' is there. ( like Words() or
       // Sentences() )
       // If so: assume that the text is tokenized already, and don't spoil that
       if ( element->isinstance(folia::Paragraph_t) ) {
 	//tokenize paragraph: check for absence of sentences
 	vector<folia::Sentence*> sentences = element->sentences();
-	if (sentences.size() == 0) {
-	  //no sentences yet in this parggraph, good
-	  tokenizeSentenceElement( element );
-	} 
-	return;
+	if (sentences.size() > 0) {
+	  // bail out
+	  return;
+	}
       } 
       else if ( ( element->isinstance(folia::Sentence_t) ) 
 		|| ( element->isinstance(folia::Head_t) ) ) {
 	//tokenize sentence: check for absence of Word's
 	vector<folia::Word*> words = element->words();
-	if (words.size() == 0) {
-	  // no Words yet, good
-	  tokenizeSentenceElement( element );
+	if (words.size() > 0) {
+	  // bail out
+	  return;
 	}
-	return;
       }
       else {
 	// Some other element that contains text. Probably deeper.
 	// look it up. skip all paragraphs and sentences
 	vector<folia::Paragraph*> paragraphs = element->paragraphs();
-	if (paragraphs.size() == 0) {
-	  vector<folia::Sentence*> sentences = element->sentences();
-	  if (sentences.size() == 0) {
-	    vector<folia::Word*> words = element->words();
-	    if (words.size() == 0) {
-	      // so we have text, in an element without 'formatting' yet, good
-	      tokenizeSentenceElement( element );
-	    }
-	  }
+	if (paragraphs.size() > 0) {
+	  // already paragraphs, bail out
+	  return;
 	}
-	return;
+	vector<folia::Sentence*> sentences = element->sentences();
+	if (sentences.size() > 0) {
+	  // already sentences, bail out
+	  return;
+	}
+	vector<folia::Word*> words = element->words();
+	if (words.size() > 0) {
+	  // already words, bail out
+	  return;
+	}
       }
+      // so we have text, in an element without 'formatting' yet, good
+      // lets Tokenize the available text!
+      tokenizeSentenceElement( element );
+      return;
     }
-    //recursion step for other elements
+    //recursion step for textless elements
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing children of FoLiA element " << element->id() << endl;
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
@@ -463,16 +464,15 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
-    if (tokDebug >= 1) *Log(theErrLog) << "[tokenizeSentenceElement] Processing FoLiA sentence" << endl;
     UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
+    if (tokDebug >= 1) 
+      *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
+		      << line << endl;
     tokenizeLine(line);		
     int numS = countSentences(true); //force buffer to empty
     //ignore EOL data, we have by definition only one sentence:
     for (int i = 0; i < numS; i++) {
-      int begin, end;
-      if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
-      if (tokDebug >= 1) *Log(theErrLog) << "[tokenizeSentenceElement] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
-      saveTokens( begin, end );
+      if ( !getSentence( i ) ) throw uRangeError("Sentence index"); //should never happen
     }
     outputTokensXML( element );
     flushSentences(numS);	
@@ -578,15 +578,6 @@ namespace Tokenizer {
     return os;
   }
   
-  void TokenizerClass::saveTokens( const size_t begin, const size_t end ){
-    if (end >= tokens.size()) {
-      throw uRangeError( "End index for outputTokens exceeds available buffer length" );
-    }
-    for ( size_t i=begin; i <= end; ++i ){
-      outTokens.push_back( tokens[i] );
-    }
-  }
-
   void TokenizerClass::outputTokens( ostream& OUT ){ 
     short quotelevel = 0;
     for ( size_t i = 0; i < outTokens.size(); i++) {
@@ -644,29 +635,14 @@ namespace Tokenizer {
     outTokens.clear();
   }
   
-  vector<string> TokenizerClass::getSentences() const {
-    short quotelevel = 0;
+  vector<string> TokenizerClass::getSentences() {
     vector<string> sentences;
-    const int size = tokens.size();
-    string sentence = "";
-    for (int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;	
-      sentence += folia::UnicodeToUTF8(tokens[i].us);
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	sentence += " " + eosmark;
-	sentences.push_back(sentence);
-	sentence = "";
-      } 
-      else if (i < size) {
-	sentence += " ";
-      }
+    int numS = countSentences(true); //force buffer to empty
+    for (int i = 0; i < numS; i++) {
+      string tmp = getSentenceString( i );
+      sentences.push_back( tmp );
     }
-    if (!sentence.empty()) {
-      sentences.push_back(sentence);
-    }      
-    return sentences;     
+    return sentences;
   }
   
   int TokenizerClass::countSentences(bool forceentirebuffer) {
@@ -694,16 +670,14 @@ namespace Tokenizer {
 	//Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
 	tokens[i].role ^= TEMPENDOFSENTENCE;
 	tokens[i].role |= ENDOFSENTENCE;
-	if (!(tokens[begin].role & BEGINOFSENTENCE)) {
-	  tokens[begin].role |= BEGINOFSENTENCE;
-	}
+	tokens[begin].role |= BEGINOFSENTENCE;
       }
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	begin = i + 1;
 	count++;
 	if (tokDebug >= 5) 
 	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " found" << endl;
-	if ((begin < size) && !(tokens[begin].role & BEGINOFSENTENCE)) {
+	if ((begin < size) ){
 	  tokens[begin].role |= BEGINOFSENTENCE;
 	}
       }
@@ -750,12 +724,13 @@ namespace Tokenizer {
     return tokens.size();
   }
   
-  bool TokenizerClass::getSentence( int index, int& begin, int& end ) {
+  bool TokenizerClass::getSentence( int index ) {
     int count = 0;
     const int size = tokens.size();
     short quotelevel = 0;
-    begin = 0;
-    for (int i = 0; i < size; i++) {
+    size_t begin = 0;
+    size_t end = 0;
+    for ( int i = 0; i < size; i++) {
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;      
       if (tokens[i].role & ENDQUOTE) quotelevel--;	
       if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
@@ -767,8 +742,12 @@ namespace Tokenizer {
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (count == index) {
 	  end = i;
-	  if (!(tokens[begin].role & BEGINOFSENTENCE)) //sanity check
-	    tokens[begin].role |= BEGINOFSENTENCE;
+	  tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
+	  if (tokDebug >= 1) 
+	    *Log(theErrLog) << "[tokenize] extracted sentence " << index << ", begin="<<begin << ",end="<< end << endl;
+	  for ( size_t i=begin; i <= end; ++i ){
+	    outTokens.push_back( tokens[i] );
+	  }
 	  return true;
 	}
 	count++;
@@ -777,45 +756,17 @@ namespace Tokenizer {
     return false;
   }
   
-  vector<Token*> TokenizerClass::getSentence( int selectsentence) { 
-    //index starts at 0
-    short quotelevel = 0;
-    const int size = tokens.size();
-    vector<Token*> sentence;
-    int count = 0;
-    for (int i = 0; i < size; i++) {
-      if (count == selectsentence) {
-	sentence.push_back(&tokens[i]);
-      }
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	if (selectsentence == count) {
-	  return sentence;
-	} 
-	else {
-	  count++;
-	}
-      }
-    }
-    return sentence;
-  }
-
   string TokenizerClass::getSentenceString( unsigned int i ){
-    int begin, end;
-    if (!getSentence(i,begin,end)) {
+    if ( !getSentence( i ) ) {
       throw uRangeError( "No sentence exists with the specified index: " 
 			 + toString( i ) );
     }
-    
     //This only makes sense in non-verbose mode, force verbose=false
     stringstream TMPOUT;
-    const bool t = verbose;
+    const bool tv = verbose;
     verbose = false;
-    saveTokens( begin, end );
     outputTokens( TMPOUT );
-    verbose = t;
+    verbose = tv;
     return TMPOUT.str(); 
   }
   
@@ -906,15 +857,6 @@ namespace Tokenizer {
 	  beginsentence = i + 1;
 	}
 	if (tokens[i].role & ENDQUOTE) subquote--;
-	/*  
-	    if (tokens[i].role & BEGINOFSENTENCE) {
-	    if (i - 1 > beginindex)
-	    tokens[i-1].role |= ENDOFSENTENCE;
-	    }
-	    if (tokens[i].role & ENDOFSENTENCE) {
-	    if (i + 1 < endindex)
-	    tokens[i+1].role |= BEGINOFSENTENCE;
-	    }*/
       }
       if ((expectingend == 0) && (subquote == 0)) {
 	//ok, all good, mark the quote:
