@@ -399,68 +399,71 @@ namespace Tokenizer {
   
   bool TokenizerClass::tokenize( folia::Document& doc ) {
     doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
-    bool result = false;
     if (tokDebug >= 2) *Log(theErrLog) << "tokenize doc " << doc << endl;
-
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
-      result = tokenizeElement(doc.doc()->index(i)) && result;
+      tokenizeElement( doc.doc()->index(i) );
     }
-    return result;
+    return true; 
   }
   
-  bool TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
+  void TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
     if ( element->isinstance(folia::Word_t) 
 	 || element->isinstance(folia::TextContent_t)) 
-      return false;
-    if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing FoLiA element " << element->id() << endl;
+      // shortcut
+      return;
+    if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
     if ( element->hastext() ) {
+      // We have an element which contains text. That;s nice
+      // now we must see wether some 'formatting' is there. ( like Words() or
+      // Sentences() )
+      // If so: assume that the text is tokenized already, and don't spoil that
       if ( element->isinstance(folia::Paragraph_t) ) {
 	//tokenize paragraph: check for absence of sentences
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() == 0) {
-	  //no sentences yet, good
-	  tokenizeElement2( element );
-	  return true;
+	  //no sentences yet in this parggraph, good
+	  tokenizeSentenceElement( element );
 	} 
+	return;
       } 
       else if ( ( element->isinstance(folia::Sentence_t) ) 
 		|| ( element->isinstance(folia::Head_t) ) ) {
-	//tokenize sentence: check for absence of words
+	//tokenize sentence: check for absence of Word's
 	vector<folia::Word*> words = element->words();
 	if (words.size() == 0) {
-	  tokenizeElement2( element );
-	  return true;
-	} 
-	else {
-	  return false;
+	  // no Words yet, good
+	  tokenizeSentenceElement( element );
 	}
+	return;
       }
       else {
+	// Some other element that contains text. Probably deeper.
+	// look it up. skip all paragraphs and sentences
 	vector<folia::Paragraph*> paragraphs = element->paragraphs();
 	if (paragraphs.size() == 0) {
 	  vector<folia::Sentence*> sentences = element->sentences();
 	  if (sentences.size() == 0) {
 	    vector<folia::Word*> words = element->words();
 	    if (words.size() == 0) {
-	      tokenizeElement2( element );
-	      return true;			
+	      // so we have text, in an element without 'formatting' yet, good
+	      tokenizeSentenceElement( element );
 	    }
 	  }
 	}
-	return false;
+	return;
       }
     }
     //recursion step for other elements
-    if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Processing children of FoLiA element " << element->id() << endl;
+    if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing children of FoLiA element " << element->id() << endl;
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
     }
-    return false;
+    return;
   }
 
-  bool TokenizerClass::tokenizeElement2( folia::FoliaElement *element ){
-    if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Processing FoLiA sentence" << endl;
+  void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
+    if (tokDebug >= 1) *Log(theErrLog) << "[tokenizeSentenceElement] Processing FoLiA sentence" << endl;
     UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
     tokenizeLine(line);		
     int numS = countSentences(true); //force buffer to empty
@@ -468,15 +471,11 @@ namespace Tokenizer {
     for (int i = 0; i < numS; i++) {
       int begin, end;
       if (!getSentence(i, begin, end)) throw uRangeError("Sentence index"); //should never happen
-      if (tokDebug >= 1) *Log(theErrLog) << "[tokenize] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
+      if (tokDebug >= 1) *Log(theErrLog) << "[tokenizeSentenceElement] Outputting sentence " << i << ", begin="<<begin << ",end="<< end << endl;
       saveTokens( begin, end );
     }
     outputTokensXML( element );
     flushSentences(numS);	
-    if (numS > 0)
-      return true;
-    else
-      return false;
   }
   
   void TokenizerClass::outputTokensDoc( folia::Document& doc ){    
