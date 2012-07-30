@@ -172,7 +172,7 @@ namespace Tokenizer {
     std::vector<std::string> getSentences();
             
     void detectSentenceBounds( const int offset = 0 );
-    void detectQuoteBounds( const int, const UChar);
+    void detectQuoteBounds( const int );
     
     //Does the token buffer terminate with a proper EOS marker?
     bool terminatesWithEOS( ) const;
@@ -246,12 +246,11 @@ namespace Tokenizer {
     
     void outputTokens( std::ostream&, const std::vector<Token>& ) const;
   private:
-    void tokenizeWord( const UnicodeString&, bool);
-    
-    //Turn buffered tokens into a UnicodeString contai, also outputs types and roles in verbose mode
+    void tokenizeWord( const UnicodeString&, bool);    
+
+    bool detectEos( size_t ) const;
     
     bool resolveQuote( int, const UnicodeString& );
-    bool detectEos( UChar );
     bool u_isquote( UChar );
 
     bool readsettings( const std::string& );

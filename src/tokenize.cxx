@@ -911,27 +911,42 @@ namespace Tokenizer {
     }    
   }
 
-  bool checkEos( UChar c ){
+  bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
-    UBlockCode s = ublock_getCode(c);
-    //test for languages that distinguish case
-    if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) ||
-	(s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) ||
-	(s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
-      if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ) {
-	//next 'word' starts with more punctuation or with uppercase
-	is_eos = true;
+    UChar c = tokens[i].us[0]; 
+    if ( c == '.' ) {	
+      if (i + 1 == tokens.size() ) {	//No next character? 
+	is_eos = true; //Newline after period
       }
-    } 
-    else {
-      // just normal ASCII punctuation
-      is_eos = true;
+      else {
+	UChar c = tokens[i+1].us[0]; 
+	UBlockCode s = ublock_getCode(c);
+	//test for languages that distinguish case
+	if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) ||
+	    (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) ||
+	    (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+	  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ) {
+	    //next 'word' starts with more punctuation or with uppercase
+	    is_eos = true;
+	  }
+	} 
+	else {
+	  // just normal ASCII punctuation
+	  is_eos = true;
+	}
+      }
+    }
+    else { //no period
+      //Check for other EOS markers
+      if ( eosmarkers.indexOf( c ) >= 0 )
+	is_eos = true;
     }
     return is_eos;
   }
   
   
-  void TokenizerClass::detectQuoteBounds( const int i, const UChar c ) {
+  void TokenizerClass::detectQuoteBounds( const int i ) {
+    UChar c = tokens[i].us[0]; 
     //Detect Quotation marks
     if ((c == '"') || ( UnicodeString(c) == "＂") ) {
       if (tokDebug > 1 )
@@ -987,23 +1002,9 @@ namespace Tokenizer {
 	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
 			<< folia::UnicodeToUTF8( tokens[i].us ) 
 			<<"] role=" << tokens[i].role << endl;
-      if ( tokens[i].type->startsWith("PUNCTUATION") ) { //TODO: make comparison more efficient?
-	UChar c = tokens[i].us[0]; 
-	bool is_eos = false;
-	if (c == '.') {	
-	  if (i + 1 == size) {	//No next character? 
-	    is_eos = true; //Newline after period
-	  }
-	  else {
-	    // check next token for eos
-	    is_eos = checkEos(tokens[i+1].us[0] );
-	  }
-	} 
-	else { //no period
-	  //Check for other EOS markers
-	  if ( eosmarkers.indexOf( c ) >= 0 )
-	    is_eos = true;
-	}
+      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+	// we have some kind of punctuation. Does it mark an eos?
+	bool is_eos = detectEos( i );
 	if (is_eos) {
 	  if ((detectQuotes) && (!quotes.emptyStack())) {
 	    if ((tokDebug > 1 )) 
@@ -1031,9 +1032,9 @@ namespace Tokenizer {
 	    }   		
 	  }	  	  
 	} 
-	else if (detectQuotes) {
+	if (detectQuotes) {
 	  //check for other bounds
-	  detectQuoteBounds(i,c);
+	  detectQuoteBounds(i);
 	}
       }
     }
