@@ -1166,100 +1166,95 @@ namespace Tokenizer {
     if ( doFilter ){
       input = filter.filter( input );
     }
+    if ( input.isBogus() ){ //only tokenize valid input
+      *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
+      return 0;
+    }
     if (tokDebug) 
       *Log(theErrLog) << "[tokenizeLine] filtered input: line=[" 
 		      << folia::UnicodeToUTF8( input ) << "]" << endl;
     const int begintokencount = tokens.size();    
     if (tokDebug) *Log(theErrLog) << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
 
-    if ( !input.isBogus() ){ //only tokenize valid input
-      bool tokenizeword = false;
-      bool reset = false;
-      //iterate over all characters
-      UnicodeString word;
-
-      for ( int i=0; i < input.length(); ++i ) {
-	UChar c = input[i];
-	if (reset) { //reset values for new word
-	  reset = false;
-	  if (!u_isspace(c)) word = c; else word = "";
-	  tokenizeword = false;
+    bool tokenizeword = false;
+    bool reset = false;
+    //iterate over all characters
+    UnicodeString word;
+    
+    for ( int i=0; i < input.length(); ++i ) {
+      UChar c = input[i];
+      if (reset) { //reset values for new word
+	reset = false;
+	if (!u_isspace(c)) word = c; else word = "";
+	tokenizeword = false;
+      } 
+      else {
+	if (!u_isspace(c)) word += c;
+      }
+      if ( u_isspace(c) || i == input.length()-1 ){
+	if (tokDebug)
+	  *Log(theErrLog) << "[tokenizeLine] space detected, word=[" 
+			  << folia::UnicodeToUTF8( word ) << "]" << endl;
+	if ( i == input.length()-1 ) {
+	  if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
 	} 
-	else {
-	  if (!u_isspace(c)) word += c;
-	}
-	if ( u_isspace(c) || i == input.length()-1 ){
-	  if (tokDebug)
-	    *Log(theErrLog) << "[tokenizeLine] space detected, word=[" 
-			    << folia::UnicodeToUTF8( word ) << "]" << endl;
-	  if ( i == input.length()-1 ) {
-	    if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
-	  } 
-	  else { // isspace
-	    //word.remove(word.length()-1);
-	  }
-	  int expliciteosfound = -1;
-	  if ( word.length() >= explicit_eos_marker.length() ) {
-	    expliciteosfound = word.lastIndexOf(explicit_eos_marker);		    
-	        
-	    if (expliciteosfound != -1) { //( word == explicit_eos_marker ) {
-	      if (tokDebug >= 2) 
-		*Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
-	      if (expliciteosfound > 0) {		    		    
-		UnicodeString realword;		    
-		word.extract(0,explicit_eos_marker.length(),realword);
-		if (tokDebug >= 2)
-		  *Log(theErrLog) << "[tokenizeLine] Prefix before EOS: "
-				  << folia::UnicodeToUTF8( realword ) << endl;
-		tokenizeWord( realword, false );
-	      }
-	      if (expliciteosfound + explicit_eos_marker.length() < word.length())  {
-		UnicodeString realword;		    
-		word.extract(expliciteosfound+explicit_eos_marker.length(),word.length() - expliciteosfound - explicit_eos_marker.length(),realword);
-		if (tokDebug >= 2) 
-		  *Log(theErrLog) << "[tokenizeLine] Prefix after EOS: "
-				  << folia::UnicodeToUTF8( realword ) << endl;
-		tokenizeWord( realword, true );
-	      }
-	      if (!tokens.empty()) {
-		if (tokDebug >= 2) 
-		  *Log(theErrLog) << "[tokenizeLine] Assigned EOS" << endl;
-		tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
-	      }			
-	    }
-	  }			    
-	  if ((word.length() > 0) && (expliciteosfound == -1)) {	    
-	    if (!tokenizeword) {	      
-	      //single character or nothing tokenisable found, so no need to tokenize anything
-	      if (tokDebug >= 2)
-		*Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
-				<< folia::UnicodeToUTF8( word ) << "]" << endl;;
-	      tokens.push_back( Token( &type_word, word ) );
-	    } 
-	    else {
-	      if (tokDebug >= 2)
-		*Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: [" 
-				<< folia::UnicodeToUTF8( word ) << "]" << endl;
-	      tokenizeWord( word, true );            
-	    } 
-	  }
-	  //reset values for new word
-	  reset = true;        
-	}
-	else if ( u_ispunct(c) || u_isdigit(c)) {
-	  if (tokDebug) 
-	    *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
-			    << folia::UnicodeToUTF8( word ) << "]" << endl;
+	int expliciteosfound = -1;
+	if ( word.length() >= explicit_eos_marker.length() ) {
+	  expliciteosfound = word.lastIndexOf(explicit_eos_marker);
 	  
-	  //there is punctuation or digits in this word, mark to run through tokeniser
-	  tokenizeword = true; 
+	  if (expliciteosfound != -1) { // word contains explicit_eos_marker
+	    if (tokDebug >= 2) 
+	      *Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
+	    if (expliciteosfound > 0) {		    		    
+	      UnicodeString realword;		    
+	      word.extract(0,explicit_eos_marker.length(),realword);
+	      if (tokDebug >= 2)
+		*Log(theErrLog) << "[tokenizeLine] Prefix before EOS: "
+				<< folia::UnicodeToUTF8( realword ) << endl;
+	      tokenizeWord( realword, false );
+	    }
+	    if (expliciteosfound + explicit_eos_marker.length() < word.length())  {
+	      UnicodeString realword;		    
+	      word.extract(expliciteosfound+explicit_eos_marker.length(),word.length() - expliciteosfound - explicit_eos_marker.length(),realword);
+	      if (tokDebug >= 2) 
+		*Log(theErrLog) << "[tokenizeLine] Prefix after EOS: "
+				<< folia::UnicodeToUTF8( realword ) << endl;
+	      tokenizeWord( realword, true );
+	    }
+	    if (!tokens.empty()) {
+	      if (tokDebug >= 2) 
+		*Log(theErrLog) << "[tokenizeLine] Assigned EOS" << endl;
+	      tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	    }			
+	  }
+	}			    
+	if ((word.length() > 0) && (expliciteosfound == -1)) {	    
+	  if (!tokenizeword) {	      
+	    //single character or nothing tokenisable found, so no need to tokenize anything
+	    if (tokDebug >= 2)
+	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
+			      << folia::UnicodeToUTF8( word ) << "]" << endl;;
+	    tokens.push_back( Token( &type_word, word ) );
+	  } 
+	  else {
+	    if (tokDebug >= 2)
+	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: [" 
+			      << folia::UnicodeToUTF8( word ) << "]" << endl;
+	    tokenizeWord( word, true );            
+	  } 
 	}
-      }        	
-    } 
-    else {
-      //ELSE print error message
-      *theErrLog << "ERROR: Invalid UTF-8 in line!" << endl;
-    }
+	//reset values for new word
+	reset = true;        
+      }
+      else if ( u_ispunct(c) || u_isdigit(c)) {
+	if (tokDebug) 
+	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
+			  << folia::UnicodeToUTF8( word ) << "]" << endl;
+	
+	//there is punctuation or digits in this word, mark to run through tokeniser
+	tokenizeword = true; 
+      }
+    }        	
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
       if (paragraphsignal) {
@@ -1611,7 +1606,7 @@ namespace Tokenizer {
       }
       vector<Rule*>::iterator it = rules.begin();
       while ( it != rules.end() ){
-	*Log(theErrLog) << "NU RULE-ORDER specified for RULE '" 
+	*Log(theErrLog) << "No RULE-ORDER specified for RULE '" 
 			<< folia::UnicodeToUTF8((*it)->id) << "'" << endl;
 	result.push_back( *it );
 	++it;
