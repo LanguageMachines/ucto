@@ -254,9 +254,6 @@ namespace Tokenizer {
     bool readquotes( const std::string& );
     bool readeosmarkers( const std::string& );
     
-    //Don't use this in normal processing, use flushSentences instead
-    void clear() { tokens.clear(); quotes.clearStack(); };
-
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;

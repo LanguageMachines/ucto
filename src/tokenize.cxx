@@ -1607,7 +1607,7 @@ namespace Tokenizer {
       vector<Rule*>::iterator it = rules.begin();
       while ( it != rules.end() ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '" 
-			<< folia::UnicodeToUTF8((*it)->id) << "'" << endl;
+			<< folia::UnicodeToUTF8((*it)->id) << "' (put at end)." << endl;
 	result.push_back( *it );
 	++it;
       }
