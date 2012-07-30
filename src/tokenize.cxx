@@ -775,13 +775,6 @@ namespace Tokenizer {
     return sentences;
   }  
 
-  bool TokenizerClass::terminatesWithEOS( ) const {
-    if ( tokens.size() < 1 )
-      return false;
-    else
-      return (tokens[tokens.size() - 1].role & ENDOFSENTENCE);
-  }
-  
   // FBK: return true if character is a quote.
   bool TokenizerClass::u_isquote(UChar c) {
     bool quote = false;

@@ -140,10 +140,10 @@ namespace Tokenizer {
     bool init( const std::string& );
     void setErrorLog( std::ostream *os ) { theErrLog = os; };
 
-    //Tokenize from input stream to FoLiA document
+    // Tokenize from input stream to FoLiA document
     folia::Document tokenize( std::istream& );
     
-    //tokenize folia document
+    // Tokenize a folia document
     bool tokenize(folia::Document& );
     
     //Tokenize from input stream to output stream
@@ -153,14 +153,13 @@ namespace Tokenizer {
       // for backward compatability
       return tokenize( *in, *out );};
     
-    //Tokenize a line (a line is NOT a sentence, but an arbitrary line of input)
-    int tokenizeLine( const UnicodeString& );
-    int tokenizeLine( const std::string& );
+    // Tokenize a line (a line is NOT a sentence, but an arbitrary string 
+    //                  of characters, inclusive EOS markers, Newlines etc.)
+    int tokenizeLine( const UnicodeString& ); // Unicode chars
+    int tokenizeLine( const std::string& );   // UTF8 chars
     
     void passthruLine( const std::string&, bool& );    
     
-    bool empty() const { return tokens.empty(); };
-        
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
     int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
     int flushSentences(const int); //Flush n sentences from buffer (does some extra validation as well)
@@ -170,13 +169,7 @@ namespace Tokenizer {
     
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
-            
-    void detectSentenceBounds( const int offset = 0 );
-    void detectQuoteBounds( const int );
-    
-    //Does the token buffer terminate with a proper EOS marker?
-    bool terminatesWithEOS( ) const;
-    
+
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
     bool getVerbose() { return verbose; }
@@ -249,6 +242,8 @@ namespace Tokenizer {
     void tokenizeWord( const UnicodeString&, bool);    
 
     bool detectEos( size_t ) const;
+    void detectSentenceBounds( const int offset = 0 );
+    void detectQuoteBounds( const int );
     
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar );
