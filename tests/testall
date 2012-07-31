@@ -5,7 +5,7 @@
 \rm testoutput/*.diff
 
 for file in testusage testlanguage testconf1 testconf2 testinclude \
-   	    testfiles1 testfiles2 testoption1 testoption2 \
+   	    testfiles1 testfiles2 testoption1 testoption2 testoption-s\
 	    testnormalisation testencoding2 testpassthru \
 	    testfolia testfolia2 testfoliain testslash testquotes
 do 
