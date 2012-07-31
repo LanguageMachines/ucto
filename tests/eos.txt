@@ -1,0 +1,6 @@
+Dit is een test. <EOS>Worden '<EOS>' markers goed verwerkt?<EOS>
+We zullen zien<EOS>
+
+einde<EOS><EOS>
+
+<EOS>
