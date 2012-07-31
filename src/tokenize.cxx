@@ -200,12 +200,9 @@ namespace Tokenizer {
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_unknown = "UNKNOWN";
 
-  //  const UnicodeString explicit_eos_marker = "<utt>";
-
   ostream& operator<<( ostream& os, const Quoting& q ){
     for( size_t i=0; i < q.quotes.size(); ++i ){
-      os << folia::UnicodeToUTF8(q.quotes[i].openQuote) 
-	 << "\t" << folia::UnicodeToUTF8( q.quotes[i].closeQuote ) << endl;
+      os << q.quotes[i].openQuote << "\t" << q.quotes[i].closeQuote << endl;
     }
     return os;
   }
@@ -271,8 +268,7 @@ namespace Tokenizer {
   
 
   ostream& operator<< (std::ostream& os, const Token& t ){
-    os << folia::UnicodeToUTF8( *t.type ) << " : " << t.role 
-       << ":" << folia::UnicodeToUTF8( t.us );
+    os << *t.type << " : " << t.role  << ":" << t.us;
     return os;
   }
   
@@ -287,10 +283,10 @@ namespace Tokenizer {
 
   ostream& operator<< (std::ostream& os, const Rule& r ){
     if ( r.regexp ){
-      os << folia::UnicodeToUTF8( r.id ) << "=\"" << folia::UnicodeToUTF8( r.regexp->Pattern() ) << "\"";
+      os << r.id << "=\"" << r.regexp->Pattern() << "\"";
     }
     else
-      os << folia::UnicodeToUTF8( r.id ) << "NULL";
+      os << r.id  << "=NULL";
     return os;
   }
 
@@ -578,20 +574,19 @@ namespace Tokenizer {
       }
       if (lowercase) {
 	UnicodeString s = toks[i].us;
-	OUT << folia::UnicodeToUTF8( s.toLower() );
+	OUT << s.toLower();
       } 
       else if (uppercase) {
 	UnicodeString s = toks[i].us;
-	OUT << folia::UnicodeToUTF8( s.toUpper() );
+	OUT << s.toUpper();
       } 
       else {
-	OUT << folia::UnicodeToUTF8( toks[i].us );
+	OUT << toks[i].us;
       }      
       if ( toks[i].role & NEWPARAGRAPH) quotelevel = 0;
       if ( toks[i].role & BEGINQUOTE) quotelevel++;
       if (verbose) {
-	OUT << "\t" +  folia::UnicodeToUTF8( *toks[i].type ) + "\t" 
-	    << toks[i].role << endl;
+	OUT << "\t" << *toks[i].type << "\t" << toks[i].role << endl;
       }
       if ( toks[i].role & ENDQUOTE) quotelevel--;
       
@@ -634,7 +629,7 @@ namespace Tokenizer {
     for (int i = begin; i < size; i++) {
       if (tokDebug >= 5)
 	*Log(theErrLog) << "[countSentences] buffer#" <<i 
-			<< " word=[" << folia::UnicodeToUTF8( tokens[i].us) 
+			<< " word=[" << tokens[i].us
 			<< "] role=" << tokens[i].role 
 			<< ", quotelevel="<< quotelevel << endl;
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
@@ -864,9 +859,8 @@ namespace Tokenizer {
         //FBK: CHECK FOR EOS AFTER QUOTES
         if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS 
             ((endindex + 1 < size) && (is_BOS(tokens[endindex+1].us[0])))) {
-	  //tokens[endindex-1].role ^= ENDOFSENTENCE;
 	  tokens[endindex].role |= ENDOFSENTENCE; 
-	  // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS        
+	  // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS
         } 
 	else if ( (endindex + 2 < size) 
 		  && (u_isquote(tokens[endindex+1].us[0])) 
@@ -950,11 +944,11 @@ namespace Tokenizer {
 	UnicodeString open = quotes.lookupClose( c );	
 	if ( !open.isEmpty() ) { // we have a closeing quote
 	  if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;	      
-	  if (!resolveQuote(i, open )) // resolve the matching opening
-	    if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
-	  //} 
-	  // else if (UnicodeString(c) == "―") {
-	  //TODO: Implement
+	  if (!resolveQuote(i, open )) { // resolve the matching opening
+	    if (tokDebug > 1 ) {
+	      *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
+	    } 
+	  }
 	}
       }
     }
@@ -976,7 +970,7 @@ namespace Tokenizer {
       }
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
-			<< folia::UnicodeToUTF8( tokens[i].us ) 
+			<< tokens[i].us
 			<<"] role=" << tokens[i].role << endl;
       if ( tokens[i].type->startsWith("PUNCTUATION") ) {
 	// we have some kind of punctuation. Does it mark an eos?
@@ -1144,7 +1138,7 @@ namespace Tokenizer {
   int TokenizerClass::tokenizeLine( const UnicodeString& originput ){ 
     if (tokDebug) 
       *Log(theErrLog) << "[tokenizeLine] input: line=[" 
-		      << folia::UnicodeToUTF8( originput ) << "]" << endl;
+		      << originput << "]" << endl;
     UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
       input = filter.filter( input );
@@ -1155,7 +1149,7 @@ namespace Tokenizer {
     }
     if (tokDebug) 
       *Log(theErrLog) << "[tokenizeLine] filtered input: line=[" 
-		      << folia::UnicodeToUTF8( input ) << "]" << endl;
+		      << input << "]" << endl;
     const int begintokencount = tokens.size();    
     if (tokDebug) *Log(theErrLog) << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
 
@@ -1177,7 +1171,7 @@ namespace Tokenizer {
       if ( u_isspace(c) || i == input.length()-1 ){
 	if (tokDebug)
 	  *Log(theErrLog) << "[tokenizeLine] space detected, word=[" 
-			  << folia::UnicodeToUTF8( word ) << "]" << endl;
+			  << word << "]" << endl;
 	if ( i == input.length()-1 ) {
 	  if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
 	} 
@@ -1194,7 +1188,7 @@ namespace Tokenizer {
 	      word.extract(0,expliciteosfound,realword);
 	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] Prefix before EOS: "
-				<< folia::UnicodeToUTF8( realword ) << endl;
+				<< realword << endl;
 	      tokenizeWord( realword, false );
 	      eospos++;
 	    }
@@ -1203,7 +1197,7 @@ namespace Tokenizer {
 	      word.extract(expliciteosfound+eosmark.length(),word.length() - expliciteosfound - eosmark.length(),realword);
 	      if (tokDebug >= 2) 
 		*Log(theErrLog) << "[tokenizeLine] postfix after EOS: "
-				<< folia::UnicodeToUTF8( realword ) << endl;
+				<< realword << endl;
 	      tokenizeWord( realword, true );
 	    }
 	    if ( !tokens.empty() && eospos >= 0 ) {
@@ -1218,13 +1212,13 @@ namespace Tokenizer {
 	    //single character or nothing tokenisable found, so no need to tokenize anything
 	    if (tokDebug >= 2)
 	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
-			      << folia::UnicodeToUTF8( word ) << "]" << endl;;
+			      << word << "]" << endl;;
 	    tokens.push_back( Token( &type_word, word ) );
 	  } 
 	  else {
 	    if (tokDebug >= 2)
 	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: [" 
-			      << folia::UnicodeToUTF8( word ) << "]" << endl;
+			      << word << "]" << endl;
 	    tokenizeWord( word, true );            
 	  } 
 	}
@@ -1234,7 +1228,7 @@ namespace Tokenizer {
       else if ( u_ispunct(c) || u_isdigit(c)) {
 	if (tokDebug) 
 	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
-			  << folia::UnicodeToUTF8( word ) << "]" << endl;
+			  << word << "]" << endl;
 	
 	//there is punctuation or digits in this word, mark to run through tokeniser
 	tokenizeword = true; 
@@ -1278,7 +1272,7 @@ namespace Tokenizer {
   void TokenizerClass::tokenizeWord( const UnicodeString& input, bool space ) {
     if ( tokDebug > 2 )
       *Log(theErrLog) << "   [tokenizeWord] Input: (" << input.length() << ") "
-		      << "word=[" << folia::UnicodeToUTF8( input ) << "]" << endl;
+		      << "word=[" << input << "]" << endl;
     if ( input == eosmark ) {
       if (tokDebug >= 2)
 	*Log(theErrLog) << "   [tokenizeWord] Found explicit EOS marker" << endl;
@@ -1331,19 +1325,17 @@ namespace Tokenizer {
     else {
       for ( unsigned int i = 0; i < rules.size(); i++) {
 	if ( tokDebug >= 4)
-	  *Log(theErrLog) << "\tTESTING " << folia::UnicodeToUTF8( rules[i]->id )
-			  << endl;
+	  *Log(theErrLog) << "\tTESTING " << rules[i]->id << endl;
 	//Find first matching rule
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rules[i]->matchAll( input, pre, post, matches ) ){
 	  if ( tokDebug >= 4 )
-	    *Log(theErrLog) << "\tMATCH: " << folia::UnicodeToUTF8( rules[i]->id )
-			    << endl;    
+	    *Log(theErrLog) << "\tMATCH: " << rules[i]->id << endl;    
 	  if ( pre.length() > 0 ){
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN pre-context (" << pre.length() 
-			      << "): [" << folia::UnicodeToUTF8( pre ) << "]" << endl;
+			      << "): [" << pre << "]" << endl;
 	    }
 	    tokenizeWord( pre, false ); //pre-context, no space after
 	  }
@@ -1354,7 +1346,7 @@ namespace Tokenizer {
 	    for ( int m=0; m < max; ++m ){
 	      if ( tokDebug >= 4 )
 		*Log(theErrLog) << "\tTOKEN match[" << m << "] = " 
-				<< folia::UnicodeToUTF8( matches[m] )<< endl; 
+				<< matches[m] << endl; 
 	      if ( post.length() > 0 ) space = false;
 	      tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
 	    }
@@ -1364,7 +1356,7 @@ namespace Tokenizer {
 	  if ( post.length() > 0 ){
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length() 
-			      << "): [" << folia::UnicodeToUTF8(post) << "]" << endl;
+			      << "): [" << post << "]" << endl;
 	    }
 	    tokenizeWord( post, space ? NOROLE : NOSPACE );
 	  }
@@ -1589,13 +1581,13 @@ namespace Tokenizer {
 	}
 	if ( !found ){
 	  *Log(theErrLog) << "RULE-ORDER specified for undefined RULE '" 
-			  << folia::UnicodeToUTF8( sort[i] ) << "'" << endl;
+			  << sort[i] << "'" << endl;
 	}
       }
       vector<Rule*>::iterator it = rules.begin();
       while ( it != rules.end() ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '" 
-			<< folia::UnicodeToUTF8((*it)->id) << "' (put at end)." << endl;
+			<< (*it)->id << "' (put at end)." << endl;
 	result.push_back( *it );
 	++it;
       }
@@ -1845,8 +1837,6 @@ namespace Tokenizer {
     if (!suffix_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("SUFFIX", "(\\p{Lu}|\\p{Ll}+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
     }
-    //rules.insert(rules.begin(), new Rule("EOSMARKER", "(?:.*)?(" + *eosmark + ")(?:.*)?")); 
-
     sortRules( rules, rules_order );
     return true;
   }
@@ -1863,7 +1853,7 @@ namespace Tokenizer {
       for ( size_t i=0; i < rules.size(); ++i ){
 	*Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
       }
-      *Log(theErrLog) << "EOS markers: " << folia::UnicodeToUTF8( eosmarkers ) << endl;
+      *Log(theErrLog) << "EOS markers: " << eosmarkers << endl;
       *Log(theErrLog) << "Quotations: " << quotes << endl;
       *Log(theErrLog) << "Filter: " << filter << endl;
     }
