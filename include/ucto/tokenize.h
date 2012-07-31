@@ -217,8 +217,8 @@ namespace Tokenizer {
     std::string getInputEncoding() const { return inputEncoding; };
     
     // set eos marker
-    std::string setEosMarker( const std::string& s = "<utt>") { std::string t = eosmark; eosmark = s; return t; };
-    std::string getEosMarker( ) { return eosmark; }
+    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
+    UnicodeString getEosMarker( ) { return eosmark; }
 
     bool setSentencePerLineOutput( bool b=true ) { bool t = sentenceperlineoutput; sentenceperlineoutput = b; return t; };
     bool getSentencePerLineOutput() { return sentenceperlineoutput; }
@@ -268,7 +268,7 @@ namespace Tokenizer {
     UnicodeString eosmarkers;
     std::string inputEncoding;
 
-    std::string eosmark;
+    UnicodeString eosmark;
     std::vector<Token> tokens;
     std::vector<Rule *> rules;
     std::ostream *theErrLog;

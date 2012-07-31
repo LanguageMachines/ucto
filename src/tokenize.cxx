@@ -23,21 +23,6 @@
   http://ilk.uvt.nl/frog
 */
 
-/* ************************************
- * 
- *  Original version by Maarten van Gompel, ILK, Tilburg University
- *     proycon AT anaproy DOT nl
- *
- *     Tilburg University
- *
- *     Licensed under GPLv3
- *
- *     v0.2 - 2010-05-11
- *     v0.3 - 2010-05-19 - Migration from GLIB to ICU, by Ko van der Sloot
- *     v0.4 - 2010-12-10 - promoted into a separate module
- *
- ************************************ */
-
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
@@ -105,8 +90,7 @@ namespace Tokenizer {
     RegexMatcher *matcher;
     UnicodeRegexMatcher();
     vector<UnicodeString> results;
-  };
-  
+  };  
   
   UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat ){
     failString = "";
@@ -216,7 +200,7 @@ namespace Tokenizer {
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_unknown = "UNKNOWN";
 
-  const UnicodeString explicit_eos_marker = "<utt>";
+  //  const UnicodeString explicit_eos_marker = "<utt>";
 
   ostream& operator<<( ostream& os, const Quoting& q ){
     for( size_t i=0; i < q.quotes.size(); ++i ){
@@ -234,7 +218,7 @@ namespace Tokenizer {
       for ( size_t i = 0; i < quotestack.size(); i++) {
 	if (quoteindexstack[i] >= beginindex ) {
 	  new_quotestack.push_back(quotestack[i]);
-	  new_quoteindexstack.push_back(quoteindexstack[i]-beginindex);			
+	  new_quoteindexstack.push_back(quoteindexstack[i]-beginindex);
 	}
       }
       quoteindexstack = new_quoteindexstack;
@@ -343,7 +327,7 @@ namespace Tokenizer {
       done = !getline( IN, line );
       stripCR( line );
       if ( sentenceperlineinput )
-	line += string(" ") + folia::UnicodeToUTF8(explicit_eos_marker);
+	line += string(" ") + folia::UnicodeToUTF8(eosmark);
       int numS;
       if ( (done) || (line.empty()) ){
 	signalParagraph();
@@ -464,7 +448,7 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
-    UnicodeString line = element->stricttext() + " "  + explicit_eos_marker;
+    UnicodeString line = element->stricttext() + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
 		      << line << endl;
@@ -620,8 +604,7 @@ namespace Tokenizer {
 	    OUT << endl;
 	  } 
 	  else {
-	    UnicodeString tmp = folia::UTF8ToUnicode( eosmark );
-	    OUT << " " + tmp;
+	    OUT << " " + eosmark;
 	  }
 	}
       }
@@ -1059,7 +1042,7 @@ namespace Tokenizer {
       
       if ( u_isspace(c)) {
 	if (tokDebug) *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
-	if ( word == explicit_eos_marker ) {
+	if ( word == eosmark ) {
 	  word = "";
 	  if (!tokens.empty()) 
 	    tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
@@ -1106,7 +1089,7 @@ namespace Tokenizer {
       }    
     }
     if (word != "") {
-      if ( word == explicit_eos_marker ) {
+      if ( word == eosmark ) {
 	word = "";
 	if (!tokens.empty()) 
 	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
@@ -1199,32 +1182,34 @@ namespace Tokenizer {
 	  if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
 	} 
 	int expliciteosfound = -1;
-	if ( word.length() >= explicit_eos_marker.length() ) {
-	  expliciteosfound = word.lastIndexOf(explicit_eos_marker);
+	if ( word.length() >= eosmark.length() ) {
+	  expliciteosfound = word.lastIndexOf(eosmark);
 	  
-	  if (expliciteosfound != -1) { // word contains explicit_eos_marker
+	  if (expliciteosfound != -1) { // word contains eosmark
 	    if (tokDebug >= 2) 
 	      *Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
+	    int eospos = tokens.size()-1;
 	    if (expliciteosfound > 0) {		    		    
 	      UnicodeString realword;		    
-	      word.extract(0,explicit_eos_marker.length(),realword);
+	      word.extract(0,expliciteosfound,realword);
 	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] Prefix before EOS: "
 				<< folia::UnicodeToUTF8( realword ) << endl;
 	      tokenizeWord( realword, false );
+	      eospos++;
 	    }
-	    if (expliciteosfound + explicit_eos_marker.length() < word.length())  {
+	    if (expliciteosfound + eosmark.length() < word.length())  {
 	      UnicodeString realword;		    
-	      word.extract(expliciteosfound+explicit_eos_marker.length(),word.length() - expliciteosfound - explicit_eos_marker.length(),realword);
+	      word.extract(expliciteosfound+eosmark.length(),word.length() - expliciteosfound - eosmark.length(),realword);
 	      if (tokDebug >= 2) 
-		*Log(theErrLog) << "[tokenizeLine] Prefix after EOS: "
+		*Log(theErrLog) << "[tokenizeLine] postfix after EOS: "
 				<< folia::UnicodeToUTF8( realword ) << endl;
 	      tokenizeWord( realword, true );
 	    }
-	    if (!tokens.empty()) {
+	    if ( !tokens.empty() && eospos >= 0 ) {
 	      if (tokDebug >= 2) 
 		*Log(theErrLog) << "[tokenizeLine] Assigned EOS" << endl;
-	      tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	      tokens[eospos].role |= ENDOFSENTENCE;
 	    }			
 	  }
 	}			    
@@ -1294,7 +1279,7 @@ namespace Tokenizer {
     if ( tokDebug > 2 )
       *Log(theErrLog) << "   [tokenizeWord] Input: (" << input.length() << ") "
 		      << "word=[" << folia::UnicodeToUTF8( input ) << "]" << endl;
-    if ( input == explicit_eos_marker ) {
+    if ( input == eosmark ) {
       if (tokDebug >= 2)
 	*Log(theErrLog) << "   [tokenizeWord] Found explicit EOS marker" << endl;
       if (!tokens.empty()) {
@@ -1338,8 +1323,11 @@ namespace Tokenizer {
 	  type = &type_unknown;
 	}
       } 
-      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) ); 
-    } 
+      Token T( type, input, space ? NOROLE : NOSPACE );
+      tokens.push_back( T );
+      if (tokDebug >= 2) 
+	*Log(theErrLog) << "   [tokenizeWord] added token " << T << endl;
+    }
     else {
       for ( unsigned int i = 0; i < rules.size(); i++) {
 	if ( tokDebug >= 4)
@@ -1857,7 +1845,7 @@ namespace Tokenizer {
     if (!suffix_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("SUFFIX", "(\\p{Lu}|\\p{Ll}+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
     }
-    //rules.insert(rules.begin(), new Rule("EOSMARKER", "(?:.*)?(" + *explicit_eos_marker + ")(?:.*)?")); 
+    //rules.insert(rules.begin(), new Rule("EOSMARKER", "(?:.*)?(" + *eosmark + ")(?:.*)?")); 
 
     sortRules( rules, rules_order );
     return true;
