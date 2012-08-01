@@ -295,7 +295,7 @@ namespace Tokenizer {
     theErrLog(&cerr), 
     tokDebug(0), verbose(false), 
     detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
-    paragraphsignal(true),sentencesignal(true),
+    paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
     xmlout(false), passthru(false)
@@ -781,7 +781,9 @@ namespace Tokenizer {
     bool is_bos = false;
     UBlockCode s = ublock_getCode(c);
     //test for languages that distinguish case
-    if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+    if ( (s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) 
+	 || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) 
+	 || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
       if ( u_isupper(c) || u_istitle(c) ) {
 	//next 'word' starts with more punctuation or with uppercase
 	is_bos = true;
@@ -957,17 +959,7 @@ namespace Tokenizer {
   void TokenizerClass::detectSentenceBounds( const int offset ){
     //find sentences
     const int size = tokens.size();    
-          
-    if (sentenceperlineinput) {
-      tokens[offset].role |= BEGINOFSENTENCE;
-      tokens[size - 1].role |= ENDOFSENTENCE;
-    }
-    
     for (int i = offset; i < size; i++) {
-      if ((offset == 0) && (sentencesignal)) {
-	tokens[i].role |= BEGINOFSENTENCE;
-	sentencesignal = false;
-      }
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
 			<< tokens[i].us
@@ -976,9 +968,39 @@ namespace Tokenizer {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
-	  if ((detectQuotes) && (!quotes.emptyStack())) {
+	  if ((tokDebug > 1 )) 
+	    *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
+	  tokens[i].role |= ENDOFSENTENCE;
+	  //if this is the end of the sentence, the next token is the beginning of a new one
+	  if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
+	    tokens[i+1].role |= BEGINOFSENTENCE;
+	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
+	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
+	    tokens[i-1].role ^= ENDOFSENTENCE; 
+	    if (tokens[i].role & BEGINOFSENTENCE) {
+	      tokens[i].role ^= BEGINOFSENTENCE;
+	    }
+	  }   		
+	}	  	  
+      }
+    }
+  }    
+
+  void TokenizerClass::detectQuotedSentenceBounds( const int offset ){
+    //find sentences
+    const int size = tokens.size();    
+    for (int i = offset; i < size; i++) {
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectQuotedSentenceBounds] i="<< i << " word=[" 
+			<< tokens[i].us
+			<<"] role=" << tokens[i].role << endl;
+      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+	// we have some kind of punctuation. Does it mark an eos?
+	bool is_eos = detectEos( i );
+	if (is_eos) {
+	  if ( !quotes.emptyStack() ) {
 	    if ((tokDebug > 1 )) 
-	      *Log(theErrLog) << "[detectSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
+	      *Log(theErrLog) << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
 	    //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
 	    tokens[i].role |= TEMPENDOFSENTENCE;
 	    //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
@@ -986,9 +1008,8 @@ namespace Tokenizer {
 	      tokens[i-1].role ^= TEMPENDOFSENTENCE;
 	  } 
 	  else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
-	    sentencesignal = true;
 	    if ((tokDebug > 1 )) 
-	      *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
+	      *Log(theErrLog) << "[detectQuotedSentenceBounds] EOS FOUND @i=" << i << endl;
 	    tokens[i].role |= ENDOFSENTENCE;
 	    //if this is the end of the sentence, the next token is the beginning of a new one
 	    if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
@@ -1002,10 +1023,8 @@ namespace Tokenizer {
 	    }   		
 	  }	  	  
 	} 
-	if (detectQuotes) {
-	  //check for other bounds
-	  detectQuoteBounds(i);
-	}
+	//check quotes
+	detectQuoteBounds(i);
       }
     }
   }    
@@ -1240,8 +1259,24 @@ namespace Tokenizer {
 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
 	paragraphsignal = false;
       }
-      if ( detectBounds )
-	detectSentenceBounds( begintokencount );  //find sentence boundaries
+      if ( detectBounds ){
+	//find sentence boundaries
+	if (sentenceperlineinput) {
+	  tokens[begintokencount].role |= BEGINOFSENTENCE;
+	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	  if ( detectQuotes ){
+	    detectQuotedSentenceBounds( begintokencount ); 
+	  }
+	}
+	else {
+	  if ( detectQuotes ){
+	    detectQuotedSentenceBounds( begintokencount ); 
+	  }
+	  else {
+	    detectSentenceBounds( begintokencount );
+	  }
+	}
+      }
     }
     return numNewTokens;
   }

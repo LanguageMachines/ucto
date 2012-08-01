@@ -243,6 +243,7 @@ namespace Tokenizer {
 
     bool detectEos( size_t ) const;
     void detectSentenceBounds( const int offset = 0 );
+    void detectQuotedSentenceBounds( const int offset = 0 );
     void detectQuoteBounds( const int );
     
     bool resolveQuote( int, const UnicodeString& );
@@ -294,8 +295,6 @@ namespace Tokenizer {
     
     //has a paragraph been signaled?
     bool paragraphsignal;
-    //has a sentence been signaled?
-    bool sentencesignal;
     
     //one sentence per line output
     bool sentenceperlineoutput;
