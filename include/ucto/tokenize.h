@@ -234,9 +234,6 @@ namespace Tokenizer {
     bool setXMLOutput(bool b, std::string id) { bool t = xmlout; docid = id; xmlout = b; return t; }
     bool setXMLInput(bool b) { bool t = xmlin; xmlin = b; return t; }
     
-    //Signal the tokeniser that a paragraph is detected
-    void signalParagraph( bool b=true ) { paragraphsignal = b; };
-    
     void outputTokens( std::ostream&, const std::vector<Token>& ) const;
   private:
     void tokenizeWord( const UnicodeString&, bool);    
@@ -245,7 +242,9 @@ namespace Tokenizer {
     void detectSentenceBounds( const int offset = 0 );
     void detectQuotedSentenceBounds( const int offset = 0 );
     void detectQuoteBounds( const int );
-    
+    //Signal the tokeniser that a paragraph is detected
+    void signalParagraph( bool b=true ) { paragraphsignal = b; };
+        
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar );
 
