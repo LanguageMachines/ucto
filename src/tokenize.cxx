@@ -1870,7 +1870,7 @@ namespace Tokenizer {
       rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "(\\p{Lu}|\\p{Ll}+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
     }
     sortRules( rules, rules_order );
     return true;
