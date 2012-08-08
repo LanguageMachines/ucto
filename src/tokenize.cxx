@@ -37,8 +37,7 @@
 #include "ucto/tokenize.h"
 
 using namespace std;
-
-#define Log
+using namespace TiCC;
 
 namespace Tokenizer {
 
@@ -292,14 +291,23 @@ namespace Tokenizer {
 
   TokenizerClass::TokenizerClass():
     inputEncoding( "UTF-8" ), eosmark("<utt>"), 
-    theErrLog(&cerr), 
     tokDebug(0), verbose(false), 
     detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
-    xmlout(false), passthru(false)
-  {}
+    xmlout(false), passthru(false) 
+  { 
+    theErrLog = new TiCC::LogStream(cerr);
+    theErrLog->setstamp( NoStamp );
+  }
+
+  void TokenizerClass::setErrorLog( TiCC::LogStream *os ) { 
+    if ( theErrLog != os ){
+      delete theErrLog;
+    }
+    theErrLog = os; 
+  }
 
   string TokenizerClass::setInputEncoding( const std::string& enc ){
     string old = inputEncoding;

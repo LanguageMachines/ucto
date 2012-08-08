@@ -33,6 +33,7 @@
 #include "config.h"
 #include "ucto/unicode.h"
 #include "libfolia/document.h"
+#include "ticcutils/LogStream.h"
 
 namespace Tokenizer {
 
@@ -138,7 +139,7 @@ namespace Tokenizer {
     TokenizerClass();
     ~TokenizerClass();
     bool init( const std::string& );
-    void setErrorLog( std::ostream *os ) { theErrLog = os; };
+    void setErrorLog( TiCC::LogStream *os );
 
     // Tokenize from input stream to FoLiA document
     folia::Document tokenize( std::istream& );
@@ -271,8 +272,7 @@ namespace Tokenizer {
     UnicodeString eosmark;
     std::vector<Token> tokens;
     std::vector<Rule *> rules;
-    std::ostream *theErrLog;
-
+    TiCC::LogStream *theErrLog;
     
     //debug flag
     int tokDebug;
