@@ -42,7 +42,6 @@ if test $prefix = "NONE"; then
 fi
 
 # Checks for header files.
-AC_CHECK_HEADERS([unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
