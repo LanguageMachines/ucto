@@ -23,8 +23,8 @@
       http://ilk.uvt.nl/frog
 */
 
-#ifndef TOKENIZE_H
-#define TOKENIZE_H
+#ifndef UCTO_TOKENIZE_H
+#define UCTO_TOKENIZE_H
 
 #include <vector>
 #include <map>

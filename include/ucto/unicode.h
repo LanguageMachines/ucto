@@ -26,8 +26,8 @@
       Timbl@uvt.nl
 */
 
-#ifndef UNICODE_H
-#define UNICODE_H
+#ifndef UCTO_UNICODE_H
+#define UCTO_UNICODE_H
 
 #include <string>
 #include <map>
@@ -61,4 +61,4 @@ namespace Tokenizer {
   
 } // namespace
 
-#endif // UNICODE_H
+#endif // UCTO_UNICODE_H
