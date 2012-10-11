@@ -1,4 +1,4 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="folia2" generator="libfolia-v0.10">
   <metadata type="native">
@@ -66,7 +66,7 @@
               <t>buren</t>
             </w>
             <w xml:id="folia2.p.1.s.1.quote.1.s.1.w.16" class="WORD" space="no">
-              <t>&#xE8;h</t>
+              <t>èh</t>
             </w>
             <w xml:id="folia2.p.1.s.1.quote.1.s.1.w.17" class="PUNCTUATION-MULTI">
               <t>...</t>
