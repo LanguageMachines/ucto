@@ -470,7 +470,7 @@ namespace Tokenizer {
   
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
-    doc.addStyle( "type=\"text/xsl\" href=\"folia.xsl\"" );
+    doc.addStyle( "text/xsl", "folia.xsl" );
     doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
