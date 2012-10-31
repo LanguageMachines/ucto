@@ -1,0 +1,8 @@
+#/bin/sh
+# $Id: testencoding2 13508 2011-11-02 15:44:17Z sloot $
+# $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/tests/testencoding2 $
+
+exe=../src/ucto
+
+$exe -c ../config/tokconfig-nl-twitter twitter.txt
+
