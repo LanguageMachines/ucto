@@ -42,11 +42,11 @@ PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 DATE=\p{N}{1,2}-\p{N}{1,2}-\p{N}{2,4}
 DATE-REVERSE=\p{N}{4}-\p{N}{1,2}-\p{N}{1,2}
 
-NUMBER-YEAR=('\p{N}{2})(?:\P{N}|\z)
+NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
 
 #Times
-TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N})?(?i:am|pm)?
+TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
 
 #retain digits, including those starting with initial period (.22), and negative numbers
 NUMBER=-?(?:[\.,]?\p{N}+)+
@@ -63,9 +63,10 @@ UNKNOWN=.
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-'s
-'t
-'n
+\['`’]s
+\['`’]t
+\['`’]n
+\['`’]r
 
 [ORDINALS]
 e
@@ -75,11 +76,12 @@ er
 
 
 [TOKENS]
-'s
-'k
-'m
-'n
-'t
+\['`’]s
+\['`’]k
+\['`’]m
+\['`’]n
+\['`’]t
+\['`’]ie
 
 [UNITS]
 km
