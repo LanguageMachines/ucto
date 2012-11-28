@@ -1546,6 +1546,30 @@ namespace Tokenizer {
     return true;
   }
   
+  bool TokenizerClass::readabbreviations( const string& fname,
+					  UnicodeString& abbrev_pattern ) {
+    if ( tokDebug > 0 )
+      *theErrLog << "%include " << fname << endl;
+    ifstream f(fname.c_str());
+    if ( !f ){
+      return false;
+    }    
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 )
+	    *theErrLog << "include line = " << rawline << endl;
+	  if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
+	  abbrev_pattern += line;
+	}
+      }
+    }
+    return true;
+  }
+  
   ConfigMode getMode( const UnicodeString& line ) {
     ConfigMode mode = NONE;
     if (line == "[RULES]") {
@@ -1703,6 +1727,13 @@ namespace Tokenizer {
 	    string file = rawline.substr( 9 );
 	    file = confdir + file + ".eos";
 	    if ( !readeosmarkers( file ) )
+	      throw uConfigError( "%include '" + file + "' failed" );
+	  }
+	    break;
+	  case ABBREVIATIONS:{
+	    string file = rawline.substr( 9 );
+	    file = confdir + file + ".abr";
+	    if ( !readabbreviations( file, abbrev_pattern ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;

@@ -254,6 +254,7 @@ namespace Tokenizer {
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );
     bool readeosmarkers( const std::string& );
+    bool readabbreviations( const std::string&, UnicodeString& );
     
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
