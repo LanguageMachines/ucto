@@ -469,10 +469,22 @@ namespace Tokenizer {
     flushSentences(numS);	
   }
   
+  string getTime() {
+    time_t Time;
+    time(&Time);
+    tm curtime;
+    localtime_r(&Time,&curtime);
+    char buf[256];
+    strftime( buf, 100, "%Y-%m-%dT%X", &curtime );
+    string res = buf;
+    return res;
+  }
+
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
-    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
+    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, 
+		 "annotator='ucto', annotatortype='auto', datetime='" + getTime() + "'");
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     folia::FoliaElement *root = doc.doc()->index(0);
