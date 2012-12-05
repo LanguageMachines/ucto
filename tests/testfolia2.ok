@@ -3,7 +3,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="folia2" generator="libfolia-v0.10">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2012-12-05T23:12:18" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="folia2.text">

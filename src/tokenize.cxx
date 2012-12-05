@@ -452,7 +452,7 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
     folia::Document *doc = element->doc();
-    doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
+    doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     UnicodeString line = element->stricttext() + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
@@ -469,22 +469,11 @@ namespace Tokenizer {
     flushSentences(numS);	
   }
   
-  string getTime() {
-    time_t Time;
-    time(&Time);
-    tm curtime;
-    localtime_r(&Time,&curtime);
-    char buf[256];
-    strftime( buf, 100, "%Y-%m-%dT%X", &curtime );
-    string res = buf;
-    return res;
-  }
-
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
     doc.declare( folia::AnnotationType::TOKEN, settingsfilename, 
-		 "annotator='ucto', annotatortype='auto', datetime='" + getTime() + "'");
+		 "annotator='ucto', annotatortype='auto', datetime='now()'");
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     folia::FoliaElement *root = doc.doc()->index(0);
