@@ -382,7 +382,6 @@ namespace Tokenizer {
   }
   
   bool TokenizerClass::tokenize( folia::Document& doc ) {
-    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
     if (tokDebug >= 2) *Log(theErrLog) << "tokenize doc " << doc << endl;
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
@@ -452,6 +451,8 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
+    folia::Document *doc = element->doc();
+    doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto'" );
     UnicodeString line = element->stricttext() + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
