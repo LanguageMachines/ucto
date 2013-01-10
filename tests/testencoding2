@@ -6,3 +6,5 @@ exe=../src/ucto
 
 $exe -L nl encoding2.nl
 $exe -L nl -e LATIN1 encoding2.nl
+$exe -L nl -e JEL utf8bom.nl
+$exe -L nl utf16bom.nl
