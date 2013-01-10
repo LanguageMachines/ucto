@@ -30,6 +30,7 @@
 #include <sstream>
 #include "unicode/ustream.h"
 #include "unicode/regex.h"
+#include "unicode/ucnv.h"
 #include "ucto/unicode.h"
 #include "config.h"
 #include "libfolia/document.h"
@@ -1146,8 +1147,23 @@ namespace Tokenizer {
     }
   }
 
+  string TokenizerClass::checkBOM( const string& s, string& enc ){
+    UErrorCode err = U_ZERO_ERROR;
+    int32_t bomLength = 0;
+    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(),s.length(),
+							&bomLength, &err);
+    if ( bomLength ){
+      enc = encoding;
+      if (tokDebug) 
+	*Log(theErrLog) << "Autdetected encoding: " << enc << endl;
+      return s.substr( bomLength );
+    }
+    return s;
+  }
+  
   // string wrapper
-  int TokenizerClass::tokenizeLine( const string& s ){
+  int TokenizerClass::tokenizeLine( const string& in_s ){
+    string s = checkBOM( in_s, inputEncoding );
     UnicodeString uinputstring;
     try {
       uinputstring = UnicodeString( s.c_str(), s.length(), inputEncoding.c_str() );
