@@ -1003,11 +1003,10 @@ namespace Tokenizer {
 	}
 	else if ( isClosing(tokens[i] ) ) {
 	  // we have a closing symbol
-	  //	if ((tokDebug > 1 )) 
-	  *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
+	  if ((tokDebug > 1 )) 
+	    *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    *Log(theErrLog) << "prev is EOS" << endl;
 	    tokens[i-1].role ^= ENDOFSENTENCE; 
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	      tokens[i].role ^= BEGINOFSENTENCE;
@@ -1057,11 +1056,10 @@ namespace Tokenizer {
 	}
 	else if ( isClosing(tokens[i] ) ) {
 	  // we have a closing symbol
-	  //	if ((tokDebug > 1 )) 
-	  *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
+	  if ((tokDebug > 1 )) 
+	    *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    *Log(theErrLog) << "prev is EOS" << endl;
 	    tokens[i-1].role ^= ENDOFSENTENCE; 
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	      tokens[i].role ^= BEGINOFSENTENCE;
