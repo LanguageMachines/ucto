@@ -2,7 +2,7 @@
 WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW URL-DOMAIN
 E-MAIL WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
 ABBREVIATION INITIALS INITIAL SMILEY REVERSE-SMILEY PUNCTUATION-MULTI DATE DATE-REVERSE
-NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
+NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN 
 
 [RULES]
 %include url
@@ -31,7 +31,7 @@ PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 DATE=\p{N}{1,2}-\p{N}{1,2}-\p{N}{2,4}
 DATE-REVERSE=\p{N}{4}-\p{N}{1,2}-\p{N}{1,2}
 
-NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
+NUMBER-YEAR=('\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
 
 #Times
@@ -49,32 +49,14 @@ PUNCTUATION=\p{P}
 UNKNOWN=.
 
 [PREFIXES]
-qu['`’]
-l['`’]
-d['`’]
-m['`’]
-n['`’]
-t['`’]
-s['`’]
-c['`’]
-j['`’]
-
 
 [SUFFIXES]
 
 [ORDINALS]
+o
+a
 
 [TOKENS]
-qu['`’]
-l['`’]
-d['`’]
-m['`’]
-n['`’]
-t['`’]
-s['`’]
-c['`’]
-j['`’]
-
 
 [UNITS]
 km
@@ -95,22 +77,13 @@ kb
 
 [CURRENCY]
 EUR
-CAD
 
 [ABBREVIATIONS]
-
-
-[FILTER]
-ﬂ fl
-ﬀ ff
-ﬃ ffi
-ﬄ ffl
-# also filter soft hyphen 
-\u00AD
-
+%include es
 
 [EOSMARKERS]
 %include standard-eos
 
 [QUOTES]
 %include standard-quotes
+%include exotic-quotes

@@ -1,11 +1,18 @@
+[RULE-ORDER]
+WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW URL-DOMAIN
+E-MAIL WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
+ABBREVIATION INITIALS INITIAL SMILEY REVERSE-SMILEY PUNCTUATION-MULTI DATE DATE-REVERSE
+NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
+
 [RULES]
 %include url
 %include e-mail
+%include smiley
 
-#Ex (oud)-studente(s)
+#Ex (alt)-studente()
 WORD-PARPREFIX-PARSUFFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{Pd}]?\p{L}+\p{Pe})
 
-#Ex: (oud)-studente, (on)zin,
+#Ex: (un)verstehbar,
 WORD-PARPREFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*
 
 #Ex: könig(in)
@@ -206,9 +213,17 @@ zus
 Ztr
 zzgl
 
+[FILTER]
+ﬂ fl
+ﬀ ff
+ﬃ ffi
+ﬄ ffl
+# also filter soft hyphen 
+\u00AD
+
+
 [EOSMARKERS]
 %include standard-eos
-%include exotic-eos
 
 [QUOTES]
 %include standard-quotes
