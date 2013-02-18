@@ -453,12 +453,22 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element ){
     folia::Document *doc = element->doc();
-    doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
+    if ( passthru ){
+      doc->declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
+    }
+    else {
+      doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
+    }
     UnicodeString line = element->stricttext() + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
 		      << line << endl;
-    tokenizeLine(line);		
+    if ( passthru ){
+      bool bos = true;
+      passthruLine( folia::UnicodeToUTF8(line), bos );
+    }
+    else
+      tokenizeLine( line );		
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
@@ -536,7 +546,10 @@ namespace Tokenizer {
       folia::KWargs args;
       args["generate_id"] = lastS->id();
       args["class"] = folia::UnicodeToUTF8( *tv[i].type );
-      args["set"] = settingsfilename;
+      if ( passthru )
+	args["set"] = "passthru";
+      else
+	args["set"] = settingsfilename;
       if ( tv[i].role & NOSPACE) {
 	args["space"]= "no";
       }
