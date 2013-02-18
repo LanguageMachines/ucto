@@ -536,6 +536,7 @@ namespace Tokenizer {
       folia::KWargs args;
       args["generate_id"] = lastS->id();
       args["class"] = folia::UnicodeToUTF8( *tv[i].type );
+      args["set"] = settingsfilename;
       if ( tv[i].role & NOSPACE) {
 	args["space"]= "no";
       }
