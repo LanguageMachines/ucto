@@ -483,8 +483,13 @@ namespace Tokenizer {
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
-    doc.declare( folia::AnnotationType::TOKEN, settingsfilename, 
-		 "annotator='ucto', annotatortype='auto', datetime='now()'");
+    if ( passthru ){
+      doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
+    }
+    else {
+      doc.declare( folia::AnnotationType::TOKEN, settingsfilename, 
+		   "annotator='ucto', annotatortype='auto', datetime='now()'");
+    }
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     folia::FoliaElement *root = doc.doc()->index(0);
