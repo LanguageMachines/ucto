@@ -82,7 +82,7 @@ int main( int argc, char *argv[] ){
   bool verbose = false;
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
-  string textclass;
+  string textclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
   string cfile = "tokconfig-en";
