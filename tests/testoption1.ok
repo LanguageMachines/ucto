@@ -24,4 +24,5 @@ Options:
 	-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised.
 	-X              - Output FoLiA XML, use the Document ID specified with --id=
 	--id <DocID>    - use the specified Document ID to label the FoLia doc.
+	--textclass <class> - use the specified class to search text in the the FoLia doc.
 	                  (-x and -F disable usage of most other options: -nulPQVsS)
