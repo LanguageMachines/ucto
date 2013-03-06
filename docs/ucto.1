@@ -1,4 +1,4 @@
-.TH ucto 1 "2011 november 28"
+.TH ucto 1 "2013 march 6"
 
 .SH NAME
 ucto - Unicode Tokenizer
@@ -95,16 +95,39 @@ Show version information
 set Verbose mode
 .RE
 
-.B -x
-<DocId>
-.RS
-Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: -nulPQvsS)
-.RE
-
 .B -F
 .RS
 Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: -nulPQvsS)
+.RE
 
+.BR --textclass " cls"
+.RS
+When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
+.RE
+
+.B -X
+.RS
+Output FoLiA XML. (this disables usage of most other options: -nulPQvsS)
+.RE	
+
+.B --id
+<DocId>
+.RS
+Use the specified Document ID for the FoLiA XML
+.RE
+
+.B -x
+<DocId>
+.B (obsolete)
+.RS
+Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: -nulPQvsS)
+
+.B obsolete
+Use 
+.B -X 
+and 
+.B --id
+instead
 .RE
 
 .SH BUGS
