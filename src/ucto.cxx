@@ -63,6 +63,7 @@ void usage(){
        << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t-X              - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>    - use the specified Document ID to label the FoLia doc." << endl
+       << "\t--textclass <class> - use the specified class to search text in the the FoLia doc." << endl
        << "\t                  (-x and -F disable usage of most other options: -nulPQVsS)" << endl;
 }
 
@@ -81,6 +82,7 @@ int main( int argc, char *argv[] ){
   bool verbose = false;
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
+  string textclass;
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
   string cfile = "tokconfig-en";
@@ -91,6 +93,7 @@ int main( int argc, char *argv[] ){
 
   static struct option longOpts[] = { { "passthru", 0, 0, 1 },
 				      { "id", 1, 0, 2 },
+				      { "textclass", 1, 0, 3 },
 				      { 0,0,0,0} };
 
   int opt;
@@ -125,6 +128,7 @@ int main( int argc, char *argv[] ){
 	case 'x': xmlout = true; docid = optarg; break;
 	case 'X': xmlout = true; break;
 	case 2: docid = optarg; break;
+	case 3: textclass = optarg; break;
 	default: usage(); return EXIT_SUCCESS;
 	}
     }
@@ -211,6 +215,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setNormalization( normalization );
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
+    tokenizer.setTextClass(textclass);
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
 

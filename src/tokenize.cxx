@@ -297,7 +297,7 @@ namespace Tokenizer {
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
-    xmlout(false), passthru(false) 
+    xmlout(false), passthru(false), textclass("current")
   { 
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
@@ -397,7 +397,7 @@ namespace Tokenizer {
       // shortcut
       return;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
-    if ( element->hastext() ) {
+    if ( element->hastext( textclass ) ) {
       // We have an element which contains text. That's nice
       // now we must see wether some 'formatting' is there. ( like Words() or
       // Sentences() )
@@ -459,7 +459,7 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
-    UnicodeString line = element->stricttext() + " "  + eosmark;
+    UnicodeString line = element->stricttext( textclass ) + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
 		      << line << endl;

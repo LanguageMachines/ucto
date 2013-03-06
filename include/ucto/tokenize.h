@@ -173,31 +173,31 @@ namespace Tokenizer {
 
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
-    bool getVerbose() { return verbose; }
+    bool getVerbose() const { return verbose; }
     
     //set debug value
     int setDebug( int d ) { bool dd = tokDebug; tokDebug = d; return dd; };
-    int getDebug() { return tokDebug; }
+    int getDebug() const { return tokDebug; }
     
     //Enable conversion of all output to lowercase
     bool setLowercase( bool b=true ) { bool t = lowercase; lowercase = b; if (b) uppercase = false; return t; };
-    bool getLowercase() { return lowercase; }
+    bool getLowercase() const { return lowercase; }
 
     //Enable passtru mode
     bool setPassThru( bool b=true ) { bool t = passthru; passthru = b; return t; };
-    bool getPassThru() { return passthru; }
+    bool getPassThru() const { return passthru; }
     
     //Enable conversion of all output to uppercase
     bool setUppercase( bool b=true ) { bool t = uppercase; uppercase = b; if (b) lowercase = false; return t; };
-    bool getUppercase() { return uppercase; }
+    bool getUppercase() const { return uppercase; }
 
     //Enable sentence-bound detection
     bool setSentenceDetection( bool b=true ) { bool t = detectBounds; detectBounds = b; return t; }
-    bool getSentenceDetection() { return detectBounds; }
+    bool getSentenceDetection() const { return detectBounds; }
     
     //Enable paragraph detection
     bool setParagraphDetection( bool b=true ) { bool t = detectPar; detectPar = b; return t; }
-    bool getParagraphDetection() { return detectPar; }
+    bool getParagraphDetection() const { return detectPar; }
     
     //Enable quote detection
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
@@ -219,21 +219,27 @@ namespace Tokenizer {
     
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
-    UnicodeString getEosMarker( ) { return eosmark; }
+    UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setSentencePerLineOutput( bool b=true ) { bool t = sentenceperlineoutput; sentenceperlineoutput = b; return t; };
-    bool getSentencePerLineOutput() { return sentenceperlineoutput; }
+    bool getSentencePerLineOutput() const { return sentenceperlineoutput; }
     
     bool setSentencePerLineInput( bool b=true ) { bool t = sentenceperlineinput; sentenceperlineinput = b; return t; };
-    bool getSentencePerLineInput() { return sentenceperlineinput; }    
+    bool getSentencePerLineInput() const { return sentenceperlineinput; }    
     
-    std::string getDocID() { return docid; }
-    bool getXMLOutput() { return xmlout; }
-    bool getXMLInput() { return xmlin; }
+    std::string getDocID() const { return docid; }
+    bool getXMLOutput() const { return xmlout; }
+    bool getXMLInput() const { return xmlin; }
+
+    const std::string getTextClass( ) const { return textclass; }
+    const std::string setTextClass( const std::string& cls) {  
+      std::string res = textclass;
+      textclass = cls;
+      return res;
+    }
     
-    
-    bool setXMLOutput(bool b, std::string id) { bool t = xmlout; docid = id; xmlout = b; return t; }
-    bool setXMLInput(bool b) { bool t = xmlin; xmlin = b; return t; }
+    bool setXMLOutput( bool b, const std::string& id) { bool t = xmlout; docid = id; xmlout = b; return t; }
+    bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
     
     void outputTokens( std::ostream&, const std::vector<Token>& ) const;
   private:
@@ -309,6 +315,7 @@ namespace Tokenizer {
 
     std::string settingsfilename;
     std::string docid; //document ID (UTF-8), necessary for XML output 
+    std::string textclass; // class for folia text
   };
 
   template< typename T >
