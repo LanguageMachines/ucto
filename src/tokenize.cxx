@@ -940,12 +940,16 @@ namespace Tokenizer {
     }
     else { //no period
       //Check for other EOS markers
-      if ( eosmarkers.indexOf( c ) >= 0 )
+      if ( !detectQuotes && (c == '\'' || c == '"')
+	   && (i + 1 == tokens.size() ) ) {	//No next character? 
+	is_eos = true; //Newline after single quote
+      }
+      else if ( eosmarkers.indexOf( c ) >= 0 ){
 	is_eos = true;
+      }
     }
     return is_eos;
   }
-  
   
   void TokenizerClass::detectQuoteBounds( const int i ) {
     UChar c = tokens[i].us[0]; 
@@ -1001,7 +1005,8 @@ namespace Tokenizer {
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
 			<< tokens[i].us
-			<<"] role=" << tokens[i].role << endl;
+			<< "] type=" << *tokens[i].type
+			<< ", role=" << tokens[i].role << endl;
       if ( tokens[i].type->startsWith("PUNCTUATION") ) {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
