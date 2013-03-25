@@ -2,7 +2,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.10" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2012-12-05T23:18:37" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-03-25T14:43:24" set="tokconfig-nl"/>
       <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
     </annotations>
@@ -12,64 +12,61 @@
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <t>Vanessa29 doet een dansje \\o \o&gt; \o/ &lt;o/ o//</t>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD" space="no">
-            <t>Vanessa</t>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="LET-NUMBER">
+            <t>Vanessa29</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2" class="NUMBER">
-            <t>29</t>
-          </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.3" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2" class="WORD">
             <t>doet</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.3" class="WORD">
             <t>een</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD">
             <t>dansje</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION" space="no">
             <t>\</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="PUNCTUATION">
             <t>\</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="WORD">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="PUNCTUATION" space="no">
             <t>\</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="UNKNOWN">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="UNKNOWN">
             <t>&gt;</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION" space="no">
             <t>\</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="PUNCTUATION">
             <t>/</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.15" class="UNKNOWN" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="UNKNOWN" space="no">
             <t>&lt;</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.16" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.15" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.17" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.16" class="PUNCTUATION">
             <t>/</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.18" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.17" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.19" class="PUNCTUATION" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.18" class="PUNCTUATION" space="no">
             <t>/</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.20" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.19" class="PUNCTUATION">
             <t>/</t>
           </w>
         </s>

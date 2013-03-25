@@ -1,5 +1,6 @@
 [RULE-ORDER]
-WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW URL-DOMAIN
+WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL  NUMBER-STRING
+LET-NUMBER URL URL-WWW URL-DOMAIN
 E-MAIL WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
 ABBREVIATION INITIALS INITIAL SMILEY REVERSE-SMILEY PUNCTUATION-MULTI DATE DATE-REVERSE
 NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN 
@@ -20,7 +21,7 @@ WORD-PARPREFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{
 WORD-PARSUFFIX=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{Pd}]?\p{L}+\p{Pe})
 
 #Keep dash/underscore connected parts (even if they are in parenthesis)
-WORD-COMPOUND=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)+
+WORD-COMPOUND=\p{L}+(?:[\p{Pc}\p{Pd}'`’‘]\p{L}+)+
 
 #Abbreviations with multiple periods
 ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)\Z
@@ -37,6 +38,12 @@ PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 #Date
 DATE=\p{N}{1,2}-\p{N}{1,2}-\p{N}{2,4}
 DATE-REVERSE=\p{N}{4}-\p{N}{1,2}-\p{N}{1,2}
+
+#numberstring like 20jarige
+NUMBER-STRING=\p{N}+(?:\p{Pd}?)(?:\p{L}+)
+
+#combinations like A50, a1 
+LET-NUMBER=\p{L}+\p{Pd}?\p{N}+
 
 NUMBER-YEAR=(['`’‘]\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}

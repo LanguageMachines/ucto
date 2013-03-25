@@ -1974,7 +1974,7 @@ namespace Tokenizer {
       rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\P{Lu}|\\P{Ll})")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z)")); 
       // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     normally (?i) could be used in front and (\\p{L}) would do.
