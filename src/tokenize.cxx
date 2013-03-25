@@ -940,7 +940,10 @@ namespace Tokenizer {
     }
     else { //no period
       //Check for other EOS markers
-      if ( !detectQuotes && (c == '\'' || c == '"')
+      if ( !detectQuotes && 
+	   ( c == '\'' || c == '`' || UnicodeString(c) == "’" 
+	     || UnicodeString(c) == "‘" || c == '"' || UnicodeString(c) == "”" 
+	     || UnicodeString(c) == "“" )
 	   && (i + 1 == tokens.size() ) ) {	//No next character? 
 	is_eos = true; //Newline after single quote
       }
