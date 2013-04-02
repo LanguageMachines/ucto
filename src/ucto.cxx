@@ -32,7 +32,7 @@
 #include <iostream>
 #include <fstream>
 #include "ucto/tokenize.h"
-#include "libfolia/folia.h"
+#include "folia/folia.h"
 #include <unistd.h>
 
 using namespace std;

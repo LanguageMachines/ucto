@@ -33,8 +33,8 @@
 #include "unicode/ucnv.h"
 #include "ucto/unicode.h"
 #include "config.h"
-#include "libfolia/document.h"
-#include "libfolia/folia.h"
+#include "folia/document.h"
+#include "folia/folia.h"
 #include "ucto/tokenize.h"
 
 using namespace std;
