@@ -31,8 +31,8 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include "libfolia/document.h"
 #include "ucto/tokenize.h"
-#include "folia/folia.h"
 #include <unistd.h>
 
 using namespace std;

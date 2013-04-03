@@ -30,7 +30,7 @@
 #include <ostream>
 #include <map>
 #include <stdexcept>
-#include "folia/foliautils.h"
+#include "libfolia/foliautils.h"
 #include "ucto/unicode.h"
 
 using namespace std;
