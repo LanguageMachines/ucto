@@ -1,9 +1,13 @@
 0.5.3 2012-07-05
 [Folgert Karsdorp]
-* Fixed quote detection, added tests
+* Fixed quote detection, added tests. still shaky and default disabled 
 [Ko van der Sloot]
 * changed verbose output slightly
 * fixed id's in folia output
+* various folia fixes
+* honour BOM markers in input file
+* lots of configuration updates
+* some fixes in handling if RULES
 
 0.5.2 2012-03-29
 [Ko vd Sloot]
