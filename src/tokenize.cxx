@@ -942,8 +942,9 @@ namespace Tokenizer {
       if ( !detectQuotes && 
 	   ( c == '\'' || c == '`' || UnicodeString(c) == "’" 
 	     || UnicodeString(c) == "‘" || c == '"' || UnicodeString(c) == "”" 
-	     || UnicodeString(c) == "“" )
-	   && (i + 1 == tokens.size() ) ) {	//No next character? 
+	     || UnicodeString(c) == "“" ) 
+	   && (i + 1 == tokens.size() ) ){
+	//No next character? 
 	is_eos = true; //Newline after single quote
       }
       else if ( eosmarkers.indexOf( c ) >= 0 ){
@@ -1040,6 +1041,28 @@ namespace Tokenizer {
 	  }   		
 	}
       }
+    }
+    for (int i = size-1; i > offset; --i ) {
+      // at the end of the buffer there may be some PUNCTUATION which
+      // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
+      // fix this up to avoid sentences containing only punctuation
+      if (tokDebug > 1 )
+	*Log(theErrLog) << "[detectSentenceBounds:fixup] i="<< i << " word=[" 
+			<< tokens[i].us
+			<< "] type=" << *tokens[i].type
+			<< ", role=" << tokens[i].role << endl;
+      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+	if (tokens[i].role & BEGINOFSENTENCE) {
+	  tokens[i].role ^= BEGINOFSENTENCE;
+	}
+	if ( i != size-1 ){
+	  if (tokens[i].role & ENDOFSENTENCE) {
+	    tokens[i].role ^= ENDOFSENTENCE;
+	  }
+	}
+      }
+      else 
+	break;
     }
   }    
 
