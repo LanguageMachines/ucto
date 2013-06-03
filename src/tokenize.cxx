@@ -785,7 +785,8 @@ namespace Tokenizer {
   // FBK: return true if character is a quote.
   bool TokenizerClass::u_isquote(UChar c) {
     bool quote = false;
-    if ((c == '"') || ( UnicodeString(c) == "＂") || (c == '\'')) {
+    if ( (c == '"') || (c == '\'') || (c=='`') || 
+	 ( UnicodeString(c) == "＂") ) {
       quote = true;
     }
     else {
@@ -1288,7 +1289,10 @@ namespace Tokenizer {
       UChar c = input[i];
       if (reset) { //reset values for new word
 	reset = false;
-	if (!u_isspace(c)) word = c; else word = "";
+	if (!u_isspace(c))
+	  word = c; 
+	else 
+	  word = "";
 	tokenizeword = false;
       } 
       else {
@@ -1299,7 +1303,8 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[tokenizeLine] space detected, word=[" 
 			  << word << "]" << endl;
 	if ( i == input.length()-1 ) {
-	  if ( u_ispunct(c) || u_isdigit(c)) tokenizeword = true; 
+	  if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) )
+	    tokenizeword = true; 
 	} 
 	int expliciteosfound = -1;
 	if ( word.length() >= eosmark.length() ) {
@@ -1351,7 +1356,7 @@ namespace Tokenizer {
 	//reset values for new word
 	reset = true;        
       }
-      else if ( u_ispunct(c) || u_isdigit(c)) {
+      else if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) ) {
 	if (tokDebug) 
 	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
 			  << word << "]" << endl;
