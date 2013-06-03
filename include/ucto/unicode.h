@@ -53,9 +53,12 @@ namespace Tokenizer {
     friend std::ostream& operator<<( std::ostream&, const UnicodeFilter& );
   public:
     UnicodeString filter( const UnicodeString& );
-    void add( UChar uc, const UnicodeString& us ) { the_map[uc] = us; };
+    bool fill( const std::string& );
+    bool add( const UnicodeString& );
+    bool add( const std::string& );
     bool empty() const { return the_map.empty(); };
   private:
+    void add( UChar uc, const UnicodeString& us ) { the_map[uc] = us; };
     std::map<UChar, UnicodeString> the_map;
   };
   

@@ -28,6 +28,7 @@
 
 #include <string>
 #include <ostream>
+#include <fstream>
 #include <map>
 #include <stdexcept>
 #include "libfolia/foliautils.h"
@@ -121,4 +122,52 @@ namespace Tokenizer {
     }
   }
 
+  bool UnicodeFilter::add( const string& s ){
+    UnicodeString line = folia::UTF8ToUnicode(s);
+    add( line );
+  }
+
+  bool UnicodeFilter::add( const UnicodeString& s ){
+    UnicodeString line = s;
+    line.trim();
+    if ((line.length() > 0) && (line[0] != '#')) {
+      UnicodeString open = "";
+      UnicodeString close = "";
+      int splitpoint = line.indexOf(" ");
+      if ( splitpoint == -1 )
+	splitpoint = line.indexOf("\t");
+      if ( splitpoint == -1 ){
+	open = line;
+      }
+      else {
+	open = UnicodeString( line, 0,splitpoint);
+	close = UnicodeString( line, splitpoint+1);
+      }
+      open = open.trim().unescape();
+      close = close.trim().unescape();
+      if ( open.length() != 1 ){
+	throw runtime_error( "invalid filter entry: " 
+			     + folia::UnicodeToUTF8(line) );
+      }
+      else {
+	this->add( open[0], close );
+      }
+    }
+    return true;
+  }
+  
+  bool UnicodeFilter::fill( const string& s ){
+    ifstream f ( s.c_str() );
+    if ( !f ){
+      throw std::runtime_error("unable to open file: " + s );
+    }    
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	this->add( rawline );
+      }
+    }
+    return true;
+  }
+  
 } // namespace Tokenizer

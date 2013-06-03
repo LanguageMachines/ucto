@@ -1539,43 +1539,7 @@ namespace Tokenizer {
   bool TokenizerClass::readfilters( const string& fname) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
-    ifstream f(fname.c_str());
-    if ( !f ){
-      return false;
-    }    
-    else {
-      string rawline;
-      while ( getline(f,rawline) ){
-	UnicodeString line = folia::UTF8ToUnicode(rawline);
-	line.trim();
-	if ((line.length() > 0) && (line[0] != '#')) {
-	  if ( tokDebug >= 5 )
-	    *theErrLog << "include line = " << rawline << endl;
-	  
-	  UnicodeString open = "";
-	  UnicodeString close = "";
-	  int splitpoint = line.indexOf(" ");
-	  if ( splitpoint == -1 )
-	    splitpoint = line.indexOf("\t");
-	  if ( splitpoint == -1 ){
-	    open = line;
-	  }
-	  else {
-	    open = UnicodeString( line, 0,splitpoint);
-	    close = UnicodeString( line, splitpoint+1);
-	  }
-	  open = open.trim().unescape();
-	  close = close.trim().unescape();
-	  if ( open.length() != 1 ){
-	    throw uConfigError( "invalid FILTER entry: " + line );
-	  }
-	  else {
-	    filter.add( open[0], close );
-	  }
-	}
-      }
-    }    
-    return true;
+    return filter.fill( fname );
   }
   
   bool TokenizerClass::readquotes( const string& fname) {
@@ -1928,28 +1892,8 @@ namespace Tokenizer {
 	      }
 	    }
 	      break;
-	    case FILTER: {
-	      UnicodeString open = "";
-	      UnicodeString close = "";
-	      int splitpoint = line.indexOf(" ");
-	      if ( splitpoint == -1 )
-		splitpoint = line.indexOf("\t");
-	      if ( splitpoint == -1 ){
-		open = line;
-	      }
-	      else {
-		open = UnicodeString( line, 0,splitpoint);
-		close = UnicodeString( line, splitpoint+1);
-	      }
-	      open = open.trim().unescape();
-	      close = close.trim().unescape();
-	      if ( open.length() != 1 ){
-		throw uConfigError( "invalid FILTER entry: " + line );
-	      }
-	      else {
-		filter.add( open[0], close );
-	      }
-	    }
+	    case FILTER:
+	      filter.add( line );
 	      break;
 	    case NONE:
 	      break;
