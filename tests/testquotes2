@@ -1,0 +1,9 @@
+#/bin/sh
+# $Id: testquotes 14861 2012-06-13 16:05:25Z sloot $
+# $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/tests/testquotes $
+
+exe=../src/ucto
+
+$exe -L nl -v qtest.nl
+
+$exe -L nl -v qtest.spec 
