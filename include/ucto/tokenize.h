@@ -252,7 +252,7 @@ namespace Tokenizer {
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
         
     bool resolveQuote( int, const UnicodeString& );
-    bool u_isquote( UChar );
+    bool u_isquote( UChar ) const;
     std::string checkBOM( const std::string&, std::string& );
     bool readsettings( const std::string& );
     bool readrules( const std::string& );

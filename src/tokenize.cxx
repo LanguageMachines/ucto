@@ -783,7 +783,7 @@ namespace Tokenizer {
   }  
 
   // FBK: return true if character is a quote.
-  bool TokenizerClass::u_isquote(UChar c) {
+  bool TokenizerClass::u_isquote(UChar c) const {
     bool quote = false;
     if ( (c == '"') || (c == '\'') || (c=='`') || 
 	 ( UnicodeString(c) == "＂") ) {
@@ -916,7 +916,8 @@ namespace Tokenizer {
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
     UChar c = tokens[i].us[0]; 
-    if ( c == '.' ) {	
+    if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
+      // c == '.' || c == '!' || c == '?' )
       if (i + 1 == tokens.size() ) {	//No next character? 
 	is_eos = true; //Newline after period
       }
@@ -927,9 +928,31 @@ namespace Tokenizer {
 	if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) ||
 	    (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) ||
 	    (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
-	  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ) {
-	    //next 'word' starts with more punctuation or with uppercase
+	  if ( u_isupper(c) || u_istitle(c) ){
+	    //next 'word' starts with uppercase
 	    is_eos = true;
+	  }
+	  else if ( u_ispunct(c)  ){
+	    // next word is punctuation.
+	    if ( u_isquote(c) ){
+	      if ( detectQuotes )
+		is_eos = true;
+	      else {
+		if ( i + 2 == tokens.size() ) {	//No next-next character? 
+		  is_eos = true;
+		}
+		else {
+		  UChar c = tokens[i+2].us[0]; 
+		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
+		    //next 'word' after quote starts with uppercase or is punct
+		    is_eos = true;
+		  }
+
+		}
+	      }
+	    }
+	    else
+	      is_eos = true;
 	  }
 	} 
 	else {
@@ -946,7 +969,7 @@ namespace Tokenizer {
 	     || UnicodeString(c) == "“" ) 
 	   && (i + 1 == tokens.size() ) ){
 	//No next character? 
-	is_eos = true; //Newline after single quote
+	is_eos = true; //Newline after quote
       }
       else if ( eosmarkers.indexOf( c ) >= 0 ){
 	is_eos = true;
@@ -1913,7 +1936,7 @@ namespace Tokenizer {
     // set reasonable defaults for those items that ar NOT set
     // in the configfile
     if ( eosmarkers.length() == 0 ){
-      eosmarkers = "!?";
+      eosmarkers = ".!?";
     }
     if ( quotes.empty() ){
       quotes.add( '"', '"' );
