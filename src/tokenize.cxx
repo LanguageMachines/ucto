@@ -919,7 +919,7 @@ namespace Tokenizer {
     if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
       // c == '.' || c == '!' || c == '?' )
       if (i + 1 == tokens.size() ) {	//No next character? 
-	is_eos = true; //Newline after period
+	is_eos = true; //Newline after eosmarker
       }
       else {
 	UChar c = tokens[i+1].us[0]; 
@@ -932,7 +932,9 @@ namespace Tokenizer {
 	    //next 'word' starts with uppercase
 	    is_eos = true;
 	  }
-	  else if ( u_ispunct(c)  ){
+	}
+	if ( !is_eos && tokens[i].us.length() == 1 ){
+	  if ( u_ispunct(c)  ){
 	    // next word is punctuation.
 	    if ( u_isquote(c) ){
 	      if ( detectQuotes )
@@ -947,17 +949,14 @@ namespace Tokenizer {
 		    //next 'word' after quote starts with uppercase or is punct
 		    is_eos = true;
 		  }
-
 		}
 	      }
 	    }
 	    else
 	      is_eos = true;
 	  }
-	} 
-	else {
-	  // just normal ASCII punctuation
-	  is_eos = true;
+	  else if ( u_isalnum(c) )
+	    is_eos = true;
 	}
       }
     }
