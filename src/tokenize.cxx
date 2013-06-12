@@ -912,12 +912,11 @@ namespace Tokenizer {
       return false;
     }    
   }
-
+#ifdef OLD_IMP
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
     UChar c = tokens[i].us[0]; 
-    if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
-      // c == '.' || c == '!' || c == '?' )
+    if ( c == '.' ){
       if (i + 1 == tokens.size() ) {	//No next character? 
 	is_eos = true; //Newline after eosmarker
       }
@@ -932,9 +931,7 @@ namespace Tokenizer {
 	    //next 'word' starts with uppercase
 	    is_eos = true;
 	  }
-	}
-	if ( !is_eos && tokens[i].us.length() == 1 ){
-	  if ( u_ispunct(c)  ){
+	  else if ( u_ispunct(c)  ){
 	    // next word is punctuation.
 	    if ( u_isquote(c) ){
 	      if ( detectQuotes )
@@ -955,8 +952,9 @@ namespace Tokenizer {
 	    else
 	      is_eos = true;
 	  }
-	  else if ( u_isalnum(c) )
-	    is_eos = true;
+	}
+	else {
+	  is_eos = true;
 	}
       }
     }
@@ -971,12 +969,88 @@ namespace Tokenizer {
 	is_eos = true; //Newline after quote
       }
       else if ( eosmarkers.indexOf( c ) >= 0 ){
-	is_eos = true;
+	if (i + 1 == tokens.size() ) {	//No next character? 
+	  is_eos = true; //Newline after eosmarker
+	}
+	else {
+	  UChar c = tokens[i+1].us[0]; 
+	  if ( u_ispunct(c)  ){
+	    // next word is punctuation.
+	    if ( u_isquote(c) ){
+	      if ( detectQuotes )
+		is_eos = true;
+	      else {
+		if ( i + 2 == tokens.size() ) {	//No next-next character? 
+		  is_eos = true;
+		}
+		else {
+		  UChar c = tokens[i+2].us[0]; 
+		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
+		  //next 'word' after quote starts with uppercase or is punct
+		    is_eos = true;
+		  }
+	      }
+	      }
+	    }
+	    else {
+	      is_eos = true;
+	    }
+	  }
+	  else {
+	    is_eos = true;
+	  }
+	}
       }
     }
     return is_eos;
   }
-  
+#else
+  bool TokenizerClass::detectEos( size_t i ) const {
+    bool is_eos = false;
+    UChar c = tokens[i].us[0]; 
+    if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
+      if (i + 1 == tokens.size() ) {	//No next character? 
+	is_eos = true; //Newline after eosmarker
+      }
+      else {
+	UChar c = tokens[i+1].us[0]; 
+	if ( u_isquote(c) ){
+	  // next word is quote
+	  if ( detectQuotes )
+	    is_eos = true;
+	  else {
+	    // if ( i + 2 == tokens.size() ) {	//No next-next character? 
+	    //   is_eos = true;
+	    // }
+	    // else {
+	    //   UChar c = tokens[i+2].us[0]; 
+	    //   if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
+	    // 	//next 'word' after quote starts with uppercase or is punct
+	    // 	is_eos = true;
+	    //   }
+	    // }
+	    if ( i + 2 < tokens.size() ) {
+	      UChar c = tokens[i+2].us[0]; 
+	      if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
+	     	//next 'word' after quote starts with uppercase or is punct
+		is_eos = true;
+	      }
+	    }
+	  }
+	}
+	else if ( tokens[i].us.length() > 1 ){
+	  // PUNCTUATION multi...
+	  if ( u_isupper(c) || u_istitle(c) )
+	    is_eos = true;
+	}
+	else 
+	  is_eos = true;
+      }
+    }
+    return is_eos;
+  }
+#endif
+
   void TokenizerClass::detectQuoteBounds( const int i ) {
     UChar c = tokens[i].us[0]; 
     //Detect Quotation marks
