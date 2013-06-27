@@ -497,11 +497,11 @@ namespace Tokenizer {
   }
 
   void appendText( folia::FoliaElement *root, 
-		   const string& inputclass, const string& outputclass  ){
+		   const string& outputclass  ){
     vector<folia::Word*> v = root->select<folia::Word>();
     UnicodeString txt;
     for ( size_t i=0; i < v.size(); ++i ){
-      txt += v[i]->text( inputclass );
+      txt += v[i]->text( outputclass );
       if ( i < v.size()-1 )
 	txt += " ";
     }
@@ -531,7 +531,7 @@ namespace Tokenizer {
       if (((!root_is_paragraph) && (!root_is_sentence)) && ((tv[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
 	if ( in_paragraph ){
-	  appendText( root, inputclass, outputclass );
+	  appendText( root, outputclass );
 	  root = root->parent();
 	}
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
@@ -586,14 +586,14 @@ namespace Tokenizer {
       }    
       if ( ( tv[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
-	appendText( root, inputclass, outputclass );
+	appendText( root, outputclass );
 	root = root->parent();
 	lastS = root;
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] back to " << root->classname() << endl;
       }
       in_paragraph = true;
     }
-    appendText( root, inputclass, outputclass );
+    appendText( root, outputclass );
   }
   
   ostream& operator<<( ostream& os, const TokenRole& tok ){
