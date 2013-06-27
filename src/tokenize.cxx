@@ -296,7 +296,8 @@ namespace Tokenizer {
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
-    xmlout(false), passthru(false), textclass("current")
+    xmlout(false), passthru(false), 
+    inputclass("current"), outputclass("current")
   { 
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
@@ -396,7 +397,7 @@ namespace Tokenizer {
       // shortcut
       return;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
-    if ( element->hastext( textclass ) ) {
+    if ( element->hastext( inputclass ) ) {
       // We have an element which contains text. That's nice
       // now we must see wether some 'formatting' is there. ( like Words() or
       // Sentences() )
@@ -458,7 +459,7 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
-    UnicodeString line = element->stricttext( textclass ) + " "  + eosmark;
+    UnicodeString line = element->stricttext( inputclass ) + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
 		      << line << endl;
@@ -495,6 +496,18 @@ namespace Tokenizer {
     outputTokensXML(root, tv );
   }
 
+  void appendText( folia::FoliaElement *root, 
+		   const string& inputclass, const string& outputclass  ){
+    vector<folia::Word*> v = root->select<folia::Word>();
+    UnicodeString txt;
+    for ( size_t i=0; i < v.size(); ++i ){
+      txt += v[i]->text( inputclass );
+      if ( i < v.size()-1 )
+	txt += " ";
+    }
+    root->settext( folia::UnicodeToUTF8(txt), outputclass );
+  }
+  
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 					const vector<Token>& tv ) const {
     short quotelevel = 0;
@@ -517,8 +530,10 @@ namespace Tokenizer {
     for ( size_t i=0; i < tv.size(); i++) {      
       if (((!root_is_paragraph) && (!root_is_sentence)) && ((tv[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
 	parCount++;
-	if ( in_paragraph )
+	if ( in_paragraph ){
+	  appendText( root, inputclass, outputclass );
 	  root = root->parent();
+	}
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(parCount);
@@ -558,7 +573,7 @@ namespace Tokenizer {
 	args["space"]= "no";
       }
       folia::FoliaElement *w = new folia::Word( root->doc(), args );
-      w->settext( folia::UnicodeToUTF8( tv[i].us ) );
+      w->settext( folia::UnicodeToUTF8( tv[i].us ), outputclass );
       //      *Log(theErrLog) << "created " << w << " text= " <<  tv[i].us << endl;
       root->append( w );
       if ( tv[i].role & BEGINQUOTE) {
@@ -571,12 +586,14 @@ namespace Tokenizer {
       }    
       if ( ( tv[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
+	appendText( root, inputclass, outputclass );
 	root = root->parent();
 	lastS = root;
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] back to " << root->classname() << endl;
       }
       in_paragraph = true;
     }
+    appendText( root, inputclass, outputclass );
   }
   
   ostream& operator<<( ostream& os, const TokenRole& tok ){
