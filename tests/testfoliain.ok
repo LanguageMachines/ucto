@@ -2,7 +2,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-05-28T10:16:10" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:23:43" set="tokconfig-nl"/>
       <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
     </annotations>
   </metadata>
@@ -10,8 +10,7 @@
     <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
-          <t>Dit is een test.
-Gaat deze datum: 28-11-2011 goed?</t>
+          <t>Dit is een test . Gaat deze datum : 28-11-2011 goed ?</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD">
             <t>Dit</t>
           </w>
@@ -59,16 +58,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-05-28T10:16:10" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:23:43" set="tokconfig-nl"/>
       <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <div xml:id="WR-P-E-J-0000000001.div0.1" class="tsja">
       <p xml:id="WR-P-E-J-0000000001.div0.1.p.1">
-        <t>Dit is een test.
-Gaat deze datum: 28-11-2011 goed?</t>
+        <t>Dit is een test . Gaat deze datum : 28-11-2011 goed ?</t>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1">
+          <t>Dit is een test .</t>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD">
             <t>Dit</t>
           </w>
@@ -86,6 +85,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2">
+          <t>Gaat deze datum : 28-11-2011 goed ?</t>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.1" class="WORD">
             <t>Gaat</t>
           </w>
@@ -118,7 +118,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-05-28T10:16:10" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:23:43" set="tokconfig-nl"/>
       <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
     </annotations>
   </metadata>
@@ -127,7 +127,9 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
       <p xml:id="WR-P-E-J-0000000001.p.1">
+        <t>Dit is een test . Gaat deze datum : 28-11-2011 goed ?</t>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
+          <t>Dit is een test .</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD">
             <t>Dit</t>
           </w>
@@ -145,6 +147,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
           </w>
         </s>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
+          <t>Gaat deze datum : 28-11-2011 goed ?</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD">
             <t>Gaat</t>
           </w>
@@ -177,7 +180,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-05-28T10:16:10" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:23:43" set="tokconfig-nl"/>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
     </annotations>
   </metadata>
@@ -185,6 +188,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <event xml:id="WR-P-E-J-0000000001.event.139" actor="chatter110" begindatetime="2004-04-09T13:21:54" class="message">
       <t>tot zo</t>
       <s xml:id="WR-P-E-J-0000000001.event.139.s.1">
+        <t>tot zo</t>
         <w xml:id="WR-P-E-J-0000000001.event.139.s.1.w.1" class="WORD">
           <t>tot</t>
         </w>
@@ -201,7 +205,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-05-28T10:16:10" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:23:43" set="tokconfig-nl"/>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
     </annotations>
   </metadata>
@@ -209,20 +213,21 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <p xml:id="p.1">
       <t class="OCR">Dit is een OCR text</t>
       <s xml:id="p.1.s.1">
+        <t class="OCR">Dit is een OCR text</t>
         <w xml:id="p.1.s.1.w.1" class="WORD">
-          <t>Dit</t>
+          <t class="OCR">Dit</t>
         </w>
         <w xml:id="p.1.s.1.w.2" class="WORD">
-          <t>is</t>
+          <t class="OCR">is</t>
         </w>
         <w xml:id="p.1.s.1.w.3" class="WORD">
-          <t>een</t>
+          <t class="OCR">een</t>
         </w>
         <w xml:id="p.1.s.1.w.4" class="WORD">
-          <t>OCR</t>
+          <t class="OCR">OCR</t>
         </w>
         <w xml:id="p.1.s.1.w.5" class="WORD">
-          <t>text</t>
+          <t class="OCR">text</t>
         </w>
       </s>
     </p>
