@@ -3,14 +3,14 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="folia2" generator="libfolia-v0.11">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-06-27T17:21:58" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-07-01T17:14:35" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="folia2.text">
     <p xml:id="folia2.p.1">
-      <t>AdJ : " Ja , wat ik een schitterend verhaal vond , was dat 'ie bij de buren èh ... In dat verhaal is 'ie heel arm , en is 'ie er op aangewezen om dingen te lenen , om te kunnen bestaan . En dan is er een hele gierige buurman . En hoe loopt dat verhaal nou ? Hij leent een vork van de buurman en geeft twee vorken terug . En dan zegt de buurman : ' Hoezo twee vorken ? ' Zegt 'ie : ' Ja , die vork heeft kindertjes gekregen . ' En die buurman denkt : hebben is hebben , krijgen is de kunst . Dus die accepteert die twee vorken . En de volgende keer leent 'ie iets groters : daar geeft 'ie ook twee exemplaren van terug . En daarna leent 'ie de grote soepketel . En die geeft 'ie niet terug . Zegt 'ie : ' Die is gestorven . ' Hahaha . En zegt die buurman : ' Hoe kan dat nou ? Ketels gaan niet dood ? ' Zegt 'ie : ' Nou , lepels krijgen toch ook kleine lepeltjes , dat heb je toch ook voor zoete koek aangenomen ? ' Zo'n verhaal ! "</t>
+      <t>AdJ: "Ja, wat ik een schitterend verhaal vond, was dat 'ie bij de buren èh... In dat verhaal is 'ie heel arm, en is 'ie er op aangewezen om dingen te lenen, om te kunnen bestaan. En dan is er een hele gierige buurman. En hoe loopt dat verhaal nou? Hij leent een vork van de buurman en geeft twee vorken terug. En dan zegt de buurman: 'Hoezo twee vorken?' Zegt 'ie: 'Ja, die vork heeft kindertjes gekregen.' En die buurman denkt: hebben is hebben, krijgen is de kunst. Dus die accepteert die twee vorken. En de volgende keer leent 'ie iets groters: daar geeft 'ie ook twee exemplaren van terug. En daarna leent 'ie de grote soepketel. En die geeft 'ie niet terug. Zegt 'ie: 'Die is gestorven.' Hahaha. En zegt die buurman: 'Hoe kan dat nou? Ketels gaan niet dood?' Zegt 'ie: 'Nou, lepels krijgen toch ook kleine lepeltjes, dat heb je toch ook voor zoete koek aangenomen?' Zo'n verhaal!"</t>
       <s xml:id="folia2.p.1.s.1">
-        <t>AdJ : " Ja , wat ik een schitterend verhaal vond , was dat 'ie bij de buren èh ... In dat verhaal is 'ie heel arm , en is 'ie er op aangewezen om dingen te lenen , om te kunnen bestaan . En dan is er een hele gierige buurman . En hoe loopt dat verhaal nou ? Hij leent een vork van de buurman en geeft twee vorken terug . En dan zegt de buurman : ' Hoezo twee vorken ? ' Zegt 'ie : ' Ja , die vork heeft kindertjes gekregen . ' En die buurman denkt : hebben is hebben , krijgen is de kunst . Dus die accepteert die twee vorken . En de volgende keer leent 'ie iets groters : daar geeft 'ie ook twee exemplaren van terug . En daarna leent 'ie de grote soepketel . En die geeft 'ie niet terug . Zegt 'ie : ' Die is gestorven . ' Hahaha . En zegt die buurman : ' Hoe kan dat nou ? Ketels gaan niet dood ? ' Zegt 'ie : ' Nou , lepels krijgen toch ook kleine lepeltjes , dat heb je toch ook voor zoete koek aangenomen ? ' Zo'n verhaal ! "</t>
+        <t>AdJ: "Ja, wat ik een schitterend verhaal vond, was dat 'ie bij de buren èh... In dat verhaal is 'ie heel arm, en is 'ie er op aangewezen om dingen te lenen, om te kunnen bestaan. En dan is er een hele gierige buurman. En hoe loopt dat verhaal nou? Hij leent een vork van de buurman en geeft twee vorken terug. En dan zegt de buurman: 'Hoezo twee vorken?' Zegt 'ie: 'Ja, die vork heeft kindertjes gekregen.' En die buurman denkt: hebben is hebben, krijgen is de kunst. Dus die accepteert die twee vorken. En de volgende keer leent 'ie iets groters: daar geeft 'ie ook twee exemplaren van terug. En daarna leent 'ie de grote soepketel. En die geeft 'ie niet terug. Zegt 'ie: 'Die is gestorven.' Hahaha. En zegt die buurman: 'Hoe kan dat nou? Ketels gaan niet dood?' Zegt 'ie: 'Nou, lepels krijgen toch ook kleine lepeltjes, dat heb je toch ook voor zoete koek aangenomen?' Zo'n verhaal!"</t>
         <w xml:id="folia2.p.1.s.1.w.1" class="WORD" space="no">
           <t>AdJ</t>
         </w>
@@ -22,7 +22,7 @@
         </w>
         <quote xml:id="folia2.p.1.s.1.quote.1">
           <s xml:id="folia2.p.1.s.1.quote.1.s.1" auth="no">
-            <t>Ja , wat ik een schitterend verhaal vond , was dat 'ie bij de buren èh ...</t>
+            <t>Ja, wat ik een schitterend verhaal vond, was dat 'ie bij de buren èh...</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.1.w.1" class="WORD" space="no">
               <t>Ja</t>
             </w>
@@ -76,7 +76,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.2" auth="no">
-            <t>In dat verhaal is 'ie heel arm , en is 'ie er op aangewezen om dingen te lenen , om te kunnen bestaan .</t>
+            <t>In dat verhaal is 'ie heel arm, en is 'ie er op aangewezen om dingen te lenen, om te kunnen bestaan.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.2.w.1" class="WORD">
               <t>In</t>
             </w>
@@ -151,7 +151,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.3" auth="no">
-            <t>En dan is er een hele gierige buurman .</t>
+            <t>En dan is er een hele gierige buurman.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.3.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -181,7 +181,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.4" auth="no">
-            <t>En hoe loopt dat verhaal nou ?</t>
+            <t>En hoe loopt dat verhaal nou?</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.4.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -205,7 +205,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.5" auth="no">
-            <t>Hij leent een vork van de buurman en geeft twee vorken terug .</t>
+            <t>Hij leent een vork van de buurman en geeft twee vorken terug.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.5.w.1" class="WORD">
               <t>Hij</t>
             </w>
@@ -247,7 +247,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.6" auth="no">
-            <t>En dan zegt de buurman : ' Hoezo twee vorken ? '</t>
+            <t>En dan zegt de buurman: 'Hoezo twee vorken?'</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.6.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -271,7 +271,7 @@
             </w>
             <quote xml:id="folia2.p.1.s.1.quote.1.s.6.quote.1">
               <s xml:id="folia2.p.1.s.1.quote.1.s.6.quote.1.s.1" auth="no">
-                <t>Hoezo twee vorken ?</t>
+                <t>Hoezo twee vorken?</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.6.quote.1.s.1.w.1" class="WORD">
                   <t>Hoezo</t>
                 </w>
@@ -291,7 +291,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.7" auth="no">
-            <t>Zegt 'ie : ' Ja , die vork heeft kindertjes gekregen . '</t>
+            <t>Zegt 'ie: 'Ja, die vork heeft kindertjes gekregen.'</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.7.w.1" class="WORD">
               <t>Zegt</t>
             </w>
@@ -306,7 +306,7 @@
             </w>
             <quote xml:id="folia2.p.1.s.1.quote.1.s.7.quote.1">
               <s xml:id="folia2.p.1.s.1.quote.1.s.7.quote.1.s.1" auth="no">
-                <t>Ja , die vork heeft kindertjes gekregen .</t>
+                <t>Ja, die vork heeft kindertjes gekregen.</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.7.quote.1.s.1.w.1" class="WORD" space="no">
                   <t>Ja</t>
                 </w>
@@ -338,7 +338,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.8" auth="no">
-            <t>En die buurman denkt : hebben is hebben , krijgen is de kunst .</t>
+            <t>En die buurman denkt: hebben is hebben, krijgen is de kunst.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.8.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -383,7 +383,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.9" auth="no">
-            <t>Dus die accepteert die twee vorken .</t>
+            <t>Dus die accepteert die twee vorken.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.9.w.1" class="WORD">
               <t>Dus</t>
             </w>
@@ -407,7 +407,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.10" auth="no">
-            <t>En de volgende keer leent 'ie iets groters : daar geeft 'ie ook twee exemplaren van terug .</t>
+            <t>En de volgende keer leent 'ie iets groters: daar geeft 'ie ook twee exemplaren van terug.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.10.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -464,7 +464,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.11" auth="no">
-            <t>En daarna leent 'ie de grote soepketel .</t>
+            <t>En daarna leent 'ie de grote soepketel.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.11.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -491,7 +491,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.12" auth="no">
-            <t>En die geeft 'ie niet terug .</t>
+            <t>En die geeft 'ie niet terug.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.12.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -515,7 +515,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.13" auth="no">
-            <t>Zegt 'ie : ' Die is gestorven . '</t>
+            <t>Zegt 'ie: 'Die is gestorven.'</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.13.w.1" class="WORD">
               <t>Zegt</t>
             </w>
@@ -530,7 +530,7 @@
             </w>
             <quote xml:id="folia2.p.1.s.1.quote.1.s.13.quote.1">
               <s xml:id="folia2.p.1.s.1.quote.1.s.13.quote.1.s.1" auth="no">
-                <t>Die is gestorven .</t>
+                <t>Die is gestorven.</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.13.quote.1.s.1.w.1" class="WORD">
                   <t>Die</t>
                 </w>
@@ -550,7 +550,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.14" auth="no">
-            <t>Hahaha .</t>
+            <t>Hahaha.</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.14.w.1" class="WORD" space="no">
               <t>Hahaha</t>
             </w>
@@ -559,7 +559,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.15" auth="no">
-            <t>En zegt die buurman : ' Hoe kan dat nou ? Ketels gaan niet dood ? '</t>
+            <t>En zegt die buurman: 'Hoe kan dat nou? Ketels gaan niet dood?'</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.15.w.1" class="WORD">
               <t>En</t>
             </w>
@@ -580,7 +580,7 @@
             </w>
             <quote xml:id="folia2.p.1.s.1.quote.1.s.15.quote.1">
               <s xml:id="folia2.p.1.s.1.quote.1.s.15.quote.1.s.1" auth="no">
-                <t>Hoe kan dat nou ?</t>
+                <t>Hoe kan dat nou?</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.15.quote.1.s.1.w.1" class="WORD">
                   <t>Hoe</t>
                 </w>
@@ -598,7 +598,7 @@
                 </w>
               </s>
               <s xml:id="folia2.p.1.s.1.quote.1.s.15.quote.1.s.2" auth="no">
-                <t>Ketels gaan niet dood ?</t>
+                <t>Ketels gaan niet dood?</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.15.quote.1.s.2.w.1" class="WORD">
                   <t>Ketels</t>
                 </w>
@@ -621,7 +621,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.16" auth="no">
-            <t>Zegt 'ie : ' Nou , lepels krijgen toch ook kleine lepeltjes , dat heb je toch ook voor zoete koek aangenomen ? '</t>
+            <t>Zegt 'ie: 'Nou, lepels krijgen toch ook kleine lepeltjes, dat heb je toch ook voor zoete koek aangenomen?'</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.16.w.1" class="WORD">
               <t>Zegt</t>
             </w>
@@ -636,7 +636,7 @@
             </w>
             <quote xml:id="folia2.p.1.s.1.quote.1.s.16.quote.1">
               <s xml:id="folia2.p.1.s.1.quote.1.s.16.quote.1.s.1" auth="no">
-                <t>Nou , lepels krijgen toch ook kleine lepeltjes , dat heb je toch ook voor zoete koek aangenomen ?</t>
+                <t>Nou, lepels krijgen toch ook kleine lepeltjes, dat heb je toch ook voor zoete koek aangenomen?</t>
                 <w xml:id="folia2.p.1.s.1.quote.1.s.16.quote.1.s.1.w.1" class="WORD" space="no">
                   <t>Nou</t>
                 </w>
@@ -701,7 +701,7 @@
             </w>
           </s>
           <s xml:id="folia2.p.1.s.1.quote.1.s.17" auth="no">
-            <t>Zo'n verhaal !</t>
+            <t>Zo'n verhaal!</t>
             <w xml:id="folia2.p.1.s.1.quote.1.s.17.w.1" class="WORD-WITHSUFFIX">
               <t>Zo'n</t>
             </w>
