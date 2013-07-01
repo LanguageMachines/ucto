@@ -459,6 +459,7 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
+    //    cerr << "tokenize sentence element op " << element->id() << endl;
     UnicodeString line = element->stricttext( inputclass ) + " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
@@ -498,14 +499,12 @@ namespace Tokenizer {
 
   void appendText( folia::FoliaElement *root, 
 		   const string& outputclass  ){
-    vector<folia::Word*> v = root->select<folia::Word>();
-    UnicodeString txt;
-    for ( size_t i=0; i < v.size(); ++i ){
-      txt += v[i]->text( outputclass );
-      if ( i < v.size()-1 )
-	txt += " ";
-    }
-    root->settext( folia::UnicodeToUTF8(txt), outputclass );
+    UnicodeString utxt = root->text( outputclass, false );
+    // cerr << endl << root->id() << endl;
+    // cerr << "untok: '" << utxt << "'" << endl;
+    // UnicodeString txt = root->text( outputclass, true );
+    // cerr << "  tok: '" << txt << "'" << endl;
+    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
   
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
