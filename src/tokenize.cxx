@@ -438,6 +438,13 @@ namespace Tokenizer {
 	  return;
 	}
       }
+      if ( inputclass != outputclass && outputclass == "current" ){
+	if ( element->hastext( outputclass ) ){
+	  throw uLogicError( "cannot set text with class='current' on node "
+			     + element->id() + 
+			     " because it already has text in that class." );
+	}
+      }
       // so we have text, in an element without 'formatting' yet, good
       // lets Tokenize the available text!
       tokenizeSentenceElement( element );
@@ -499,7 +506,7 @@ namespace Tokenizer {
 
   void appendText( folia::FoliaElement *root, 
 		   const string& outputclass  ){
-    UnicodeString utxt = root->text( outputclass, false );
+    UnicodeString utxt = root->deeptext( outputclass, false );
     // cerr << endl << root->id() << endl;
     // cerr << "untok: '" << utxt << "'" << endl;
     // UnicodeString txt = root->text( outputclass, true );
