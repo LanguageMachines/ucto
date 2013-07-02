@@ -229,11 +229,24 @@ namespace Tokenizer {
     std::string getDocID() const { return docid; }
     bool getXMLOutput() const { return xmlout; }
     bool getXMLInput() const { return xmlin; }
-
-    const std::string getTextClass( ) const { return textclass; }
+    
+    const std::string getTextClass( ) const { return inputclass; }
     const std::string setTextClass( const std::string& cls) {  
-      std::string res = textclass;
-      textclass = cls;
+      std::string res = inputclass;
+      inputclass = cls;
+      outputclass = cls;
+      return res;
+    }
+    const std::string getInputClass( ) const { return inputclass; }
+    const std::string setInputClass( const std::string& cls) {  
+      std::string res = inputclass;
+      inputclass = cls;
+      return res;
+    }
+    const std::string getOutputClass( ) const { return outputclass; }
+    const std::string setOutputClass( const std::string& cls) {  
+      std::string res = outputclass;
+      outputclass = cls;
       return res;
     }
     
@@ -314,7 +327,8 @@ namespace Tokenizer {
 
     std::string settingsfilename;
     std::string docid; //document ID (UTF-8), necessary for XML output 
-    std::string textclass; // class for folia text
+    std::string inputclass; // class for folia text
+    std::string outputclass; // class for folia text
   };
 
   template< typename T >
