@@ -10,4 +10,4 @@ $exe -L nl -F folia3.xml
 $exe -L nl -F folia4.xml
 $exe -L nl --inputclass OCR -F folia5.xml
 $exe -L nl --inputclass OCR --outputclass=AHA -F folia5.xml
-
+$exe -L nl --inputclass OCR -F folia6.xml
