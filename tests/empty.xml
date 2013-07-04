@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v0.11">
+  <metadata type="native">
+    <annotations>
+      <string-annotation set="alto"/>
+      <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <p xml:id="p1">
+      <t/>
+    </p>
+    <p xml:id="p2">
+      <t>Een tekst.</t>
+    </p>
+    <p xml:id="p3">
+      <t/>
+    </p>
+  </text>
+</FoLiA>
