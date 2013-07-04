@@ -466,8 +466,14 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
-    //    cerr << "tokenize sentence element op " << element->id() << endl;
-    UnicodeString line = element->stricttext( inputclass ) + " "  + eosmark;
+    if  (tokDebug > 0) 
+      cerr << "tokenize sentence element: " << element->id() << endl;
+    UnicodeString line = element->stricttext( inputclass );
+    if ( line.isEmpty() ){
+      // so no usefull text in this element. skip it
+      return;
+    }
+    line += " "  + eosmark;
     if (tokDebug >= 1) 
       *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
 		      << line << endl;
@@ -519,7 +525,8 @@ namespace Tokenizer {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     int parCount = 0;
-    if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
+    if  (tokDebug > 0) 
+      *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
     
     bool root_is_sentence = false;
     bool root_is_paragraph = false;
