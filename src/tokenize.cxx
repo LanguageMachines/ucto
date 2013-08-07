@@ -2088,6 +2088,12 @@ namespace Tokenizer {
     sortRules( rules, rules_order );
     return true;
   }
+
+  bool TokenizerClass::reset(){
+    tokens.clear();
+    quotes.clearStack();
+    return true;
+  }
   
   bool TokenizerClass::init( const string& fname ){
     *Log(theErrLog) << "Initiating tokeniser..." << endl;

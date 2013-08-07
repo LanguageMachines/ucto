@@ -138,6 +138,7 @@ namespace Tokenizer {
     TokenizerClass();
     ~TokenizerClass();
     bool init( const std::string& );
+    bool reset();
     void setErrorLog( TiCC::LogStream *os );
 
     // Tokenize from input stream to FoLiA document
