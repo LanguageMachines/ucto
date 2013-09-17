@@ -301,6 +301,12 @@ namespace Tokenizer {
   { 
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
+
+    //TODO: add test ICU for bug http://bugs.icu-project.org/trac/ticket/8826, if it's
+    //fixed assume 8824 (?i) handing -  is fixed too:
+    //test if pattern (?i)aßx matched against aßx produces results, if not, bug
+    //is present and users should be warned
+    
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) { 
@@ -2048,11 +2054,11 @@ namespace Tokenizer {
     }
 
     // Create Rules for every pattern that is set
-    
-    //TODO: Make order dynamically configurable?
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})")); 
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "(?i)\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})")); 
+      //(?i) enabled again
+      ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     If you want mixed case Ordinals, you have to enumerate them all
@@ -2068,22 +2074,24 @@ namespace Tokenizer {
     if (!token_pattern.isEmpty()){
       //      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
       // removed ^ in front. this fixes bug94
-      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(" + token_pattern + ")(?:\\p{P}*)?$"));
+      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(?i)(" + token_pattern + ")(?:\\p{P}*)?$"));
     }    
     if (!withprefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "(?i)((?:\\p{L})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})")); 
+      //old:
+      //rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})")); 
       // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     normally (?i) could be used in front and (\\p{L}) would do.
     }
     if (!prefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
+      rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("SUFFIX", "(?i)((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
     }
     sortRules( rules, rules_order );
     return true;
