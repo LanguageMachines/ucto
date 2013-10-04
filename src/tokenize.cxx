@@ -296,7 +296,7 @@ namespace Tokenizer {
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false), 
     lowercase(false), uppercase(false), 
-    xmlout(false), passthru(false), 
+    xmlout(false), passthru(false), linenum(0),
     inputclass("current"), outputclass("current")
   { 
     theErrLog = new TiCC::LogStream(cerr);
@@ -336,6 +336,8 @@ namespace Tokenizer {
     string line;      
     do {	    
       done = !getline( IN, line );
+      linenum++;
+      if (tokDebug >= 0) *Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
       stripCR( line );
       if ( sentenceperlineinput )
 	line += string(" ") + folia::UnicodeToUTF8(eosmark);

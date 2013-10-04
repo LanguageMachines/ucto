@@ -134,6 +134,8 @@ namespace Tokenizer {
   };
   
   class TokenizerClass{
+  protected:
+    int linenum;
   public:
     TokenizerClass();
     ~TokenizerClass();
