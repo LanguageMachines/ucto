@@ -2,7 +2,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v0.11" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-07-08T17:44:41" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2013-10-07T14:45:03" set="tokconfig-nl"/>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
     </annotations>
@@ -11,7 +11,7 @@
     <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">
       <head xml:id="WR-P-E-J-0000000001.head.1">
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
-          <t>Vanessa29 doet een dansje \\ o \o&gt; \o/ &lt;o/ o//</t>
+          <t>Vanessa29 doet een dansje \\o \o&gt; \o/ &lt;o/ o//</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="STRING-NUMBER">
             <t>Vanessa29</t>
           </w>
