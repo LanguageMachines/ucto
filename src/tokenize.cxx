@@ -521,6 +521,9 @@ namespace Tokenizer {
 
   void appendText( folia::FoliaElement *root,
 		   const string& outputclass  ){
+    if ( root->hastext( outputclass ) ){
+      return;
+    }
     UnicodeString utxt = root->deeptext( outputclass, false );
     // cerr << endl << root->id() << endl;
     // cerr << "untok: '" << utxt << "'" << endl;
@@ -546,6 +549,7 @@ namespace Tokenizer {
     else if ( root->isinstance( folia::Paragraph_t )
 	      || root->isinstance( folia::Head_t )
 	      || root->isinstance( folia::ListItem_t )
+	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
     }
