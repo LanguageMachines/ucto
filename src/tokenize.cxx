@@ -13,7 +13,7 @@
 
   Ucto is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
@@ -46,33 +46,33 @@ namespace Tokenizer {
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
-  
+
   class uRangeError: public std::out_of_range {
   public:
     uRangeError( const string& s ): out_of_range( "ucto: out of range :" + s ){};
   };
-  
+
   class uLogicError: public std::logic_error {
   public:
     uLogicError( const string& s ): logic_error( "ucto: logic error :" + s ){};
   };
-  
+
   class uOptionError: public std::invalid_argument {
   public:
     uOptionError( const string& s ): invalid_argument( "ucto: option :" + s ){};
   };
-  
+
   class uConfigError: public std::invalid_argument {
   public:
     uConfigError( const string& s ): invalid_argument( "ucto: config file :" + s ){};
     uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file :" + folia::UnicodeToUTF8(us) ){};
   };
-  
+
   class uCodingError: public std::runtime_error {
   public:
     uCodingError( const string& s ): runtime_error( "ucto: coding problem :" + s ){};
   };
-  
+
 
   class UnicodeRegexMatcher {
   public:
@@ -89,8 +89,8 @@ namespace Tokenizer {
     RegexMatcher *matcher;
     UnicodeRegexMatcher();
     vector<UnicodeString> results;
-  };  
-  
+  };
+
   UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat ){
     failString = "";
     matcher = NULL;
@@ -101,25 +101,25 @@ namespace Tokenizer {
       failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat)
 	+ "' ";
       if ( errorInfo.offset >0 )
-	failString += ", at position " + toString( errorInfo.offset );	
+	failString += ", at position " + toString( errorInfo.offset );
       throw uConfigError(failString);
     }
     else {
       matcher = pattern->matcher( u_stat );
       if (U_FAILURE(u_stat)){
-	failString = "unable to create PatterMatcher with pattern '" + 
+	failString = "unable to create PatterMatcher with pattern '" +
 	  folia::UnicodeToUTF8(pat) + "'";
 	throw uConfigError(failString);
       }
     }
   }
-  
+
   UnicodeRegexMatcher::~UnicodeRegexMatcher(){
     delete pattern;
     delete matcher;
   }
-  
-  bool UnicodeRegexMatcher::match_all( const UnicodeString& line, 
+
+  bool UnicodeRegexMatcher::match_all( const UnicodeString& line,
 				       UnicodeString& pre,
 				       UnicodeString& post ){
     UErrorCode u_stat = U_ZERO_ERROR;
@@ -166,14 +166,14 @@ namespace Tokenizer {
     results.clear();
     return false;
   }
-  
+
   const UnicodeString UnicodeRegexMatcher::get_match( unsigned int n ) const{
     if ( n < results.size() )
       return results[n];
     else
       return "";
   }
-  
+
   int UnicodeRegexMatcher::NumOfMatches() const {
     if ( results.size() > 0 )
       return results.size()-1;
@@ -181,11 +181,11 @@ namespace Tokenizer {
       return 0;
   }
 
-  int UnicodeRegexMatcher::split( const UnicodeString& us, 
+  int UnicodeRegexMatcher::split( const UnicodeString& us,
 				  vector<UnicodeString>& result ){
     result.clear();
     const int maxWords = 256;
-    UnicodeString words[maxWords];    
+    UnicodeString words[maxWords];
     UErrorCode status = U_ZERO_ERROR;
     int numWords = matcher->split( us, words, maxWords, status );
     for ( int i = 0; i < numWords; ++i )
@@ -230,7 +230,7 @@ namespace Tokenizer {
   }
 
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
-    if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;	
+    if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;
     vector<UChar>::reverse_iterator it = quotestack.rbegin();
     size_t i = quotestack.size();
     while ( it != quotestack.rend() ){
@@ -261,23 +261,23 @@ namespace Tokenizer {
     return "";
   }
 
-  Token::Token( const UnicodeString *_type, 
+  Token::Token( const UnicodeString *_type,
 		const UnicodeString& _s,
 		TokenRole _role): type(_type), us(_s), role(_role) {}
-  
+
 
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << *t.type << " : " << t.role  << ":" << t.us;
     return os;
   }
-  
+
   Rule::~Rule() {
     delete regexp;
   }
 
   Rule::Rule( const UnicodeString& _id, const UnicodeString& _pattern):
     id(_id), pattern(_pattern) {
-    regexp = new UnicodeRegexMatcher(pattern); 
+    regexp = new UnicodeRegexMatcher(pattern);
   }
 
   ostream& operator<< (std::ostream& os, const Rule& r ){
@@ -290,15 +290,15 @@ namespace Tokenizer {
   }
 
   TokenizerClass::TokenizerClass():
-    inputEncoding( "UTF-8" ), eosmark("<utt>"), 
-    tokDebug(0), verbose(false), 
+    inputEncoding( "UTF-8" ), eosmark("<utt>"),
+    tokDebug(0), verbose(false),
     detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
     paragraphsignal(true),
-    sentenceperlineoutput(false), sentenceperlineinput(false), 
-    lowercase(false), uppercase(false), 
+    sentenceperlineoutput(false), sentenceperlineinput(false),
+    lowercase(false), uppercase(false),
     xmlout(false), passthru(false), linenum(0),
     inputclass("current"), outputclass("current")
-  { 
+  {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
 
@@ -306,14 +306,14 @@ namespace Tokenizer {
     //fixed assume 8824 (?i) handing -  is fixed too:
     //test if pattern (?i)aßx matched against aßx produces results, if not, bug
     //is present and users should be warned
-    
+
   }
 
-  void TokenizerClass::setErrorLog( TiCC::LogStream *os ) { 
+  void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
     if ( theErrLog != os ){
       delete theErrLog;
     }
-    theErrLog = os; 
+    theErrLog = os;
   }
 
   string TokenizerClass::setInputEncoding( const std::string& enc ){
@@ -321,23 +321,24 @@ namespace Tokenizer {
     inputEncoding = enc;
     return old;
   }
-  
+
   void stripCR( string& s ){
     string::size_type pos = s.rfind( '\r' );
     if ( pos != string::npos ){
       s.erase( pos );
     }
   }
-  
+
   vector<Token> TokenizerClass::tokenizeStream( istream& IN ) {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
-    string line;      
-    do {	    
+    string line;
+    do {
       done = !getline( IN, line );
       linenum++;
-      if (tokDebug >= 0) *Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      if (tokDebug > 0)
+	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
       stripCR( line );
       if ( sentenceperlineinput )
 	line += string(" ") + folia::UnicodeToUTF8(eosmark);
@@ -345,15 +346,15 @@ namespace Tokenizer {
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
-      } 
+      }
       else {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
-	  tokenizeLine( line ); 
-	numS = countSentences(); //count full sentences in token buffer	    
-      }			
-      if ( numS > 0 ) { //process sentences 
+	  tokenizeLine( line );
+	numS = countSentences(); //count full sentences in token buffer
+      }
+      if ( numS > 0 ) { //process sentences
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	for (int i = 0; i < numS; i++) {
 	  vector<Token> v = getSentence( i );
@@ -361,47 +362,47 @@ namespace Tokenizer {
 	}
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	flushSentences(numS);	    
-      } 
+	flushSentences(numS);
+      }
       else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
-      }	
+      }
     } while (!done);
     return outputTokens;
   }
-  
+
   folia::Document TokenizerClass::tokenize( istream& IN ) {
     vector<Token> v = tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
     outputTokensDoc( doc, v );
     return doc;
   }
-    
+
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     vector<Token> v = tokenizeStream( IN );
     if (xmlout) {
       folia::Document doc( "id='" + docid + "'" );
       outputTokensDoc( doc, v );
       OUT << doc << endl;
-    } 
+    }
     else {
       outputTokens( OUT, v );
       OUT << endl;
     }
   }
-  
+
   bool TokenizerClass::tokenize( folia::Document& doc ) {
     if (tokDebug >= 2) *Log(theErrLog) << "tokenize doc " << doc << endl;
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) *Log(theErrLog) << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
       tokenizeElement( doc.doc()->index(i) );
     }
-    return true; 
+    return true;
   }
-  
+
   void TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
-    if ( element->isinstance(folia::Word_t) 
-	 || element->isinstance(folia::TextContent_t)) 
+    if ( element->isinstance(folia::Word_t)
+	 || element->isinstance(folia::TextContent_t))
       // shortcut
       return;
     if (tokDebug >= 2) *Log(theErrLog) << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
@@ -417,8 +418,8 @@ namespace Tokenizer {
 	  // bail out
 	  return;
 	}
-      } 
-      else if ( ( element->isinstance(folia::Sentence_t) ) 
+      }
+      else if ( ( element->isinstance(folia::Sentence_t) )
 		|| ( element->isinstance(folia::Head_t) ) ) {
 	//tokenize sentence: check for absence of Word's
 	vector<folia::Word*> words = element->words();
@@ -449,7 +450,7 @@ namespace Tokenizer {
       if ( inputclass != outputclass && outputclass == "current" ){
 	if ( element->hastext( outputclass ) ){
 	  throw uLogicError( "cannot set text with class='current' on node "
-			     + element->id() + 
+			     + element->id() +
 			     " because it already has text in that class." );
 	}
       }
@@ -474,7 +475,7 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
-    if  (tokDebug > 0) 
+    if  (tokDebug > 0)
       cerr << "tokenize sentence element: " << element->id() << endl;
     UnicodeString line = element->stricttext( inputclass );
     if ( line.isEmpty() ){
@@ -482,15 +483,15 @@ namespace Tokenizer {
       return;
     }
     line += " "  + eosmark;
-    if (tokDebug >= 1) 
-      *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:" 
+    if (tokDebug >= 1)
+      *Log(theErrLog) << "[tokenizeSentenceElement] Processing sentence:"
 		      << line << endl;
     if ( passthru ){
       bool bos = true;
       passthruLine( folia::UnicodeToUTF8(line), bos );
     }
     else
-      tokenizeLine( line );		
+      tokenizeLine( line );
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
@@ -499,9 +500,9 @@ namespace Tokenizer {
       outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
     }
     outputTokensXML( element, outputTokens );
-    flushSentences(numS);	
+    flushSentences(numS);
   }
-  
+
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
@@ -509,7 +510,7 @@ namespace Tokenizer {
       doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     else {
-      doc.declare( folia::AnnotationType::TOKEN, settingsfilename, 
+      doc.declare( folia::AnnotationType::TOKEN, settingsfilename,
 		   "annotator='ucto', annotatortype='auto', datetime='now()'");
     }
     folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
@@ -518,7 +519,7 @@ namespace Tokenizer {
     outputTokensXML(root, tv );
   }
 
-  void appendText( folia::FoliaElement *root, 
+  void appendText( folia::FoliaElement *root,
 		   const string& outputclass  ){
     UnicodeString utxt = root->deeptext( outputclass, false );
     // cerr << endl << root->id() << endl;
@@ -527,29 +528,32 @@ namespace Tokenizer {
     // cerr << "  tok: '" << txt << "'" << endl;
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
-  
+
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 					const vector<Token>& tv ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     int parCount = 0;
-    if  (tokDebug > 0) 
+    if  (tokDebug > 0)
       *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
-    
+
     bool root_is_sentence = false;
-    bool root_is_paragraph = false;
+    bool root_is_structure_element = false;
     if ( root->isinstance( folia::Sentence_t ) ){
       lastS = root;
       root_is_sentence = true;
     }
     else if ( root->isinstance( folia::Paragraph_t )
+	      || root->isinstance( folia::Head_t )
+	      || root->isinstance( folia::ListItem_t )
 	      || root->isinstance( folia::Event_t ) ){
-      root_is_paragraph = true;
+      root_is_structure_element = true;
     }
 
     bool in_paragraph = false;
-    for ( size_t i=0; i < tv.size(); i++) {      
-      if (((!root_is_paragraph) && (!root_is_sentence)) && ((tv[i].role & NEWPARAGRAPH) || (!in_paragraph))) {	    
+    for ( size_t i=0; i < tv.size(); i++) {
+      if ( ( !root_is_structure_element && !root_is_sentence ) &&
+	   ( (tv[i].role & NEWPARAGRAPH) || !in_paragraph ) ) {
 	parCount++;
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
@@ -581,7 +585,7 @@ namespace Tokenizer {
 	root->append( s );
 	root = s;
 	lastS = root;
-      }	
+      }
       if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating word element for " << tv[i].us << endl;
       folia::KWargs args;
       args["generate_id"] = lastS->id();
@@ -604,7 +608,7 @@ namespace Tokenizer {
 	root->append( q );
 	root = q;
 	quotelevel++;
-      }    
+      }
       if ( ( tv[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
 	appendText( root, outputclass );
@@ -616,25 +620,25 @@ namespace Tokenizer {
     }
     appendText( root, outputclass );
   }
-  
+
   ostream& operator<<( ostream& os, const TokenRole& tok ){
     if ( tok & NOSPACE) os << "NOSPACE ";
     if ( tok & BEGINOFSENTENCE) os << "BEGINOFSENTENCE ";
     if ( tok & ENDOFSENTENCE) os << "ENDOFSENTENCE ";
     if ( tok & NEWPARAGRAPH) os << "NEWPARAGRAPH ";
     if ( tok & BEGINQUOTE) os << "BEGINQUOTE ";
-    if ( tok & ENDQUOTE) os << "ENDQUOTE ";		
+    if ( tok & ENDQUOTE) os << "ENDQUOTE ";
     return os;
   }
-  
-  void TokenizerClass::outputTokens( ostream& OUT, 
-				     const vector<Token>& toks ) const { 
+
+  void TokenizerClass::outputTokens( ostream& OUT,
+				     const vector<Token>& toks ) const {
     short quotelevel = 0;
     for ( size_t i = 0; i < toks.size(); i++) {
       if ((detectPar) && ( toks[i].role & NEWPARAGRAPH) && (!verbose) && (i != 0) ) {
 	if (sentenceperlineoutput) {
 	  OUT << endl;
-	} 
+	}
 	else {
 	  OUT << endl << endl;
 	}
@@ -642,29 +646,29 @@ namespace Tokenizer {
       if (lowercase) {
 	UnicodeString s = toks[i].us;
 	OUT << s.toLower();
-      } 
+      }
       else if (uppercase) {
 	UnicodeString s = toks[i].us;
 	OUT << s.toUpper();
-      } 
+      }
       else {
 	OUT << toks[i].us;
-      }      
+      }
       if ( toks[i].role & NEWPARAGRAPH) quotelevel = 0;
       if ( toks[i].role & BEGINQUOTE) quotelevel++;
       if (verbose) {
 	OUT << "\t" << *toks[i].type << "\t" << toks[i].role << endl;
       }
       if ( toks[i].role & ENDQUOTE) quotelevel--;
-      
+
       if ( toks[i].role & ENDOFSENTENCE) {
 	if (verbose) {
 	  OUT << endl;
-	} 
+	}
 	else if (quotelevel == 0) {
 	  if (sentenceperlineoutput) {
 	    OUT << endl;
-	  } 
+	  }
 	  else {
 	    OUT << " " + eosmark;
 	  }
@@ -674,34 +678,34 @@ namespace Tokenizer {
 	if (!( ( toks[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
 	  OUT << " ";
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
-	} 
+	}
 	else if ((quotelevel > 0) && (sentenceperlineoutput)) {
-	  OUT << " ";  
+	  OUT << " ";
 	}
       }
-    } 
+    }
   }
-  
+
   int TokenizerClass::countSentences(bool forceentirebuffer) {
     //Return the number of *completed* sentences in the token buffer
-    
-    //Performs  extra sanity checks at the same time! Making sure 
+
+    //Performs  extra sanity checks at the same time! Making sure
     //BEGINOFSENTENCE and ENDOFSENTENCE always pair up, and that TEMPENDOFSENTENCE roles
     //are converted to proper ENDOFSENTENCE markers
-    
+
     short quotelevel = 0;
     int count = 0;
     const int size = tokens.size();
     int begin = 0;
     for (int i = begin; i < size; i++) {
       if (tokDebug >= 5)
-	*Log(theErrLog) << "[countSentences] buffer#" <<i 
+	*Log(theErrLog) << "[countSentences] buffer#" <<i
 			<< " word=[" << tokens[i].us
-			<< "] role=" << tokens[i].role 
+			<< "] role=" << tokens[i].role
 			<< ", quotelevel="<< quotelevel << endl;
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
       if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;	
+      if (tokens[i].role & ENDQUOTE) quotelevel--;
       if ((forceentirebuffer) && (tokens[i].role & TEMPENDOFSENTENCE) && (quotelevel == 0)) {
 	//we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
 	//Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
@@ -712,7 +716,7 @@ namespace Tokenizer {
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	begin = i + 1;
 	count++;
-	if (tokDebug >= 5) 
+	if (tokDebug >= 5)
 	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " found" << endl;
 	if ((begin < size) ){
 	  tokens[begin].role |= BEGINOFSENTENCE;
@@ -722,23 +726,23 @@ namespace Tokenizer {
 	//last token of buffer
 	count++;
 	tokens[i].role |= ENDOFSENTENCE;
-	if (tokDebug >= 5) 
-	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;	    
+	if (tokDebug >= 5)
+	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;
       }
     }
     return count;
   }
-  
+
   int TokenizerClass::flushSentences(int sentences) {
     //Flush n sentences from the buffer, returns the number of tokens left
     short quotelevel = 0;
     const int size = tokens.size();
     if (sentences == 0) return size;
-    int begin = 0;	
+    int begin = 0;
     for (int i = 0; i < size; i++) {
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
       if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;	
+      if (tokens[i].role & ENDQUOTE) quotelevel--;
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) begin = i + 1;
     }
     if (begin == 0) {
@@ -747,7 +751,7 @@ namespace Tokenizer {
     if (begin == size) {
       tokens.clear();
       quotes.clearStack();
-    } 
+    }
     else {
       tokens.erase (tokens.begin(),tokens.begin()+begin);
       if (!quotes.emptyStack()) {
@@ -756,11 +760,11 @@ namespace Tokenizer {
     }
     //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
     if (!tokens.empty()) {
-      tokens[0].role |= BEGINOFSENTENCE; 
-    }		
+      tokens[0].role |= BEGINOFSENTENCE;
+    }
     return tokens.size();
   }
-  
+
   vector<Token> TokenizerClass::getSentence( int index ) {
     vector<Token> outToks;
     int count = 0;
@@ -769,19 +773,19 @@ namespace Tokenizer {
     size_t begin = 0;
     size_t end = 0;
     for ( int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;      
-      if (tokens[i].role & ENDQUOTE) quotelevel--;	
+      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
+      if (tokens[i].role & ENDQUOTE) quotelevel--;
       if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
 	begin = i;
       }
       //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
       if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      
+
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (count == index) {
 	  end = i;
 	  tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
-	  if (tokDebug >= 1) 
+	  if (tokDebug >= 1)
 	    *Log(theErrLog) << "[tokenize] extracted sentence " << index << ", begin="<<begin << ",end="<< end << endl;
 	  for ( size_t i=begin; i <= end; ++i ){
 	    outToks.push_back( tokens[i] );
@@ -789,13 +793,13 @@ namespace Tokenizer {
 	  return outToks;
 	}
 	count++;
-      }	
-    }  
-    throw uRangeError( "No sentence exists with the specified index: " 
+      }
+    }
+    throw uRangeError( "No sentence exists with the specified index: "
 		       + toString( index ) );
     return outToks;
   }
-  
+
   string TokenizerClass::getSentenceString( unsigned int i ){
     vector<Token> v = getSentence( i );
     if ( !v.empty() ){
@@ -805,11 +809,11 @@ namespace Tokenizer {
       verbose = false;
       outputTokens( TMPOUT, v );
       verbose = tv;
-      return TMPOUT.str(); 
+      return TMPOUT.str();
     }
     return "";
   }
-  
+
   vector<string> TokenizerClass::getSentences() {
     vector<string> sentences;
     int numS = countSentences(true); //force buffer to empty
@@ -818,12 +822,12 @@ namespace Tokenizer {
       sentences.push_back( tmp );
     }
     return sentences;
-  }  
+  }
 
   // FBK: return true if character is a quote.
   bool TokenizerClass::u_isquote(UChar c) const {
     bool quote = false;
-    if ( (c == '"') || (c == '\'') || (c=='`') || 
+    if ( (c == '"') || (c == '\'') || (c=='`') ||
 	 ( UnicodeString(c) == "＂") ) {
       quote = true;
     }
@@ -831,7 +835,7 @@ namespace Tokenizer {
       UnicodeString opening = quotes.lookupOpen( c );
       if (!opening.isEmpty()) {
 	quote = true;
-      } 
+      }
       else {
 	UnicodeString closing = quotes.lookupClose( c );
 	if (!closing.isEmpty()) {
@@ -841,27 +845,27 @@ namespace Tokenizer {
     }
     return quote;
   }
-  
-  //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN BOS. 
+
+  //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN BOS.
   //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
   //BECAUSE: '"Hoera!", zei de man' MUST NOT BE SPLIT ON ','..
   bool is_BOS( UChar c ){
     bool is_bos = false;
     UBlockCode s = ublock_getCode(c);
     //test for languages that distinguish case
-    if ( (s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) 
-	 || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) 
-	 || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+    if ( (s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK)
+	 || (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN)
+	 || (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) {
       if ( u_isupper(c) || u_istitle(c) ) {
 	//next 'word' starts with more punctuation or with uppercase
 	is_bos = true;
-      }        
+      }
     }
     return is_bos;
   }
-  
+
   bool TokenizerClass::resolveQuote(int endindex, const UnicodeString& open ) {
-    //resolve a quote        
+    //resolve a quote
     int stackindex = -1;
     int beginindex = quotes.lookup( open, stackindex );
 
@@ -870,10 +874,10 @@ namespace Tokenizer {
 
       if (beginindex > endindex) {
 	throw uRangeError( "Begin index for quote is higher than end index!" );
-      }    
-      
+      }
+
       //We have a quote!
-      
+
       //resolve sentences within quote, all sentences must be full sentences:
       int beginsentence = beginindex + 1;
       int expectingend = 0;
@@ -881,12 +885,12 @@ namespace Tokenizer {
       int size = tokens.size();
       for (int i = beginsentence; i < endindex; i++) {
 	if (tokens[i].role & BEGINQUOTE) subquote++;
-	
+
 	if (subquote == 0) {
 	  if (tokens[i].role & BEGINOFSENTENCE) expectingend++;
 	  if (tokens[i].role & ENDOFSENTENCE) expectingend--;
-	  
-	  if (tokens[i].role & TEMPENDOFSENTENCE) {	
+
+	  if (tokens[i].role & TEMPENDOFSENTENCE) {
 	    tokens[i].role ^= TEMPENDOFSENTENCE;
 	    tokens[i].role |= ENDOFSENTENCE;
 	    tokens[beginsentence].role |= BEGINOFSENTENCE;
@@ -896,8 +900,8 @@ namespace Tokenizer {
 	  //    MvD: "Nou, Van het Gouden Been ofzo herinner ik mij als kind: 'Waar is mijn gouden been?'"
 	  // the BEGINOFSENTENCE is only set for the inner quoted sentence 'Waar is mijn gouden been'. However,
 	  // We also need one for the outser sentence.
-	} 
-	else if ( (tokens[i].role & ENDQUOTE) 
+	}
+	else if ( (tokens[i].role & ENDQUOTE)
 		  && (tokens[i].role & ENDOFSENTENCE)) {
 	  tokens[beginsentence].role |= BEGINOFSENTENCE;
 	  beginsentence = i + 1;
@@ -907,64 +911,64 @@ namespace Tokenizer {
       if ((expectingend == 0) && (subquote == 0)) {
 	//ok, all good, mark the quote:
 	tokens[beginindex].role |= BEGINQUOTE;
-	tokens[endindex].role |= ENDQUOTE;	   
-      } 
+	tokens[endindex].role |= ENDQUOTE;
+      }
       else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
-	//missing one endofsentence, we can correct, last token in quote token is endofsentence:	    
+	//missing one endofsentence, we can correct, last token in quote token is endofsentence:
 	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
-	tokens[endindex - 1].role |= ENDOFSENTENCE;	    
+	tokens[endindex - 1].role |= ENDOFSENTENCE;
 	//mark the quote
 	tokens[beginindex].role |= BEGINQUOTE;
-	tokens[endindex].role |= ENDQUOTE;	   
-      } 
+	tokens[endindex].role |= ENDQUOTE;
+      }
       else {
 	if (tokDebug >= 2) *Log(theErrLog) << "[resolveQuote] Quote can not be resolved, unbalanced sentences or subquotes within quote, skipping... (expectingend=" << expectingend << ",subquote=" << subquote << ")" << endl;
 	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
-      }      
+      }
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
       quotes.eraseAtPos( stackindex );
       //FBK: ENDQUOTES NEED TO BE MARKED AS ENDOFSENTENCE IF THE PREVIOUS TOKEN
       //WAS AN ENDOFSENTENCE. OTHERWISE THE SENTENCES WILL NOT BE SPLIT.
       if ((tokens[endindex].role & ENDQUOTE) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
         //FBK: CHECK FOR EOS AFTER QUOTES
-        if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS 
+        if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS
             ((endindex + 1 < size) && (is_BOS(tokens[endindex+1].us[0])))) {
-	  tokens[endindex].role |= ENDOFSENTENCE; 
+	  tokens[endindex].role |= ENDOFSENTENCE;
 	  // FBK: CHECK IF NEXT TOKEN IS A QUOTE AND NEXT TO THE QUOTE A BOS
-        } 
-	else if ( (endindex + 2 < size) 
-		  && (u_isquote(tokens[endindex+1].us[0])) 
+        }
+	else if ( (endindex + 2 < size)
+		  && (u_isquote(tokens[endindex+1].us[0]))
 		  && (is_BOS(tokens[endindex+2].us[0]))) {
 	  tokens[endindex].role |= ENDOFSENTENCE;
 	  // If the current token is an ENDQUOTE and the next token is a quote and also the last token,
 	  // the current token is an EOS.
-        } 
-	else if ( (endindex + 2 == size) 
+        }
+	else if ( (endindex + 2 == size)
 		  && (u_isquote(tokens[endindex+1].us[0]))) {
 	  tokens[endindex].role |= ENDOFSENTENCE;
         }
       }
       return true;
-    } 
+    }
     else {
       return false;
-    }    
+    }
   }
 #ifdef OLD_IMP
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
-    UChar c = tokens[i].us[0]; 
+    UChar c = tokens[i].us[0];
     if ( c == '.' ){
-      if (i + 1 == tokens.size() ) {	//No next character? 
+      if (i + 1 == tokens.size() ) {	//No next character?
 	is_eos = true; //Newline after eosmarker
       }
       else {
-	UChar c = tokens[i+1].us[0]; 
+	UChar c = tokens[i+1].us[0];
 	UBlockCode s = ublock_getCode(c);
 	//test for languages that distinguish case
 	if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) ||
 	    (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) ||
-	    (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) { 
+	    (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) {
 	  if ( u_isupper(c) || u_istitle(c) ){
 	    //next 'word' starts with uppercase
 	    is_eos = true;
@@ -975,11 +979,11 @@ namespace Tokenizer {
 	      if ( detectQuotes )
 		is_eos = true;
 	      else {
-		if ( i + 2 == tokens.size() ) {	//No next-next character? 
+		if ( i + 2 == tokens.size() ) {	//No next-next character?
 		  is_eos = true;
 		}
 		else {
-		  UChar c = tokens[i+2].us[0]; 
+		  UChar c = tokens[i+2].us[0];
 		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
 		    //next 'word' after quote starts with uppercase or is punct
 		    is_eos = true;
@@ -998,31 +1002,31 @@ namespace Tokenizer {
     }
     else { //no period
       //Check for other EOS markers
-      if ( !detectQuotes && 
-	   ( c == '\'' || c == '`' || UnicodeString(c) == "’" 
-	     || UnicodeString(c) == "‘" || c == '"' || UnicodeString(c) == "”" 
-	     || UnicodeString(c) == "“" ) 
+      if ( !detectQuotes &&
+	   ( c == '\'' || c == '`' || UnicodeString(c) == "’"
+	     || UnicodeString(c) == "‘" || c == '"' || UnicodeString(c) == "”"
+	     || UnicodeString(c) == "“" )
 	   && (i + 1 == tokens.size() ) ){
-	//No next character? 
+	//No next character?
 	is_eos = true; //Newline after quote
       }
       else if ( eosmarkers.indexOf( c ) >= 0 ){
-	if (i + 1 == tokens.size() ) {	//No next character? 
+	if (i + 1 == tokens.size() ) {	//No next character?
 	  is_eos = true; //Newline after eosmarker
 	}
 	else {
-	  UChar c = tokens[i+1].us[0]; 
+	  UChar c = tokens[i+1].us[0];
 	  if ( u_ispunct(c)  ){
 	    // next word is punctuation.
 	    if ( u_isquote(c) ){
 	      if ( detectQuotes )
 		is_eos = true;
 	      else {
-		if ( i + 2 == tokens.size() ) {	//No next-next character? 
+		if ( i + 2 == tokens.size() ) {	//No next-next character?
 		  is_eos = true;
 		}
 		else {
-		  UChar c = tokens[i+2].us[0]; 
+		  UChar c = tokens[i+2].us[0];
 		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
 		  //next 'word' after quote starts with uppercase or is punct
 		    is_eos = true;
@@ -1045,30 +1049,30 @@ namespace Tokenizer {
 #else
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
-    UChar c = tokens[i].us[0]; 
+    UChar c = tokens[i].us[0];
     if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
-      if (i + 1 == tokens.size() ) {	//No next character? 
+      if (i + 1 == tokens.size() ) {	//No next character?
 	is_eos = true; //Newline after eosmarker
       }
       else {
-	UChar c = tokens[i+1].us[0]; 
+	UChar c = tokens[i+1].us[0];
 	if ( u_isquote(c) ){
 	  // next word is quote
 	  if ( detectQuotes )
 	    is_eos = true;
 	  else {
-	    // if ( i + 2 == tokens.size() ) {	//No next-next character? 
+	    // if ( i + 2 == tokens.size() ) {	//No next-next character?
 	    //   is_eos = true;
 	    // }
 	    // else {
-	    //   UChar c = tokens[i+2].us[0]; 
+	    //   UChar c = tokens[i+2].us[0];
 	    //   if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
 	    // 	//next 'word' after quote starts with uppercase or is punct
 	    // 	is_eos = true;
 	    //   }
 	    // }
 	    if ( i + 2 < tokens.size() ) {
-	      UChar c = tokens[i+2].us[0]; 
+	      UChar c = tokens[i+2].us[0];
 	      if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
 	     	//next 'word' after quote starts with uppercase or is punct
 		is_eos = true;
@@ -1081,7 +1085,7 @@ namespace Tokenizer {
 	  if ( u_isupper(c) || u_istitle(c) )
 	    is_eos = true;
 	}
-	else 
+	else
 	  is_eos = true;
       }
     }
@@ -1090,7 +1094,7 @@ namespace Tokenizer {
 #endif
 
   void TokenizerClass::detectQuoteBounds( const int i ) {
-    UChar c = tokens[i].us[0]; 
+    UChar c = tokens[i].us[0];
     //Detect Quotation marks
     if ((c == '"') || ( UnicodeString(c) == "＂") ) {
       if (tokDebug > 1 )
@@ -1099,7 +1103,7 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	quotes.push( i, c );
       }
-    } 
+    }
     else if ((c == '\'') ) {
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
@@ -1107,21 +1111,21 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	quotes.push( i, c );
       }
-    } 
+    }
     else {
       UnicodeString close = quotes.lookupOpen( c );
       if ( !close.isEmpty() ){ // we have a opening quote
-	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;	      
+	if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;
 	quotes.push( i, c ); // remember it
-      } 
+      }
       else {
-	UnicodeString open = quotes.lookupClose( c );	
+	UnicodeString open = quotes.lookupClose( c );
 	if ( !open.isEmpty() ) { // we have a closeing quote
-	  if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;	      
+	  if (tokDebug > 1 ) *Log(theErrLog) << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
 	  if (!resolveQuote(i, open )) { // resolve the matching opening
 	    if (tokDebug > 1 ) {
-	      *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;	      
-	    } 
+	      *Log(theErrLog) << "[detectQuoteBounds] Unable to resolve" << endl;
+	    }
 	  }
 	}
       }
@@ -1130,7 +1134,7 @@ namespace Tokenizer {
 
   bool isClosing( const Token& tok ){
     if ( tok.us.length() == 1 &&
-	 ( tok.us[0] == ')' || tok.us[0] == '}' 
+	 ( tok.us[0] == ')' || tok.us[0] == '}'
 	   || tok.us[0] == ']' || tok.us[0] == '>' ) )
       return true;
     return false;
@@ -1138,10 +1142,10 @@ namespace Tokenizer {
 
   void TokenizerClass::detectSentenceBounds( const int offset ){
     //find sentences
-    const int size = tokens.size();    
+    const int size = tokens.size();
     for (int i = offset; i < size; i++) {
       if (tokDebug > 1 )
-	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=[" 
+	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=["
 			<< tokens[i].us
 			<< "] type=" << *tokens[i].type
 			<< ", role=" << tokens[i].role << endl;
@@ -1149,7 +1153,7 @@ namespace Tokenizer {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
-	  if ((tokDebug > 1 )) 
+	  if ((tokDebug > 1 ))
 	    *Log(theErrLog) << "[detectSentenceBounds] EOS FOUND @i=" << i << endl;
 	  tokens[i].role |= ENDOFSENTENCE;
 	  //if this is the end of the sentence, the next token is the beginning of a new one
@@ -1157,23 +1161,23 @@ namespace Tokenizer {
 	    tokens[i+1].role |= BEGINOFSENTENCE;
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE; 
+	    tokens[i-1].role ^= ENDOFSENTENCE;
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	      tokens[i].role ^= BEGINOFSENTENCE;
 	    }
-	  }   		
+	  }
 	}
 	else if ( isClosing(tokens[i] ) ) {
 	  // we have a closing symbol
-	  if ((tokDebug > 1 )) 
+	  if ((tokDebug > 1 ))
 	    *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE; 
+	    tokens[i-1].role ^= ENDOFSENTENCE;
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	      tokens[i].role ^= BEGINOFSENTENCE;
 	    }
-	  }   		
+	  }
 	}
       }
     }
@@ -1182,7 +1186,7 @@ namespace Tokenizer {
       // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
       // fix this up to avoid sentences containing only punctuation
       if (tokDebug > 1 )
-	*Log(theErrLog) << "[detectSentenceBounds:fixup] i="<< i << " word=[" 
+	*Log(theErrLog) << "[detectSentenceBounds:fixup] i="<< i << " word=["
 			<< tokens[i].us
 			<< "] type=" << *tokens[i].type
 			<< ", role=" << tokens[i].role << endl;
@@ -1196,17 +1200,17 @@ namespace Tokenizer {
 	  }
 	}
       }
-      else 
+      else
 	break;
     }
-  }    
+  }
 
   void TokenizerClass::detectQuotedSentenceBounds( const int offset ){
     //find sentences
-    const int size = tokens.size();    
+    const int size = tokens.size();
     for (int i = offset; i < size; i++) {
       if (tokDebug > 1 )
-	*Log(theErrLog) << "[detectQuotedSentenceBounds] i="<< i << " word=[" 
+	*Log(theErrLog) << "[detectQuotedSentenceBounds] i="<< i << " word=["
 			<< tokens[i].us
 			<<"] role=" << tokens[i].role << endl;
       if ( tokens[i].type->startsWith("PUNCTUATION") ) {
@@ -1214,7 +1218,7 @@ namespace Tokenizer {
 	bool is_eos = detectEos( i );
 	if (is_eos) {
 	  if ( !quotes.emptyStack() ) {
-	    if ((tokDebug > 1 )) 
+	    if ((tokDebug > 1 ))
 	      *Log(theErrLog) << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
 	    //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
 	    tokens[i].role |= TEMPENDOFSENTENCE;
@@ -1223,7 +1227,7 @@ namespace Tokenizer {
 	      tokens[i-1].role ^= TEMPENDOFSENTENCE;
 	  }
 	  else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
-	    if ((tokDebug > 1 )) 
+	    if ((tokDebug > 1 ))
 	      *Log(theErrLog) << "[detectQuotedSentenceBounds] EOS FOUND @i=" << i << endl;
 	    tokens[i].role |= ENDOFSENTENCE;
 	    //if this is the end of the sentence, the next token is the beginning of a new one
@@ -1231,37 +1235,37 @@ namespace Tokenizer {
 	      tokens[i+1].role |= BEGINOFSENTENCE;
 	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	    if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	      tokens[i-1].role ^= ENDOFSENTENCE; 
+	      tokens[i-1].role ^= ENDOFSENTENCE;
 	      if (tokens[i].role & BEGINOFSENTENCE) {
 		tokens[i].role ^= BEGINOFSENTENCE;
 	      }
-	    }   		
-	  }	  	  
+	    }
+	  }
 	}
 	else if ( isClosing(tokens[i] ) ) {
 	  // we have a closing symbol
-	  if ((tokDebug > 1 )) 
+	  if ((tokDebug > 1 ))
 	    *Log(theErrLog) << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE; 
+	    tokens[i-1].role ^= ENDOFSENTENCE;
 	    if (tokens[i].role & BEGINOFSENTENCE) {
 	      tokens[i].role ^= BEGINOFSENTENCE;
 	    }
-	  }   		
+	  }
 	}
 	//check quotes
 	detectQuoteBounds(i);
       }
     }
-  }    
-  
+  }
+
   TokenizerClass::~TokenizerClass(){
     for ( unsigned int i = 0; i < rules.size(); i++) {
       delete rules[i];
     }
   }
-  
+
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
     UnicodeString input;
     try {
@@ -1271,41 +1275,41 @@ namespace Tokenizer {
 			  + "Make sure input is valid UTF-8!" );
     }
     if ( input.isBogus() ){
-      throw uCodingError( "string decoding failed: (invalid inputEncoding '" 
+      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
 			  + inputEncoding + "' ?)" );
     }
     if (tokDebug) *Log(theErrLog) << "[passthruLine] input: line=[" << input << "]" << endl;
     bool alpha = false, num = false, punct = false;
     UnicodeString word;
     for ( int i=0; i < input.length(); ++i ) {
-      UChar c = input[i];    
-      
+      UChar c = input[i];
+
       if ( u_isspace(c)) {
 	if (tokDebug) *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
 	if ( word == eosmark ) {
 	  word = "";
-	  if (!tokens.empty()) 
+	  if (!tokens.empty())
 	    tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	  bos = true;
-	} 
-	else {        
+	}
+	else {
 	  const UnicodeString *type;
 	  if (alpha && !num && !punct) {
 	    type = &type_word;
-	  } 
+	  }
 	  else if (num && !alpha && !punct) {
-	    type = &type_number;                
-	  } 
+	    type = &type_number;
+	  }
 	  else if (punct && !alpha && !num) {
-	    type = &type_punctuation;                    
-	  } 
+	    type = &type_punctuation;
+	  }
 	  else {
-	    type = &type_unknown;                
+	    type = &type_unknown;
 	  }
 	  if (bos) {
 	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
 	    bos = false;
-	  } 
+	  }
 	  else {
 	    tokens.push_back( Token( type, word ) );
 	  }
@@ -1314,39 +1318,39 @@ namespace Tokenizer {
 	  punct = false;
           word = "";
 	}
-      } 
+      }
       else {
 	if ( u_isalpha(c)) {
 	  alpha = true;
-	} 
+	}
 	else if (u_ispunct(c)) {
 	  punct = true;
-	} 
+	}
 	else if (u_isdigit(c)) {
 	  num = true;
-	}            
+	}
 	word += c;
-      }    
+      }
     }
     if (word != "") {
       if ( word == eosmark ) {
 	word = "";
-	if (!tokens.empty()) 
+	if (!tokens.empty())
 	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
       }
       else {
 	const UnicodeString *type;
 	if (alpha && !num && !punct) {
 	  type = &type_word;
-	} 
+	}
 	else if (num && !alpha && !punct) {
-	  type = &type_number;                
-	} 
+	  type = &type_number;
+	}
 	else if (punct && !alpha && !num) {
-	  type = &type_punctuation;                    
+	  type = &type_punctuation;
 	}
 	else {
-	  type = &type_unknown;                
+	  type = &type_unknown;
 	}
 	if (bos) {
 	  tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
@@ -1355,7 +1359,7 @@ namespace Tokenizer {
 	else {
 	  tokens.push_back( Token( type, word ) );
 	}
-      }   
+      }
     }
     if (sentenceperlineinput) {
       tokens[0].role |= BEGINOFSENTENCE;
@@ -1370,13 +1374,13 @@ namespace Tokenizer {
 							&bomLength, &err);
     if ( bomLength ){
       enc = encoding;
-      if (tokDebug) 
+      if (tokDebug)
 	*Log(theErrLog) << "Autdetected encoding: " << enc << endl;
       return s.substr( bomLength );
     }
     return s;
   }
-  
+
   // string wrapper
   int TokenizerClass::tokenizeLine( const string& in_s ){
     string s = checkBOM( in_s, inputEncoding );
@@ -1388,17 +1392,17 @@ namespace Tokenizer {
 			  + "Make sure input is valid UTF-8!" );
     }
     if ( uinputstring.isBogus() ){
-      throw uCodingError( "string decoding failed: (invalid inputEncoding '" 
+      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
 			  + inputEncoding + "' ?)" );
     }
     else {
       return tokenizeLine( uinputstring );
     }
-  }  
-  
-  int TokenizerClass::tokenizeLine( const UnicodeString& originput ){ 
-    if (tokDebug) 
-      *Log(theErrLog) << "[tokenizeLine] input: line=[" 
+  }
+
+  int TokenizerClass::tokenizeLine( const UnicodeString& originput ){
+    if (tokDebug)
+      *Log(theErrLog) << "[tokenizeLine] input: line=["
 		      << originput << "]" << endl;
     UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
@@ -1408,48 +1412,48 @@ namespace Tokenizer {
       *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
       return 0;
     }
-    if (tokDebug) 
-      *Log(theErrLog) << "[tokenizeLine] filtered input: line=[" 
+    if (tokDebug)
+      *Log(theErrLog) << "[tokenizeLine] filtered input: line=["
 		      << input << "]" << endl;
-    const int begintokencount = tokens.size();    
+    const int begintokencount = tokens.size();
     if (tokDebug) *Log(theErrLog) << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
 
     bool tokenizeword = false;
     bool reset = false;
     //iterate over all characters
     UnicodeString word;
-    
+
     for ( int i=0; i < input.length(); ++i ) {
       UChar c = input[i];
       if (reset) { //reset values for new word
 	reset = false;
 	if (!u_isspace(c))
-	  word = c; 
-	else 
+	  word = c;
+	else
 	  word = "";
 	tokenizeword = false;
-      } 
+      }
       else {
 	if (!u_isspace(c)) word += c;
       }
       if ( u_isspace(c) || i == input.length()-1 ){
 	if (tokDebug)
-	  *Log(theErrLog) << "[tokenizeLine] space detected, word=[" 
+	  *Log(theErrLog) << "[tokenizeLine] space detected, word=["
 			  << word << "]" << endl;
 	if ( i == input.length()-1 ) {
 	  if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) )
-	    tokenizeword = true; 
-	} 
+	    tokenizeword = true;
+	}
 	int expliciteosfound = -1;
 	if ( word.length() >= eosmark.length() ) {
 	  expliciteosfound = word.lastIndexOf(eosmark);
-	  
+
 	  if (expliciteosfound != -1) { // word contains eosmark
-	    if (tokDebug >= 2) 
+	    if (tokDebug >= 2)
 	      *Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
 	    int eospos = tokens.size()-1;
-	    if (expliciteosfound > 0) {		    		    
-	      UnicodeString realword;		    
+	    if (expliciteosfound > 0) {
+	      UnicodeString realword;
 	      word.extract(0,expliciteosfound,realword);
 	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] Prefix before EOS: "
@@ -1458,47 +1462,47 @@ namespace Tokenizer {
 	      eospos++;
 	    }
 	    if (expliciteosfound + eosmark.length() < word.length())  {
-	      UnicodeString realword;		    
+	      UnicodeString realword;
 	      word.extract(expliciteosfound+eosmark.length(),word.length() - expliciteosfound - eosmark.length(),realword);
-	      if (tokDebug >= 2) 
+	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] postfix after EOS: "
 				<< realword << endl;
 	      tokenizeWord( realword, true );
 	    }
 	    if ( !tokens.empty() && eospos >= 0 ) {
-	      if (tokDebug >= 2) 
+	      if (tokDebug >= 2)
 		*Log(theErrLog) << "[tokenizeLine] Assigned EOS" << endl;
 	      tokens[eospos].role |= ENDOFSENTENCE;
-	    }			
+	    }
 	  }
-	}			    
-	if ((word.length() > 0) && (expliciteosfound == -1)) {	    
-	  if (!tokenizeword) {	      
+	}
+	if ((word.length() > 0) && (expliciteosfound == -1)) {
+	  if (!tokenizeword) {
 	    //single character or nothing tokenisable found, so no need to tokenize anything
 	    if (tokDebug >= 2)
 	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
 			      << word << "]" << endl;;
 	    tokens.push_back( Token( &type_word, word ) );
-	  } 
+	  }
 	  else {
 	    if (tokDebug >= 2)
-	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: [" 
+	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: ["
 			      << word << "]" << endl;
-	    tokenizeWord( word, true );            
-	  } 
+	    tokenizeWord( word, true );
+	  }
 	}
 	//reset values for new word
-	reset = true;        
+	reset = true;
       }
       else if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) ) {
-	if (tokDebug) 
-	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=[" 
+	if (tokDebug)
+	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=["
 			  << word << "]" << endl;
-	
+
 	//there is punctuation or digits in this word, mark to run through tokeniser
-	tokenizeword = true; 
+	tokenizeword = true;
       }
-    }        	
+    }
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
       if (paragraphsignal) {
@@ -1511,12 +1515,12 @@ namespace Tokenizer {
 	  tokens[begintokencount].role |= BEGINOFSENTENCE;
 	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
 	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount ); 
+	    detectQuotedSentenceBounds( begintokencount );
 	  }
 	}
 	else {
 	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount ); 
+	    detectQuotedSentenceBounds( begintokencount );
 	  }
 	  else {
 	    detectSentenceBounds( begintokencount );
@@ -1526,7 +1530,7 @@ namespace Tokenizer {
     }
     return numNewTokens;
   }
-  
+
   bool Rule::matchAll( const UnicodeString& line,
 		       UnicodeString& pre,
 		       UnicodeString& post,
@@ -1558,29 +1562,29 @@ namespace Tokenizer {
       if (tokDebug >= 2)
 	*Log(theErrLog) << "   [tokenizeWord] Found explicit EOS marker" << endl;
       if (!tokens.empty()) {
-	if (tokDebug >= 2) 
+	if (tokDebug >= 2)
 	  *Log(theErrLog) << "   [tokenizeWord] Assigned EOS" << endl;
 	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
-      } 
+      }
       else {
-	*Log(theErrLog) << "[WARNING] Found explicit EOS marker by itself, this will have no effect!" << endl; 
+	*Log(theErrLog) << "[WARNING] Found explicit EOS marker by itself, this will have no effect!" << endl;
       }
       return;
     }
-    
+
     if ( input.length() == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar c = input[0];
       const UnicodeString *type;
-      
+
       if ( u_ispunct(c)) {
 	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
 	  type = &type_currency;
-	} 
+	}
 	else {
 	  type = &type_punctuation;
 	}
-      } 
+      }
       else if ( u_isalpha(c)) {
 	type = &type_word;
       }
@@ -1593,14 +1597,14 @@ namespace Tokenizer {
       else {
 	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
 	  type = &type_currency;
-	} 
+	}
 	else {
 	  type = &type_unknown;
 	}
-      } 
+      }
       Token T( type, input, space ? NOROLE : NOSPACE );
       tokens.push_back( T );
-      if (tokDebug >= 2) 
+      if (tokDebug >= 2)
 	*Log(theErrLog) << "   [tokenizeWord] added token " << T << endl;
     }
     else {
@@ -1612,10 +1616,10 @@ namespace Tokenizer {
 	vector<UnicodeString> matches;
 	if ( rules[i]->matchAll( input, pre, post, matches ) ){
 	  if ( tokDebug >= 4 )
-	    *Log(theErrLog) << "\tMATCH: " << rules[i]->id << endl;    
+	    *Log(theErrLog) << "\tMATCH: " << rules[i]->id << endl;
 	  if ( pre.length() > 0 ){
 	    if ( tokDebug >= 4 ){
-	      *Log(theErrLog) << "\tTOKEN pre-context (" << pre.length() 
+	      *Log(theErrLog) << "\tTOKEN pre-context (" << pre.length()
 			      << "): [" << pre << "]" << endl;
 	    }
 	    tokenizeWord( pre, false ); //pre-context, no space after
@@ -1626,8 +1630,8 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tTOKEN match #=" << matches.size() << endl;
 	    for ( int m=0; m < max; ++m ){
 	      if ( tokDebug >= 4 )
-		*Log(theErrLog) << "\tTOKEN match[" << m << "] = " 
-				<< matches[m] << endl; 
+		*Log(theErrLog) << "\tTOKEN match[" << m << "] = "
+				<< matches[m] << endl;
 	      if ( post.length() > 0 ) space = false;
 	      tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
 	    }
@@ -1636,7 +1640,7 @@ namespace Tokenizer {
 	    *Log(theErrLog) << "\tthere's no match" << endl;
 	  if ( post.length() > 0 ){
 	    if ( tokDebug >= 4 ){
-	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length() 
+	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length()
 			      << "): [" << post << "]" << endl;
 	    }
 	    tokenizeWord( post, space ? NOROLE : NOSPACE );
@@ -1653,7 +1657,7 @@ namespace Tokenizer {
     ifstream f(fname.c_str());
     if ( !f ){
       return false;
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -1671,7 +1675,7 @@ namespace Tokenizer {
 	  rules.push_back( new Rule( id, pattern) );
 	}
       }
-    }    
+    }
     return true;
   }
 
@@ -1680,14 +1684,14 @@ namespace Tokenizer {
       *theErrLog << "%include " << fname << endl;
     return filter.fill( fname );
   }
-  
+
   bool TokenizerClass::readquotes( const string& fname) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
     ifstream f(fname.c_str());
     if ( !f ){
       return false;
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -1700,7 +1704,7 @@ namespace Tokenizer {
 	  if ( splitpoint == -1 )
 	    splitpoint = line.indexOf("\t");
 	  if ( splitpoint == -1 ){
-	    throw uConfigError( "invalid QUOTES entry: " + line  
+	    throw uConfigError( "invalid QUOTES entry: " + line
 				+ " (missing whitespace)" );
 	  }
 	  UnicodeString open = UnicodeString( line, 0,splitpoint);
@@ -1715,7 +1719,7 @@ namespace Tokenizer {
 	  }
 	}
       }
-    }    
+    }
     return true;
   }
 
@@ -1725,7 +1729,7 @@ namespace Tokenizer {
     ifstream f(fname.c_str());
     if ( !f ){
       return false;
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -1744,10 +1748,10 @@ namespace Tokenizer {
 	  }
 	}
       }
-    }    
+    }
     return true;
   }
-  
+
   bool TokenizerClass::readabbreviations( const string& fname,
 					  UnicodeString& abbrev_pattern ) {
     if ( tokDebug > 0 )
@@ -1755,7 +1759,7 @@ namespace Tokenizer {
     ifstream f(fname.c_str());
     if ( !f ){
       return false;
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -1771,15 +1775,15 @@ namespace Tokenizer {
     }
     return true;
   }
-  
+
   ConfigMode getMode( const UnicodeString& line ) {
     ConfigMode mode = NONE;
     if (line == "[RULES]") {
       mode = RULES;
-    } 
+    }
     else if (line == "[RULE-ORDER]") {
       mode = RULEORDER;
-    } 
+    }
     else if (line == "[ABBREVIATIONS]") {
       mode = ABBREVIATIONS;
     }
@@ -1797,7 +1801,7 @@ namespace Tokenizer {
     }
     else if (line == "[TOKENS]") {
       mode = TOKENS;
-    } 
+    }
     else if (line == "[UNITS]") {
       mode = UNITS;
     }
@@ -1829,7 +1833,7 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::sortRules( vector<Rule *>& rules, 
+  void TokenizerClass::sortRules( vector<Rule *>& rules,
 				  vector<UnicodeString>& sort ){
     // *Log(theErrLog) << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
@@ -1849,13 +1853,13 @@ namespace Tokenizer {
 	  ++it;
 	}
 	if ( !found ){
-	  *Log(theErrLog) << "RULE-ORDER specified for undefined RULE '" 
+	  *Log(theErrLog) << "RULE-ORDER specified for undefined RULE '"
 			  << sort[i] << "'" << endl;
 	}
       }
       vector<Rule*>::iterator it = rules.begin();
       while ( it != rules.end() ){
-	*Log(theErrLog) << "No RULE-ORDER specified for RULE '" 
+	*Log(theErrLog) << "No RULE-ORDER specified for RULE '"
 			<< (*it)->id << "' (put at end)." << endl;
 	result.push_back( *it );
 	++it;
@@ -1871,7 +1875,7 @@ namespace Tokenizer {
   bool TokenizerClass::readsettings( const string& fname ) {
 
     ConfigMode mode = NONE;
-    
+
     UnicodeString abbrev_pattern = "";
     UnicodeString prefix_pattern = "";
     UnicodeString token_pattern = "";
@@ -1882,7 +1886,7 @@ namespace Tokenizer {
     UnicodeString ordinal_pattern = "";
 
     vector<UnicodeString> rules_order;
-    
+
     string confdir;
     string conffile = confdir + fname;
     if ( fname.find_first_of( "/" ) != string::npos ){
@@ -1898,7 +1902,7 @@ namespace Tokenizer {
     ifstream f(conffile.c_str());
     if ( !f ){
       return false;
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -1944,7 +1948,7 @@ namespace Tokenizer {
 	  }
 	  continue;
 	}
-	
+
 	UnicodeString line = folia::UTF8ToUnicode(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
@@ -1973,7 +1977,7 @@ namespace Tokenizer {
 	      if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
 	      abbrev_pattern += line;
 	      break;
-	    case ATTACHEDPREFIXES: 
+	    case ATTACHEDPREFIXES:
 	      if (!withprefix_pattern.isEmpty()) withprefix_pattern += '|';
 	      withprefix_pattern += line;
 	      break;
@@ -2016,7 +2020,7 @@ namespace Tokenizer {
 	      if ( splitpoint == -1 )
 		splitpoint = line.indexOf("\t");
 	      if ( splitpoint == -1 ){
-		throw uConfigError( "invalid QUOTES entry: " + line  
+		throw uConfigError( "invalid QUOTES entry: " + line
 				    + " (missing whitespace)" );
 	      }
 	      UnicodeString open = UnicodeString( line, 0,splitpoint);
@@ -2040,7 +2044,7 @@ namespace Tokenizer {
 	      throw uLogicError("unhandled case in switch");
 	    }
 	  }
-	}  
+	}
       }
     }
 
@@ -2058,7 +2062,7 @@ namespace Tokenizer {
     // Create Rules for every pattern that is set
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "(?i)\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})")); 
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "(?i)\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})"));
       //(?i) enabled again
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
@@ -2067,33 +2071,33 @@ namespace Tokenizer {
       //     in the config file
     }
     /*if (!unit_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})"));
       }*/
     if (!abbrev_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbrev_pattern + ")\\.)(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbrev_pattern + ")\\.)(?:\\Z|\\P{L})"));
       // was case insensitive, but seems a bad idea
     }
     if (!token_pattern.isEmpty()){
       //      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
       // removed ^ in front. this fixes bug94
       rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(?i)(" + token_pattern + ")(?:\\p{P}*)?$"));
-    }    
+    }
     if (!withprefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+"));
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "(?i)((?:\\p{L})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})")); 
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "(?i)((?:\\p{L})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
       //old:
-      //rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})")); 
+      //rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
       // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
       //     normally (?i) could be used in front and (\\p{L}) would do.
     }
     if (!prefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)")); 
+      rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)"));
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "(?i)((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})")); 
+      rules.insert(rules.begin(), new Rule("SUFFIX", "(?i)((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
     }
     sortRules( rules, rules_order );
     return true;
@@ -2104,7 +2108,7 @@ namespace Tokenizer {
     quotes.clearStack();
     return true;
   }
-  
+
   bool TokenizerClass::init( const string& fname ){
     *Log(theErrLog) << "Initiating tokeniser..." << endl;
     if (!readsettings( fname ) ) {
@@ -2123,5 +2127,5 @@ namespace Tokenizer {
     }
     return true;
   }
-  
+
 }//namespace
