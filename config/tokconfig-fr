@@ -50,14 +50,14 @@ UNKNOWN=.
 
 [PREFIXES]
 (?:qu|Qu|QU)['`’]
-[lL]['`’]
-[dD]['`’]
-[mM]['`’]
-[nN]['`’]
-[tT]['`’]
-[sS]['`’]
-[cC]['`’]
-[jJ]['`’]
+\[lL]['`’]
+\[dD]['`’]
+\[mM]['`’]
+\[nN]['`’]
+\[tT]['`’]
+\[sS]['`’]
+\[cC]['`’]
+\[jJ]['`’]
 
 [SUFFIXES]
 -je|-JE
@@ -81,20 +81,18 @@ UNKNOWN=.
 -le|-LE
 -les|-LES
 
-[ORDINALS]
-
 [TOKENS]
-(?:qu|Qu|QU)['`’]
-[lL]['`’]
-[dD]['`’]
-[mM]['`’]
-[nN]['`’]
-[tT]['`’]
-[sS]['`’]
-[cC]['`’]
-[jJ]['`’]
-[aA]ujourd['`’]hui
+\[lL]['`’]
+\[dD]['`’]
+\[mM]['`’]
+\[nN]['`’]
+\[tT]['`’]
+\[sS]['`’]
+\[cC]['`’]
+\[jJ]['`’]
+\[aA]ujourd['`’]hui
 AUJOURD['`’]HUI
+(?:qu|Qu|QU)['`’]
 
 [UNITS]
 km
