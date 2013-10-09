@@ -54,10 +54,10 @@ UNKNOWN=.
 [PREFIXES]
 
 [SUFFIXES]
-'s
+['’][sS]
 
 [TOKENS]
-'s
+['’][sS]
 
 [UNITS]
 km

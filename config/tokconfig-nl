@@ -72,25 +72,25 @@ QUOTE-SUFFIX=(\p{Lu}(?:\p{L})+(?:s['`’‘]|x['`'‘]))
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-\['`’‘]s
-\['`’‘]t
-\['`’‘]n
-\['`’‘]r
+\['`’‘][sS]
+\['`’‘][tT]
+\['`’‘][nN]
+\['`’‘][rR]
 
 [ORDINALS]
-e
-de
-ste
-er
+e|E
+de|DE
+ste|STE
+er|ER
 
 
 [TOKENS]
-\['`’‘]s
-\['`’‘]k
-\['`’‘]m
-\['`’‘]n
-\['`’‘]t
-\['`’‘]ie
+\['`’‘][sS]
+\['`’‘][kK]
+\['`’‘][mM]
+\['`’‘][nN]
+\['`’‘][tT]
+\['`’‘](?:ie|IE)
 
 [UNITS]
 km
@@ -110,7 +110,7 @@ kb
 
 
 [CURRENCY]
-EUR
+eur|EUR
 hfl
 fl
 f

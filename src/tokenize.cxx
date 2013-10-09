@@ -127,10 +127,10 @@ namespace Tokenizer {
     post = "";
     results.clear();
     if ( matcher ){
-      // cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
+       //cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
       matcher->reset( line );
       if ( matcher->find() ){
-	// cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
+	 //cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
 	int start = -1;
 	int end = 0;
 	for ( int i=0; i <= matcher->groupCount(); ++i ){
@@ -1542,7 +1542,6 @@ namespace Tokenizer {
     matches.clear();
     pre = "";
     post = "";
-    //    *Log( theErrLog) << endl << "rule " << *this << endl;
     if ( regexp && regexp->match_all( line, pre, post ) ){
       int num = regexp->NumOfMatches();
       if ( num >=1 ){
@@ -2066,7 +2065,7 @@ namespace Tokenizer {
     // Create Rules for every pattern that is set
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "(?i)\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})"));
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})"));
       //(?i) enabled again
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
@@ -2084,13 +2083,13 @@ namespace Tokenizer {
     if (!token_pattern.isEmpty()){
       //      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
       // removed ^ in front. this fixes bug94
-      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(?i)(" + token_pattern + ")(?:\\p{P}*)?$"));
+      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(" + token_pattern + ")(?:\\p{P}*)?$"));
     }
     if (!withprefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+"));
+      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+"));
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "(?i)((?:\\p{L})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{L})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
       //old:
       //rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
       // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
@@ -2098,10 +2097,11 @@ namespace Tokenizer {
       //     normally (?i) could be used in front and (\\p{L}) would do.
     }
     if (!prefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("PREFIX", "(?i)(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)"));
+      rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)"));
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "(?i)((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
+      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
+      //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
     sortRules( rules, rules_order );
     return true;

@@ -64,25 +64,25 @@ UNKNOWN=.
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-\['`’]s
-\['`’]t
-\['`’]n
-\['`’]r
+\['`’‘][sS]
+\['`’‘][tT]
+\['`’‘][nN]
+\['`’‘][rR]
 
 [ORDINALS]
-e
-de
-ste
-er
+e|E
+de|DE
+ste|STE
+er|ER
 
 
 [TOKENS]
-\['`’]s
-\['`’]k
-\['`’]m
-\['`’]n
-\['`’]t
-\['`’]ie
+\['`’‘][sS]
+\['`’‘][kK]
+\['`’‘][mM]
+\['`’‘][nN]
+\['`’‘][tT]
+\['`’‘](?:ie|IE)
 
 [UNITS]
 km

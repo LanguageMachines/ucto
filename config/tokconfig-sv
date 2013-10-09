@@ -47,19 +47,21 @@ UNKNOWN=.
 [PREFIXES]
 
 [SUFFIXES]
-'s
-:n
-:a
+'[sS]
+:[nN]
+:[aA]
 :ar
+:AR
 :arna
-:s
+:ARNA
+:[sS]
 
 [ORDINALS]
-:a
-:e
+:[aA]
+:[eE]
 
 [TOKENS]
-'s
+'[sS]
 
 [UNITS]
 km

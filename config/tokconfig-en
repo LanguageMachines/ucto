@@ -51,23 +51,23 @@ UNKNOWN=.
 [PREFIXES]
 
 [SUFFIXES]
-n't
-'re
-'m
-'s
-'d
-'ve
-'ll
+n't|N'T
+'re|'RE
+'m|'M
+'s|'S
+'d|'D
+'ve|'VE
+'ll|'LL
 
 [ORDINALS]
-st
-nd
-rd
-th
+st|ST
+nd|ND
+rd|RD
+th|TH
 
 [TOKENS]
-'t
-n/a
+'t|'T
+n/a|N/A
 
 [UNITS]
 km

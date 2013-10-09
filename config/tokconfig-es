@@ -53,8 +53,8 @@ UNKNOWN=.
 [SUFFIXES]
 
 [ORDINALS]
-o
-a
+o|O
+a|A
 
 [TOKENS]
 
