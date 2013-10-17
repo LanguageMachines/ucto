@@ -27,10 +27,9 @@ if $cxx_flags_were_set; then
   CXXFLAGS=$CXXFLAGS
 fi
 
-AC_PROG_RANLIB
 # use libtool
 AC_PROG_LIBTOOL
-AC_SUBST([LIBTOOL_DEPS])
+LT_INIT
 
 # when running tests, use CXX
 AC_LANG([C++])
@@ -47,6 +46,7 @@ fi
 AC_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_SIZE_T
+AC_TYPE_INT32_T
 
 # Checks for library functions.
 
@@ -82,7 +82,7 @@ CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
 AC_ARG_WITH(folia,
-       [  --with-folia=DIR       use libfolia installed in <DIR>; 
+       [  --with-folia=DIR       use libfolia installed in <DIR>;
                note that you can install folia in a non-default directory with
                ./configure --prefix=<DIR> in the folia installation directory],
        [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH"],
@@ -93,7 +93,7 @@ CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
 AC_ARG_WITH(ticcutils,
-       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>; 
+       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>;
                note that you can install ticcutils in a non-default directory with
                ./configure --prefix=<DIR> in the ticcutils installation directory],
        [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
