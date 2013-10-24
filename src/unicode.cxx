@@ -4,7 +4,7 @@
   Copyright (c) 1998 - 2013
   ILK  -  Tilburg University
   CNTS -  University of Antwerp
- 
+
   This file is part of Ucto
 
   Ucto is free software; you can redistribute it and/or modify
@@ -54,7 +54,7 @@ namespace Tokenizer {
       throw std::logic_error( "invalid normalization mode: " + enc );
     return mode;
   }
-  
+
   inline string toString( UNormalizationMode mode ){
     switch ( mode ){
     case UNORM_NONE:
@@ -71,7 +71,7 @@ namespace Tokenizer {
       throw std::logic_error( "invalid normalization mode in switch" );
     }
   }
-  
+
   std::string UnicodeNormalizer::getMode( ) const {
     return toString( mode );
   }
@@ -124,7 +124,7 @@ namespace Tokenizer {
 
   bool UnicodeFilter::add( const string& s ){
     UnicodeString line = folia::UTF8ToUnicode(s);
-    add( line );
+    return add( line );
   }
 
   bool UnicodeFilter::add( const UnicodeString& s ){
@@ -146,7 +146,7 @@ namespace Tokenizer {
       open = open.trim().unescape();
       close = close.trim().unescape();
       if ( open.length() != 1 ){
-	throw runtime_error( "invalid filter entry: " 
+	throw runtime_error( "invalid filter entry: "
 			     + folia::UnicodeToUTF8(line) );
       }
       else {
@@ -155,12 +155,12 @@ namespace Tokenizer {
     }
     return true;
   }
-  
+
   bool UnicodeFilter::fill( const string& s ){
     ifstream f ( s.c_str() );
     if ( !f ){
       throw std::runtime_error("unable to open file: " + s );
-    }    
+    }
     else {
       string rawline;
       while ( getline(f,rawline) ){
@@ -169,5 +169,5 @@ namespace Tokenizer {
     }
     return true;
   }
-  
+
 } // namespace Tokenizer

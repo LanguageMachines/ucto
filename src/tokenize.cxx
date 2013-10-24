@@ -290,13 +290,14 @@ namespace Tokenizer {
   }
 
   TokenizerClass::TokenizerClass():
+    linenum(0),
     inputEncoding( "UTF-8" ), eosmark("<utt>"),
     tokDebug(0), verbose(false),
     detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false),
     lowercase(false), uppercase(false),
-    xmlout(false), passthru(false), linenum(0),
+    xmlout(false), passthru(false),
     inputclass("current"), outputclass("current")
   {
     theErrLog = new TiCC::LogStream(cerr);
