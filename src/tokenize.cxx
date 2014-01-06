@@ -1,7 +1,7 @@
 /*
   $Id$
   $URL$
-  Copyright (c) 2006 - 2013
+  Copyright (c) 2006 - 2014
   Tilburg University
 
   This file is part of Ucto

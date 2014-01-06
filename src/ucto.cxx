@@ -1,10 +1,10 @@
 /*
   $Id$
   $URL$
-  Copyright (c) 1998 - 2013
+  Copyright (c) 1998 - 2014
   ILK  -  Tilburg University
   CNTS -  University of Antwerp
- 
+
   This file is part of Ucto
 
   Ucto is free software; you can redistribute it and/or modify
@@ -49,7 +49,7 @@ void usage(){
        << "\t-f              - Disable filtering of special characters" << endl
        << "\t-L <language>   - Automatically selects a configuration file by language code" << endl
        << "\t-l              - Convert to all lowercase" << endl
-       << "\t-u              - Convert to all uppercase" << endl       
+       << "\t-u              - Convert to all uppercase" << endl
        << "\t-n              - One sentence per line (output)" << endl
        << "\t-m              - One sentence per line (input)" << endl
        << "\t-v              - Verbose mode" << endl
@@ -105,11 +105,11 @@ int main( int argc, char *argv[] ){
   int longOpt;
   bool passThru = false;
   try {
-    while ((opt = getopt_long( argc, argv, 
+    while ((opt = getopt_long( argc, argv,
 			       "d:e:fhlPQunmN:vVSL:c:s:x:FX",
 			       longOpts, &longOpt )) != -1) {
       switch (opt)
-	{  
+	{
 	case 1: passThru = true; break;
 	case 'd': debug = stringTo<int>(optarg); break;
 	case 'e': inputEncoding = optarg; break;
@@ -127,13 +127,13 @@ int main( int argc, char *argv[] ){
 	case 'm': sentenceperlineinput = true; break;
 	case 'N': normalization = optarg; break;
 	case 'v': verbose = true; break;
-	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2013, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl; 
+	case 'V': cout << "Ucto - Unicode Tokenizer - version " << Version() << endl << "(c) ILK 2009 - 2014, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl << "Licensed under the GNU General Public License v3" << endl;
 	  cout << "based on [" << folia::VersionName() << "]" << endl;
 	  return EXIT_SUCCESS;
 	case 'x': xmlout = true; docid = optarg; break;
 	case 'X': xmlout = true; break;
 	case 2: docid = optarg; break;
-	case 3: inputclass = optarg; 
+	case 3: inputclass = optarg;
 	  cerr << "--textclass is deprecated!. use --inputclass instead!" << endl;
 	  break;
 	case 4: inputclass = optarg; break;
@@ -158,16 +158,16 @@ int main( int argc, char *argv[] ){
     }
     else if ( !L_file.empty() )
       cfile = L_file;
-    else { 
+    else {
       cerr << "Error: Please specify either a language (-L) or a configuration file (-c)" << endl;
       usage();
       return EXIT_FAILURE;
     }
   }
-  
+
   if (optind < argc) ifile = argv[optind++];
   if (optind < argc) ofile = argv[optind++];
-  
+
   if ((!ifile.empty()) && (ifile == ofile)) {
     cerr << "Error: Output file equals input file! Courageously refusing to start..."  << endl;
     return EXIT_FAILURE;
@@ -178,9 +178,9 @@ int main( int argc, char *argv[] ){
   }
   cerr << "inputfile = "  << ifile << endl;
   cerr << "outputfile = " << ofile << endl;
-  
+
   istream *IN = 0;
-  if (!xmlin) {    
+  if (!xmlin) {
     if ( ifile.empty() )
       IN = &cin;
     else {
@@ -192,15 +192,15 @@ int main( int argc, char *argv[] ){
       }
     }
   }
-  
+
   ostream *OUT = 0;
   if ( ofile.empty() )
     OUT = &cout;
   else {
     OUT = new ofstream( ofile.c_str() );
   }
-  
-  try {  
+
+  try {
     TokenizerClass tokenizer;
     // set debug first, so init() can be debugged too
     tokenizer.setDebug( debug );
@@ -246,5 +246,5 @@ int main( int argc, char *argv[] ){
     cerr << e.what() << endl;
     return EXIT_FAILURE;
   }
-  
+
 }
