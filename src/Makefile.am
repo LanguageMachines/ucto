@@ -15,7 +15,6 @@ libucto_la_LDFLAGS = -version-info 2:0:0
 
 libucto_la_SOURCES =  tokenize.cxx unicode.cxx
 
-TESTS_ENVIRONMENT = $(SHELL) -x
 TESTS = tst.sh
 
 EXTRA_DIST = tst.sh
