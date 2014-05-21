@@ -32,6 +32,7 @@
 #include <stdexcept>
 #include "ucto/unicode.h"
 #include "ticcutils/LogStream.h"
+#include "libfolia/document.h"
 
 namespace Tokenizer {
 
