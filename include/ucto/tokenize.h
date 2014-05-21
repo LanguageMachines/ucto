@@ -30,7 +30,6 @@
 #include <map>
 #include <sstream>
 #include <stdexcept>
-#include "config.h"
 #include "ucto/unicode.h"
 #include "ticcutils/LogStream.h"
 
