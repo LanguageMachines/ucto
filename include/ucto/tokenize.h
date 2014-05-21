@@ -83,6 +83,9 @@ namespace Tokenizer {
     Token( const UnicodeString *,
 	   const UnicodeString& s,
 	   TokenRole role = NOROLE ); 
+
+    std::string texttostring();
+    std::string typetostring(); 
   };
 
   class UnicodeRegexMatcher;

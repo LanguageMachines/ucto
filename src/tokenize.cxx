@@ -266,6 +266,9 @@ namespace Tokenizer {
 		TokenRole _role): type(_type), us(_s), role(_role) {}
 
 
+  std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
+  std::string Token::typetostring() { return folia::UnicodeToUTF8(*type); }
+
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << *t.type << " : " << t.role  << ":" << t.us;
     return os;
