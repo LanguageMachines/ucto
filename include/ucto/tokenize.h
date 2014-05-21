@@ -173,6 +173,9 @@ namespace Tokenizer {
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
     
+    //return the sentence with the specified index in a Token vector;
+    std::vector<Token> getSentence( int );
+
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
 
@@ -284,8 +287,6 @@ namespace Tokenizer {
     void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );         
-    //return the sentence with the specified index in a Token vector;
-    std::vector<Token> getSentence( int );
 
     Quoting quotes;
     UnicodeFilter filter;
