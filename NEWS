@@ -1,6 +1,13 @@
+0.5.5 2014-06-xx
+* made getSentence() public
+* a lot of bug fixes concerning FoLiA output (<t> nodes, textclass values etc.)
+* again some changes around quotes
+* improved tokenisation in differeny languages
+* added swedisch
+
 0.5.3 2013-04-04
 [Folgert Karsdorp]
-* Fixed quote detection, added tests. still shaky and default disabled 
+* Fixed quote detection, added tests. still shaky and default disabled
 [Ko van der Sloot]
 * changed verbose output slightly
 * fixed id's in folia output
@@ -49,7 +56,7 @@
 * fixed passthru encoding problem
 * fixed problem with CRLF separated lines (bug 78)
 * configdir vs. config file hassle moved more inside. simpler API now.
-* -Q option works reversed now. -Q Enables Quote detection. 
+* -Q option works reversed now. -Q Enables Quote detection.
   Quote detection apears to be very hard and fragile.
 
 0.4.6 - 2011-05-17
@@ -219,7 +226,7 @@
 * include/ucto/tokenize.h, src/tokenize.cxx, src/ucto.cxx: Big API overhaul
 
 [ Peter Berck ]
-* config/Makefile.am, config/tokconfig-sv Added Swedish tokconfig 
+* config/Makefile.am, config/tokconfig-sv Added Swedish tokconfig
 
 [ Ko van der Sloot ]
 * config/tokconfig-nl, src/tokenize.cxx: read QUOTES from config file
@@ -235,4 +242,3 @@
 unreleased - 09-12-2010
 
 - started to create a separate package
-

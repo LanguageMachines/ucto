@@ -53,7 +53,7 @@ AC_TYPE_INT32_T
 # ugly hack when PKG_CONFIG_PATH isn't defined.
 # couldn't get it to work otherwise
 if test "x$PKG_CONFIG_PATH" = x; then
-    export PKG_CONFIG_PATH="/usr/lib/pkgconfig"
+    export PKG_CONFIG_PATH=""
 fi
 
 useICU=1;

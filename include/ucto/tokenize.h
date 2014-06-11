@@ -13,7 +13,7 @@
 
   Ucto is distributed in the hope that it will be useful,
   but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the  
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
@@ -40,15 +40,15 @@ namespace Tokenizer {
   std::string VersionName();
 
   //enum RuleTrigger { PUNCTUATION, PERIOD, NUMBER }; //TODO: implement
-    
+
   enum TokenRole {
     NOROLE                      = 0,
     NOSPACE                     = 1,
-    BEGINOFSENTENCE             = 2, 
+    BEGINOFSENTENCE             = 2,
     ENDOFSENTENCE               = 4,
-    NEWPARAGRAPH                = 8,    
-    BEGINQUOTE                  = 16, 
-    ENDQUOTE                    = 32, 
+    NEWPARAGRAPH                = 8,
+    BEGINQUOTE                  = 16,
+    ENDQUOTE                    = 32,
     TEMPENDOFSENTENCE           = 64,
     LISTITEM                    = 128, //reserved for future use
     TITLE                       = 256 //reserved for future use
@@ -64,7 +64,7 @@ namespace Tokenizer {
     T1 = (T1 | T2);
     return T1;
   }
-  
+
   inline TokenRole operator^( TokenRole T1, TokenRole T2 ){
     return (TokenRole)( (int)T1^(int)T2 );
   }
@@ -73,19 +73,19 @@ namespace Tokenizer {
     T1 = (T1 ^ T2);
     return T1;
   }
-  
+
   class Token {
     friend std::ostream& operator<< (std::ostream&, const Token& );
   public:
     const UnicodeString *type;
     UnicodeString us;
-    TokenRole role; 
+    TokenRole role;
     Token( const UnicodeString *,
 	   const UnicodeString& s,
-	   TokenRole role = NOROLE ); 
+	   TokenRole role = NOROLE );
 
     std::string texttostring();
-    std::string typetostring(); 
+    std::string typetostring();
   };
 
   class UnicodeRegexMatcher;
@@ -104,7 +104,7 @@ namespace Tokenizer {
 		   UnicodeString&,
 		   UnicodeString&,
 		   std::vector<UnicodeString>& );
-    
+
   };
 
   class Quoting {
@@ -135,7 +135,7 @@ namespace Tokenizer {
     std::vector<int> quoteindexstack;
     std::vector<UChar> quotestack;
   };
-  
+
   class TokenizerClass{
   protected:
     int linenum;
@@ -148,31 +148,31 @@ namespace Tokenizer {
 
     // Tokenize from input stream to FoLiA document
     folia::Document tokenize( std::istream& );
-    
+
     // Tokenize a folia document
     bool tokenize(folia::Document& );
-    
+
     //Tokenize from input stream to output stream
     std::vector<Token> tokenizeStream( std::istream& );
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
       // for backward compatability
       return tokenize( *in, *out );};
-    
-    // Tokenize a line (a line is NOT a sentence, but an arbitrary string 
+
+    // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
     int tokenizeLine( const UnicodeString& ); // Unicode chars
     int tokenizeLine( const std::string& );   // UTF8 chars
-    
-    void passthruLine( const std::string&, bool& );    
-    
+
+    void passthruLine( const std::string&, bool& );
+
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
     int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
     int flushSentences(const int); //Flush n sentences from buffer (does some extra validation as well)
-    
+
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
-    
+
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
 
@@ -182,11 +182,11 @@ namespace Tokenizer {
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
     bool getVerbose() const { return verbose; }
-    
+
     //set debug value
     int setDebug( int d ) { bool dd = tokDebug; tokDebug = d; return dd; };
     int getDebug() const { return tokDebug; }
-    
+
     //Enable conversion of all output to lowercase
     bool setLowercase( bool b=true ) { bool t = lowercase; lowercase = b; if (b) uppercase = false; return t; };
     bool getLowercase() const { return lowercase; }
@@ -194,7 +194,7 @@ namespace Tokenizer {
     //Enable passtru mode
     bool setPassThru( bool b=true ) { bool t = passthru; passthru = b; return t; };
     bool getPassThru() const { return passthru; }
-    
+
     //Enable conversion of all output to uppercase
     bool setUppercase( bool b=true ) { bool t = uppercase; uppercase = b; if (b) lowercase = false; return t; };
     bool getUppercase() const { return uppercase; }
@@ -202,11 +202,11 @@ namespace Tokenizer {
     //Enable sentence-bound detection
     bool setSentenceDetection( bool b=true ) { bool t = detectBounds; detectBounds = b; return t; }
     bool getSentenceDetection() const { return detectBounds; }
-    
+
     //Enable paragraph detection
     bool setParagraphDetection( bool b=true ) { bool t = detectPar; detectPar = b; return t; }
     bool getParagraphDetection() const { return detectPar; }
-    
+
     //Enable quote detection
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
     bool getQuoteDetection() const { return detectQuotes; }
@@ -224,46 +224,46 @@ namespace Tokenizer {
     // set input encoding
     std::string setInputEncoding( const std::string& );
     std::string getInputEncoding() const { return inputEncoding; };
-    
+
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setSentencePerLineOutput( bool b=true ) { bool t = sentenceperlineoutput; sentenceperlineoutput = b; return t; };
     bool getSentencePerLineOutput() const { return sentenceperlineoutput; }
-    
+
     bool setSentencePerLineInput( bool b=true ) { bool t = sentenceperlineinput; sentenceperlineinput = b; return t; };
-    bool getSentencePerLineInput() const { return sentenceperlineinput; }    
-    
+    bool getSentencePerLineInput() const { return sentenceperlineinput; }
+
     std::string getDocID() const { return docid; }
     bool getXMLOutput() const { return xmlout; }
     bool getXMLInput() const { return xmlin; }
-    
+
     const std::string getTextClass( ) const { return inputclass; }
-    const std::string setTextClass( const std::string& cls) {  
+    const std::string setTextClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
       return res;
     }
     const std::string getInputClass( ) const { return inputclass; }
-    const std::string setInputClass( const std::string& cls) {  
+    const std::string setInputClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
       return res;
     }
     const std::string getOutputClass( ) const { return outputclass; }
-    const std::string setOutputClass( const std::string& cls) {  
+    const std::string setOutputClass( const std::string& cls) {
       std::string res = outputclass;
       outputclass = cls;
       return res;
     }
-    
+
     bool setXMLOutput( bool b, const std::string& id) { bool t = xmlout; docid = id; xmlout = b; return t; }
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
-    
+
     void outputTokens( std::ostream&, const std::vector<Token>& ) const;
   private:
-    void tokenizeWord( const UnicodeString&, bool);    
+    void tokenizeWord( const UnicodeString&, bool);
 
     bool detectEos( size_t ) const;
     void detectSentenceBounds( const int offset = 0 );
@@ -271,7 +271,7 @@ namespace Tokenizer {
     void detectQuoteBounds( const int );
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
-        
+
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar ) const;
     std::string checkBOM( const std::string&, std::string& );
@@ -281,16 +281,16 @@ namespace Tokenizer {
     bool readquotes( const std::string& );
     bool readeosmarkers( const std::string& );
     bool readabbreviations( const std::string&, UnicodeString& );
-    
+
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
     void tokenizeElement( folia::FoliaElement * );
-    void tokenizeSentenceElement( folia::FoliaElement * );         
+    void tokenizeSentenceElement( folia::FoliaElement * );
 
     Quoting quotes;
     UnicodeFilter filter;
-    UnicodeNormalizer normalizer;    
+    UnicodeNormalizer normalizer;
     UnicodeString eosmarkers;
     std::string inputEncoding;
 
@@ -298,41 +298,41 @@ namespace Tokenizer {
     std::vector<Token> tokens;
     std::vector<Rule *> rules;
     TiCC::LogStream *theErrLog;
-    
+
     //debug flag
     int tokDebug;
 
     //verbose tokenisation mode
     bool verbose;
-    
+
     //detect sentence bounds?
     bool detectBounds;
-    
+
     //detect quotes?
     bool detectQuotes;
-    
+
     //filter special characters (default on)?
     bool doFilter;
-    
+
     //detect paragraphs?
     bool detectPar;
-    
+
     //has a paragraph been signaled?
     bool paragraphsignal;
-    
+
     //one sentence per line output
     bool sentenceperlineoutput;
     bool sentenceperlineinput;
-    
+
 
     bool lowercase;
     bool uppercase;
-    bool xmlout;  
-    bool xmlin;  
+    bool xmlout;
+    bool xmlin;
     bool passthru;
 
     std::string settingsfilename;
-    std::string docid; //document ID (UTF-8), necessary for XML output 
+    std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
   };
@@ -346,15 +346,15 @@ namespace Tokenizer {
     }
     return result;
   }
-  
+
   template< typename T >
-    std::string toString( const T val ) {    
+    std::string toString( const T val ) {
     std::stringstream dummy;
     if ( !( dummy << val ) ) {
       throw( std::runtime_error( "conversion failed" ) );
     }
     return dummy.str();
   }
-  
+
 }
 #endif
