@@ -626,7 +626,9 @@ namespace Tokenizer {
       }
       in_paragraph = true;
     }
-    appendText( root, outputclass );
+    if ( tv.size() > 0 ){
+      appendText( root, outputclass );
+    }
   }
 
   ostream& operator<<( ostream& os, const TokenRole& tok ){
