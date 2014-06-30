@@ -552,7 +552,7 @@ namespace Tokenizer {
     }
     else if ( root->isinstance( folia::Paragraph_t )
 	      || root->isinstance( folia::Head_t )
-	      || root->isinstance( folia::ListItem_t )
+	      || root->isinstance( folia::Item_t )
 	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
