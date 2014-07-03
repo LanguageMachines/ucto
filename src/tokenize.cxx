@@ -552,6 +552,7 @@ namespace Tokenizer {
     }
     else if ( root->isinstance( folia::Paragraph_t )
 	      || root->isinstance( folia::Head_t )
+	      || root->isinstance( folia::Note_t )
 	      || root->isinstance( folia::Item_t )
 	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
