@@ -404,6 +404,20 @@ namespace Tokenizer {
     return true;
   }
 
+  void appendText( folia::FoliaElement *root,
+		   const string& outputclass  ){
+    //    cerr << endl << "appendText:" << root->id() << endl;
+    if ( root->hastext( outputclass ) ){
+      return;
+    }
+    UnicodeString utxt = root->deeptext( outputclass, false );
+    //    cerr << "untok: '" << utxt << "'" << endl;
+    //    UnicodeString txt = root->text( outputclass, true );
+    //    cerr << "  tok: '" << txt << "'" << endl;
+    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
+  }
+
+
   void TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
     if ( element->isinstance(folia::Word_t)
 	 || element->isinstance(folia::TextContent_t))
@@ -523,27 +537,14 @@ namespace Tokenizer {
     outputTokensXML(root, tv );
   }
 
-  void appendText( folia::FoliaElement *root,
-		   const string& outputclass  ){
-    if ( root->hastext( outputclass ) ){
-      return;
-    }
-    UnicodeString utxt = root->deeptext( outputclass, false );
-    // cerr << endl << root->id() << endl;
-    // cerr << "untok: '" << utxt << "'" << endl;
-    // UnicodeString txt = root->text( outputclass, true );
-    // cerr << "  tok: '" << txt << "'" << endl;
-    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
-  }
-
   void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 					const vector<Token>& tv ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     int parCount = 0;
-    if  (tokDebug > 0)
-      *Log(theErrLog) << "[outputTokensXML] parCount =" << parCount << endl;
-
+    if  (tokDebug > 0) {
+      *Log(theErrLog) << "[outputTokensXML] root-id=" << root->id() << endl;
+    }
     bool root_is_sentence = false;
     bool root_is_structure_element = false;
     if ( root->isinstance( folia::Sentence_t ) ){
