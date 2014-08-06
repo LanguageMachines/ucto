@@ -126,14 +126,14 @@ namespace Tokenizer {
       quoteindexstack.erase( quoteindexstack.begin()+pos );
     }
     void flushStack( int ); //renamed from eraseBeforeIndex
-    void push( int i, UChar c ){
+    void push( int i, UChar32 c ){
       quoteindexstack.push_back(i);
       quotestack.push_back(c);
     }
   private:
     std::vector<QuotePair> quotes;
     std::vector<int> quoteindexstack;
-    std::vector<UChar> quotestack;
+    std::vector<UChar32> quotestack;
   };
 
   class TokenizerClass{
@@ -273,7 +273,7 @@ namespace Tokenizer {
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
 
     bool resolveQuote( int, const UnicodeString& );
-    bool u_isquote( UChar ) const;
+    bool u_isquote( UChar32 ) const;
     std::string checkBOM( const std::string&, std::string& );
     bool readsettings( const std::string& );
     bool readrules( const std::string& );

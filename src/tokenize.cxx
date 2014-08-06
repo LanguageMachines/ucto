@@ -212,7 +212,7 @@ namespace Tokenizer {
     //flush up to (but not including) the specified index
     if ( !quotestack.empty() ){
       std::vector<int> new_quoteindexstack;
-      std::vector<UChar> new_quotestack;
+      std::vector<UChar32> new_quotestack;
       for ( size_t i = 0; i < quotestack.size(); i++) {
 	if (quoteindexstack[i] >= beginindex ) {
 	  new_quotestack.push_back(quotestack[i]);
@@ -233,7 +233,7 @@ namespace Tokenizer {
 
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
     if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;
-    vector<UChar>::reverse_iterator it = quotestack.rbegin();
+    vector<UChar32>::reverse_iterator it = quotestack.rbegin();
     size_t i = quotestack.size();
     while ( it != quotestack.rend() ){
       if ( open.indexOf( *it ) >= 0 ){
@@ -840,7 +840,7 @@ namespace Tokenizer {
   }
 
   // FBK: return true if character is a quote.
-  bool TokenizerClass::u_isquote(UChar c) const {
+  bool TokenizerClass::u_isquote( UChar32 c ) const {
     bool quote = false;
     if ( (c == '"') || (c == '\'') || (c=='`') ||
 	 ( UnicodeString(c) == "＂") ) {
@@ -864,7 +864,7 @@ namespace Tokenizer {
   //FBK: USED TO CHECK IF CHARACTER AFTER QUOTE IS AN BOS.
   //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
   //BECAUSE: '"Hoera!", zei de man' MUST NOT BE SPLIT ON ','..
-  bool is_BOS( UChar c ){
+  bool is_BOS( UChar32 c ){
     bool is_bos = false;
     UBlockCode s = ublock_getCode(c);
     //test for languages that distinguish case
@@ -969,129 +969,25 @@ namespace Tokenizer {
       return false;
     }
   }
-#ifdef OLD_IMP
+
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
-    UChar c = tokens[i].us[0];
-    if ( c == '.' ){
-      if (i + 1 == tokens.size() ) {	//No next character?
-	is_eos = true; //Newline after eosmarker
-      }
-      else {
-	UChar c = tokens[i+1].us[0];
-	UBlockCode s = ublock_getCode(c);
-	//test for languages that distinguish case
-	if ((s == UBLOCK_BASIC_LATIN) || (s == UBLOCK_GREEK) ||
-	    (s == UBLOCK_CYRILLIC) || (s == UBLOCK_GEORGIAN) ||
-	    (s == UBLOCK_ARMENIAN) || (s == UBLOCK_DESERET)) {
-	  if ( u_isupper(c) || u_istitle(c) ){
-	    //next 'word' starts with uppercase
-	    is_eos = true;
-	  }
-	  else if ( u_ispunct(c)  ){
-	    // next word is punctuation.
-	    if ( u_isquote(c) ){
-	      if ( detectQuotes )
-		is_eos = true;
-	      else {
-		if ( i + 2 == tokens.size() ) {	//No next-next character?
-		  is_eos = true;
-		}
-		else {
-		  UChar c = tokens[i+2].us[0];
-		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
-		    //next 'word' after quote starts with uppercase or is punct
-		    is_eos = true;
-		  }
-		}
-	      }
-	    }
-	    else
-	      is_eos = true;
-	  }
-	}
-	else {
-	  is_eos = true;
-	}
-      }
-    }
-    else { //no period
-      //Check for other EOS markers
-      if ( !detectQuotes &&
-	   ( c == '\'' || c == '`' || UnicodeString(c) == "’"
-	     || UnicodeString(c) == "‘" || c == '"' || UnicodeString(c) == "”"
-	     || UnicodeString(c) == "“" )
-	   && (i + 1 == tokens.size() ) ){
-	//No next character?
-	is_eos = true; //Newline after quote
-      }
-      else if ( eosmarkers.indexOf( c ) >= 0 ){
-	if (i + 1 == tokens.size() ) {	//No next character?
-	  is_eos = true; //Newline after eosmarker
-	}
-	else {
-	  UChar c = tokens[i+1].us[0];
-	  if ( u_ispunct(c)  ){
-	    // next word is punctuation.
-	    if ( u_isquote(c) ){
-	      if ( detectQuotes )
-		is_eos = true;
-	      else {
-		if ( i + 2 == tokens.size() ) {	//No next-next character?
-		  is_eos = true;
-		}
-		else {
-		  UChar c = tokens[i+2].us[0];
-		  if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
-		  //next 'word' after quote starts with uppercase or is punct
-		    is_eos = true;
-		  }
-	      }
-	      }
-	    }
-	    else {
-	      is_eos = true;
-	    }
-	  }
-	  else {
-	    is_eos = true;
-	  }
-	}
-      }
-    }
-    return is_eos;
-  }
-#else
-  bool TokenizerClass::detectEos( size_t i ) const {
-    bool is_eos = false;
-    UChar c = tokens[i].us[0];
+    UChar32 c = tokens[i].us.char32At(0);
     if ( c == '.' || eosmarkers.indexOf( c ) >= 0 ){
       if (i + 1 == tokens.size() ) {	//No next character?
 	is_eos = true; //Newline after eosmarker
       }
       else {
-	UChar c = tokens[i+1].us[0];
+	UChar32 c = tokens[i+1].us.char32At(0);
 	if ( u_isquote(c) ){
 	  // next word is quote
 	  if ( detectQuotes )
 	    is_eos = true;
-	  else {
-	    // if ( i + 2 == tokens.size() ) {	//No next-next character?
-	    //   is_eos = true;
-	    // }
-	    // else {
-	    //   UChar c = tokens[i+2].us[0];
-	    //   if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
-	    // 	//next 'word' after quote starts with uppercase or is punct
-	    // 	is_eos = true;
-	    //   }
-	    // }
-	    if ( i + 2 < tokens.size() ) {
-	      UChar c = tokens[i+2].us[0];
-	      if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
-	     	//next 'word' after quote starts with uppercase or is punct
-		is_eos = true;
-	      }
+	  else if ( i + 2 < tokens.size() ) {
+	    UChar32 c = tokens[i+2].us.char32At(0);
+	    if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
+	      //next 'word' after quote starts with uppercase or is punct
+	      is_eos = true;
 	    }
 	  }
 	}
@@ -1106,10 +1002,9 @@ namespace Tokenizer {
     }
     return is_eos;
   }
-#endif
 
   void TokenizerClass::detectQuoteBounds( const int i ) {
-    UChar c = tokens[i].us[0];
+    UChar32 c = tokens[i].us.char32At(0);
     //Detect Quotation marks
     if ((c == '"') || ( UnicodeString(c) == "＂") ) {
       if (tokDebug > 1 )
@@ -1296,9 +1191,9 @@ namespace Tokenizer {
     if (tokDebug) *Log(theErrLog) << "[passthruLine] input: line=[" << input << "]" << endl;
     bool alpha = false, num = false, punct = false;
     UnicodeString word;
-    for ( int i=0; i < input.length(); ++i ) {
-      UChar c = input[i];
-
+    StringCharacterIterator sit(input);
+    while ( sit.hasNext() ){
+      UChar32 c = sit.current32();
       if ( u_isspace(c)) {
 	if (tokDebug) *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
 	if ( word == eosmark ) {
@@ -1346,6 +1241,7 @@ namespace Tokenizer {
 	}
 	word += c;
       }
+      sit.next32();
     }
     if (word != "") {
       if ( word == eosmark ) {
