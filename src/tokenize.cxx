@@ -31,6 +31,7 @@
 #include "unicode/ustream.h"
 #include "unicode/regex.h"
 #include "unicode/ucnv.h"
+#include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "config.h"
 #include "libfolia/document.h"
@@ -194,6 +195,7 @@ namespace Tokenizer {
   }
 
   const UnicodeString type_currency = "CURRENCY";
+  const UnicodeString type_emoticon = "EMOTICON";
   const UnicodeString type_word = "WORD";
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
@@ -482,6 +484,7 @@ namespace Tokenizer {
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
     }
+    //    appendText( element, outputclass );
     return;
   }
 
@@ -1412,6 +1415,11 @@ namespace Tokenizer {
     }
   }
 
+  bool u_isemo( UChar32 c ){
+    UBlockCode s = ublock_getCode(c);
+    return s == UBLOCK_EMOTICONS;
+  }
+
   int TokenizerClass::tokenizeLine( const UnicodeString& originput ){
     if (tokDebug)
       *Log(theErrLog) << "[tokenizeLine] input: line=["
@@ -1424,9 +1432,11 @@ namespace Tokenizer {
       *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
       return 0;
     }
+    int32_t len = input.countChar32();
     if (tokDebug)
       *Log(theErrLog) << "[tokenizeLine] filtered input: line=["
-		      << input << "]" << endl;
+		      << input << "] (" << len
+		      << " unicode characters)" << endl;
     const int begintokencount = tokens.size();
     if (tokDebug) *Log(theErrLog) << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
 
@@ -1434,9 +1444,10 @@ namespace Tokenizer {
     bool reset = false;
     //iterate over all characters
     UnicodeString word;
-
-    for ( int i=0; i < input.length(); ++i ) {
-      UChar c = input[i];
+    StringCharacterIterator sit(input);
+    long int i = 0;
+    while ( sit.hasNext() ){
+      UChar32 c = sit.current32();
       if (reset) { //reset values for new word
 	reset = false;
 	if (!u_isspace(c))
@@ -1448,12 +1459,12 @@ namespace Tokenizer {
       else {
 	if (!u_isspace(c)) word += c;
       }
-      if ( u_isspace(c) || i == input.length()-1 ){
+      if ( u_isspace(c) || i == len-1 ){
 	if (tokDebug)
 	  *Log(theErrLog) << "[tokenizeLine] space detected, word=["
 			  << word << "]" << endl;
-	if ( i == input.length()-1 ) {
-	  if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) )
+	if ( i == len-1 ) {
+	  if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) || u_isemo(c) )
 	    tokenizeword = true;
 	}
 	int expliciteosfound = -1;
@@ -1506,7 +1517,7 @@ namespace Tokenizer {
 	//reset values for new word
 	reset = true;
       }
-      else if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) ) {
+      else if ( u_ispunct(c) || u_isdigit(c) || u_isquote(c) || u_isemo(c) ){
 	if (tokDebug)
 	  *Log(theErrLog) << "[tokenizeLine] punctuation or digit detected, word=["
 			  << word << "]" << endl;
@@ -1514,6 +1525,8 @@ namespace Tokenizer {
 	//there is punctuation or digits in this word, mark to run through tokeniser
 	tokenizeword = true;
       }
+      sit.next32();
+      ++i;
     }
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
@@ -1566,8 +1579,9 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenizeWord( const UnicodeString& input, bool space ) {
+    int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 )
-      *Log(theErrLog) << "   [tokenizeWord] Input: (" << input.length() << ") "
+      *Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
 		      << "word=[" << input << "]" << endl;
     if ( input == eosmark ) {
       if (tokDebug >= 2)
@@ -1583,9 +1597,9 @@ namespace Tokenizer {
       return;
     }
 
-    if ( input.length() == 1) {
+    if ( inpLen == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
-      UChar c = input[0];
+      UChar32 c = input.char32At(0);
       const UnicodeString *type;
 
       if ( u_ispunct(c)) {
@@ -1595,6 +1609,9 @@ namespace Tokenizer {
 	else {
 	  type = &type_punctuation;
 	}
+      }
+      else if ( u_isemo( c ) ) {
+	type = &type_emoticon;
       }
       else if ( u_isalpha(c)) {
 	type = &type_word;
@@ -1606,7 +1623,7 @@ namespace Tokenizer {
 	return;
       }
       else {
-	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
+	if ( u_charType( c ) == U_CURRENCY_SYMBOL ) {
 	  type = &type_currency;
 	}
 	else {
