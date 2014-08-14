@@ -534,7 +534,7 @@ namespace Tokenizer {
       doc.declare( folia::AnnotationType::TOKEN, settingsfilename,
 		   "annotator='ucto', annotatortype='auto', datetime='now()'");
     }
-    folia::FoliaElement *text = new folia::Text( "id='" + docid + ".text'" );
+    folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
     folia::FoliaElement *root = doc.doc()->index(0);
     outputTokensXML(root, tv );
