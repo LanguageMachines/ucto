@@ -101,82 +101,81 @@ int main( int argc, char *argv[] ){
     Opts.init(argc, argv );
     string value;
     bool mood;
-    if ( Opts.pull('d', value, mood) ){
+    if ( Opts.extract('d', value, mood) ){
       debug = stringTo<int>(value);
     }
-    if ( Opts.pull('e', value, mood) ){
+    if ( Opts.extract('e', value, mood) ){
       inputEncoding = value;
     }
-    if ( Opts.pull('f', value, mood) ){
+    if ( Opts.extract('f', value, mood) ){
       dofiltering = false;
     }
-    if ( Opts.pull('F', value, mood) ){
+    if ( Opts.extract('F', value, mood) ){
       xmlin = true;
     }
-    if ( Opts.pull('P', value, mood) ){
+    if ( Opts.extract('P', value, mood) ){
       paragraphdetection = false;
     }
-    if ( Opts.pull('Q', value, mood) ){
+    if ( Opts.extract('Q', value, mood) ){
       quotedetection = true;
     }
-    if ( Opts.pull('c', value, mood) ){
+    if ( Opts.extract('c', value, mood) ){
       c_file = value;
     }
-    if ( Opts.pull('s', value, mood) ){
+    if ( Opts.extract('s', value, mood) ){
       eosmarker = value;
     }
-    if ( Opts.pull('S', value, mood) ){
+    if ( Opts.extract('S', value, mood) ){
       splitsentences = true;
     }
-    if ( Opts.pull('L', value, mood) ){
+    if ( Opts.extract('L', value, mood) ){
       L_file = string("tokconfig-") + string(value);
     }
-    if ( Opts.pull('u', value, mood) ){
+    if ( Opts.extract('u', value, mood) ){
       touppercase = true;
     }
-    if ( Opts.pull('l', value, mood) ){
+    if ( Opts.extract('l', value, mood) ){
       tolowercase = true;
     }
-    if ( Opts.pull('n', value, mood) ){
+    if ( Opts.extract('n', value, mood) ){
       sentenceperlineoutput = true;
     }
-    if ( Opts.pull('m', value, mood) ){
+    if ( Opts.extract('m', value, mood) ){
       sentenceperlineinput = true;
     }
-    if ( Opts.pull('N', value, mood) ){
+    if ( Opts.extract('N', value, mood) ){
       normalization = value;
     }
-    if ( Opts.pull('v', value, mood) ){
+    if ( Opts.extract('v', value, mood) ){
       verbose = true;
     }
-    if ( Opts.pull('V', value, mood) ){
+    if ( Opts.extract('V', value, mood) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
 	   << "(c) ILK 2009 - 2014, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
       cout << "based on [" << folia::VersionName() << "]" << endl;
       return EXIT_SUCCESS;
     }
-    if ( Opts.pull('x', value, mood) ){
+    if ( Opts.extract('x', value, mood) ){
       xmlout = true;
       docid = value;
     }
-    if ( Opts.pull('X', value, mood) ){
+    if ( Opts.extract('X', value, mood) ){
       xmlout = true;
     }
-    if ( Opts.pull("passthru", value) ){
+    if ( Opts.extract("passthru", value) ){
       passThru = true;
     }
-    if ( Opts.pull("id", value ) ){
+    if ( Opts.extract("id", value ) ){
       docid = value;
     }
-    if ( Opts.pull("textclass", value ) ){
-      cerr << "--textclass is deprecated!. use --inputclass instead!" << endl;
+    if ( Opts.extract("textclass", value ) ){
       inputclass = value;
     }
-    if ( Opts.pull("inputclass", value ) ){
+    if ( Opts.extract("inputclass", value ) ){
       inputclass = value;
     }
-    if ( Opts.pull("outputclass", value ) ){
+    if ( Opts.extract("outputclass", value ) ){
       outputclass = value;
     }
     if ( !Opts.empty() ){
