@@ -152,11 +152,6 @@ namespace Tokenizer {
     //Same as above, but returns a pointer to a newly allocated instance, hack needed by python-frog binding
     folia::Document * tokenizenew( std::istream& );
 
-    //this one takes an empty pointer and will allocate a new instance if it's
-    //not NULL
-    //(fairly unelegant hack for python-frog binding)
-    void tokenize( std::istream& , folia::Document *);
-
     // Tokenize a folia document
     bool tokenize(folia::Document& );
 
