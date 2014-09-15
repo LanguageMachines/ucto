@@ -149,9 +149,6 @@ namespace Tokenizer {
     // Tokenize from input stream to FoLiA document
     folia::Document tokenize( std::istream& );
     //
-    //Same as above, but returns a pointer to a newly allocated instance, hack needed by python-frog binding
-    folia::Document * tokenizenew( std::istream& );
-
     // Tokenize a folia document
     bool tokenize(folia::Document& );
 

@@ -384,13 +384,6 @@ namespace Tokenizer {
     return doc;
   }
 
-  folia::Document * TokenizerClass::tokenizenew( istream& IN) {
-    vector<Token> v = tokenizeStream( IN );
-    folia::Document * doc = new folia::Document( "id='" + docid + "'" );
-    outputTokensDoc( *doc, v );
-    return doc;
-  }
-
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     vector<Token> v = tokenizeStream( IN );
     if (xmlout) {
