@@ -238,7 +238,6 @@ namespace Tokenizer {
     bool setSentencePerLineInput( bool b=true ) { bool t = sentenceperlineinput; sentenceperlineinput = b; return t; };
     bool getSentencePerLineInput() const { return sentenceperlineinput; }
 
-    std::string getDocID() const { return docid; }
     bool getXMLOutput() const { return xmlout; }
     bool getXMLInput() const { return xmlin; }
 
@@ -261,7 +260,13 @@ namespace Tokenizer {
       return res;
     }
 
-    bool setXMLOutput( bool b, const std::string& id) { bool t = xmlout; docid = id; xmlout = b; return t; }
+    std::string getDocID() const { return docid; }
+    std::string setDocID( const std::string& id ) {
+      const std::string s = docid; docid = id; return s; }
+    bool setXMLOutput( bool b ) {
+      bool t = xmlout; xmlout = b; return t; }
+    bool setXMLOutput( bool b, const std::string& id ) {
+      setDocID( id ); return setXMLOutput(b); }
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
 
     void outputTokens( std::ostream&, const std::vector<Token>& ) const;
