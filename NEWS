@@ -1,5 +1,11 @@
 0.5.5 2014-06-xx
 * made getSentence() public
+* adapted to most recent libfolia (0.11 or above)
+* needs libticcutils 0.6 or above
+* uses TiCC::CommandLine
+* detect EMOTICON's
+* generally switched to UChar32 and Unicode codepoints. (avoid length() problems)
+* handle FoLiA Note like Caption
 * a lot of bug fixes concerning FoLiA output (<t> nodes, textclass values etc.)
 * again some changes around quotes
 * improved tokenisation in differeny languages
