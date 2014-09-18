@@ -1014,7 +1014,7 @@ namespace Tokenizer {
 	quotes.push( i, c );
       }
     }
-    else if ((c == '\'') ) {
+    else if ( c == '\'' ) {
       if (tokDebug > 1 )
 	*Log(theErrLog) << "[detectQuoteBounds] Standard single-quote (ambiguous) found @i="<< i << endl;
       if (!resolveQuote(i,c)) {
