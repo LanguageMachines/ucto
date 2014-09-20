@@ -101,6 +101,10 @@ int main( int argc, char *argv[] ){
     Opts.init(argc, argv );
     string value;
     bool mood;
+    if ( Opts.extract('h', value, mood) ){
+        usage();
+        exit(0);
+    }
     if ( Opts.extract('d', value, mood) ){
       debug = stringTo<int>(value);
     }
