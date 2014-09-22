@@ -99,92 +99,60 @@ int main( int argc, char *argv[] ){
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
 			   "passthru,textclass:,inputclass:,outputclass:,id:");
     Opts.init(argc, argv );
-    string value;
-    bool mood;
-    if ( Opts.extract('h', value, mood) ){
-        usage();
-        exit(0);
+    if ( Opts.extract( 'h' ) ){
+      usage();
+      return EXIT_SUCCESS;
     }
-    if ( Opts.extract('d', value, mood) ){
-      debug = stringTo<int>(value);
-    }
-    if ( Opts.extract('e', value, mood) ){
-      inputEncoding = value;
-    }
-    if ( Opts.extract('f', value, mood) ){
-      dofiltering = false;
-    }
-    if ( Opts.extract('F', value, mood) ){
-      xmlin = true;
-    }
-    if ( Opts.extract('P', value, mood) ){
-      paragraphdetection = false;
-    }
-    if ( Opts.extract('Q', value, mood) ){
-      quotedetection = true;
-    }
-    if ( Opts.extract('c', value, mood) ){
-      c_file = value;
-    }
-    if ( Opts.extract('s', value, mood) ){
-      eosmarker = value;
-    }
-    if ( Opts.extract('S', value, mood) ){
-      splitsentences = true;
-    }
-    if ( Opts.extract('L', value, mood) ){
-      L_file = string("tokconfig-") + string(value);
-    }
-    if ( Opts.extract('u', value, mood) ){
-      touppercase = true;
-    }
-    if ( Opts.extract('l', value, mood) ){
-      tolowercase = true;
-    }
-    if ( Opts.extract('n', value, mood) ){
-      sentenceperlineoutput = true;
-    }
-    if ( Opts.extract('m', value, mood) ){
-      sentenceperlineinput = true;
-    }
-    if ( Opts.extract('N', value, mood) ){
-      normalization = value;
-    }
-    if ( Opts.extract('v', value, mood) ){
-      verbose = true;
-    }
-    if ( Opts.extract('V', value, mood) ){
+    if ( Opts.extract( 'V' ) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
 	   << "(c) ILK 2009 - 2014, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
       cout << "based on [" << folia::VersionName() << "]" << endl;
       return EXIT_SUCCESS;
     }
-    if ( Opts.extract('x', value, mood) ){
+    Opts.extract('e', inputEncoding );
+    dofiltering = !Opts.extract( 'f' );
+    paragraphdetection = !Opts.extract( 'P' );
+    splitsentences = !Opts.extract( 'S' );
+    xmlin = Opts.extract( 'F' );
+    quotedetection = Opts.extract( 'Q' );
+    Opts.extract( 'c', c_file );
+    Opts.extract( 's', eosmarker );
+    touppercase = Opts.extract( 'u' );
+    tolowercase = Opts.extract( 'l' );
+    sentenceperlineoutput = Opts.extract( 'n' );
+    sentenceperlineinput = Opts.extract( 'm' );
+    Opts.extract( 'N', normalization );
+    verbose = Opts.extract( 'v' );
+    if ( Opts.extract( 'x', docid ) ){
       xmlout = true;
-      docid = value;
+      if ( Opts.is_present( 'X' ) ){
+	throw TiCC::OptionError( "conflicting options -x and -X" );
+      }
+      if ( Opts.is_present( "id" ) ){
+	throw TiCC::OptionError( "conflicting options -x and --id" );
+      }
     }
-    if ( Opts.extract('X', value, mood) ){
-      xmlout = true;
+    else {
+      xmlout = Opts.extract( 'X' );
+      Opts.extract( "id", docid );
     }
-    if ( Opts.extract("passthru", value) ){
-      passThru = true;
+    passThru = Opts.extract( "passthru" );
+    Opts.extract( "textclass", inputclass );
+    Opts.extract( "inputclass", inputclass );
+    Opts.extract( "outputclass", outputclass );
+    string value;
+    if ( Opts.extract('d', value ) ){
+      if ( !TiCC::stringTo(value,debug) ){
+	throw TiCC::OptionError( "invalid value for -d: " + value );
+      }
     }
-    if ( Opts.extract("id", value ) ){
-      docid = value;
-    }
-    if ( Opts.extract("textclass", value ) ){
-      inputclass = value;
-    }
-    if ( Opts.extract("inputclass", value ) ){
-      inputclass = value;
-    }
-    if ( Opts.extract("outputclass", value ) ){
-      outputclass = value;
+    if ( Opts.extract('L', value ) ){
+      L_file = string("tokconfig-") + string(value);
     }
     if ( !Opts.empty() ){
       string tomany = Opts.toString();
-      throw invalid_argument( tomany );
+      throw TiCC::OptionError( "unhandles option(s): " + tomany );
     }
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
