@@ -152,7 +152,7 @@ int main( int argc, char *argv[] ){
     }
     if ( !Opts.empty() ){
       string tomany = Opts.toString();
-      throw TiCC::OptionError( "unhandles option(s): " + tomany );
+      throw TiCC::OptionError( "unhandled option(s): " + tomany );
     }
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
