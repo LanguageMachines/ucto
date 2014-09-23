@@ -484,7 +484,6 @@ namespace Tokenizer {
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
     }
-    //    appendText( element, outputclass );
     return;
   }
 
