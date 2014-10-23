@@ -153,7 +153,7 @@ namespace Tokenizer {
     bool tokenize(folia::Document& );
 
     //Tokenize from input stream to output stream
-    std::vector<Token> tokenizeStream( std::istream& );
+    std::vector<Token> tokenizeStream( std::istream& , bool allatonce = true);
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
       // for backward compatability
@@ -289,6 +289,7 @@ namespace Tokenizer {
 
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
+    void outputTokensDoc_init( folia::Document& ) const;
     void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );

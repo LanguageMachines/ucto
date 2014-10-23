@@ -1,3 +1,4 @@
+/* vim: tabstop=8:softtabstop=8:shiftwidth=8:noexpandtab */ 
 /*
   $Id$
   $URL$
@@ -335,7 +336,7 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeStream( istream& IN ) {
+  vector<Token> TokenizerClass::tokenizeStream( istream& IN, bool allatonce ) {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
@@ -369,6 +370,7 @@ namespace Tokenizer {
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);
+	if (!allatonce) return outputTokens;
       }
       else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
@@ -378,21 +380,31 @@ namespace Tokenizer {
   }
 
   folia::Document TokenizerClass::tokenize( istream& IN ) {
-    vector<Token> v = tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
-    outputTokensDoc( doc, v );
+    outputTokensDoc_init( doc);
+    folia::FoliaElement *root = doc.doc()->index(0);
+    do {
+	vector<Token> v = tokenizeStream( IN , false);
+	outputTokensXML( root, v );
+    } while (!IN.eof());
     return doc;
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    vector<Token> v = tokenizeStream( IN );
     if (xmlout) {
       folia::Document doc( "id='" + docid + "'" );
-      outputTokensDoc( doc, v );
+      outputTokensDoc_init( doc);
+      folia::FoliaElement *root = doc.doc()->index(0);
+      do {
+	vector<Token> v = tokenizeStream( IN , false);
+	outputTokensXML( root, v );
+      } while (!IN.eof());
       OUT << doc << endl;
-    }
-    else {
-      outputTokens( OUT, v );
+    } else {
+      do {
+	vector<Token> v = tokenizeStream( IN , false);
+	outputTokens( OUT, v );
+      } while (!IN.eof());
       OUT << endl;
     }
   }
@@ -523,8 +535,7 @@ namespace Tokenizer {
     flushSentences(numS);
   }
 
-  void TokenizerClass::outputTokensDoc( folia::Document& doc,
-					const vector<Token>& tv ) const {
+  void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
     if ( passthru ){
       doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
@@ -535,6 +546,10 @@ namespace Tokenizer {
     }
     folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
+  }
+
+  void TokenizerClass::outputTokensDoc( folia::Document& doc, const vector<Token>& tv ) const {
+    outputTokensDoc_init(doc);
     folia::FoliaElement *root = doc.doc()->index(0);
     outputTokensXML(root, tv );
   }
