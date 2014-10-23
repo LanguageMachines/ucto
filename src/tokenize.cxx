@@ -383,21 +383,23 @@ namespace Tokenizer {
     folia::Document doc( "id='" + docid + "'" );
     outputTokensDoc_init( doc);
     folia::FoliaElement *root = doc.doc()->index(0);
+    int parCount = 0;
     do {
 	vector<Token> v = tokenizeStream( IN , false);
-	outputTokensXML( root, v );
+	parCount = outputTokensXML( root, v , parCount);
     } while (!IN.eof());
     return doc;
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
+      int parCount = 0;
       folia::Document doc( "id='" + docid + "'" );
       outputTokensDoc_init( doc);
       folia::FoliaElement *root = doc.doc()->index(0);
       do {
 	vector<Token> v = tokenizeStream( IN , false);
-	outputTokensXML( root, v );
+	parCount = outputTokensXML( root, v , parCount);
       } while (!IN.eof());
       OUT << doc << endl;
     } else {
@@ -554,11 +556,10 @@ namespace Tokenizer {
     outputTokensXML(root, tv );
   }
 
-  void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					const vector<Token>& tv ) const {
+  int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
+					const vector<Token>& tv , int parCount) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
-    int parCount = 0;
     if  (tokDebug > 0) {
       *Log(theErrLog) << "[outputTokensXML] root-id=" << root->id() << endl;
     }
@@ -648,6 +649,7 @@ namespace Tokenizer {
     if ( tv.size() > 0 ){
       appendText( root, outputclass );
     }
+    return parCount;
   }
 
   ostream& operator<<( ostream& os, const TokenRole& tok ){

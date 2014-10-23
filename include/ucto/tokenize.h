@@ -290,7 +290,7 @@ namespace Tokenizer {
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
-    void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
+    int outputTokensXML( folia::FoliaElement *, const std::vector<Token>& , int parCount = 0) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );
 
