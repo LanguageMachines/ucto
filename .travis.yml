@@ -17,6 +17,5 @@ install:
     - make
     - sudo make install
 script: 
-    - cd tests
-    - ./testall >&2
+    - cd tests && ./testall >&2
     
