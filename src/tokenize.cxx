@@ -1219,7 +1219,7 @@ namespace Tokenizer {
 	  if ( doPunctFilter
 	       && ( type == &type_punctuation || type == &type_currency ||
 		    type == &type_emoticon ) ) {
-	    if (tokDebug >= 0 )
+	    if (tokDebug >= 2 )
 	      *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
 	  }
@@ -1275,7 +1275,7 @@ namespace Tokenizer {
 	if ( doPunctFilter
 	     && ( type == &type_punctuation || type == &type_currency ||
 		  type == &type_emoticon ) ) {
-	  if (tokDebug >= 0 )
+	  if (tokDebug >= 2 )
 	    *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
 	}
@@ -1547,7 +1547,7 @@ namespace Tokenizer {
       if ( doPunctFilter
 	   && ( type == &type_punctuation || type == &type_currency ||
 		type == &type_emoticon ) ) {
-	if (tokDebug >= 0 )
+	if (tokDebug >= 2 )
 	  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
       }
@@ -1585,7 +1585,7 @@ namespace Tokenizer {
 				<< matches[m] << endl;
 	      if ( doPunctFilter
 		   && (&rules[i]->id)->startsWith("PUNCTUATION") ){
-		if (tokDebug >= 0 )
+		if (tokDebug >= 2 )
 		  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 				  << matches[m] << "]" << endl;
 	      }
