@@ -5,12 +5,12 @@ compiler:
 before_install:
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
-    - bash bootstrap
+    - bash bootstrap.sh
     - ./configure
     - make
     - sudo make install
 install: 
-    - bash bootstrap
+    - bash bootstrap.sh
     - ./configure
     - make
     - sudo make install
