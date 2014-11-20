@@ -55,6 +55,7 @@ void usage(){
        << "\t-v              - Verbose mode" << endl
        << "\t-s <string>     - End-of-Sentence marker (default: <utt>)" << endl
        << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
+       << "\t--filterpunct   - remove all punctuation from the output" << endl
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
        << "\t-Q              - Enable quote detection (experimental)" << endl
@@ -78,6 +79,7 @@ int main( int argc, char *argv[] ){
   bool paragraphdetection = true;
   bool quotedetection = false;
   bool dofiltering = true;
+  bool dopunctfilter = false;
   bool splitsentences = true;
   bool xmlin = false;
   bool xmlout = false;
@@ -97,7 +99,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "passthru,textclass:,inputclass:,outputclass:,id:");
+			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,id:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' ) ){
       usage();
@@ -112,6 +114,7 @@ int main( int argc, char *argv[] ){
     }
     Opts.extract('e', inputEncoding );
     dofiltering = !Opts.extract( 'f' );
+    dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
     splitsentences = !Opts.extract( 'S' );
     xmlin = Opts.extract( 'F' );
@@ -241,6 +244,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setNormalization( normalization );
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
+    tokenizer.setPunctFilter(dopunctfilter);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);

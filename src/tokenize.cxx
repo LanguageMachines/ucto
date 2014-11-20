@@ -298,7 +298,9 @@ namespace Tokenizer {
     linenum(0),
     inputEncoding( "UTF-8" ), eosmark("<utt>"),
     tokDebug(0), verbose(false),
-    detectBounds(true), detectQuotes(false), doFilter(true), detectPar(true),
+    detectBounds(true), detectQuotes(false),
+    doFilter(true), doPunctFilter(false),
+    detectPar(true),
     paragraphsignal(true),
     sentenceperlineoutput(false), sentenceperlineinput(false),
     lowercase(false), uppercase(false),
@@ -1214,12 +1216,21 @@ namespace Tokenizer {
 	  else {
 	    type = &type_unknown;
 	  }
-	  if (bos) {
-	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
-	    bos = false;
+	  if ( doPunctFilter
+	       && ( type == &type_punctuation || type == &type_currency ||
+		    type == &type_emoticon ) ) {
+	    if (tokDebug >= 0 )
+	      *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
+			      << input << "]" << endl;
 	  }
 	  else {
-	    tokens.push_back( Token( type, word ) );
+	    if (bos) {
+	      tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
+	      bos = false;
+	    }
+	    else {
+	      tokens.push_back( Token( type, word ) );
+	    }
 	  }
 	  alpha = false;
 	  num = false;
@@ -1261,12 +1272,21 @@ namespace Tokenizer {
 	else {
 	  type = &type_unknown;
 	}
-	if (bos) {
-	  tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
-	  bos = false;
+	if ( doPunctFilter
+	     && ( type == &type_punctuation || type == &type_currency ||
+		  type == &type_emoticon ) ) {
+	  if (tokDebug >= 0 )
+	    *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
+			    << input << "]" << endl;
 	}
 	else {
-	  tokens.push_back( Token( type, word ) );
+	  if (bos) {
+	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
+	    bos = false;
+	  }
+	  else {
+	    tokens.push_back( Token( type, word ) );
+	  }
 	}
       }
     }
@@ -1524,10 +1544,19 @@ namespace Tokenizer {
 	  type = &type_unknown;
 	}
       }
-      Token T( type, input, space ? NOROLE : NOSPACE );
-      tokens.push_back( T );
-      if (tokDebug >= 2)
-	*Log(theErrLog) << "   [tokenizeWord] added token " << T << endl;
+      if ( doPunctFilter
+	   && ( type == &type_punctuation || type == &type_currency ||
+		type == &type_emoticon ) ) {
+	if (tokDebug >= 0 )
+	  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
+			  << input << "]" << endl;
+      }
+      else {
+	Token T( type, input, space ? NOROLE : NOSPACE );
+	tokens.push_back( T );
+	if (tokDebug >= 2)
+	  *Log(theErrLog) << "   [tokenizeWord] added token " << T << endl;
+      }
     }
     else {
       for ( unsigned int i = 0; i < rules.size(); i++) {
@@ -1554,8 +1583,16 @@ namespace Tokenizer {
 	      if ( tokDebug >= 4 )
 		*Log(theErrLog) << "\tTOKEN match[" << m << "] = "
 				<< matches[m] << endl;
-	      if ( post.length() > 0 ) space = false;
-	      tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
+	      if ( doPunctFilter
+		   && (&rules[i]->id)->startsWith("PUNCTUATION") ){
+		if (tokDebug >= 0 )
+		  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
+				  << matches[m] << "]" << endl;
+	      }
+	      else {
+		if ( post.length() > 0 ) space = false;
+		tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
+	      }
 	    }
 	  }
 	  else if ( tokDebug >=4 )

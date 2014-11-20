@@ -214,8 +214,15 @@ namespace Tokenizer {
     bool getQuoteDetection() const { return detectQuotes; }
 
     //Enable filtering
-    bool setFiltering( bool b=true ) { bool t = doFilter; doFilter = b; return t; }
+    bool setFiltering( bool b=true ) {
+      bool t = doFilter; doFilter = b; return t;
+    }
     bool getFiltering() const { return doFilter; };
+
+    bool setPunctFilter( bool b=true ) {
+      bool t = doPunctFilter; doPunctFilter = b; return t;
+    }
+    bool getPunctFilter() const { return doPunctFilter; };
 
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
@@ -318,8 +325,11 @@ namespace Tokenizer {
     //detect quotes?
     bool detectQuotes;
 
-    //filter special characters (default on)?
+    //filter special characters (default on)
     bool doFilter;
+
+    //filter all punctuation characters (default off)
+    bool doPunctFilter;
 
     //detect paragraphs?
     bool detectPar;
