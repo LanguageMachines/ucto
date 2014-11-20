@@ -1,4 +1,3 @@
-/* vim: tabstop=8:softtabstop=8:shiftwidth=8:noexpandtab */ 
 /*
   $Id$
   $URL$
@@ -336,7 +335,7 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeStream( istream& IN, bool allatonce ) {
+  vector<Token> TokenizerClass::tokenizeStream( istream& IN ) {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
@@ -370,7 +369,6 @@ namespace Tokenizer {
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);
-	if (!allatonce) return outputTokens;
       }
       else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
@@ -380,33 +378,21 @@ namespace Tokenizer {
   }
 
   folia::Document TokenizerClass::tokenize( istream& IN ) {
+    vector<Token> v = tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
-    outputTokensDoc_init( doc);
-    folia::FoliaElement *root = doc.doc()->index(0);
-    int parCount = 0;
-    do {
-	vector<Token> v = tokenizeStream( IN , false);
-	parCount = outputTokensXML( root, v , parCount);
-    } while (!IN.eof());
+    outputTokensDoc( doc, v );
     return doc;
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
+    vector<Token> v = tokenizeStream( IN );
     if (xmlout) {
-      int parCount = 0;
       folia::Document doc( "id='" + docid + "'" );
-      outputTokensDoc_init( doc);
-      folia::FoliaElement *root = doc.doc()->index(0);
-      do {
-	vector<Token> v = tokenizeStream( IN , false);
-	parCount = outputTokensXML( root, v , parCount);
-      } while (!IN.eof());
+      outputTokensDoc( doc, v );
       OUT << doc << endl;
-    } else {
-      do {
-	vector<Token> v = tokenizeStream( IN , false);
-	outputTokens( OUT, v );
-      } while (!IN.eof());
+    }
+    else {
+      outputTokens( OUT, v );
       OUT << endl;
     }
   }
@@ -537,7 +523,8 @@ namespace Tokenizer {
     flushSentences(numS);
   }
 
-  void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {
+  void TokenizerClass::outputTokensDoc( folia::Document& doc,
+					const vector<Token>& tv ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
     if ( passthru ){
       doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
@@ -548,16 +535,12 @@ namespace Tokenizer {
     }
     folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
-  }
-
-  void TokenizerClass::outputTokensDoc( folia::Document& doc, const vector<Token>& tv ) const {
-    outputTokensDoc_init(doc);
     folia::FoliaElement *root = doc.doc()->index(0);
     outputTokensXML(root, tv );
   }
 
-  int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					const vector<Token>& tv , int parCount) const {
+  void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
+					const vector<Token>& tv ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
@@ -582,14 +565,14 @@ namespace Tokenizer {
     for ( size_t i=0; i < tv.size(); i++) {
       if ( ( !root_is_structure_element && !root_is_sentence ) &&
 	   ( (tv[i].role & NEWPARAGRAPH) || !in_paragraph ) ) {
-	parCount++;
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
 	  root = root->parent();
 	}
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
 	folia::KWargs args;
-	args["id"] = root->doc()->id() + ".p." +  toString(parCount);
+	static int parCount = 0;
+	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
 	folia::FoliaElement *p = new folia::Paragraph( root->doc(), args );
 	//	*Log(theErrLog) << "created " << p << endl;
 	root->append( p );
@@ -649,7 +632,6 @@ namespace Tokenizer {
     if ( tv.size() > 0 ){
       appendText( root, outputclass );
     }
-    return parCount;
   }
 
   ostream& operator<<( ostream& os, const TokenRole& tok ){
