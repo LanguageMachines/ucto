@@ -24,4 +24,4 @@ if [ $? -ne 0 ]; then
     RETURN=1
 fi
 
-return $RETURN
+exit $RETURN
