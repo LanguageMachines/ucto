@@ -11,6 +11,7 @@ before_install:
     - ./configure
     - make
     - sudo make install
+    - cd ..
 install: 
     - bash bootstrap.sh
     - ./configure
