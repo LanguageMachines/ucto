@@ -4,9 +4,16 @@ compiler:
     - clang
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive
+    - sudo apt-get install pkg-config autoconf-archive libicu-dev libxml2-dev libbz2-dev zlib1g-dev 
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
+    - bash bootstrap.sh
+    - ./configure
+    - make
+    - sudo make install
+    - cd ..
+    - git clone https://github.com/proycon/libfolia
+    - cd libfolia
     - bash bootstrap.sh
     - ./configure
     - make
