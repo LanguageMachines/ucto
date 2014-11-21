@@ -2,7 +2,10 @@
 # $Id$
 # $URL$
 
-\rm testoutput/*.diff
+RETURN=0
+
+mkdir testoutput 2> /dev/null
+\rm testoutput/*.diff 2> /dev/null
 
 for file in testusage testlanguage testconf1 testconf2 testinclude \
    	    testfiles1 testfiles2 testoption1 testoption2 testoption-s\
@@ -11,6 +14,14 @@ for file in testusage testlanguage testconf1 testconf2 testinclude \
 	    testpunctuation testpunctfilter
 do
    ./testone $file
+   if [ $? -ne 0 ]; then
+        RETURN=1
+   fi
 done
 
 python test.py
+if [ $? -ne 0 ]; then
+    RETURN=1
+fi
+
+return $RETURN

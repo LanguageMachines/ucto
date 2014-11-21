@@ -20,14 +20,20 @@ if test -x $file
 	then sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
 	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
 	     if [ $? -ne 0 ];
-	     then echo -e $FAIL;
-	     	  echo "differences logged in testoutput/$file.diff";
-	     	  echo "stderr messages logged in testoutput/$file.err";
-	     else echo -e $OK
-	     	  \rm -f testoutput/$file.diff
-	     	  \rm -f testoutput/$file.err
+	     then 
+            echo -e $FAIL;
+	     	echo "differences logged in testoutput/$file.diff";
+	     	echo "stderr messages logged in testoutput/$file.err";
+            exit 1
+	     else 
+            echo -e $OK
+            \rm -f testoutput/$file.diff
+            \rm -f testoutput/$file.err
+            exit 0
 	     fi
-	else echo -e $OK
+	else 
+        echo -e $OK
+        exit 0
 	fi
 fi
 
