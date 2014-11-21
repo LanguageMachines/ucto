@@ -35,15 +35,15 @@ def checkVGsummary( id, lang ):
                 ERRORS = int( s[ num ] )
                 break
     if ( LOST != 0 or ERRORS != 0 ):
-        print color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True) 
+        print color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True)
     else:
-        print color_text("OK", 'GREEN', True) 
+        print color_text("OK", 'GREEN', True)
 
 if len(sys.argv) == 2:
     mask = sys.argv[1]
 else:
     mask = '*.txt'
-    
+
 DEBUGLEVEL = 5
 
 if not os.path.isdir('testoutput'):
@@ -64,14 +64,26 @@ for f in glob.glob(mask):
         lang = fields[1]
     else:
         continue
-        
+
     msg = "Testing: " + id + " (" + lang + ")"
     spaces = " " * (50 - len(msg) )
-    print msg + spaces, 
-    if not os.path.isfile(id + '.' + lang + '.tok.V'):
-        print color_text("MISSING", 'RED', True)  
+    print msg + spaces,
+    if os.path.isfile(id + '.' + lang + '.tok.V'):
+        reffile = id + '.' + lang + '.tok.V'
+        outputfile = 'testoutput/' + id + '.' + lang + '.tok.V'
+        cmd = VG+'../src/.libs/ucto -Q -v -c ../config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+    elif os.path.isfile(id + '.' + lang + '.tok'):
+        reffile = id + '.' + lang + '.tok'
+        outputfile = 'testoutput/' + id + '.' + lang + '.tok'
+        cmd = VG+'../src/.libs/ucto -Q -c ../config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+    elif os.path.isfile(id + '.' + lang + '.xml'):
+        reffile = id + '.' + lang + '.xml'
+        outputfile = 'testoutput/' + id + '.' + lang + '.xml'
+        cmd = VG+'../src/.libs/ucto --id="test" -Q -X -c ../config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+    else:
+        print color_text("MISSING", 'RED', True)
         continue
-    cmd = VG+'../src/.libs/ucto -Q -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err'
+
     #print cmd
     retcode = os.system(cmd)
     if retcode != 0:
@@ -79,24 +91,30 @@ for f in glob.glob(mask):
         if retcode == 2: # lame attempt to bail out on ^C
             break
     else:
-        retcode = os.system('diff -q testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > /dev/null')
+        if outputfile[-4:] == ".xml":
+            for f2 in (reffile, outputfile):
+                #strip the FoLiA version number and the token-annotation declaration (different timestamp)
+                os.system("sed -e 's/generator=\"[.*]*\"//g' -e 's/version=\"[0.9\.]*\"//g' -e '/token-annotation/d' "  + f2 + " > " + f2 + ".tmp")
+            retcode = os.system('diff ' + reffile + '.tmp ' + outputfile  + '.tmp > testoutput/'  + id + '.' + lang + '.diff')
+        else:
+            retcode = os.system('diff ' + outputfile + ' ' + reffile  + ' > testoutput/' + id + '.' + lang + '.diff')
         if retcode == 0:
             if VG:
                 checkVGsummary( id, lang )
             else:
-                print color_text("OK", 'GREEN', True) 
-        else:                   
+                print color_text("OK", 'GREEN', True)
+        else:
             print color_text("FAILED", 'RED', True)
             log += "testoutput/" + id + '.' + lang + '.diff\n'
             log += "testoutput/" + id + '.' + lang + '.err\n'
-            #print 'diff testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff'
-            os.system('diff testoutput/' + id + '.' + lang + '.tok.V ' + id + '.' + lang + '.tok.V > testoutput/' + id + '.' + lang + '.diff')
-            #VERBOSE RUN:
-            os.system('../src/.libs/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' testoutput/' + id + '.' + lang + '.tok.V 2> testoutput/' + id + '.' + lang + '.err')
+            if outputfile[-4:] != ".xml":
+                os.system('../src/.libs/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
+            else:
+                os.system('../src/.libs/ucto --id="test" -X -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
 
 if log:
     print "--------------------------"
     print "Files to inspect:"
-    print log           
-        
+    print log
+
 

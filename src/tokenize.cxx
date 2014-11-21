@@ -337,7 +337,7 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeStream( istream& IN ) {
+  vector<Token> TokenizerClass::tokenizeStream( istream& IN, bool allatonce) {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
@@ -345,8 +345,7 @@ namespace Tokenizer {
     do {
       done = !getline( IN, line );
       linenum++;
-      if (tokDebug > 0)
-	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      if (tokDebug > 0) *Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
       stripCR( line );
       if ( sentenceperlineinput )
 	line += string(" ") + folia::UnicodeToUTF8(eosmark);
@@ -354,13 +353,12 @@ namespace Tokenizer {
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
-      }
-      else {
+      } else {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
 	  tokenizeLine( line );
-	numS = countSentences(); //count full sentences in token buffer
+  	  numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) { //process sentences
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
@@ -371,30 +369,66 @@ namespace Tokenizer {
 	//clear processed sentences from buffer
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	flushSentences(numS);
-      }
-      else {
+	if (!allatonce) return outputTokens;
+      } else {
 	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
       }
     } while (!done);
     return outputTokens;
   }
 
+
+
+
   folia::Document TokenizerClass::tokenize( istream& IN ) {
     vector<Token> v = tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
-    outputTokensDoc( doc, v );
+    outputTokensDoc_init( doc);
+    folia::FoliaElement *root = doc.doc()->index(0);
+    int parCount = 0;
+    vector<Token> buffer;
+    do {
+	vector<Token> v = tokenizeStream( IN , false);
+	for (vector<Token>::iterator iter = v.begin(); iter != v.end(); iter++) {
+	    if (iter->role & NEWPARAGRAPH) {
+		//process the buffer
+		parCount= outputTokensXML( root, buffer, parCount);
+		buffer.clear();
+	    }
+	    buffer.push_back( *iter);
+	}
+    } while (!IN.eof());
+    if (!buffer.empty()) outputTokensXML( root, buffer, parCount);
     return doc;
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    vector<Token> v = tokenizeStream( IN );
     if (xmlout) {
+      int parCount = 0;
       folia::Document doc( "id='" + docid + "'" );
-      outputTokensDoc( doc, v );
+      outputTokensDoc_init( doc);
+      folia::FoliaElement *root = doc.doc()->index(0);
+      vector<Token> buffer;
+      do {
+	    vector<Token> v = tokenizeStream( IN , false);
+	    for (vector<Token>::iterator iter = v.begin(); iter != v.end(); iter++) {
+		if (iter->role & NEWPARAGRAPH) {
+		    //process the buffer
+		    parCount= outputTokensXML( root, buffer, parCount);
+		    buffer.clear();
+		}
+		buffer.push_back( *iter);
+	    }
+      } while (!IN.eof());
+      if (!buffer.empty()) outputTokensXML( root, buffer, parCount);
       OUT << doc << endl;
-    }
-    else {
-      outputTokens( OUT, v );
+    } else {
+      int i = 0;
+      do {
+       vector<Token> v = tokenizeStream( IN , false);
+       if (!v.empty()) outputTokens( OUT, v , (i>0) );
+       i++;
+      } while (!IN.eof());
       OUT << endl;
     }
   }
@@ -525,8 +559,7 @@ namespace Tokenizer {
     flushSentences(numS);
   }
 
-  void TokenizerClass::outputTokensDoc( folia::Document& doc,
-					const vector<Token>& tv ) const {
+  void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {
     doc.addStyle( "text/xsl", "folia.xsl" );
     if ( passthru ){
       doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
@@ -537,12 +570,15 @@ namespace Tokenizer {
     }
     folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
     doc.append( text );
+  }
+
+  void TokenizerClass::outputTokensDoc( folia::Document& doc,
+					const vector<Token>& tv ) const {
     folia::FoliaElement *root = doc.doc()->index(0);
     outputTokensXML(root, tv );
   }
 
-  void TokenizerClass::outputTokensXML( folia::FoliaElement *root,
-					const vector<Token>& tv ) const {
+  int TokenizerClass::outputTokensXML( folia::FoliaElement *root, const vector<Token>& tv, int parCount ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
@@ -573,7 +609,6 @@ namespace Tokenizer {
 	}
 	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating paragraph" << endl;
 	folia::KWargs args;
-	static int parCount = 0;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
 	folia::FoliaElement *p = new folia::Paragraph( root->doc(), args );
 	//	*Log(theErrLog) << "created " << p << endl;
@@ -634,6 +669,7 @@ namespace Tokenizer {
     if ( tv.size() > 0 ){
       appendText( root, outputclass );
     }
+    return parCount;
   }
 
   ostream& operator<<( ostream& os, const TokenRole& tok ){
@@ -646,15 +682,15 @@ namespace Tokenizer {
     return os;
   }
 
-  void TokenizerClass::outputTokens( ostream& OUT,
-				     const vector<Token>& toks ) const {
+  void TokenizerClass::outputTokens( ostream& OUT, const vector<Token>& toks, const bool continued) const {
+    //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation, makes paragraph boundaries work over multiple calls
     short quotelevel = 0;
     for ( size_t i = 0; i < toks.size(); i++) {
-      if ((detectPar) && ( toks[i].role & NEWPARAGRAPH) && (!verbose) && (i != 0) ) {
+      if ((detectPar) && ( toks[i].role & NEWPARAGRAPH) && (!verbose) && ((i != 0) || (continued))  ) {
+	//output paragraph separator
 	if (sentenceperlineoutput) {
 	  OUT << endl;
-	}
-	else {
+	} else {
 	  OUT << endl << endl;
 	}
       }

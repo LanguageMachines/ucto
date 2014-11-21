@@ -153,7 +153,7 @@ namespace Tokenizer {
     bool tokenize(folia::Document& );
 
     //Tokenize from input stream to a vecto of Tokens
-    std::vector<Token> tokenizeStream( std::istream& );
+    std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
 
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
@@ -275,7 +275,7 @@ namespace Tokenizer {
       setDocID( id ); return setXMLOutput(b); }
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
 
-    void outputTokens( std::ostream&, const std::vector<Token>& ) const;
+    void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
   private:
     void tokenizeWord( const UnicodeString&, bool);
 
@@ -298,7 +298,9 @@ namespace Tokenizer {
 
     void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
-    void outputTokensXML( folia::FoliaElement *, const std::vector<Token>& ) const;
+    void outputTokensDoc_init( folia::Document& ) const;
+
+    int outputTokensXML( folia::FoliaElement *, const std::vector<Token>& , int parCount=0 ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );
 
