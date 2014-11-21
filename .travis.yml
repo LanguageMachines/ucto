@@ -25,7 +25,7 @@ install:
     - make
     - sudo make install
 script: 
-    - cd tests && ./testall >&2
+    - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 after_failure:
     - tail -n 100 testoutput/*.diff
     - tail -n 100 testoutput/*.err
