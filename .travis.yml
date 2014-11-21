@@ -26,4 +26,7 @@ install:
     - sudo make install
 script: 
     - cd tests && ./testall >&2
+after_failure:
+    - tail -n 100 testoutput/*.diff
+    - tail -n 100 testoutput/*.err
     
