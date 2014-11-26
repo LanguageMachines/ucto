@@ -381,7 +381,6 @@ namespace Tokenizer {
 
 
   folia::Document TokenizerClass::tokenize( istream& IN ) {
-    vector<Token> v = tokenizeStream( IN );
     folia::Document doc( "id='" + docid + "'" );
     outputTokensDoc_init( doc);
     folia::FoliaElement *root = doc.doc()->index(0);
@@ -404,23 +403,7 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
-      int parCount = 0;
-      folia::Document doc( "id='" + docid + "'" );
-      outputTokensDoc_init( doc);
-      folia::FoliaElement *root = doc.doc()->index(0);
-      vector<Token> buffer;
-      do {
-	    vector<Token> v = tokenizeStream( IN , false);
-	    for (vector<Token>::iterator iter = v.begin(); iter != v.end(); iter++) {
-		if (iter->role & NEWPARAGRAPH) {
-		    //process the buffer
-		    parCount= outputTokensXML( root, buffer, parCount);
-		    buffer.clear();
-		}
-		buffer.push_back( *iter);
-	    }
-      } while (!IN.eof());
-      if (!buffer.empty()) outputTokensXML( root, buffer, parCount);
+      folia::Document doc = tokenize( IN );
       OUT << doc << endl;
     } else {
       int i = 0;
