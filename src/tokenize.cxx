@@ -582,6 +582,8 @@ namespace Tokenizer {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
+      *Log(theErrLog) << "[outputTokensXML] root=<" << root->classname()
+		      << ">" << endl;
       *Log(theErrLog) << "[outputTokensXML] root-id=" << root->id() << endl;
     }
     bool root_is_sentence = false;
@@ -594,6 +596,7 @@ namespace Tokenizer {
 	      || root->isinstance( folia::Head_t )
 	      || root->isinstance( folia::Note_t )
 	      || root->isinstance( folia::Item_t )
+	      || root->isinstance( folia::Part_t )
 	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
@@ -625,9 +628,15 @@ namespace Tokenizer {
 
       }
       if (( tv[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
-	if  (tokDebug > 0) *Log(theErrLog) << "[outputTokensXML] Creating sentence in '" << root->id() << "' ()" << endl;
 	folia::KWargs args;
-	args["generate_id"] = root->id();
+	if ( root->id().empty() )
+	  args["generate_id"] = root->parent()->id();
+	else
+	  args["generate_id"] = root->id();
+	if  (tokDebug > 0) {
+	  *Log(theErrLog) << "[outputTokensXML] Creating sentence in '"
+			  << args["generate_id"] << "'" << endl;
+	}
 	folia::FoliaElement *s = new folia::Sentence( root->doc(), args );
 	// *Log(theErrLog) << "created " << s << endl;
 	root->append( s );
