@@ -1,132 +1,132 @@
 .TH ucto 1 "2013 march 6"
 
 .SH NAME
-ucto - Unicode Tokenizer
+ucto \- Unicode Tokenizer
 .SH SYNOPSYS
-ucto [[options]] [input-file] [[output-file]]
+ucto [[options]] [input\(hyfile] [[output\(hyfile]]
 
 .SH DESCRIPTION
-.B ucto 
-ucto tokenizes text files: it separates words from punctuation, splits 
-sentences (and optionally paragraphs), and finds paired quotes. 
-Ucto is preconfigured with tokenisation rules for several languages. 
+.B ucto
+ucto tokenizes text files: it separates words from punctuation, splits
+sentences (and optionally paragraphs), and finds paired quotes.
+Ucto is preconfigured with tokenisation rules for several languages.
 
 .SH OPTIONS
 
-.BR -c " configfile"
+.BR \-c " configfile"
 .RS
 read settings from a file
 .RE
 
-.BR -d " value"
+.BR \-d " value"
 .RS
 set debug mode to 'value'
 .RE
 
-.BR -e " value"
+.BR \-e " value"
 .RS
 set input encoding. (default UTF8)
 .RE
 
-.BR -f
+.BR \-f
 .RS
 disable filtering of special characters
 .RE
 
-.BR -L " language"
+.BR \-L " language"
 .RS
  Automatically selects a configuration file by language code.
-e.g. 'fr' will select the file tokconfig-fr from the installation directory
+e.g. 'fr' will select the file tokconfig\(hyfr from the installation directory
 .RE
 
-.BR -l 
+.BR \-l
 .RS
 Convert to all lowercase
 .RE
 
-.BR -u 
+.BR \-u
 .RS
 Convert to all uppercase
 .RE
 
-.BR -n 
+.BR \-n
 .RS
 Emit one sentence per line on output
 .RE
 
-.BR -m
+.BR \-m
 .RS
 Assume one sentence per line on input
 .RE
 
-.BR --passthru    
+.BR \-\-passthru
 .RS
 Don't tokenize, but perform input decoding and simple token role detection
 .RE
 
-.B -P
+.B \-P
 .RS
 Disable Paragraph Detection
 .RE
 
-.B -Q
+.B \-Q
 .RS
 Enable Quote Detection. (this is experimental and may lead to unexpected results)
 .RE
 
-.B -S
+.B \-S
 .RS
 Disable Sentence Detection
 .RE
 
-.B -s
+.B \-s
 <string>
 .RS
-Set End-of-sentence marker. (Default <utt>)
+Set End\(hyof\(hysentence marker. (Default <utt>)
 .RE
 
-.B -V
-.RS 
+.B \-V
+.RS
 Show version information
 .RE
 
-.B -v
+.B \-v
 .RS
 set Verbose mode
 .RE
 
-.B -F
+.B \-F
 .RS
-Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: -nulPQvsS)
+Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: \-nulPQvsS)
 .RE
 
-.BR --textclass " cls"
+.BR \-\-textclass " cls"
 .RS
 When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
 .RE
 
-.B -X
+.B \-X
 .RS
-Output FoLiA XML. (this disables usage of most other options: -nulPQvsS)
-.RE	
+Output FoLiA XML. (this disables usage of most other options: \-nulPQvsS)
+.RE
 
-.B --id
+.B \-\-id
 <DocId>
 .RS
 Use the specified Document ID for the FoLiA XML
 .RE
 
-.B -x
+.B \-x
 <DocId>
 .B (obsolete)
 .RS
-Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: -nulPQvsS)
+Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: \-nulPQvsS)
 
 .B obsolete
-Use 
-.B -X 
-and 
-.B --id
+Use
+.B \-X
+and
+.B \-\-id
 instead
 .RE
 
@@ -137,4 +137,3 @@ likely
 Maarten van Gompel proycon@anaproy.nl
 
 Ko van der Sloot Timbl@uvt.nl
-
