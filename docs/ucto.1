@@ -1,4 +1,4 @@
-.TH ucto 1 "2013 march 6"
+.TH ucto 1 "2014 december 2"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -26,6 +26,11 @@ set debug mode to 'value'
 .BR \-e " value"
 .RS
 set input encoding. (default UTF8)
+.RE
+
+.BR \-N " value"
+.RS
+set UTF8 output normalization. (default NFC)
 .RE
 
 .BR \-f
@@ -64,6 +69,11 @@ Assume one sentence per line on input
 Don't tokenize, but perform input decoding and simple token role detection
 .RE
 
+.BR \-\-filterpunct
+.RS
+remove most of the punctuation from the output. (not from abreviations!)
+.RE
+
 .B \-P
 .RS
 Disable Paragraph Detection
@@ -100,7 +110,7 @@ set Verbose mode
 Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: \-nulPQvsS)
 .RE
 
-.BR \-\-textclass " cls"
+.BR \-\-textclass "cls"
 .RS
 When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
 .RE
