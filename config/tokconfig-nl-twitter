@@ -40,8 +40,8 @@ ADDRESSEE=@[\p{L}\p{Mn}\p{N}_\-]+
 PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 
 #Date
-DATE=\p{N}{1,2}-\p{N}{1,2}-\p{N}{2,4}
-DATE-REVERSE=\p{N}{4}-\p{N}{1,2}-\p{N}{1,2}
+DATE=\p{N}{1,2}[/\-]\p{N}{1,2}[/\-]\p{N}{2,4}
+DATE-REVERSE=\p{N}{4}[/\-]\p{N}{1,2}[/\-]\p{N}{1,2}
 
 NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
