@@ -1,6 +1,13 @@
+[RULE-ORDER]
+SUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW URL-DOMAIN
+E-MAIL WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
+ABBREVIATION INITIAL SMILEY REVERSE-SMILEY PUNCTUATION-MULTI DATE-REVERSE DATE
+NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
+
 [RULES]
 %include url
 %include e-mail
+%include smiley
 
 #Ex (oud)-studente(s)
 WORD-PARPREFIX-PARSUFFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{Pd}]?\p{L}+\p{Pe})
@@ -26,6 +33,8 @@ PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 #Date
 DATE=\p{N}{4}-\p{N}{1,2}[\.-]\p{N}{1,2}\.?
 DATE-SHORT=\p{N}{1,2}[-]\p{Ps}?\p{N}{1,2}[-]\p{Ps}?\p{N}{2,4}
+
+FRACNUMBER=\p{N}+(?:/\p{N}+)+
 
 NUMBER-YEAR=('\p{N}{2})(?:\P{N}|\z)
 #NUMBER-YEAR=('\p{N}{2})\P{N}
