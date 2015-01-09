@@ -155,6 +155,8 @@ namespace Tokenizer {
     //Tokenize from input stream to a vecto of Tokens
     std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
 
+    //Tokenize from input file to output file (support xmlin + xmlout)
+    void tokenize( const std::string&, const std::string& );
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){

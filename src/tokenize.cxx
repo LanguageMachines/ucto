@@ -401,6 +401,38 @@ namespace Tokenizer {
     return doc;
   }
 
+  void TokenizerClass::tokenize( const string & ifile, const string & ofile) {
+    ostream *OUT = NULL;
+    if ( ofile.empty() )
+        OUT = &cout;
+    else {
+        OUT = new ofstream( ofile.c_str() );
+    }
+
+    istream *IN = NULL;
+    if (!xmlin) {
+        if ( ifile.empty() )
+            IN = &cin;
+        else {
+            IN = new ifstream( ifile.c_str() );
+            if ( !IN || !IN->good() ){
+                cerr << "Error: problems opening inputfile " << ifile << endl;
+                cerr << "Courageously refusing to start..."  << endl;
+                exit(EXIT_FAILURE);
+            }
+        }
+      this->tokenize( *IN, *OUT );
+    } else {
+      folia::Document doc;
+      doc.readFromFile(ifile);
+      this->tokenize(doc);
+      *OUT << doc << endl;
+    }
+
+    if ( IN != &cin ) delete IN;
+    if ( OUT != &cout ) delete OUT;    
+  }
+
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
       folia::Document doc = tokenize( IN );
