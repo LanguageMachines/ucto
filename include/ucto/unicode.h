@@ -1,7 +1,7 @@
 /*
  $Id$
  $URL$
-  Copyright (c) 1998 - 2014
+  Copyright (c) 1998 - 2015
   ILK  -  Tilburg University
   CNTS -  University of Antwerp
  
