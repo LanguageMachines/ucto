@@ -387,7 +387,7 @@ namespace Tokenizer {
     int parCount = 0;
     vector<Token> buffer;
     do {
-	vector<Token> v = tokenizeStream( IN , false);
+	vector<Token> v = tokenizeStream( IN , true);
 	for (vector<Token>::iterator iter = v.begin(); iter != v.end(); iter++) {
 	    if (iter->role & NEWPARAGRAPH) {
 		//process the buffer
