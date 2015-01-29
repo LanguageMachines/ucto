@@ -377,8 +377,47 @@ namespace Tokenizer {
     return outputTokens;
   }
 
-
-
+  vector<string> TokenizerClass::tokenizeStreamSentences( istream& IN ) {
+    vector<string> result;
+    bool done = false;
+    bool bos = true;
+    string line;
+    do {
+      done = !getline( IN, line );
+      linenum++;
+      if (tokDebug > 0) *Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      stripCR( line );
+      if ( sentenceperlineinput )
+	line += string(" ") + folia::UnicodeToUTF8(eosmark);
+      int numS;
+      if ( (done) || (line.empty()) ){
+	signalParagraph();
+	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
+      }
+      else {
+	if ( passthru )
+	  passthruLine( line, bos );
+	else
+	  tokenizeLine( line );
+	numS = countSentences(); //count full sentences in token buffer
+      }
+      if ( numS > 0 ) { //process sentences
+	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
+	for (int i = 0; i < numS; i++) {
+	  string s = getSentenceString( i );
+	  result.push_back( s );
+	}
+	//clear processed sentences from buffer
+	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
+	flushSentences(numS);
+	return result;
+      }
+      else {
+	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
+      }
+    } while (!done);
+    return result;
+  }
 
   folia::Document TokenizerClass::tokenize( istream& IN ) {
     folia::Document doc( "id='" + docid + "'" );
@@ -430,7 +469,7 @@ namespace Tokenizer {
     }
 
     if ( IN != &cin ) delete IN;
-    if ( OUT != &cout ) delete OUT;    
+    if ( OUT != &cout ) delete OUT;
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {

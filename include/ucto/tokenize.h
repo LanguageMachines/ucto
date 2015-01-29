@@ -152,11 +152,17 @@ namespace Tokenizer {
     // Tokenize a folia document
     bool tokenize(folia::Document& );
 
-    //Tokenize from input stream to a vecto of Tokens
+    //Tokenize from input stream to a vector of Tokens
     std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
+
+    // Tokenize from input stream to a vector of strings ( 1 or more sentences )
+    // non greedy. Stops after the first full sentence is detected.
+    // should be called multiple times until EOF
+    std::vector<std::string> tokenizeStreamSentences( std::istream& );
 
     //Tokenize from input file to output file (support xmlin + xmlout)
     void tokenize( const std::string&, const std::string& );
+
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
     void tokenize( std::istream* in, std::ostream* out){
