@@ -1,3 +1,23 @@
+0.8.0 2015-01-29
+[Ko van der Sloot]
+* next release
+[Maarten van Gompel]
+* added new tokenize(string,string) meta-function for the API
+* allatonce enabled by default for tokenize() to folia doc
+* fixing date rules and adding FRACNUMBER
+* added Russian
+* Adicionei regras para tokenização portuguesa.
+[Antal vd Bosch]
+* added RK to dutch abbrev.
+
+0.7.0 2014-11-26
+[Ko van der Sloot]
+* unofficial release
+* experimental PUNCTUATION filter
+* bug fixes
+[Maarten van Gompel]
+* reduced memory usage
+
 0.6.0 2014-09-23
 [Ko van der Sloot]
 * release
