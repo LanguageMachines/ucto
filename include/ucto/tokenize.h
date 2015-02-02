@@ -155,10 +155,10 @@ namespace Tokenizer {
     //Tokenize from input stream to a vector of Tokens
     std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
 
-    // Tokenize from input stream to a vector of strings ( 1 or more sentences )
+    // Tokenize from input stream to a strings (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
-    std::vector<std::string> tokenizeStreamSentences( std::istream& );
+    std::string tokenizeSentenceStream( std::istream& );
 
     //Tokenize from input file to output file (support xmlin + xmlout)
     void tokenize( const std::string&, const std::string& );

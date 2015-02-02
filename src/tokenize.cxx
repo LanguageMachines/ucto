@@ -377,19 +377,35 @@ namespace Tokenizer {
     return outputTokens;
   }
 
-  vector<string> TokenizerClass::tokenizeStreamSentences( istream& IN ) {
-    vector<string> result;
+  string TokenizerClass::tokenizeSentenceStream( istream& IN ) {
+    string result;
+    int numS = countSentences(); //count full sentences in token buffer
+    if ( numS > 0 ) { // still some sentences in the buffer
+      if  (tokDebug > 0) {
+	*Log(theErrLog) << "[tokenizeStream] " << numS
+			<< " sentence(s) in buffer, processing..." << endl;
+      }
+      result = getSentenceString( 0 );
+      // clear processed sentence from buffer
+      if  (tokDebug > 0){
+	*Log(theErrLog) << "[tokenizeStream] flushing 1 "
+			<< " sentence from buffer..." << endl;
+      }
+      flushSentences(1);
+      return result;
+    }
     bool done = false;
     bool bos = true;
     string line;
     do {
       done = !getline( IN, line );
       linenum++;
-      if (tokDebug > 0) *Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      if (tokDebug > 0) {
+	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      }
       stripCR( line );
       if ( sentenceperlineinput )
 	line += string(" ") + folia::UnicodeToUTF8(eosmark);
-      int numS;
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
@@ -401,19 +417,25 @@ namespace Tokenizer {
 	  tokenizeLine( line );
 	numS = countSentences(); //count full sentences in token buffer
       }
-      if ( numS > 0 ) { //process sentences
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
-	for (int i = 0; i < numS; i++) {
-	  string s = getSentenceString( i );
-	  result.push_back( s );
+      if ( numS > 0 ) {
+	// 1 or more sentences in the buffer.
+	// extract the first 1
+	if  (tokDebug > 0) {
+	  *Log(theErrLog) << "[tokenizeStream] " << numS << " sentence(s) in buffer, processing first one..." << endl;
 	}
-	//clear processed sentences from buffer
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	flushSentences(numS);
+	result = getSentenceString( 0 );
+	//clear processed sentence from buffer
+	if  (tokDebug > 0){
+	  *Log(theErrLog) << "[tokenizeStream] flushing 1 "
+			  << " sentence(s) from buffer..." << endl;
+	}
+	flushSentences(1);
 	return result;
       }
       else {
-	if  (tokDebug > 0) *Log(theErrLog) << "[tokenize] No sentences yet, reading on..." << endl;
+	if  (tokDebug > 0) {
+	  *Log(theErrLog) << "[tokenizeStream] No sentence yet, reading on..." << endl;
+	}
       }
     } while (!done);
     return result;
@@ -847,17 +869,20 @@ namespace Tokenizer {
     return count;
   }
 
-  int TokenizerClass::flushSentences(int sentences) {
+  int TokenizerClass::flushSentences( int sentences ) {
     //Flush n sentences from the buffer, returns the number of tokens left
     short quotelevel = 0;
     const int size = tokens.size();
     if (sentences == 0) return size;
     int begin = 0;
-    for (int i = 0; i < size; i++) {
+    for (int i = 0; (i < size ) && (sentences > 0); i++) {
       if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
       if (tokens[i].role & BEGINQUOTE) quotelevel++;
       if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) begin = i + 1;
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	begin = i + 1;
+	--sentences;
+      }
     }
     if (begin == 0) {
       throw uLogicError("Unable to flush, not so many sentences in buffer");
