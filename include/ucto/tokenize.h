@@ -146,7 +146,7 @@ namespace Tokenizer {
     bool reset();
     void setErrorLog( TiCC::LogStream *os );
 
-    // Tokenize from input stream to FoLiA document
+    // Tokenize from input stream to a FoLiA document
     folia::Document tokenize( std::istream& );
     //
     // Tokenize a folia document
@@ -155,7 +155,7 @@ namespace Tokenizer {
     //Tokenize from input stream to a vector of Tokens
     std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
 
-    // Tokenize from input stream to a strings (representing a sentence)
+    // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
     std::string tokenizeSentenceStream( std::istream& );
@@ -178,7 +178,7 @@ namespace Tokenizer {
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
     int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
-    int flushSentences(const int); //Flush n sentences from buffer (does some extra validation as well)
+    int flushSentences( int ); //Flush n sentences from buffer (does some extra validation as well)
 
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
