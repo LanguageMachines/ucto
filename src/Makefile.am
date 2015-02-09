@@ -2,7 +2,7 @@
 # $URL $
 
 AM_CPPFLAGS = -I@top_srcdir@/include
-AM_CXXFLAGS = -DSYSCONF_PATH=\"$(SYSCONFDIR)\"
+AM_CXXFLAGS = -DSYSCONF_PATH=\"$(SYSCONFDIR)\" -std=c++11
 
 bin_PROGRAMS = ucto
 
