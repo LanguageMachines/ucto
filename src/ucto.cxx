@@ -204,7 +204,7 @@ int main( int argc, char *argv[] ){
     if ( ifile.empty() )
       IN = &cin;
     else {
-      IN = new ifstream( ifile.c_str() );
+      IN = new ifstream( ifile );
       if ( !IN || !IN->good() ){
 	cerr << "Error: problems opening inputfile " << ifile << endl;
 	cerr << "Courageously refusing to start..."  << endl;
@@ -217,7 +217,7 @@ int main( int argc, char *argv[] ){
   if ( ofile.empty() )
     OUT = &cout;
   else {
-    OUT = new ofstream( ofile.c_str() );
+    OUT = new ofstream( ofile );
   }
 
   try {

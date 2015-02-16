@@ -97,8 +97,8 @@ namespace Tokenizer {
       os << "none" << endl;
     }
     else {
-      map<UChar,UnicodeString>::const_iterator it=q.the_map.begin();
-      while ( it != q.the_map.end() ){
+      auto it=q.the_map.cbegin();
+      while ( it != q.the_map.cend() ){
 	os << folia::UnicodeToUTF8(UnicodeString(it->first)) << "\t" << it->second << endl;
 	++it;
       }
@@ -112,8 +112,8 @@ namespace Tokenizer {
     else {
       UnicodeString result;
       for ( int i=0; i < s.length(); ++i ){
-	map<UChar,UnicodeString>::const_iterator it=the_map.find(s[i]);
-	if ( it != the_map.end() )
+	auto it=the_map.find(s[i]);
+	if ( it != the_map.cend() )
 	  result += it->second;
 	else
 	  result += s[i];
@@ -157,7 +157,7 @@ namespace Tokenizer {
   }
 
   bool UnicodeFilter::fill( const string& s ){
-    ifstream f ( s.c_str() );
+    ifstream f ( s );
     if ( !f ){
       throw std::runtime_error("unable to open file: " + s );
     }

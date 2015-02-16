@@ -233,9 +233,9 @@ namespace Tokenizer {
 
   int Quoting::lookup( const UnicodeString& open, int& stackindex ){
     if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;
-    vector<UChar32>::reverse_iterator it = quotestack.rbegin();
+    auto it = quotestack.crbegin();
     size_t i = quotestack.size();
-    while ( it != quotestack.rend() ){
+    while ( it != quotestack.crend() ){
       if ( open.indexOf( *it ) >= 0 ){
  	stackindex = i-1;
  	return quoteindexstack[stackindex];
@@ -449,7 +449,7 @@ namespace Tokenizer {
     vector<Token> buffer;
     do {
 	vector<Token> v = tokenizeStream( IN , true);
-	for (vector<Token>::iterator iter = v.begin(); iter != v.end(); iter++) {
+	for ( auto iter = v.cbegin(); iter != v.cend(); ++iter ) {
 	    if (iter->role & NEWPARAGRAPH) {
 		//process the buffer
 		parCount= outputTokensXML( root, buffer, parCount);
@@ -467,7 +467,7 @@ namespace Tokenizer {
     if ( ofile.empty() )
         OUT = &cout;
     else {
-        OUT = new ofstream( ofile.c_str() );
+        OUT = new ofstream( ofile );
     }
 
     istream *IN = NULL;
@@ -475,7 +475,7 @@ namespace Tokenizer {
         if ( ifile.empty() )
             IN = &cin;
         else {
-            IN = new ifstream( ifile.c_str() );
+            IN = new ifstream( ifile );
             if ( !IN || !IN->good() ){
                 cerr << "Error: problems opening inputfile " << ifile << endl;
                 cerr << "Courageously refusing to start..."  << endl;
@@ -1423,7 +1423,7 @@ namespace Tokenizer {
   string TokenizerClass::checkBOM( const string& s, string& enc ){
     UErrorCode err = U_ZERO_ERROR;
     int32_t bomLength = 0;
-    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(),s.length(),
+    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(), s.length(),
 							&bomLength, &err);
     if ( bomLength ){
       enc = encoding;
@@ -1737,7 +1737,7 @@ namespace Tokenizer {
   bool TokenizerClass::readrules( const string& fname) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
-    ifstream f(fname.c_str());
+    ifstream f( fname );
     if ( !f ){
       return false;
     }
@@ -1771,7 +1771,7 @@ namespace Tokenizer {
   bool TokenizerClass::readquotes( const string& fname) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
-    ifstream f(fname.c_str());
+    ifstream f( fname );
     if ( !f ){
       return false;
     }
@@ -1809,7 +1809,7 @@ namespace Tokenizer {
   bool TokenizerClass::readeosmarkers( const string& fname) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
-    ifstream f(fname.c_str());
+    ifstream f( fname );
     if ( !f ){
       return false;
     }
@@ -1839,7 +1839,7 @@ namespace Tokenizer {
 					  UnicodeString& abbrev_pattern ) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
-    ifstream f(fname.c_str());
+    ifstream f( fname );
     if ( !f ){
       return false;
     }
@@ -1925,8 +1925,8 @@ namespace Tokenizer {
     if ( !sort.empty() ){
       vector<Rule *> result;
       for ( size_t i=0; i < sort.size(); ++i ){
-	vector<Rule*>::iterator it = rules.begin();
 	bool found = false;
+	auto it = rules.begin();
 	while ( it != rules.end() && !found ){
 	  if ( (*it)->id == sort[i] ){
 	    result.push_back( *it );
@@ -1940,8 +1940,8 @@ namespace Tokenizer {
 			  << sort[i] << "'" << endl;
 	}
       }
-      vector<Rule*>::iterator it = rules.begin();
-      while ( it != rules.end() ){
+      auto it = rules.cbegin();
+      while ( it != rules.cend() ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '"
 			<< (*it)->id << "' (put at end)." << endl;
 	result.push_back( *it );
@@ -1982,7 +1982,7 @@ namespace Tokenizer {
       confdir = defaultConfigDir;
       conffile = confdir + fname;
     }
-    ifstream f(conffile.c_str());
+    ifstream f( conffile );
     if ( !f ){
       return false;
     }
