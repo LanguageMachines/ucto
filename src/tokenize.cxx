@@ -1428,7 +1428,7 @@ namespace Tokenizer {
     if ( bomLength ){
       enc = encoding;
       if (tokDebug)
-	*Log(theErrLog) << "Autdetected encoding: " << enc << endl;
+	*Log(theErrLog) << "Autodetected encoding: " << enc << endl;
       return s.substr( bomLength );
     }
     return s;
