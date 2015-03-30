@@ -6,7 +6,7 @@ exe=../src/ucto
 
 $exe -L nl -F folia1.xml
 $exe -L nl -F folia2.xml
-$exe -L nl -F folia3.xml
+$exe -L nl -u -F folia3.xml
 $exe -L nl -F folia4.xml
 $exe -L nl -F empty.xml
 $exe -L nl --inputclass OCR -F folia5.xml
