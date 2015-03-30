@@ -731,7 +731,14 @@ namespace Tokenizer {
 	args["space"]= "no";
       }
       folia::FoliaElement *w = new folia::Word( root->doc(), args );
-      w->settext( folia::UnicodeToUTF8( tv[i].us ), outputclass );
+      UnicodeString out = tv[i].us;
+      if (lowercase) {
+	out.toLower();
+      }
+      else if (uppercase) {
+	out.toUpper();
+      }
+      w->settext( folia::UnicodeToUTF8( out ), outputclass );
       //      *Log(theErrLog) << "created " << w << " text= " <<  tv[i].us << endl;
       root->append( w );
       if ( tv[i].role & BEGINQUOTE) {
