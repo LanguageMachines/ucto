@@ -525,9 +525,9 @@ namespace Tokenizer {
       return;
     }
     UnicodeString utxt = root->deeptext( outputclass, false );
-    //    cerr << "untok: '" << utxt << "'" << endl;
-    //    UnicodeString txt = root->text( outputclass, true );
-    //    cerr << "  tok: '" << txt << "'" << endl;
+    // cerr << "untok: '" << utxt << "'" << endl;
+    // UnicodeString txt = root->text( outputclass, true );
+    // cerr << "  tok: '" << txt << "'" << endl;
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
@@ -1355,6 +1355,9 @@ namespace Tokenizer {
 	    if (tokDebug >= 2 )
 	      *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
+	    if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
+	      tokens[tokens.size()-1].role ^= NOSPACE;
+	    }
 	  }
 	  else {
 	    if (bos) {
@@ -1411,6 +1414,9 @@ namespace Tokenizer {
 	  if (tokDebug >= 2 )
 	    *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
+	  if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
+	    tokens[tokens.size()-1].role ^= NOSPACE;
+	  }
 	}
 	else {
 	  if (bos) {
@@ -1683,6 +1689,9 @@ namespace Tokenizer {
 	if (tokDebug >= 2 )
 	  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
+	if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
+	  tokens[tokens.size()-1].role ^= NOSPACE;
+	}
       }
       else {
 	Token T( type, input, space ? NOROLE : NOSPACE );
@@ -1721,6 +1730,9 @@ namespace Tokenizer {
 		if (tokDebug >= 2 )
 		  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 				  << matches[m] << "]" << endl;
+		if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
+		  tokens[tokens.size()-1].role ^= NOSPACE;
+		}
 	      }
 	      else {
 		if ( post.length() > 0 ) space = false;
