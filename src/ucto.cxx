@@ -67,7 +67,7 @@ void usage(){
        << "\t--textclass <class> - use the specified class to search text in the the FoLia doc. (deprecated. use --inputclass)" << endl
        << "\t--inputclass <class> - use the specified class to search text in the the FoLia doc." << endl
        << "\t--outputclass <class> - use the specified class to output text in the the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
-       << "\t                  (-x and -F disable usage of most other options: -nulPQVsS)" << endl;
+       << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
 int main( int argc, char *argv[] ){
