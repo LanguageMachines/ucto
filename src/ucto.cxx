@@ -144,6 +144,17 @@ int main( int argc, char *argv[] ){
     Opts.extract( "textclass", inputclass );
     Opts.extract( "inputclass", inputclass );
     Opts.extract( "outputclass", outputclass );
+    if ( xmlin && outputclass.empty() ){
+      if ( dopunctfilter ){
+	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
+      }
+      if ( touppercase ){
+	throw TiCC::OptionError( "--outputclass required for -u on FoLiA input ");
+      }
+      if ( tolowercase ){
+	throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
+      }
+    }
     string value;
     if ( Opts.extract('d', value ) ){
       if ( !TiCC::stringTo(value,debug) ){
