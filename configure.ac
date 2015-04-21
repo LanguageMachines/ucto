@@ -4,7 +4,7 @@
 # $URL$
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.8.1], [timbl@uvt.nl])
+AC_INIT([ucto], [0.8.2], [timbl@uvt.nl])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -41,9 +41,9 @@ if test $prefix = "NONE"; then
 fi
 
 # Checks for header files.
+AC_CHECK_HEADER_STDBOOL
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
 AC_C_INLINE
 AC_TYPE_SIZE_T
 AC_TYPE_INT32_T
@@ -68,7 +68,7 @@ AC_ARG_WITH(icu,
 	fi] )
 
 if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [3.6],
+  AX_ICU_CHECK( [4.2],
 		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
 		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
 		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
