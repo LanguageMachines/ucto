@@ -41,7 +41,7 @@ if test $prefix = "NONE"; then
 fi
 
 # Checks for header files.
-AC_CHECK_HEADER_STDBOOL
+AC_HEADER_STDBOOL
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_INLINE
