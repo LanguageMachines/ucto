@@ -6,9 +6,10 @@ If you are interested in machine parsing of UTF-8 encoded text files, e.g. to do
 
 Installation from source:
 
- $ bash bootstrap.sh
  $ ./configure
  $ make
  $ make install
 
+If you pulled ucto from git or svn and there is no configure yet, then create it using:
 
+ $ bash bootstrap.sh
