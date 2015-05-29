@@ -524,7 +524,7 @@ namespace Tokenizer {
     if ( root->hastext( outputclass ) ){
       return;
     }
-    UnicodeString utxt = root->deeptext( outputclass, false );
+    UnicodeString utxt = root->text( outputclass, false, false );
     // cerr << "untok: '" << utxt << "'" << endl;
     // UnicodeString txt = root->text( outputclass, true );
     // cerr << "  tok: '" << txt << "'" << endl;
