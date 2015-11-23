@@ -19,4 +19,6 @@ defaults:
         url: https://github.com/LanguageMachines/ucto
       - label: Releases
         url: https://github.com/LanguageMachines/ucto/releases/
+      - label: Frog
+        url: https://languagemachines.github.io/frog/
 ---
