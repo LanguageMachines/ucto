@@ -1,0 +1,22 @@
+---
+exclude: [bundle]
+defaults:
+   - 
+    scope:
+     path: ""
+     type: pages
+    values: 
+     layout: lamalayout
+     title: Ucto
+     author: Maarten van Gompel, Ko van der sloot
+     keywords: tokenisation, tokenization, tokeniser, tokenizer, regular expression
+     description: Ucto is an advanced rule-based and unicode-aware tokenizer
+     lang: en
+     menu: 
+      - label: Home
+        url: https://languagemachines.github.io/ucto/
+      - label: Source
+        url: https://github.com/LanguageMachines/ucto
+      - label: Releases
+        url: https://github.com/LanguageMachines/ucto/releases/
+---

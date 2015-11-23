@@ -1,0 +1,112 @@
+---
+cover: true
+slogan: An advanced rule-based unicode-aware tokenizer
+extracredit: Cover photo by Wayne Robinson
+---
+
+<section>
+
+    <p>
+    <strong>Ucto</strong> tokenizes text files: it separates words from punctuation, and splits sentences. It offers several other basic preprocessing steps such as changing case that you can all use to make your text suited for further processing such as indexing, part-of-speech tagging, or machine translation.</p>
+    
+    <p>
+    <strong>Ucto</strong> comes with tokenisation rules for several languages and can be easily extended to suit other languages. It has been incorporated for tokenizing Dutch text in <a href="https://languagemachines.github.io/frog">Frog</a>, our Dutch morpho-syntactic processor. </p>
+
+
+    <h2>Features</h2>
+
+
+	<ul>
+		<li>Comes with tokenization rules for English, Dutch, French, Italian, and Swedish; easily extendible to other languages.</li>
+		<li>Recognizes dates, times, units, currencies, abbreviations.</li>
+		<li>Recognizes paired quote spans, sentences, and paragraphs.</li>
+		<li>Produces UTF8 encoding and NFC output normalization, optionally accepts other encodings as input.</li>
+		<li>Optional conversion to all lowercase or uppercase.</li>
+		<li>Supports <a href="https://proycon.github.io/folia">FoLiA XML</a></li>
+	</ul>
+
+
+	<p><strong>Ucto</strong> was written by Maarten van Gompel and Ko van der
+	Sloot. Work on <strong>Ucto</strong> was funded by NWO, the Netherlands
+	Organisation for Scientific Research, under the <a
+	href="http://ilk.uvt.nl/il">Implicit Linguistics</a> project and the <a
+	href="http://www.clarin.nl">CLARIN-NL</a> program.</p>
+
+</section>
+
+
+<section>
+
+<p>The development and improvement of Ucto also relies on your bug reports,
+suggestions, and comments. Use the <a
+href="https://github.com/LanguageMachines/ucto/issues">github issue tracker</a>
+or mail proycon (at) anaproy.nl</p>
+
+</section>
+
+
+
+<section>
+<h2>Download &amp; Installation</h2>
+
+<p>
+Ucto is free software; you can redistribute it and/or modify it under the terms
+of the <a href="http://www.gnu.org/copyleft/gpl.html">GNU General Public
+License</a> as published by the <a href="http://www.fsf.org/">Free Software
+Foundation</a>. 
+</p>
+
+<p>To download and install Frog:</p>
+
+<ol>
+<li>First check if there are up-to-date packages
+included in your distribution's package manager. There are packages for
+<strong>Debian</strong>,<strong>Ubuntu</strong> and <strong>Arch
+Linux</strong>.</li>
+<li>If not, we <strong>strongly recommend</strong> you use our <a
+href="https://proycon.github.io/LaMachine">LaMachine</a> software distribution,
+which includes Frog and all necessary dependencies, and runs on Linux, BSD and
+Mac OS X. It can also run as a <em>virtual machine</em> under any host OS.</li>
+<li>Alternatively, you can always download, compile and install Frog manually, as shown next.</li>
+</ol>
+
+<h3>Manual installation</h3>
+
+<ul>
+<li><a href="https://github.com/LanguageMachines/ucto/">Source code</a></li>
+<li><a href="https://github.com/LanguageMachines/ucto/releases">Stable releases</a></li>
+</ul>
+
+<p>To compile these manually consult the included <tt>INSTALL</tt> documents, you will need current versions of the following dependencies of our software:</p>
+
+<ul>
+<li><a href="https://github.com/LanguageMachines/ticcutils/">ticcutils</a> - A shared utility library </li>
+<li><a href="https://github.com/LanguageMachines/libfolia/">libfolia</a> - A library for the <a href="https://proycon.github.io/folia">FoLiA</a> format.</li>
+</ul>
+
+<p>As well as the following 3rd party dependencies:</p>
+
+<ul>
+<li><a href="http://icu-project.org">icu</a> - A C++ library for Unicode and Globalization support. On Debian/Ubuntu systems, install the package <tt>libicu-dev</tt>. </li>
+<li><a href="http://xmlsoft.org">libxml2</a> - An XML library. On Debian/Ubuntu systems install the package <tt>libxml2-dev</tt>.</li>
+<li>A sane build environment with a C++ compiler (e.g. gcc or clang), autotools, libtool, pkg-config</li>
+</ul>
+
+</section>
+
+<section>
+<h2>Documentation</h2>
+
+The ucto documentation can be found <a href="https://github.com/LanguageMachines/ucto/raw/master/docs/ucto_manual.pdf">here</a>.
+
+</section>
+
+<section>
+
+<h2>Python binding</h2>
+
+<p>Ucto can be used from Python through the <a
+href="https://github.com/proycon/python-ucto">python-ucto</a> binding, which
+has to be obtained separately unless you are using <a
+href="https://proycon.github.io/LaMachine">LaMachine</a>.</p>
+</section>
