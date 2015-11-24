@@ -10,4 +10,4 @@ $exe -v --passthru passthru2.txt
 
 $exe -v --passthru encoding.nl.txt
 
-$exe -v --passthru encoding2.nl -e LATIN1
+$exe -v --passthru -e LATIN1  encoding2.nl
