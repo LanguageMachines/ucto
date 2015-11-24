@@ -36,13 +36,10 @@ distribution LaMachine: https://proycon.github.io/LaMachine .
 To compile and install manually from source, provided you have all the
 dependencies installed:
 
+ $ bash bootstrap.sh
  $ ./configure
  $ make
  $ make install
-
-If you pulled ucto from git and there is no configure yet, then create it using:
-
- $ bash bootstrap.sh
 
 You will need current versions of the following dependencies of our software:
 
