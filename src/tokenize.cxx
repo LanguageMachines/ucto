@@ -28,12 +28,15 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include "config.h"
 #include "unicode/ustream.h"
 #include "unicode/regex.h"
 #include "unicode/ucnv.h"
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
-#include "config.h"
+#include "ticcutils/StringOps.h"
+#include "libfolia/foliautils.h"
+#include "libfolia/folia.h"
 #include "libfolia/document.h"
 #include "ucto/tokenize.h"
 

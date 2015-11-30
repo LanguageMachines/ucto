@@ -31,6 +31,7 @@
 #include <fstream>
 #include <map>
 #include <stdexcept>
+#include "ticcutils/StringOps.h"
 #include "libfolia/foliautils.h"
 #include "ucto/unicode.h"
 
