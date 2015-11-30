@@ -1328,7 +1328,15 @@ namespace Tokenizer {
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( u_isspace(c)) {
-	if (tokDebug) *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
+	if ( word.isEmpty() ){
+	  // a leading space. Don't waste time on it. SKIP
+	  sit.next32();
+	  continue;
+	}
+	// so a trailing space. handle the found word.
+	if (tokDebug){
+	  *Log(theErrLog) << "[passthruLine] word=[" << word << "]" << endl;
+	}
 	if ( word == eosmark ) {
 	  word = "";
 	  if (!tokens.empty())
