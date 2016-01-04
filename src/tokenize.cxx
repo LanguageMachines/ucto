@@ -1,8 +1,7 @@
 /*
-  $Id$
-  $URL$
-  Copyright (c) 2006 - 2015
-  Tilburg University
+  Copyright (c) 2006 - 2016
+  CLST - Radboud University
+  ILK  - Tilburg University
 
   This file is part of Ucto
 
@@ -19,8 +18,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  For more information and updates, see:
-  http://ilk.uvt.nl/frog
+  For questions and suggestions, see:
+      https://github.com/LanguageMachines/ucto/issues
+  or send mail to:
+      lamasoftware (at ) science.ru.nl
+
 */
 
 #include <cstring>

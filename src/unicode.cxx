@@ -1,9 +1,7 @@
 /*
-  $Id$
-  $URL$
-  Copyright (c) 1998 - 2015
-  ILK  -  Tilburg University
-  CNTS -  University of Antwerp
+  Copyright (c) 2006 - 2016
+  CLST - Radboud University
+  ILK  - Tilburg University
 
   This file is part of Ucto
 
@@ -18,12 +16,12 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program; if not, see <http://www.gnu.org/licenses/>.
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   For questions and suggestions, see:
-      http://ilk.uvt.nl/software.html
+      https://github.com/LanguageMachines/ucto/issues
   or send mail to:
-      Timbl@uvt.nl
+      lamasoftware (at ) science.ru.nl
 */
 
 #include <string>
