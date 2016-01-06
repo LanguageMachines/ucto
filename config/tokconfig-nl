@@ -66,7 +66,7 @@ TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
 NUMBER=-?(?:[\.,]?\p{N}+)+
 
 #'s-Gravenhage, 's-Hertogenbosch
-GENITIVEPLACENAME=['`’‘]s-\p{Lu}\p{L}+
+GENITIVEPLACENAME=['`’‘][sS]-\p{Lu}\p{L}+
 
 CURRENCY=\p{Sc}
 
