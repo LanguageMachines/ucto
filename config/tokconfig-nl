@@ -67,7 +67,7 @@ NUMBER=-?(?:[\.,]?\p{N}+)+
 
 CURRENCY=\p{Sc}
 
-WORD=[\p{L}\p{Mn}]+
+WORD=[\p{L}\p{Mn}\-]+
 
 PUNCTUATION=\p{P}
 
