@@ -116,5 +116,3 @@ if log:
     print "--------------------------"
     print "Files to inspect:"
     print log
-
-
