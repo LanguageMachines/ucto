@@ -408,7 +408,7 @@ of	WORD
 
 Wie	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
 is	WORD	
-verantwoordelike	WORD	
+verantwoordelijk	WORD	
 voor	WORD	
 het	WORD	
 rekruterings-	WORD	
