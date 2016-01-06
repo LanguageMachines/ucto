@@ -411,7 +411,7 @@ is	WORD
 verantwoordelike	WORD
 voor	WORD
 het	WORD
-rekruterings-	WORD	NOSPACE
+rekruterings-	WORD
 en	WORD
 retentiebeleid	WORD	NOSPACE
 ?	PUNCTUATION	ENDOFSENTENCE
