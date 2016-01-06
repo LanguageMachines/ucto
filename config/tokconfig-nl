@@ -50,7 +50,7 @@ FRACNUMBER=\p{N}+(?:/\p{N}+)+
 NUMBER-COMPOUND=\(\+{0,1}\p{N}{1,3}\)(?:\p{N}+)
 
 #numberstring like 20jarige
-NUMBER-STRING=\p{N}+(?:\p{Pd}?)(?:\p{L}+)
+NUMBER-STRING=^\p{N}+(?:\p{Pd}?)(?:\p{L}+)
 
 #combinations like A50, a1
 STRING-NUMBER=\p{L}+\p{Pd}?\p{N}+
