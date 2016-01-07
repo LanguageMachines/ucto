@@ -2179,7 +2179,7 @@ namespace Tokenizer {
     // Create Rules for every pattern that is set
 
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})"));
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$"));
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
