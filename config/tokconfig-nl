@@ -9,6 +9,9 @@ PUNCTUATION-MULTI
 NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
 # to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code)
 
+#[META-RULES]
+#WORD-TOKEN="(" + TOKENS + ")(?:\p{P}*)?$"
+
 [RULES]
 %include url
 %include e-mail

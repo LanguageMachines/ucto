@@ -51,7 +51,7 @@ namespace Tokenizer {
   std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
-  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
+  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER, METARULES };
 
   class uRangeError: public std::out_of_range {
   public:
@@ -1898,6 +1898,9 @@ namespace Tokenizer {
     if (line == "[RULES]") {
       mode = RULES;
     }
+    else if (line == "[META-RULES]") {
+      mode = METARULES;
+    }
     else if (line == "[RULE-ORDER]") {
       mode = RULEORDER;
     }
@@ -2003,6 +2006,7 @@ namespace Tokenizer {
     UnicodeString ordinal_pattern = "";
 
     vector<UnicodeString> rules_order;
+    vector<string> meta_rules;
 
     string confdir;
     string conffile = confdir + fname;
@@ -2089,6 +2093,9 @@ namespace Tokenizer {
 	      break;
 	    case RULEORDER:
 	      addOrder( rules_order, line );
+	      break;
+	    case METARULES:
+	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
 	      break;
 	    case ABBREVIATIONS:
 	      if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
@@ -2177,7 +2184,44 @@ namespace Tokenizer {
     }
 
     // Create Rules for every pattern that is set
+    // first the meta rules...
+    for ( const auto& mr : meta_rules ){
+      string::size_type pos = mr.find( "=" );
+      if ( pos == string::npos ){
+	throw uConfigError( "invalid entry in META-RULES: " + mr );
+      }
+      UnicodeString name = folia::UTF8ToUnicode( mr.substr( 0, pos ) );
+      string rule = mr.substr( pos+1 );
+      vector<string> parts;
+      size_t num = TiCC::split_at( rule, parts, "+" );
+      if ( num != 3 ){
+	throw uConfigError( "invalid entry in META-RULES: " + mr );
+      }
+      for ( auto& str : parts ){
+	str = TiCC::trim( str );
+      }
+      UnicodeString meta =  folia::UTF8ToUnicode( parts[1] );
+      ConfigMode mode = getMode( "[" + meta + "]" );
+      if ( mode == NONE ){
+	throw uConfigError( "invalid REFERENCE '" + meta + "' in META-RULE: "
+			    + folia::UTF8ToUnicode(mr) );
+      }
+      switch ( mode ){
+      case TOKENS:
+	if (!token_pattern.isEmpty()){
+	  UnicodeString pat = folia::UTF8ToUnicode( parts[0].substr(1,parts[0].length()-2) );
+	  pat += token_pattern;
+	  pat += folia::UTF8ToUnicode( parts[2].substr(1,parts[2].length()-2) );
+	  rules.insert( rules.begin(), new Rule( name, pat ) );
+	}
+	token_pattern.truncate(0);
+	break;
+      default:
+	break;
+      }
+    }
 
+    // old style stuff...
     if (!ordinal_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$"));
       ////
