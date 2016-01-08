@@ -41,7 +41,7 @@ dependencies installed:
  $ bash bootstrap.sh
  $ ./configure
  $ make
- $ make install
+ $ sudo make install
 
 You will need current versions of the following dependencies of our software:
 
