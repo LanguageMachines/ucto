@@ -1,10 +1,8 @@
 /*
- $Id$
- $URL$
-  Copyright (c) 1998 - 2015
-  ILK  -  Tilburg University
-  CNTS -  University of Antwerp
- 
+  Copyright (c) 2006 - 2016
+  CLST - Radboud University
+  ILK  - Tilburg University
+
   This file is part of Ucto
 
   Ucto is free software; you can redistribute it and/or modify
@@ -18,12 +16,12 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program; if not, see <http://www.gnu.org/licenses/>.
+  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
   For questions and suggestions, see:
-      http://ilk.uvt.nl/software.html
+      https://github.com/LanguageMachines/ucto/issues
   or send mail to:
-      Timbl@uvt.nl
+      lamasoftware (at ) science.ru.nl
 */
 
 #ifndef UCTO_UNICODE_H
@@ -48,7 +46,7 @@ namespace Tokenizer {
   private:
     UNormalizationMode mode;
   };
-  
+
   class UnicodeFilter {
     friend std::ostream& operator<<( std::ostream&, const UnicodeFilter& );
   public:
@@ -61,7 +59,7 @@ namespace Tokenizer {
     void add( UChar uc, const UnicodeString& us ) { the_map[uc] = us; };
     std::map<UChar, UnicodeString> the_map;
   };
-  
+
 } // namespace
 
 #endif // UCTO_UNICODE_H

@@ -36,4 +36,26 @@ op	WORD
 valkuil.net	URL-DOMAIN	NOSPACE 
 !	PUNCTUATION	ENDOFSENTENCE 
 
+De	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+URL	WORD	
+http://www.consument-en-veiligheid.nl	URL	
+is	WORD	
+tricky	WORD	NOSPACE 
+!	PUNCTUATION	ENDOFSENTENCE 
+
+Deze	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+beide	WORD	
+ook	WORD	NOSPACE 
+:	PUNCTUATION	
+http://ue.eu.int/Pesc/default.asp?lang=nl	URL	
+http://www.deverdiepingvannederland.nl/	URL	ENDOFSENTENCE 
+
+En	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+dit	WORD	NOSPACE 
+:	PUNCTUATION	
+www.deverdiepingvannederland.nl/index.html	URL-WWW	
+versus	WORD	NOSPACE 
+:	PUNCTUATION	
+www.deverdiepingvannederland.nl/	URL-WWW	ENDOFSENTENCE 
+
 

@@ -1,17 +1,17 @@
 Dit is een test. Deze test bestaat uit meerdere zinnen, paragrafen, en woorden. De huidige paragraaf heeft drie zinnen.
 
-Dit is de tweede 
+Dit is de tweede
 paragraaf van de test. In deze
 paragraaf zijn de
 zinnen over meerdere regels
-gesplitst, maar daar 
+gesplitst, maar daar
 merken we
 hopelijk
 niets
 van!
 
 Is dit de derde paragraaf? Ja, dit is de derde paragraaf. Let a.u.b. goed op, want deze zin bevat een afkorting!
-Deze zin heeft geen punt maar wordt expliciet afgekapt <utt> Op 15-12-1982 om 19:00 werd Dr. van Gompel geboren, het was een heuglijke dag, ik was slechts 30cm groot in het begin van de jaren '80, maar was toen al een groot D66 fan!!! 
+Deze zin heeft geen punt maar wordt expliciet afgekapt <utt> Op 15-12-1982 om 19:00 werd Dr. van Gompel geboren, het was een heuglijke dag, ik was slechts 30cm groot in het begin van de jaren '80, maar was toen al een groot D66 fan!!!
 
 T.a.v van de lezer, geachte lezer, wilt u a.u.b. opmerken dat er hier afkortingen etc... inzitten maar dat dit toch één zin is?
 
@@ -19,9 +19,9 @@ Op donderdag jl. heb ik o.a. rijst, pasta enz. gekocht.
 
 FIRE!!!
 
-De docent van de cursus scripting is Dhr. Paijmans, en dat is één zin! 
+De docent van de cursus scripting is Dhr. Paijmans, en dat is één zin!
 
-De vorige president van de V.S. is George W. Bush, maar gelukkig niet meer! Laten we verder ook maar niet spreken over zijn I.Q. 
+De vorige president van de V.S. is George W. Bush, maar gelukkig niet meer! Laten we verder ook maar niet spreken over zijn I.Q.
 
 Met www.google.com is mijn homepage is te vinden op http://proycon.anaproy.nl.
 
@@ -37,3 +37,14 @@ In '92 is hij met een .22 pistool beschoten, in '93-'94 verging het hem gelukkig
 
 Caesar's laatste woorden waren: "Et tu? Brute?", nadat hij verraden was.
 
+Jeroen Bosch kwam uit 's-Hertogenbosch, niet uit 's Gravenhage.
+
+De salsa is Zuid-Amerikaans.
+
+Zo-even is nu goed, Vroeger was het zoëven.
+
+Ik ben bereikbaar op (070)3469326 of (+32)25426511.
+
+Wie is verantwoordelijk voor het rekruterings- en retentiebeleid?
+
+Afvalvoorkoming en -beheer is belangrijk.

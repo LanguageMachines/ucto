@@ -1,8 +1,7 @@
 /*
-  $Id$
-  $URL$
-  Copyright (c) 2006 - 2015
-  Tilburg University
+  Copyright (c) 2006 - 2016
+  CLST - Radboud University
+  ILK  - Tilburg University
 
   This file is part of Ucto
 
@@ -19,8 +18,11 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-  For more information and updates, see:
-  http://ilk.uvt.nl/frog
+  For questions and suggestions, see:
+      https://github.com/LanguageMachines/ucto/issues
+  or send mail to:
+      lamasoftware (at ) science.ru.nl
+
 */
 
 #include <cstring>
@@ -49,7 +51,7 @@ namespace Tokenizer {
   std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
-  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER };
+  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER, METARULES };
 
   class uRangeError: public std::out_of_range {
   public:
@@ -1896,6 +1898,9 @@ namespace Tokenizer {
     if (line == "[RULES]") {
       mode = RULES;
     }
+    else if (line == "[META-RULES]") {
+      mode = METARULES;
+    }
     else if (line == "[RULE-ORDER]") {
       mode = RULEORDER;
     }
@@ -2001,6 +2006,7 @@ namespace Tokenizer {
     UnicodeString ordinal_pattern = "";
 
     vector<UnicodeString> rules_order;
+    vector<string> meta_rules;
 
     string confdir;
     string conffile = confdir + fname;
@@ -2087,6 +2093,9 @@ namespace Tokenizer {
 	      break;
 	    case RULEORDER:
 	      addOrder( rules_order, line );
+	      break;
+	    case METARULES:
+	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
 	      break;
 	    case ABBREVIATIONS:
 	      if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
@@ -2175,9 +2184,46 @@ namespace Tokenizer {
     }
 
     // Create Rules for every pattern that is set
+    // first the meta rules...
+    for ( const auto& mr : meta_rules ){
+      string::size_type pos = mr.find( "=" );
+      if ( pos == string::npos ){
+	throw uConfigError( "invalid entry in META-RULES: " + mr );
+      }
+      UnicodeString name = folia::UTF8ToUnicode( mr.substr( 0, pos ) );
+      string rule = mr.substr( pos+1 );
+      vector<string> parts;
+      size_t num = TiCC::split_at( rule, parts, "+" );
+      if ( num != 3 ){
+	throw uConfigError( "invalid entry in META-RULES: " + mr );
+      }
+      for ( auto& str : parts ){
+	str = TiCC::trim( str );
+      }
+      UnicodeString meta =  folia::UTF8ToUnicode( parts[1] );
+      ConfigMode mode = getMode( "[" + meta + "]" );
+      if ( mode == NONE ){
+	throw uConfigError( "invalid REFERENCE '" + meta + "' in META-RULE: "
+			    + folia::UTF8ToUnicode(mr) );
+      }
+      switch ( mode ){
+      case TOKENS:
+	if (!token_pattern.isEmpty()){
+	  UnicodeString pat = folia::UTF8ToUnicode( parts[0].substr(1,parts[0].length()-2) );
+	  pat += token_pattern;
+	  pat += folia::UTF8ToUnicode( parts[2].substr(1,parts[2].length()-2) );
+	  rules.insert( rules.begin(), new Rule( name, pat ) );
+	}
+	token_pattern.truncate(0);
+	break;
+      default:
+	break;
+      }
+    }
 
+    // old style stuff...
     if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})"));
+      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$"));
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
@@ -2200,18 +2246,13 @@ namespace Tokenizer {
       rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+"));
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
-      //old:
-      //rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{Lu}|\\p{Ll})+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
-      // NB: (?:\\p{Lu}|\\p{Ll}) is used because of icu bug 8824
-      //     see http://bugs.icu-project.org/trac/ticket/8824
-      //     normally (?i) could be used in front and (\\p{L}) would do.
+      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
     }
     if (!prefix_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)"));
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{Lu}|\\p{Ll})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
+      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
     sortRules( rules, rules_order );
