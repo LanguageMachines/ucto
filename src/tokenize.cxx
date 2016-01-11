@@ -612,8 +612,9 @@ namespace Tokenizer {
     else {
       doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
-    if  (tokDebug > 0)
+    if  (tokDebug > 0){
       cerr << "tokenize sentence element: " << element->id() << endl;
+    }
     UnicodeString line = element->stricttext( inputclass );
     if ( line.isEmpty() ){
       // so no usefull text in this element. skip it
@@ -2203,19 +2204,22 @@ namespace Tokenizer {
       string nam = TiCC::trim( mr.substr( 0, pos ) );
       if ( nam == "SPLITTER" ){
 	split = mr.substr( pos+1 );
-	cerr << "SET SPLIT: '" << split << "'" << endl;
 	if ( split.empty() ) {
 	  throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr );
 	}
 	if ( split[0] == '"' && split[split.length()-1] == '"' ){
 	  split = split.substr(1,split.length()-2);
 	}
-	cerr << "SET SPLIT: '" << split << "'" << endl;
+	if ( tokDebug > 5 ){
+	  *Log(theErrLog) << "SET SPLIT: '" << split << "'" << endl;
+	}
 	continue;
       }
       UnicodeString name = folia::UTF8ToUnicode( nam );
       string rule = mr.substr( pos+1 );
-      cerr << "SPLIT using: '" << split << "'" << endl;
+      if ( tokDebug > 5 ){
+	*Log(theErrLog) << "SPLIT using: '" << split << "'" << endl;
+      }
       vector<string> parts;
       size_t num = TiCC::split_at( rule, parts, split );
       if ( num != 3 ){
