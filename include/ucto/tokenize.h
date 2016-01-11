@@ -308,7 +308,9 @@ namespace Tokenizer {
     bool readeosmarkers( const std::string& );
     bool readabbreviations( const std::string&, UnicodeString& );
 
-    void sortRules( std::vector<Rule *>&, std::vector<UnicodeString>& );
+    void sortRules( std::map<UnicodeString,Rule*>&,
+		    std::vector<Rule *>&,
+		    const std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
@@ -324,6 +326,7 @@ namespace Tokenizer {
 
     UnicodeString eosmark;
     std::vector<Token> tokens;
+    std::map<UnicodeString, Rule *> rulesmap;
     std::vector<Rule *> rules;
     TiCC::LogStream *theErrLog;
 

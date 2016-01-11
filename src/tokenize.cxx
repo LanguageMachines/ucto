@@ -1313,6 +1313,7 @@ namespace Tokenizer {
     for ( unsigned int i = 0; i < rules.size(); i++) {
       delete rules[i];
     }
+    rulesmap.clear();
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
@@ -1790,7 +1791,7 @@ namespace Tokenizer {
 	  }
 	  UnicodeString id = UnicodeString( line, 0,splitpoint);
 	  UnicodeString pattern = UnicodeString( line, splitpoint+1);
-	  rules.push_back( new Rule( id, pattern) );
+	  rulesmap[id] = new Rule( id, pattern);
 	}
       }
     }
@@ -1954,42 +1955,39 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::sortRules( vector<Rule *>& rules,
-				  vector<UnicodeString>& sort ){
+  void TokenizerClass::sortRules( map<UnicodeString, Rule *>& rulesmap,
+				  vector<Rule *>& result,
+				  const vector<UnicodeString>& sort ){
     // *Log(theErrLog) << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
     // }
     if ( !sort.empty() ){
-      vector<Rule *> result;
-      for ( size_t i=0; i < sort.size(); ++i ){
-	bool found = false;
-	auto it = rules.begin();
-	while ( it != rules.end() && !found ){
-	  if ( (*it)->id == sort[i] ){
-	    result.push_back( *it );
-	    it = rules.erase( it );
-	    found = true;
-	  }
-	  ++it;
+      for ( auto const& id : sort ){
+	auto it = rulesmap.find( id );
+	if ( it != rulesmap.end() ){
+	  result.push_back( it->second );
+	  rulesmap.erase( it );
 	}
-	if ( !found ){
+	else {
 	  *Log(theErrLog) << "RULE-ORDER specified for undefined RULE '"
-			  << sort[i] << "'" << endl;
+			  << id << "'" << endl;
 	}
       }
-      auto it = rules.cbegin();
-      while ( it != rules.cend() ){
+      for ( auto const& it : rulesmap ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '"
-			<< (*it)->id << "' (put at end)." << endl;
-	result.push_back( *it );
-	++it;
+			<< it.first << "' (put at end)." << endl;
+	result.push_back( it.second );
       }
-      rules = result;
+    }
+    else {
+      for ( auto const& it : rulesmap ){
+	result.push_back( it.second );
+      }
     }
     // *Log(theErrLog) << "rules NA sort : " << endl;
-    // for ( size_t i=0; i < rules.size(); ++i ){
-    //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
+    // for ( size_t i=0; i < result.size(); ++i ){
+    //   *Log(theErrLog) << "rule " << i << " " << *result[i] << endl;
     // }
   }
 
@@ -1999,7 +1997,7 @@ namespace Tokenizer {
     UnicodeString pat = folia::UTF8ToUnicode( parts[0] );
     pat += list;
     pat += folia::UTF8ToUnicode( parts[2] );
-    rules.push_back( new Rule( name, pat ) );
+    rulesmap[name] = new Rule( name, pat );
   }
 
   bool TokenizerClass::readsettings( const string& fname ) {
@@ -2098,7 +2096,7 @@ namespace Tokenizer {
 	      }
 	      UnicodeString id = UnicodeString( line, 0,splitpoint);
 	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
-	      rules.push_back( new Rule( id, pattern) );
+	      rulesmap[id] = new Rule( id, pattern);
 	    }
 	      break;
 	    case RULEORDER:
@@ -2282,7 +2280,7 @@ namespace Tokenizer {
 
     // old style /defaultstuff...
     if (!ordinals_pattern.isEmpty()){
-      rules.push_back( new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinals_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$") );
+      rulesmap["NUMBER-ORDINAL"] = new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinals_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$");
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
@@ -2290,29 +2288,28 @@ namespace Tokenizer {
       //     in the config file
     }
     /*if (!unit_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})"));
+      rulesmap["UNIT"] = new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})");
       }*/
     if (!abbreviations_pattern.isEmpty()){
-      rules.push_back( new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbreviations_pattern + ")\\.)(?:\\Z|\\P{L})") );
+      rulesmap["ABBREVIATION-KNOWN"] = new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbreviations_pattern + ")\\.)(?:\\Z|\\P{L})");
     }
     if (!word_token_pattern.isEmpty()){
-      rules.push_back( new Rule("WORD-TOKEN", "(" + word_token_pattern + ")(?:\\p{P}*)?$") );
+      rulesmap["WORD-TOKEN"] = new Rule("WORD-TOKEN", "(" + word_token_pattern + ")(?:\\p{P}*)?$");
     }
     if (!withprefix_pattern.isEmpty()){
-      rules.push_back( new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+") );
+      rulesmap["WORD-WITHPREFIX"] = new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+");
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.push_back( new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})") );
+      rulesmap["WORD-WITHSUFFIX"] = new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})");
     }
     if (!prefix_pattern.isEmpty()){
-      rules.push_back( new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)") );
+      rulesmap["PREFIX"] = new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)");
     }
     if (!suffix_pattern.isEmpty()){
-      rules.push_back( new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})") );
+      rulesmap["SUFFIX"] = new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})");
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
-
-    sortRules( rules, rules_order );
+    sortRules( rulesmap, rules, rules_order );
     return true;
   }
 
