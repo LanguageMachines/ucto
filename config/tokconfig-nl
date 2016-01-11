@@ -9,8 +9,15 @@ PUNCTUATION-MULTI
 NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
 # to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code)
 
-#[META-RULES]
-#WORD-TOKEN="(" + TOKENS + ")(?:\p{P}*)?$"
+[META-RULES]
+SPLITTER=%
+NUMBER-ORDINAL = \p{N}+-?(?: %ORDINALS% )(?:\Z|\P{Lu}|\P{Ll})$
+ABBREVIATION-KNOWN = (?:\p{P}*)?(?:\A|[^\p{L}\.])((?:%ABBREVIATIONS%)\.)(?:\Z|\P{L})
+WORD-TOKEN =(%TOKENS%)(?:\p{P}*)?$
+WORD-WITHPREFIX = (?:\A|[^\p{Lu}\.]|[^\p{Ll}\.])(?: %ATTACHEDPREFIXES% )\p{L}+
+WORD-WITHSUFFIX = ((?:\p{L}|\p{N}|-)+(?: %ATTACHEDSUFFIXES% ))(?:\Z|\p{P})
+PREFIX = (?:\A|[^\p{Lu}\.]|[^\p{Ll}\.])(%PREFIXES% )(\p{L}+)
+SUFFIX = ((?:\p{L})+)( %SUFFIXES% )(?:\Z|\P{L})
 
 [RULES]
 %include url
