@@ -286,6 +286,9 @@ namespace Tokenizer {
 
     void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
   private:
+    void add_rule( const UnicodeString&,
+		   const std::vector<std::string>&,
+		   const UnicodeString& );
     void tokenizeWord( const UnicodeString&, bool);
 
     bool detectEos( size_t ) const;

@@ -1870,7 +1870,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::readabbreviations( const string& fname,
-					  UnicodeString& abbrev_pattern ) {
+					  UnicodeString& abbreviations_pattern ) {
     if ( tokDebug > 0 )
       *theErrLog << "%include " << fname << endl;
     ifstream f( fname );
@@ -1885,8 +1885,8 @@ namespace Tokenizer {
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 )
 	    *theErrLog << "include line = " << rawline << endl;
-	  if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
-	  abbrev_pattern += line;
+	  if (!abbreviations_pattern.isEmpty()) abbreviations_pattern += '|';
+	  abbreviations_pattern += line;
 	}
       }
     }
@@ -1992,18 +1992,27 @@ namespace Tokenizer {
     // }
   }
 
+  void TokenizerClass::add_rule( const UnicodeString& name,
+				 const vector<string>& parts,
+				 const UnicodeString& list ){
+    UnicodeString pat = folia::UTF8ToUnicode( parts[0].substr(1,parts[0].length()-2) );
+    pat += list;
+    pat += folia::UTF8ToUnicode( parts[2].substr(1,parts[2].length()-2) );
+    rules.push_back( new Rule( name, pat ) );
+  }
+
   bool TokenizerClass::readsettings( const string& fname ) {
 
     ConfigMode mode = NONE;
 
-    UnicodeString abbrev_pattern = "";
+    UnicodeString abbreviations_pattern = "";
     UnicodeString prefix_pattern = "";
-    UnicodeString token_pattern = "";
+    UnicodeString word_token_pattern = "";
     UnicodeString suffix_pattern = "";
     UnicodeString withprefix_pattern = "";
     UnicodeString withsuffix_pattern = "";
     UnicodeString unit_pattern = "";
-    UnicodeString ordinal_pattern = "";
+    UnicodeString ordinals_pattern = "";
 
     vector<UnicodeString> rules_order;
     vector<string> meta_rules;
@@ -2060,7 +2069,7 @@ namespace Tokenizer {
 	  case ABBREVIATIONS:{
 	    string file = rawline.substr( 9 );
 	    file = confdir + file + ".abr";
-	    if ( !readabbreviations( file, abbrev_pattern ) )
+	    if ( !readabbreviations( file, abbreviations_pattern ) )
 	      throw uConfigError( "%include '" + file + "' failed" );
 	  }
 	    break;
@@ -2098,8 +2107,8 @@ namespace Tokenizer {
 	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
 	      break;
 	    case ABBREVIATIONS:
-	      if (!abbrev_pattern.isEmpty()) abbrev_pattern += '|';
-	      abbrev_pattern += line;
+	      if (!abbreviations_pattern.isEmpty()) abbreviations_pattern += '|';
+	      abbreviations_pattern += line;
 	      break;
 	    case ATTACHEDPREFIXES:
 	      if (!withprefix_pattern.isEmpty()) withprefix_pattern += '|';
@@ -2118,16 +2127,16 @@ namespace Tokenizer {
 	      suffix_pattern += line;
 	      break;
 	    case TOKENS:
-	      if (!token_pattern.isEmpty()) token_pattern += '|';
-	      token_pattern += line;
+	      if (!word_token_pattern.isEmpty()) word_token_pattern += '|';
+	      word_token_pattern += line;
 	      break;
 	    case UNITS:
 	      if (!unit_pattern.isEmpty()) unit_pattern += '|';
 	      unit_pattern += line;
 	      break;
 	    case ORDINALS:
-	      if (!ordinal_pattern.isEmpty()) ordinal_pattern += '|';
-	      ordinal_pattern += line;
+	      if (!ordinals_pattern.isEmpty()) ordinals_pattern += '|';
+	      ordinals_pattern += line;
 	      break;
 	    case EOSMARKERS:
 	      if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
@@ -2190,10 +2199,11 @@ namespace Tokenizer {
       if ( pos == string::npos ){
 	throw uConfigError( "invalid entry in META-RULES: " + mr );
       }
-      UnicodeString name = folia::UTF8ToUnicode( mr.substr( 0, pos ) );
+      string nam = TiCC::trim( mr.substr( 0, pos ) );
+      UnicodeString name = folia::UTF8ToUnicode( nam );
       string rule = mr.substr( pos+1 );
       vector<string> parts;
-      size_t num = TiCC::split_at( rule, parts, "+" );
+      size_t num = TiCC::split_at( rule, parts, " + " );
       if ( num != 3 ){
 	throw uConfigError( "invalid entry in META-RULES: " + mr );
       }
@@ -2207,23 +2217,54 @@ namespace Tokenizer {
 			    + folia::UTF8ToUnicode(mr) );
       }
       switch ( mode ){
-      case TOKENS:
-	if (!token_pattern.isEmpty()){
-	  UnicodeString pat = folia::UTF8ToUnicode( parts[0].substr(1,parts[0].length()-2) );
-	  pat += token_pattern;
-	  pat += folia::UTF8ToUnicode( parts[2].substr(1,parts[2].length()-2) );
-	  rules.insert( rules.begin(), new Rule( name, pat ) );
+      case ORDINALS:
+	if (!ordinals_pattern.isEmpty()){
+	  add_rule( name, parts, ordinals_pattern );
 	}
-	token_pattern.truncate(0);
+	ordinals_pattern.truncate(0);
 	break;
-      default:
+      case ABBREVIATIONS:
+	if (!abbreviations_pattern.isEmpty()){
+	  add_rule( name, parts, abbreviations_pattern );
+	}
+	abbreviations_pattern.truncate(0);
+	break;
+      case TOKENS:
+	if (!word_token_pattern.isEmpty()){
+	  add_rule( name, parts, word_token_pattern );
+	}
+	word_token_pattern.truncate(0);
+	break;
+      case ATTACHEDPREFIXES:
+	if (!withprefix_pattern.isEmpty()){
+	  add_rule( name, parts, withprefix_pattern );
+	}
+	withprefix_pattern.truncate(0);
+	break;
+      case ATTACHEDSUFFIXES:
+	if (!withsuffix_pattern.isEmpty()){
+	  add_rule( name, parts, withsuffix_pattern );
+	}
+	withsuffix_pattern.truncate(0);
+	break;
+      case PREFIXES:
+	if (!prefix_pattern.isEmpty()){
+	  add_rule( name, parts, prefix_pattern );
+	}
+	prefix_pattern.truncate(0);
+	break;
+      case SUFFIXES:
+	if (!suffix_pattern.isEmpty()){
+	  add_rule( name, parts, suffix_pattern );
+	}
+	suffix_pattern.truncate(0);
 	break;
       }
     }
 
-    // old style stuff...
-    if (!ordinal_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinal_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$"));
+    // old style /defaultstuff...
+    if (!ordinals_pattern.isEmpty()){
+      rules.push_back( new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinals_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$") );
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
       //     see http://bugs.icu-project.org/trac/ticket/8824
@@ -2233,28 +2274,26 @@ namespace Tokenizer {
     /*if (!unit_pattern.isEmpty()){
       rules.insert(rules.begin(), new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})"));
       }*/
-    if (!abbrev_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbrev_pattern + ")\\.)(?:\\Z|\\P{L})"));
-      // was case insensitive, but seems a bad idea
+    if (!abbreviations_pattern.isEmpty()){
+      rules.push_back( new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbreviations_pattern + ")\\.)(?:\\Z|\\P{L})") );
     }
-    if (!token_pattern.isEmpty()){
-      //      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "^(" + token_pattern + ")(?:\\p{P}*)?$"));
-      // removed ^ in front. this fixes bug94
-      rules.insert(rules.begin(), new Rule("WORD-TOKEN", "(" + token_pattern + ")(?:\\p{P}*)?$"));
+    if (!word_token_pattern.isEmpty()){
+      rules.push_back( new Rule("WORD-TOKEN", "(" + word_token_pattern + ")(?:\\p{P}*)?$") );
     }
     if (!withprefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+"));
+      rules.push_back( new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+") );
     }
     if (!withsuffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})"));
+      rules.push_back( new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})") );
     }
     if (!prefix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)"));
+      rules.push_back( new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)") );
     }
     if (!suffix_pattern.isEmpty()){
-      rules.insert(rules.begin(), new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})"));
+      rules.push_back( new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})") );
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
+
     sortRules( rules, rules_order );
     return true;
   }
