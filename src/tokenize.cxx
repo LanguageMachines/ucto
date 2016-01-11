@@ -1995,9 +1995,9 @@ namespace Tokenizer {
   void TokenizerClass::add_rule( const UnicodeString& name,
 				 const vector<string>& parts,
 				 const UnicodeString& list ){
-    UnicodeString pat = folia::UTF8ToUnicode( parts[0].substr(1,parts[0].length()-2) );
+    UnicodeString pat = folia::UTF8ToUnicode( parts[0] );
     pat += list;
-    pat += folia::UTF8ToUnicode( parts[2].substr(1,parts[2].length()-2) );
+    pat += folia::UTF8ToUnicode( parts[2] );
     rules.push_back( new Rule( name, pat ) );
   }
 
@@ -2192,6 +2192,7 @@ namespace Tokenizer {
       quotes.add( "“„‟", "”" );
     }
 
+    string split = "%";
     // Create Rules for every pattern that is set
     // first the meta rules...
     for ( const auto& mr : meta_rules ){
@@ -2200,12 +2201,25 @@ namespace Tokenizer {
 	throw uConfigError( "invalid entry in META-RULES: " + mr );
       }
       string nam = TiCC::trim( mr.substr( 0, pos ) );
+      if ( nam == "SPLITTER" ){
+	split = mr.substr( pos+1 );
+	cerr << "SET SPLIT: '" << split << "'" << endl;
+	if ( split.empty() ) {
+	  throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr );
+	}
+	if ( split[0] == '"' && split[split.length()-1] == '"' ){
+	  split = split.substr(1,split.length()-2);
+	}
+	cerr << "SET SPLIT: '" << split << "'" << endl;
+	continue;
+      }
       UnicodeString name = folia::UTF8ToUnicode( nam );
       string rule = mr.substr( pos+1 );
+      cerr << "SPLIT using: '" << split << "'" << endl;
       vector<string> parts;
-      size_t num = TiCC::split_at( rule, parts, " + " );
+      size_t num = TiCC::split_at( rule, parts, split );
       if ( num != 3 ){
-	throw uConfigError( "invalid entry in META-RULES: " + mr );
+	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
       }
       for ( auto& str : parts ){
 	str = TiCC::trim( str );
