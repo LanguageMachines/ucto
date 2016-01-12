@@ -2275,6 +2275,8 @@ namespace Tokenizer {
 	}
 	suffix_pattern.truncate(0);
 	break;
+      default:
+	break;
       }
     }
 
