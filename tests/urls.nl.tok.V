@@ -58,4 +58,12 @@ versus	WORD	NOSPACE
 :	PUNCTUATION	
 www.deverdiepingvannederland.nl/	URL-WWW	ENDOFSENTENCE 
 
+apart	WORD	BEGINOFSENTENCE NEWPARAGRAPH 
+zijn	WORD	NOSPACE 
+:	PUNCTUATION	
+www.debandkrijgt	URL-WWW	
+en	WORD	
+www.nosjournaal	URL-WWW	NOSPACE 
+.	PUNCTUATION	ENDOFSENTENCE 
+
 
