@@ -2237,43 +2237,36 @@ namespace Tokenizer {
 	if (!ordinals_pattern.isEmpty()){
 	  add_rule( name, parts, ordinals_pattern );
 	}
-	ordinals_pattern.truncate(0);
 	break;
       case ABBREVIATIONS:
 	if (!abbreviations_pattern.isEmpty()){
 	  add_rule( name, parts, abbreviations_pattern );
 	}
-	abbreviations_pattern.truncate(0);
 	break;
       case TOKENS:
 	if (!word_token_pattern.isEmpty()){
 	  add_rule( name, parts, word_token_pattern );
 	}
-	word_token_pattern.truncate(0);
 	break;
       case ATTACHEDPREFIXES:
 	if (!withprefix_pattern.isEmpty()){
 	  add_rule( name, parts, withprefix_pattern );
 	}
-	withprefix_pattern.truncate(0);
 	break;
       case ATTACHEDSUFFIXES:
 	if (!withsuffix_pattern.isEmpty()){
 	  add_rule( name, parts, withsuffix_pattern );
 	}
-	withsuffix_pattern.truncate(0);
 	break;
       case PREFIXES:
 	if (!prefix_pattern.isEmpty()){
 	  add_rule( name, parts, prefix_pattern );
 	}
-	prefix_pattern.truncate(0);
 	break;
       case SUFFIXES:
 	if (!suffix_pattern.isEmpty()){
 	  add_rule( name, parts, suffix_pattern );
 	}
-	suffix_pattern.truncate(0);
 	break;
       default:
 	break;
@@ -2281,7 +2274,8 @@ namespace Tokenizer {
     }
 
     // old style /defaultstuff...
-    if (!ordinals_pattern.isEmpty()){
+    if ( rulesmap.find( "NUMBER-ORDINAL" ) == rulesmap.end()
+	 && !ordinals_pattern.isEmpty() ){
       rulesmap["NUMBER-ORDINAL"] = new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + ordinals_pattern + ")(?:\\Z|\\P{Lu}|\\P{Ll})$");
       ////
       // NB: (?i) is not used for the whole expression because of icu bug 8824
@@ -2289,25 +2283,33 @@ namespace Tokenizer {
       //     If you want mixed case Ordinals, you have to enumerate them all
       //     in the config file
     }
-    /*if (!unit_pattern.isEmpty()){
-      rulesmap["UNIT"] = new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})");
-      }*/
-    if (!abbreviations_pattern.isEmpty()){
+    /* if ( rulesmap.find( "UNIT" ) == rulesmap.end()
+       && !unit_pattern.empty() ){
+       rulesmap["UNIT"] = new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + unit_pattern + ")(?:\\z|\\P{L})");
+       }
+    */
+    if ( rulesmap.find( "ABBREVIATION-KNOWN" ) == rulesmap.end()
+	 && !abbreviations_pattern.isEmpty() ){
       rulesmap["ABBREVIATION-KNOWN"] = new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + abbreviations_pattern + ")\\.)(?:\\Z|\\P{L})");
     }
-    if (!word_token_pattern.isEmpty()){
+    if ( rulesmap.find( "WORD-TOKEN" ) == rulesmap.end()
+	 && !word_token_pattern.isEmpty() ){
       rulesmap["WORD-TOKEN"] = new Rule("WORD-TOKEN", "(" + word_token_pattern + ")(?:\\p{P}*)?$");
     }
-    if (!withprefix_pattern.isEmpty()){
+    if ( rulesmap.find( "WORD-WITHPREFIX" ) == rulesmap.end()
+      && !withprefix_pattern.isEmpty() ){
       rulesmap["WORD-WITHPREFIX"] = new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + withprefix_pattern + ")\\p{L}+");
     }
-    if (!withsuffix_pattern.isEmpty()){
+    if ( rulesmap.find( "WORD-WITHSUFFIX" ) == rulesmap.end()
+      && !withsuffix_pattern.isEmpty() ){
       rulesmap["WORD-WITHSUFFIX"] = new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + withsuffix_pattern + "))(?:\\Z|\\p{P})");
     }
-    if (!prefix_pattern.isEmpty()){
+    if ( rulesmap.find( "PREFIX" ) == rulesmap.end()
+      && !prefix_pattern.isEmpty() ){
       rulesmap["PREFIX"] = new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + prefix_pattern + ")(\\p{L}+)");
     }
-    if (!suffix_pattern.isEmpty()){
+    if ( rulesmap.find( "SUFFIX" ) == rulesmap.end()
+	 && !suffix_pattern.isEmpty() ){
       rulesmap["SUFFIX"] = new Rule("SUFFIX", "((?:\\p{L})+)(" + suffix_pattern + ")(?:\\Z|\\P{L})");
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
