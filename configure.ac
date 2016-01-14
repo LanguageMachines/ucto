@@ -1,7 +1,5 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
-# $Id$
-# $URL$
 
 AC_PREREQ(2.59)
 AC_INIT([ucto], [0.8.2], [lamasoftware@science.ru.nl])

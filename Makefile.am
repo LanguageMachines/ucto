@@ -1,6 +1,3 @@
-# $Id$
-# $URL$
-
 ACLOCAL_AMFLAGS = -I m4 --install
 
 SUBDIRS = src include m4 config docs tests
@@ -11,4 +8,4 @@ pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = ucto.pc ucto-icu.pc
 
 ChangeLog: NEWS
-	svn update; svn2cl --include-rev
+	git pull; git2cl > ChangeLog

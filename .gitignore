@@ -1,4 +1,6 @@
 INSTALL
+ChangeLog
+*.tar.gz
 Makefile
 Makefile.in
 aclocal.m4

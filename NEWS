@@ -1,3 +1,14 @@
+0.8.1 2016-01-14
+[Ko van der Sloot]
+* repository moved to GIT
+* added Travis support
+* more tests added
+* added META-RULES code
+* %include now supports full paths
+* updated some languages
+* fixed passthru mode
+* code cleanup
+
 0.8.0 2015-01-29
 [Ko van der Sloot]
 * next release
