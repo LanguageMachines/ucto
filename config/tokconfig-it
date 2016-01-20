@@ -11,7 +11,6 @@ ABBREVIATION-KNOWN = (?:\p{P}*)?(?:\A|[^\p{L}\.])((?:%ABBREVIATIONS%)\.)(?:\Z|\P
 WORD-TOKEN =(%TOKENS%)(?:\p{P}*)?$
 WORD-WITHPREFIX = (?:\A|[^\p{Lu}\.]|[^\p{Ll}\.])(?: %ATTACHEDPREFIXES% )\p{L}+
 WORD-WITHSUFFIX = ((?:\p{L}|\p{N}|-)+(?: %ATTACHEDSUFFIXES% ))(?:\Z)
-WORD-INFIX-COMPOUND = ((?:\p{L}|\p{N}|-)+(?: %ATTACHEDSUFFIXES% )-(?:\p{L}+))$
 PREFIX = (?:\A|[^\p{Lu}\.]|[^\p{Ll}\.])(%PREFIXES% )(\p{L}+)
 SUFFIX = ((?:\p{L})+)( %SUFFIXES% )(?:\Z|\P{L})
 
