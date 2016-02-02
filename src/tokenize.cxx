@@ -37,9 +37,7 @@
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
-#include "libfolia/foliautils.h"
 #include "libfolia/folia.h"
-#include "libfolia/document.h"
 #include "ucto/tokenize.h"
 
 using namespace std;
