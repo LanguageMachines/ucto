@@ -37,11 +37,6 @@
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
-<<<<<<< HEAD
-#include "libfolia/foliautils.h"
-#include "libfolia/foliatypes.h"
-=======
->>>>>>> cbc8840d0d48d301e22d5b0c0638e9d90d720589
 #include "libfolia/folia.h"
 #include "ucto/tokenize.h"
 
