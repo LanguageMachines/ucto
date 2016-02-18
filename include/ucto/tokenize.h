@@ -147,10 +147,10 @@ namespace Tokenizer {
     void setErrorLog( TiCC::LogStream *os );
 
     // Tokenize from input stream to a FoLiA document
-    folia::Document tokenize( std::istream& );
+    folia::Document *tokenize( std::istream& );
     //
     // Tokenize a folia document
-    bool tokenize(folia::Document& );
+    bool tokenize( folia::Document& );
 
     //Tokenize from input stream to a vector of Tokens
     std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );

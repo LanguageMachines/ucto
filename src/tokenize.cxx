@@ -453,10 +453,10 @@ namespace Tokenizer {
     return result;
   }
 
-  folia::Document TokenizerClass::tokenize( istream& IN ) {
-    folia::Document doc( "id='" + docid + "'" );
-    outputTokensDoc_init( doc);
-    folia::FoliaElement *root = doc.doc()->index(0);
+  folia::Document *TokenizerClass::tokenize( istream& IN ) {
+    folia::Document *doc = new folia::Document( "id='" + docid + "'" );
+    outputTokensDoc_init( *doc );
+    folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
     vector<Token> buffer;
     do {
@@ -508,8 +508,9 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
-      folia::Document doc = tokenize( IN );
+      folia::Document *doc = tokenize( IN );
       OUT << doc << endl;
+      delete doc;
     } else {
       int i = 0;
       do {
@@ -1372,6 +1373,7 @@ namespace Tokenizer {
       delete rules[i];
     }
     rulesmap.clear();
+    delete theErrLog;
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
