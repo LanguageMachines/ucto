@@ -77,11 +77,11 @@ namespace Tokenizer {
   class Token {
     friend std::ostream& operator<< (std::ostream&, const Token& );
   public:
-    const UnicodeString *type;
+    UnicodeString type;
     UnicodeString us;
     TokenRole role;
-    Token( const UnicodeString *,
-	   const UnicodeString& s,
+    Token( const UnicodeString&,
+	   const UnicodeString&,
 	   TokenRole role = NOROLE );
 
     std::string texttostring();
@@ -104,7 +104,9 @@ namespace Tokenizer {
 		   UnicodeString&,
 		   UnicodeString&,
 		   std::vector<UnicodeString>& );
-
+  private:
+    Rule( const Rule& ); // inhibit copies
+    Rule& operator=( const Rule& ); // inhibit copies
   };
 
   class Quoting {
@@ -285,6 +287,8 @@ namespace Tokenizer {
 
     void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
   private:
+    TokenizerClass( const TokenizerClass& ); // inhibit copies
+    TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
     void add_rule( const UnicodeString&,
 		   const std::vector<std::string>&,
 		   const UnicodeString& );
