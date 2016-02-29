@@ -669,7 +669,7 @@ namespace Tokenizer {
       doc.declare( folia::AnnotationType::TOKEN, settingsfilename,
 		   "annotator='ucto', annotatortype='auto', datetime='now()'");
     }
-    folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
+    folia::Text *text = new folia::Text( folia::getArgs("id='" + docid + ".text'") );
     doc.append( text );
   }
 
@@ -777,7 +777,8 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	}
-	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
+	folia::FoliaElement *q = new folia::Quote( root->doc(),
+						   folia::getArgs( "generate_id='" + root->id() + "'") );
 	//	*Log(theErrLog) << "created " << q << endl;
 	root->append( q );
 	root = q;
