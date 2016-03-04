@@ -1,7 +1,7 @@
 <FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
   <metadata>
     <annotations>
-      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
     </annotations>
   </metadata>
