@@ -716,7 +716,7 @@ namespace Tokenizer {
 	}
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
-	folia::FoliaElement *p = new folia::Paragraph( root->doc(), args );
+	folia::FoliaElement *p = new folia::Paragraph( args, root->doc() );
 	//	*Log(theErrLog) << "created " << p << endl;
 	root->append( p );
 	root = p;
@@ -743,7 +743,7 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[outputTokensXML] Creating sentence in '"
 			  << args["generate_id"] << "'" << endl;
 	}
-	folia::FoliaElement *s = new folia::Sentence( root->doc(), args );
+	folia::FoliaElement *s = new folia::Sentence( args, root->doc() );
 	// *Log(theErrLog) << "created " << s << endl;
 	root->append( s );
 	root = s;
@@ -762,7 +762,7 @@ namespace Tokenizer {
       if ( tv[i].role & NOSPACE) {
 	args["space"]= "no";
       }
-      folia::FoliaElement *w = new folia::Word( root->doc(), args );
+      folia::FoliaElement *w = new folia::Word( args, root->doc() );
       UnicodeString out = tv[i].us;
       if (lowercase) {
 	out.toLower();
@@ -777,8 +777,8 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	}
-	folia::FoliaElement *q = new folia::Quote( root->doc(),
-						   folia::getArgs( "generate_id='" + root->id() + "'") );
+	folia::FoliaElement *q = new folia::Quote( folia::getArgs( "generate_id='" + root->id() + "'"),
+						    root->doc() );
 	//	*Log(theErrLog) << "created " << q << endl;
 	root->append( q );
 	root = q;
