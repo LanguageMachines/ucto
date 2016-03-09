@@ -30,7 +30,7 @@
 #include <map>
 #include <stdexcept>
 #include "ticcutils/StringOps.h"
-#include "libfolia/foliautils.h"
+#include "libfolia/folia.h"
 #include "ucto/unicode.h"
 
 using namespace std;

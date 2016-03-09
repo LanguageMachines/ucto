@@ -1,7 +1,7 @@
 <FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
   <metadata>
     <annotations>
-      <div-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
     </annotations>
   </metadata>
@@ -12,10 +12,10 @@
 	    <t>Vanessa29 doet een dansje \\o \o&gt; \o/ &lt;o/ o//</t>
 	  </s>
           <s xml:id="WR-P-E-J-0000000001.head.1.s.2">
-	    <t cls='\'>Text 2 </t>
+	    <t class='\'>Text 2 </t>
 	  </s>
           <s xml:id="WR-P-E-J-0000000001.head.1.s.3">
-	    <event xml:id="Ping" actor='proycon2\\\' cls='event'></event>
+	    <event xml:id="Ping" actor='proycon2\\\' class='event'></event>
 	  </s>
 	</head>
       </div>

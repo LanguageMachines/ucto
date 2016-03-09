@@ -37,9 +37,7 @@
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
-#include "libfolia/foliautils.h"
 #include "libfolia/folia.h"
-#include "libfolia/document.h"
 #include "ucto/tokenize.h"
 
 using namespace std;
@@ -90,6 +88,8 @@ namespace Tokenizer {
     int split( const UnicodeString&, vector<UnicodeString>& );
     UnicodeString Pattern() const{ return pattern->pattern(); }
   private:
+    UnicodeRegexMatcher( const UnicodeRegexMatcher& );  // inhibit copies
+    UnicodeRegexMatcher& operator=( const UnicodeRegexMatcher& ); // inhibit copies
     string failString;
     RegexPattern *pattern;
     RegexMatcher *matcher;
@@ -268,16 +268,16 @@ namespace Tokenizer {
     return "";
   }
 
-  Token::Token( const UnicodeString *_type,
+  Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
 		TokenRole _role): type(_type), us(_s), role(_role) {}
 
 
   std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
-  std::string Token::typetostring() { return folia::UnicodeToUTF8(*type); }
+  std::string Token::typetostring() { return folia::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
-    os << *t.type << " : " << t.role  << ":" << t.us;
+    os << t.type << " : " << t.role  << ":" << t.us;
     return os;
   }
 
@@ -455,10 +455,10 @@ namespace Tokenizer {
     return result;
   }
 
-  folia::Document TokenizerClass::tokenize( istream& IN ) {
-    folia::Document doc( "id='" + docid + "'" );
-    outputTokensDoc_init( doc);
-    folia::FoliaElement *root = doc.doc()->index(0);
+  folia::Document *TokenizerClass::tokenize( istream& IN ) {
+    folia::Document *doc = new folia::Document( "id='" + docid + "'" );
+    outputTokensDoc_init( *doc );
+    folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
     vector<Token> buffer;
     do {
@@ -510,8 +510,9 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
-      folia::Document doc = tokenize( IN );
+      folia::Document *doc = tokenize( IN );
       OUT << doc << endl;
+      delete doc;
     } else {
       int i = 0;
       do {
@@ -668,7 +669,7 @@ namespace Tokenizer {
       doc.declare( folia::AnnotationType::TOKEN, settingsfilename,
 		   "annotator='ucto', annotatortype='auto', datetime='now()'");
     }
-    folia::Text *text = new folia::Text( "id='" + docid + ".text'" );
+    folia::Text *text = new folia::Text( folia::getArgs("id='" + docid + ".text'") );
     doc.append( text );
   }
 
@@ -695,7 +696,7 @@ namespace Tokenizer {
     else if ( root->isinstance( folia::Paragraph_t )
 	      || root->isinstance( folia::Head_t )
 	      || root->isinstance( folia::Note_t )
-	      || root->isinstance( folia::Item_t )
+	      || root->isinstance( folia::ListItem_t )
 	      || root->isinstance( folia::Part_t )
 	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
@@ -715,7 +716,7 @@ namespace Tokenizer {
 	}
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
-	folia::FoliaElement *p = new folia::Paragraph( root->doc(), args );
+	folia::FoliaElement *p = new folia::Paragraph( args, root->doc() );
 	//	*Log(theErrLog) << "created " << p << endl;
 	root->append( p );
 	root = p;
@@ -742,7 +743,7 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[outputTokensXML] Creating sentence in '"
 			  << args["generate_id"] << "'" << endl;
 	}
-	folia::FoliaElement *s = new folia::Sentence( root->doc(), args );
+	folia::FoliaElement *s = new folia::Sentence( args, root->doc() );
 	// *Log(theErrLog) << "created " << s << endl;
 	root->append( s );
 	root = s;
@@ -753,7 +754,7 @@ namespace Tokenizer {
       }
       folia::KWargs args;
       args["generate_id"] = lastS->id();
-      args["class"] = folia::UnicodeToUTF8( *tv[i].type );
+      args["class"] = folia::UnicodeToUTF8( tv[i].type );
       if ( passthru )
 	args["set"] = "passthru";
       else
@@ -761,7 +762,7 @@ namespace Tokenizer {
       if ( tv[i].role & NOSPACE) {
 	args["space"]= "no";
       }
-      folia::FoliaElement *w = new folia::Word( root->doc(), args );
+      folia::FoliaElement *w = new folia::Word( args, root->doc() );
       UnicodeString out = tv[i].us;
       if (lowercase) {
 	out.toLower();
@@ -776,7 +777,8 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	}
-	folia::FoliaElement *q = new folia::Quote( root->doc(), "generate_id='" + root->id() + "'" );
+	folia::FoliaElement *q = new folia::Quote( folia::getArgs( "generate_id='" + root->id() + "'"),
+						    root->doc() );
 	//	*Log(theErrLog) << "created " << q << endl;
 	root->append( q );
 	root = q;
@@ -837,7 +839,7 @@ namespace Tokenizer {
       if ( toks[i].role & NEWPARAGRAPH) quotelevel = 0;
       if ( toks[i].role & BEGINQUOTE) quotelevel++;
       if (verbose) {
-	OUT << "\t" << *toks[i].type << "\t" << toks[i].role << endl;
+	OUT << "\t" << toks[i].type << "\t" << toks[i].role << endl;
       }
       if ( toks[i].role & ENDQUOTE) quotelevel--;
 
@@ -1247,10 +1249,10 @@ namespace Tokenizer {
       if (tokDebug > 1 ){
 	*Log(theErrLog) << "[detectSentenceBounds] i="<< i << " word=["
 			<< tokens[i].us
-			<< "] type=" << *tokens[i].type
+			<< "] type=" << tokens[i].type
 			<< ", role=" << tokens[i].role << endl;
       }
-      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
@@ -1292,10 +1294,10 @@ namespace Tokenizer {
       if (tokDebug > 1 ){
 	*Log(theErrLog) << "[detectSentenceBounds:fixup] i="<< i << " word=["
 			<< tokens[i].us
-			<< "] type=" << *tokens[i].type
+			<< "] type=" << tokens[i].type
 			<< ", role=" << tokens[i].role << endl;
       }
-      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
 	if (tokens[i].role & BEGINOFSENTENCE) {
 	  tokens[i].role ^= BEGINOFSENTENCE;
 	}
@@ -1319,7 +1321,7 @@ namespace Tokenizer {
 			<< tokens[i].us
 			<<"] role=" << tokens[i].role << endl;
       }
-      if ( tokens[i].type->startsWith("PUNCTUATION") ) {
+      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
@@ -1374,6 +1376,7 @@ namespace Tokenizer {
       delete rules[i];
     }
     rulesmap.clear();
+    delete theErrLog;
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
@@ -1413,22 +1416,22 @@ namespace Tokenizer {
 	  bos = true;
 	}
 	else {
-	  const UnicodeString *type;
+	  UnicodeString type;
 	  if (alpha && !num && !punct) {
-	    type = &type_word;
+	    type = type_word;
 	  }
 	  else if (num && !alpha && !punct) {
-	    type = &type_number;
+	    type = type_number;
 	  }
 	  else if (punct && !alpha && !num) {
-	    type = &type_punctuation;
+	    type = type_punctuation;
 	  }
 	  else {
-	    type = &type_unknown;
+	    type = type_unknown;
 	  }
 	  if ( doPunctFilter
-	       && ( type == &type_punctuation || type == &type_currency ||
-		    type == &type_emoticon ) ) {
+	       && ( type == type_punctuation || type == type_currency ||
+		    type == type_emoticon ) ) {
 	    if (tokDebug >= 2 ){
 	      *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
@@ -1473,22 +1476,22 @@ namespace Tokenizer {
 	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
       }
       else {
-	const UnicodeString *type;
+	UnicodeString type;
 	if (alpha && !num && !punct) {
-	  type = &type_word;
+	  type = type_word;
 	}
 	else if (num && !alpha && !punct) {
-	  type = &type_number;
+	  type = type_number;
 	}
 	else if (punct && !alpha && !num) {
-	  type = &type_punctuation;
+	  type = type_punctuation;
 	}
 	else {
-	  type = &type_unknown;
+	  type = type_unknown;
 	}
 	if ( doPunctFilter
-	     && ( type == &type_punctuation || type == &type_currency ||
-		  type == &type_emoticon ) ) {
+	     && ( type == type_punctuation || type == type_currency ||
+		  type == type_emoticon ) ) {
 	  if (tokDebug >= 2 ){
 	    *Log(theErrLog) << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
@@ -1648,7 +1651,7 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
 			      << word << "]" << endl;;
 	    }
-	    tokens.push_back( Token( &type_word, word ) );
+	    tokens.push_back( Token( type_word, word ) );
 	  }
 	  else {
 	    if (tokDebug >= 2){
@@ -1747,39 +1750,39 @@ namespace Tokenizer {
     if ( inpLen == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
-      const UnicodeString *type;
+      UnicodeString type;
 
       if ( u_ispunct(c)) {
 	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = &type_currency;
+	  type = type_currency;
 	}
 	else {
-	  type = &type_punctuation;
+	  type = type_punctuation;
 	}
       }
       else if ( u_isemo( c ) ) {
-	type = &type_emoticon;
+	type = type_emoticon;
       }
       else if ( u_isalpha(c)) {
-	type = &type_word;
+	type = type_word;
       }
       else if ( u_isdigit(c)) {
-	type = &type_number;
+	type = type_number;
       }
       else if ( u_isspace(c)) {
 	return;
       }
       else {
 	if ( u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = &type_currency;
+	  type = type_currency;
 	}
 	else {
-	  type = &type_unknown;
+	  type = type_unknown;
 	}
       }
       if ( doPunctFilter
-	   && ( type == &type_punctuation || type == &type_currency ||
-		type == &type_emoticon ) ) {
+	   && ( type == type_punctuation || type == type_currency ||
+		type == type_emoticon ) ) {
 	if (tokDebug >= 2 ){
 	  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
@@ -1837,7 +1840,7 @@ namespace Tokenizer {
 	      }
 	      else {
 		if ( post.length() > 0 ) space = false;
-		tokens.push_back( Token( &rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
+		tokens.push_back( Token( rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
 	      }
 	    }
 	  }
