@@ -34,4 +34,3 @@ script:
 after_failure:
     - tail -n 100 testoutput/*.diff
     - tail -n 100 testoutput/*.err
-    - cat testoutput/testfolia2.tmp
