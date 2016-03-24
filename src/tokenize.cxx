@@ -1377,6 +1377,7 @@ namespace Tokenizer {
     }
     rulesmap.clear();
     delete theErrLog;
+    tokens.clear();
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
@@ -1512,8 +1513,10 @@ namespace Tokenizer {
       }
     }
     if (sentenceperlineinput) {
-      tokens[0].role |= BEGINOFSENTENCE;
-      tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+      if ( tokens.size() > 0 ){
+	tokens[0].role |= BEGINOFSENTENCE;
+	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+      }
     }
   }
 
