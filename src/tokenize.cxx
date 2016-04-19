@@ -125,6 +125,8 @@ namespace Tokenizer {
     delete matcher;
   }
 
+  //#define MATCH_DEBUG 1
+
   bool UnicodeRegexMatcher::match_all( const UnicodeString& line,
 				       UnicodeString& pre,
 				       UnicodeString& post ){
@@ -133,16 +135,31 @@ namespace Tokenizer {
     post = "";
     results.clear();
     if ( matcher ){
-       //cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
+#ifdef MATCH_DEBUG
+      cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
+#endif
       matcher->reset( line );
       if ( matcher->find() ){
-	 //cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
 	int start = -1;
+#ifdef MATCH_DEBUG
+	cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
+	for ( int i=0; i <= matcher->groupCount(); ++i ){
+	  cerr << "group[" << i << "] =" << matcher->group(i,u_stat) << endl;
+	}
+	start = matcher->start( u_stat );
+	cerr << "start = " << start << endl;
+#endif
+	start = -1;
 	int end = 0;
 	for ( int i=0; i <= matcher->groupCount(); ++i ){
-	  // cerr << "group " << i << endl;
+#ifdef MATCH_DEBUG
+	  cerr << "group " << i << endl;
+#endif
 	  u_stat = U_ZERO_ERROR;
 	  start = matcher->start( i, u_stat );
+#ifdef MATCH_DEBUG
+	  cerr << "start = " << start << endl;
+#endif
 	  if (!U_FAILURE(u_stat)){
 	    if ( start < 0 ){
 	      continue;
@@ -152,19 +169,28 @@ namespace Tokenizer {
 	    break;
 	  if ( start > end ){
 	    pre = UnicodeString( line, end, start );
-	    // cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+#ifdef MATCH_DEBUG
+	    cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+#endif
 	  }
 	  end = matcher->end( i, u_stat );
+#ifdef MATCH_DEBUG
+	  cerr << "end = " << end << endl;
+#endif
 	  if (!U_FAILURE(u_stat)){
 	    results.push_back( UnicodeString( line, start, end - start ) );
-	    // cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+#ifdef MATCH_DEBUG
+	    cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+#endif
 	  }
 	  else
 	    break;
 	}
 	if ( end < line.length() ){
 	  post = UnicodeString( line, end );
-	  // cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+#ifdef MATCH_DEBUG
+	  cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+#endif
 	}
 	return true;
       }
