@@ -134,64 +134,82 @@ namespace Tokenizer {
     pre = "";
     post = "";
     results.clear();
+    int end = 0;
     if ( matcher ){
 #ifdef MATCH_DEBUG
       cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
 #endif
       matcher->reset( line );
       if ( matcher->find() ){
-	int start = -1;
+	int i=0;
 #ifdef MATCH_DEBUG
-	cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
-	for ( int i=0; i <= matcher->groupCount(); ++i ){
-	  cerr << "group[" << i << "] =" << matcher->group(i,u_stat) << endl;
-	}
-	start = matcher->start( u_stat );
-	cerr << "start = " << start << endl;
-#endif
-	start = -1;
-	int end = 0;
-	for ( int i=0; i <= matcher->groupCount(); ++i ){
-#ifdef MATCH_DEBUG
-	  cerr << "group " << i << endl;
-#endif
+	cerr << "matched " << line << " #caps=" << matcher->groupCount() << endl;
+	while ( true ){
 	  u_stat = U_ZERO_ERROR;
-	  start = matcher->start( i, u_stat );
-#ifdef MATCH_DEBUG
-	  cerr << "start = " << start << endl;
-#endif
-	  if (!U_FAILURE(u_stat)){
-	    if ( start < 0 ){
-	      continue;
-	    }
-	  }
-	  else
+	  UnicodeString us = matcher->group(i,u_stat);
+	  if ( U_FAILURE(u_stat) ){
 	    break;
-	  if ( start > end ){
-	    pre = UnicodeString( line, end, start );
-#ifdef MATCH_DEBUG
-	    cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+	  }
+	  cerr << "group[" << i++ << "] =" << us << endl;
+	}
 #endif
+	i=0;
+	while ( true ){
+	  u_stat = U_ZERO_ERROR;
+	  int start = matcher->start( i, u_stat );
+	  if ( U_FAILURE(u_stat) ){
+	    break;
+	  }
+	  if ( start < 0 ){
+#ifdef MATCH_DEBUG
+	    cerr << "skip empty group " << i << endl;
+#endif
+	    ++i;
+	    continue;
 	  }
 	  end = matcher->end( i, u_stat );
+	  if ( U_FAILURE(u_stat) ){
+	    break;
+	  }
 #ifdef MATCH_DEBUG
+	  cerr << "group " << i << endl;
+	  cerr << "start = " << start << endl;
 	  cerr << "end = " << end << endl;
 #endif
-	  if (!U_FAILURE(u_stat)){
-	    results.push_back( UnicodeString( line, start, end - start ) );
+	  if ( i == 0 && start > 0 ){
+	    pre = UnicodeString( line, 0, start );
 #ifdef MATCH_DEBUG
-	    cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+	    cerr << "found pre " << pre << endl;
 #endif
 	  }
-	  else
+	  UnicodeString res = matcher->group( i, u_stat );
+	  if ( U_FAILURE(u_stat) ){
 	    break;
+	  }
+#ifdef MATCH_DEBUG
+	  cerr << "add result " << res << endl;
+#endif
+	  results.push_back( res );
+	  if ( i == matcher->groupCount() && end < line.length() ){
+	    post = UnicodeString( line, end );
+#ifdef MATCH_DEBUG
+	    cerr << "found post " << post << endl;
+#endif
+	  }
+	  ++i;
 	}
-	if ( end < line.length() ){
+	if ( post.isEmpty() && end < line.length() ){
 	  post = UnicodeString( line, end );
 #ifdef MATCH_DEBUG
-	  cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+	  cerr << "found post " << post << endl;
 #endif
 	}
+#ifdef MATCH_DEBUG
+	cerr << "final result" << endl;
+	for ( int i=0; i < results.size(); ++i ){
+	  cerr << "result[" << i << "] =" << results[i] << endl;
+	}
+#endif
 	return true;
       }
     }
