@@ -1350,7 +1350,11 @@ namespace Tokenizer {
 			<< "] type=" << tokens[i].type
 			<< ", role=" << tokens[i].role << endl;
       }
-      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
+      if ( tokens[i].type.startsWith("PUNCTUATION") ){
+	if ((tokDebug > 1 )){
+	  *Log(theErrLog) << "[detectSentenceBounds] PUNCTUATION FOUND @i="
+			  << i << endl;
+	}
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
@@ -1419,7 +1423,7 @@ namespace Tokenizer {
 			<< tokens[i].us
 			<<"] role=" << tokens[i].role << endl;
       }
-      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
+      if ( tokens[i].type.startsWith("PUNCTUATION") ){
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
