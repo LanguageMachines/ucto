@@ -1,10 +1,10 @@
 [RULE-ORDER]
-WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW 
-URL-DOMAIN E-MAIL WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX 
+WORD-WITHSUFFIX WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL URL URL-WWW
+URL-DOMAIN E-MAIL WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX
 WORD-COMPOUND NICKNAME ABBREVIATION INITIALS INITIAL SMILEY REVERSE_SMILEY
 PUNCTUATION-MULTI DATE DATE-REVERSE
-NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN 
-# to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code) 
+NUMBER-YEAR TIME NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
+# to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code)
 
 [RULES]
 %include url
@@ -24,7 +24,7 @@ WORD-PARSUFFIX=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{
 WORD-COMPOUND=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)+
 
 #Abbreviations with multiple periods
-ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)\Z
+ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)(?:\Z|[,:;])
 
 #Initials glued to a longer word: A.F.Zetterij -> A.F. Zetterij
 INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
@@ -110,7 +110,7 @@ f
 
 [FILTER]
 %include ligatures
-# also filter soft hyphen 
+# also filter soft hyphen
 \u00AD
 
 [EOSMARKERS]
@@ -119,4 +119,3 @@ f
 [QUOTES]
 %include standard-quotes
 %include exotic-quotes
-

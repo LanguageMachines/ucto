@@ -2,11 +2,11 @@
 PLACEHOLDER WORD-WITHSUFFIX QUOTE-SUFFIX
 WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL QUOTE-COMPOUND
 NUMBER-STRING STRING-NUMBER URL URL-WWW URL-DOMAIN E-MAIL
-WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
-ABBREVIATION INITIALS INITIAL SMILEY REVERSE-SMILEY 
+WORD-PARPREFIX-PARSUFFIX WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND
+ABBREVIATION INITIALS INITIAL SMILEY REVERSE-SMILEY
 PUNCTUATION-MULTI DATE-REVERSE DATE
-NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN 
-# to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code) 
+NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
+# to do PREFIXES (is leeg nu) UNITS (uitgecommentarieerd in de c++ code)
 
 [RULES]
 PLACEHOLDER=%[\p{L}\p{N}]+%
@@ -31,7 +31,7 @@ WORD-COMPOUND=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)+
 QUOTE-COMPOUND=[\p{L}\p{N}]+(?:['`’‘]\p{L}+)+
 
 #Abbreviations with multiple periods
-ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)\Z
+ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)(?:\Z|[,:;])
 
 #Initials glued to a longer word: A.F.Zetterij -> A.F. Zetterij
 INITIALS=(\p{L}(?:\.\p{L})+\.)\p{Lu}\p{L}{3,999}+
@@ -51,7 +51,7 @@ FRACNUMBER=\p{N}+(?:/\p{N}+)+
 #numberstring like 20jarige
 NUMBER-STRING=\p{N}+(?:\p{Pd}?)(?:\p{L}+)
 
-#combinations like A50, a1 
+#combinations like A50, a1
 STRING-NUMBER=\p{L}+\p{Pd}?\p{N}+
 
 NUMBER-YEAR=(['`’‘]\p{N}{2})(?:\P{N}|\z)
@@ -125,7 +125,7 @@ f
 
 [FILTER]
 %include ligatures
-# also filter soft hyphen 
+# also filter soft hyphen
 \u00AD
 
 [EOSMARKERS]
@@ -134,4 +134,3 @@ f
 [QUOTES]
 %include standard-quotes
 %include exotic-quotes
-

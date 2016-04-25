@@ -1,6 +1,6 @@
 [RULE-ORDER]
 URL URL-WWW URL-DOMAIN
-E-MAIL WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND 
+E-MAIL WORD-PARPREFIX WORD-PARSUFFIX WORD-COMPOUND
 ABBREVIATION INITIAL SMILEY REVERSE-SMILEY PUNCTUATION-MULTI DATE-REVERSE DATE
 NUMBER-YEAR TIME FRACNUMBER NUMBER CURRENCY WORD PUNCTUATION UNKNOWN
 
@@ -31,7 +31,7 @@ WORD-PARSUFFIX=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{
 WORD-COMPOUND=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)+
 
 #Abbreviations with multiple periods
-ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)\Z
+ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)(?:\Z|[,:;])
 
 #retain initials
 INITIAL=^(?:\p{Lt}|\p{Lu})\.$
@@ -105,7 +105,7 @@ EUR
 ﬀ ff
 ﬃ ffi
 ﬄ ffl
-# also filter soft hyphen 
+# also filter soft hyphen
 \u00AD
 
 
