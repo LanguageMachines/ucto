@@ -940,8 +940,10 @@ namespace Tokenizer {
       if ( toks[i].role & ENDQUOTE) quotelevel--;
 
       if ( toks[i].role & ENDOFSENTENCE) {
-	if (verbose) {
-	  OUT << endl;
+	if ( verbose ) {
+	  if ( !(toks[i].role & NOSPACE ) ){
+	    OUT << endl;
+	  }
 	}
 	else if (quotelevel == 0) {
 	  if (sentenceperlineoutput) {
