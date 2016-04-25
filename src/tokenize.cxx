@@ -424,7 +424,6 @@ namespace Tokenizer {
     TiCC::split_at( values, parts, "," );
     for ( const auto& val : parts ){
       norm_set.insert( folia::UTF8ToUnicode( val ) );
-      cerr << "added " << val << " to SET" << endl;
     }
     return true;
   }
