@@ -37,6 +37,7 @@
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
+#include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
 #include "ucto/tokenize.h"
 
@@ -416,6 +417,16 @@ namespace Tokenizer {
     //test if pattern (?i)aßx matched against aßx produces results, if not, bug
     //is present and users should be warned
 
+  }
+
+  bool TokenizerClass::setNormSet( const std::string& values ){
+    vector<string> parts;
+    TiCC::split_at( values, parts, "," );
+    for ( const auto& val : parts ){
+      norm_set.insert( folia::UTF8ToUnicode( val ) );
+      cerr << "added " << val << " to SET" << endl;
+    }
+    return true;
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
@@ -1543,6 +1554,9 @@ namespace Tokenizer {
 	    }
 	  }
 	  else {
+	    if ( norm_set.find( type ) != norm_set.end() ){
+	      word = "{{" + type + "}}";
+	    }
 	    if (bos) {
 	      tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
 	      bos = false;
@@ -1603,6 +1617,9 @@ namespace Tokenizer {
 	  }
 	}
 	else {
+	  if ( norm_set.find( type ) != norm_set.end() ){
+	    word = "{{" + type + "}}";
+	  }
 	  if (bos) {
 	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
 	    bos = false;
@@ -1897,7 +1914,11 @@ namespace Tokenizer {
 	}
       }
       else {
-	Token T( type, input, space ? NOROLE : NOSPACE );
+	UnicodeString word = input;
+	if ( norm_set.find( type ) != norm_set.end() ){
+	  word = "{{" + type + "}}";
+	}
+	Token T( type, word, space ? NOROLE : NOSPACE );
 	tokens.push_back( T );
 	if (tokDebug >= 2){
 	  *Log(theErrLog) << "   [tokenizeWord] added token " << T << endl;
@@ -1945,7 +1966,12 @@ namespace Tokenizer {
 	      }
 	      else {
 		if ( post.length() > 0 ) space = false;
-		tokens.push_back( Token( rules[i]->id, matches[m], space ? NOROLE : NOSPACE ) );
+		UnicodeString type = rules[i]->id;
+		UnicodeString word = matches[m];
+		if ( norm_set.find( type ) != norm_set.end() ){
+		  word = "{{" + type + "}}";
+		}
+		tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
 	      }
 	    }
 	  }

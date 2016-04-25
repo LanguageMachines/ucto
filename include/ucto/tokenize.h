@@ -248,6 +248,8 @@ namespace Tokenizer {
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
 
+    bool setNormSet( const std::string& );
+
     bool setSentencePerLineOutput( bool b=true ) { bool t = sentenceperlineoutput; sentenceperlineoutput = b; return t; };
     bool getSentencePerLineOutput() const { return sentenceperlineoutput; }
 
@@ -331,6 +333,7 @@ namespace Tokenizer {
     std::vector<Token> tokens;
     std::map<UnicodeString, Rule *> rulesmap;
     std::vector<Rule *> rules;
+    std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
     //debug flag

@@ -57,6 +57,8 @@ void usage(){
        << "\t-v              - Verbose mode" << endl
        << "\t-s <string>     - End-of-Sentence marker (default: <utt>)" << endl
        << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
+       << "\t--normalize=<class1>,class2>,... " << endl
+       << "\t                - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
        << "\t--filterpunct   - remove all punctuation from the output" << endl
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
@@ -98,10 +100,11 @@ int main( int argc, char *argv[] ){
   string c_file;
   string L_file;
   bool passThru = false;
+  string norm_set_string;
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,id:");
+			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' ) ){
       usage();
@@ -166,6 +169,7 @@ int main( int argc, char *argv[] ){
     if ( Opts.extract('L', value ) ){
       L_file = string("tokconfig-") + string(value);
     }
+    Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
       string tomany = Opts.toString();
       throw TiCC::OptionError( "unhandled option(s): " + tomany );
@@ -252,6 +256,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
+    tokenizer.setNormSet(norm_set_string);
     tokenizer.setParagraphDetection(paragraphdetection);
     tokenizer.setQuoteDetection(quotedetection);
     tokenizer.setNormalization( normalization );
