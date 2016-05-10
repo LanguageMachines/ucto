@@ -15,7 +15,7 @@ if test -x $file
 	\rm -f testoutput/$file.diff
    	echo -n "testing  $file "
 	./$file > testoutput/$file.tmp 2> testoutput/$file.err.1
-	diff --ignore-matching-lines=".?*-annotation .?*" --ignore-matching-lines=".http://www.w3.org/1999.?*" -wB testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
+	diff --ignore-matching-lines=".?*-annotation .?*" --ignore-matching-lines=".http://www.w3.org/1999.?*" --ignore-matching-lines=".*generator=.*" -wB testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
 	if [ $? -ne 0 ];
 	then sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
 	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
