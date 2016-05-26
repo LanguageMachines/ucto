@@ -37,6 +37,7 @@
 #include "unicode/schriter.h"
 #include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
+#include "ticcutils/FileUtils.h"
 #include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
 #include "ucto/tokenize.h"
@@ -2230,7 +2231,31 @@ namespace Tokenizer {
     rulesmap[name] = new Rule( name, pat );
   }
 
-  bool TokenizerClass::readsettings( const string& fname ) {
+  string get_filename( const string& name, string& dir ){
+    dir.clear();
+    string result;
+    if ( TiCC::isFile( name ) ){
+      result = name;
+      if ( name.find_first_of( "/" ) != string::npos ){
+	// name seems a relative or absolute path
+	string::size_type pos = name.rfind("/");
+	dir = name;
+	dir.substr( 0, pos+1 );
+      }
+    }
+    else {
+      result = defaultConfigDir + name;
+      if ( TiCC::isFile( result ) ){
+	dir = defaultConfigDir;
+      }
+      else {
+	result.clear();
+      }
+    }
+    return result;
+  }
+
+  bool TokenizerClass::readsettings( const string& settings_name ) {
 
     ConfigMode mode = NONE;
 
@@ -2247,65 +2272,59 @@ namespace Tokenizer {
     vector<string> meta_rules;
 
     string confdir;
-    string conffile;
-    if ( fname.find_first_of( "/" ) != string::npos ){
-      // override 'system' dir when cfile seems a relative or absolute path
-      string::size_type pos = fname.rfind("/");
-      confdir = fname.substr( 0, pos+1 );
-      conffile = fname;
-    }
-    else {
-      confdir = defaultConfigDir;
-      conffile = confdir + fname;
-    }
+    string conffile = get_filename( settings_name, confdir );
+
     ifstream f( conffile );
     if ( !f ){
       return false;
     }
     else {
       if ( tokDebug ){
-	*Log(theErrLog) << "config directory=" << confdir << endl;
 	*Log(theErrLog) << "config file=" << conffile << endl;
+	*Log(theErrLog) << "config directory=" << confdir << endl;
+	if ( confdir != defaultConfigDir ){
+	  *Log(theErrLog) << "default config directory="
+			  << defaultConfigDir << endl;
+	}
       }
       string rawline;
       while ( getline(f,rawline) ){
 	if ( rawline.find( "%include" ) != string::npos ){
 	  string file = rawline.substr( 9 );
-	  if ( file.find_first_of( "/" ) != string::npos ){
-	    // a relative or absolute path. do not touch
-	  }
-	  else {
-	    file = confdir + file;
-	  }
 	  switch ( mode ){
 	  case RULES: {
 	    file += ".rule";
+	    file = get_filename( file, confdir );
 	    if ( !readrules( file ) )
-	      throw uConfigError( "%include '" + file + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case FILTER:{
 	    file += ".filter";
+	    file = get_filename( file, confdir );
 	    if ( !readfilters( file ) )
-	      throw uConfigError( "%include '" + file + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case QUOTES:{
 	    file += ".quote";
+	    file = get_filename( file, confdir );
 	    if ( !readquotes( file ) )
-	      throw uConfigError( "%include '" + file + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case EOSMARKERS:{
 	    file += ".eos";
+	    file = get_filename( file, confdir );
 	    if ( !readeosmarkers( file ) )
-	      throw uConfigError( "%include '" + file + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case ABBREVIATIONS:{
 	    file += ".abr";
+	    file = get_filename( file, confdir );
 	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) )
-	      throw uConfigError( "%include '" + file + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  default:
