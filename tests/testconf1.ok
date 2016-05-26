@@ -1,5 +1,0 @@
-configfile = ./stuk1.cfg
-inputfile = 
-outputfile = 
-Initiating tokeniser...
-ucto: config file :%include './not there.rule' failed

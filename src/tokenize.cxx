@@ -2231,24 +2231,18 @@ namespace Tokenizer {
     rulesmap[name] = new Rule( name, pat );
   }
 
-  string get_filename( const string& name, string& dir ){
-    dir.clear();
+  string get_filename( const string& name ){
     string result;
     if ( TiCC::isFile( name ) ){
       result = name;
       if ( name.find_first_of( "/" ) != string::npos ){
 	// name seems a relative or absolute path
 	string::size_type pos = name.rfind("/");
-	dir = name;
-	dir.substr( 0, pos+1 );
       }
     }
     else {
       result = defaultConfigDir + name;
-      if ( TiCC::isFile( result ) ){
-	dir = defaultConfigDir;
-      }
-      else {
+      if ( !TiCC::isFile( result ) ){
 	result.clear();
       }
     }
@@ -2271,8 +2265,7 @@ namespace Tokenizer {
     vector<UnicodeString> rules_order;
     vector<string> meta_rules;
 
-    string confdir;
-    string conffile = get_filename( settings_name, confdir );
+    string conffile = get_filename( settings_name );
 
     ifstream f( conffile );
     if ( !f ){
@@ -2281,11 +2274,6 @@ namespace Tokenizer {
     else {
       if ( tokDebug ){
 	*Log(theErrLog) << "config file=" << conffile << endl;
-	*Log(theErrLog) << "config directory=" << confdir << endl;
-	if ( confdir != defaultConfigDir ){
-	  *Log(theErrLog) << "default config directory="
-			  << defaultConfigDir << endl;
-	}
       }
       string rawline;
       while ( getline(f,rawline) ){
@@ -2294,35 +2282,35 @@ namespace Tokenizer {
 	  switch ( mode ){
 	  case RULES: {
 	    file += ".rule";
-	    file = get_filename( file, confdir );
+	    file = get_filename( file );
 	    if ( !readrules( file ) )
 	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case FILTER:{
 	    file += ".filter";
-	    file = get_filename( file, confdir );
+	    file = get_filename( file );
 	    if ( !readfilters( file ) )
 	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case QUOTES:{
 	    file += ".quote";
-	    file = get_filename( file, confdir );
+	    file = get_filename( file );
 	    if ( !readquotes( file ) )
 	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case EOSMARKERS:{
 	    file += ".eos";
-	    file = get_filename( file, confdir );
+	    file = get_filename( file );
 	    if ( !readeosmarkers( file ) )
 	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
 	    break;
 	  case ABBREVIATIONS:{
 	    file += ".abr";
-	    file = get_filename( file, confdir );
+	    file = get_filename( file );
 	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) )
 	      throw uConfigError( "'" + rawline + "' failed" );
 	  }
