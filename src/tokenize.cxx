@@ -453,26 +453,35 @@ namespace Tokenizer {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
+    bool first = true;
     string line;
     do {
       done = !getline( IN, line );
+      if ( first ){
+	line = checkBOM( line, inputEncoding );
+	first = false;
+      }
       linenum++;
       if ( tokDebug > 0 ){
 	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
       }
       stripCR( line );
-      if ( sentenceperlineinput )
+      if ( sentenceperlineinput ){
 	line += string(" ") + folia::UnicodeToUTF8(eosmark);
+      }
       int numS;
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
-      } else {
-	if ( passthru )
+      }
+      else {
+	if ( passthru ){
 	  passthruLine( line, bos );
-	else
+	}
+	else {
 	  tokenizeLine( line );
-  	  numS = countSentences(); //count full sentences in token buffer
+	}
+	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) { //process sentences
 	if ( tokDebug > 0 ){
@@ -487,7 +496,9 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	}
 	flushSentences(numS);
-	if (!allatonce) return outputTokens;
+	if (!allatonce) {
+	  return outputTokens;
+	}
       }
       else {
 	if  (tokDebug > 0) {
@@ -1643,7 +1654,7 @@ namespace Tokenizer {
 							&bomLength, &err);
     if ( bomLength ){
       enc = encoding;
-      if (tokDebug){
+      if ( tokDebug ){
 	*Log(theErrLog) << "Autodetected encoding: " << enc << endl;
       }
       return s.substr( bomLength );
@@ -1652,14 +1663,16 @@ namespace Tokenizer {
   }
 
   // string wrapper
-  int TokenizerClass::tokenizeLine( const string& in_s ){
-    string s = checkBOM( in_s, inputEncoding );
+  int TokenizerClass::tokenizeLine( const string& s ){
     UnicodeString uinputstring;
     try {
-      uinputstring = UnicodeString( s.c_str(), s.length(), inputEncoding.c_str() );
-    } catch ( exception &e) {
+      uinputstring = UnicodeString( s.c_str(),
+				    s.length(),
+				    inputEncoding.c_str() );
+    }
+    catch ( exception &e) {
       throw uCodingError( "Unexpected character found in input. " + string(e.what() )
-			  + "Make sure input is valid UTF-8!" );
+			  + "Make sure input is valid " + inputEncoding );
     }
     if ( uinputstring.isBogus() ){
       throw uCodingError( "string decoding failed: (invalid inputEncoding '"
