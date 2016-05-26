@@ -176,6 +176,7 @@ namespace Tokenizer {
     int tokenizeLine( const UnicodeString& ); // Unicode chars
     int tokenizeLine( const std::string& );   // UTF8 chars
 
+    void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found

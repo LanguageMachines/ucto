@@ -297,6 +297,26 @@ namespace Tokenizer {
     return numWords;
   }
 
+  UnicodeString convert( const string& line,
+			 const string& inputEncoding ){
+    UnicodeString result;
+    try {
+      result = UnicodeString( line.c_str(),
+			      line.length(),
+			      inputEncoding.c_str() );
+    }
+    catch ( exception &e) {
+      throw uCodingError( "Unexpected character found in input. " +
+			  string(e.what()) + "Make sure input is valid: " +
+			  inputEncoding );
+    }
+    if ( result.isBogus() ){
+      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
+			  + inputEncoding + "' ?)" );
+    }
+    return result;
+  }
+
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
   const UnicodeString type_word = "WORD";
@@ -454,32 +474,33 @@ namespace Tokenizer {
     bool done = false;
     bool bos = true;
     bool first = true;
-    string line;
     do {
+      string line;
       done = !getline( IN, line );
       if ( first ){
 	line = checkBOM( line, inputEncoding );
 	first = false;
       }
+      stripCR( line );
+      UnicodeString input_line = convert( line, inputEncoding );
       linenum++;
       if ( tokDebug > 0 ){
 	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
       }
-      stripCR( line );
       if ( sentenceperlineinput ){
-	line += string(" ") + folia::UnicodeToUTF8(eosmark);
+	input_line += " " + eosmark;
       }
       int numS;
-      if ( (done) || (line.empty()) ){
+      if ( (done) || ( input_line.isEmpty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
       }
       else {
 	if ( passthru ){
-	  passthruLine( line, bos );
+	  passthruLine( input_line, bos );
 	}
 	else {
-	  tokenizeLine( line );
+	  tokenizeLine( input_line );
 	}
 	numS = countSentences(); //count full sentences in token buffer
       }
@@ -763,7 +784,7 @@ namespace Tokenizer {
     }
     if ( passthru ){
       bool bos = true;
-      passthruLine( folia::UnicodeToUTF8(line), bos );
+      passthruLine( line, bos );
     }
     else
       tokenizeLine( line );
@@ -1504,17 +1525,12 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
-    UnicodeString input;
-    try {
-      input = UnicodeString( s.c_str(), s.length(), inputEncoding.c_str() );
-    } catch ( exception &e) {
-      throw uCodingError( "Unexpected character found in input. " + string(e.what() )
-			  + "Make sure input is valid UTF-8!" );
-    }
-    if ( input.isBogus() ){
-      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
-			  + inputEncoding + "' ?)" );
-    }
+    // string wrapper
+    UnicodeString us = convert( s, inputEncoding );;
+    passthruLine( us, bos );
+  }
+
+  void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
     if (tokDebug) {
       *Log(theErrLog) << "[passthruLine] input: line=[" << input << "]" << endl;
     }
@@ -1664,23 +1680,8 @@ namespace Tokenizer {
 
   // string wrapper
   int TokenizerClass::tokenizeLine( const string& s ){
-    UnicodeString uinputstring;
-    try {
-      uinputstring = UnicodeString( s.c_str(),
-				    s.length(),
-				    inputEncoding.c_str() );
-    }
-    catch ( exception &e) {
-      throw uCodingError( "Unexpected character found in input. " + string(e.what() )
-			  + "Make sure input is valid " + inputEncoding );
-    }
-    if ( uinputstring.isBogus() ){
-      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
-			  + inputEncoding + "' ?)" );
-    }
-    else {
-      return tokenizeLine( uinputstring );
-    }
+    UnicodeString uinputstring = convert( s, inputEncoding );
+    return tokenizeLine( uinputstring );
   }
 
   bool u_isemo( UChar32 c ){
