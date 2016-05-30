@@ -477,18 +477,26 @@ namespace Tokenizer {
     do {
       string line;
       done = !getline( IN, line );
+      ++linenum;
+      if ( tokDebug > 0 ){
+	*Log(theErrLog) << "[tokenize] Read input line # " << linenum << endl;
+      }
       if ( first ){
 	line = checkBOM( line, inputEncoding );
 	first = false;
       }
-      stripCR( line );
-      UnicodeString input_line = convert( line, inputEncoding );
-      linenum++;
-      if ( tokDebug > 0 ){
-	*Log(theErrLog) << "[tokenize] Read input line " << linenum << endl;
+      UnicodeString input_line;
+      if ( !line.empty() ){
+	stripCR( line );
+	input_line = convert( line, inputEncoding );
+	if ( sentenceperlineinput ){
+	  input_line += " " + eosmark;
+	}
       }
-      if ( sentenceperlineinput ){
-	input_line += " " + eosmark;
+      else {
+	if ( sentenceperlineinput ){
+	  input_line = eosmark;
+	}
       }
       int numS;
       if ( (done) || ( input_line.isEmpty()) ){
