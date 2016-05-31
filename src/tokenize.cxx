@@ -469,11 +469,10 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeStream( istream& IN, bool allatonce) {
+  vector<Token> TokenizerClass::tokenizeStream( istream& IN ) {
     vector<Token> outputTokens;
     bool done = false;
     bool bos = true;
-    bool first = true;
     do {
       string line;
       done = !getline( IN, line );
@@ -481,12 +480,15 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	*Log(theErrLog) << "[tokenize] Read input line # " << linenum << endl;
       }
-      if ( first ){
-	line = checkBOM( line, inputEncoding );
-	first = false;
-      }
+      //      cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       UnicodeString input_line;
+      if ( line.size() == 1 && line[0] == 0 ){
+	IN.get();
+	line = "";
+      }
+      //      cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       if ( !line.empty() ){
+	//	cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	stripCR( line );
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
@@ -525,9 +527,7 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
 	}
 	flushSentences(numS);
-	if (!allatonce) {
-	  return outputTokens;
-	}
+	return outputTokens;
       }
       else {
 	if  (tokDebug > 0) {
@@ -603,23 +603,26 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
+    inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
     outputTokensDoc_init( *doc );
     folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
     vector<Token> buffer;
     do {
-	vector<Token> v = tokenizeStream( IN , true);
-	for ( auto iter = v.cbegin(); iter != v.cend(); ++iter ) {
-	    if (iter->role & NEWPARAGRAPH) {
-		//process the buffer
-		parCount= outputTokensXML( root, buffer, parCount);
-		buffer.clear();
-	    }
-	    buffer.push_back( *iter);
+	vector<Token> v = tokenizeStream( IN );
+	for ( auto const& token : v ) {
+	  if ( token.role & NEWPARAGRAPH) {
+	    //process the buffer
+	    parCount = outputTokensXML( root, buffer, parCount );
+	    buffer.clear();
+	  }
+	  buffer.push_back( token );
 	}
-    } while (!IN.eof());
-    if (!buffer.empty()) outputTokensXML( root, buffer, parCount);
+    } while ( IN );
+    if (!buffer.empty()){
+      outputTokensXML( root, buffer, parCount);
+    }
     return doc;
   }
 
@@ -660,13 +663,17 @@ namespace Tokenizer {
       folia::Document *doc = tokenize( IN );
       OUT << doc << endl;
       delete doc;
-    } else {
+    }
+    else {
       int i = 0;
+      inputEncoding = checkBOM( IN );
       do {
-       vector<Token> v = tokenizeStream( IN , false);
-       if (!v.empty()) outputTokens( OUT, v , (i>0) );
-       i++;
-      } while (!IN.eof());
+	vector<Token> v = tokenizeStream( IN );
+	if ( !v.empty() ) {
+	  outputTokens( OUT, v , (i>0) );
+	}
+	++i;
+      } while ( IN );
       OUT << endl;
     }
   }
@@ -1684,6 +1691,25 @@ namespace Tokenizer {
       return s.substr( bomLength );
     }
     return s;
+  }
+
+  string TokenizerClass::checkBOM( istream& in ){
+    string result = inputEncoding;
+    streampos pos = in.tellg();
+    string s;
+    in >> s;
+    UErrorCode err = U_ZERO_ERROR;
+    int32_t bomLength = 0;
+    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(), s.length(),
+							&bomLength, &err);
+    if ( bomLength ){
+      if ( tokDebug ){
+	*Log(theErrLog) << "Autodetected encoding: " << encoding << endl;
+      }
+      result = encoding;
+    }
+    in.seekg( pos + (streampos)bomLength );
+    return result;
   }
 
   // string wrapper

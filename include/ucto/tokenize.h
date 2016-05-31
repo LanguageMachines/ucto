@@ -155,7 +155,9 @@ namespace Tokenizer {
     bool tokenize( folia::Document& );
 
     //Tokenize from input stream to a vector of Tokens
-    std::vector<Token> tokenizeStream( std::istream&, bool allatonce=true );
+    // non greedy. Stops after the first full sentence is detected.
+    // should be called multiple times until EOF
+    std::vector<Token> tokenizeStream( std::istream& );
 
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
@@ -307,6 +309,7 @@ namespace Tokenizer {
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar32 ) const;
     std::string checkBOM( const std::string&, std::string& );
+    std::string checkBOM( std::istream& );
     bool readsettings( const std::string& );
     bool readrules( const std::string& );
     bool readfilters( const std::string& );
