@@ -1053,41 +1053,48 @@ namespace Tokenizer {
     int count = 0;
     const int size = tokens.size();
     int begin = 0;
-    for (int i = begin; i < size; i++) {
+    int i = 0;
+    for ( auto& token : tokens ) {
       if (tokDebug >= 5){
 	*Log(theErrLog) << "[countSentences] buffer#" <<i
-			<< " word=[" << tokens[i].us
-			<< "] role=" << tokens[i].role
+			<< " word=[" << token.us
+			<< "] role=" << token.role
 			<< ", quotelevel="<< quotelevel << endl;
       }
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((forceentirebuffer) && (tokens[i].role & TEMPENDOFSENTENCE) && (quotelevel == 0)) {
+      if (token.role & NEWPARAGRAPH) quotelevel = 0;
+      if (token.role & BEGINQUOTE) quotelevel++;
+      if (token.role & ENDQUOTE) quotelevel--;
+      if ( forceentirebuffer
+	   && (token.role & TEMPENDOFSENTENCE)
+	   && (quotelevel == 0)) {
 	//we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
 	//Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
-	tokens[i].role ^= TEMPENDOFSENTENCE;
-	tokens[i].role |= ENDOFSENTENCE;
+	token.role ^= TEMPENDOFSENTENCE;
+	token.role |= ENDOFSENTENCE;
 	tokens[begin].role |= BEGINOFSENTENCE;
       }
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+      if ( (token.role & ENDOFSENTENCE)
+	   && (quotelevel == 0) ) {
 	begin = i + 1;
 	count++;
 	if (tokDebug >= 5){
 	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " found" << endl;
 	}
-	if ((begin < size) ){
+	if ( begin < size ){
 	  tokens[begin].role |= BEGINOFSENTENCE;
 	}
       }
-      if ((forceentirebuffer) && (i == size - 1) && !(tokens[i].role & ENDOFSENTENCE))  {
+      if ( forceentirebuffer
+	   && ( i == size - 1)
+	   && !(token.role & ENDOFSENTENCE) )  {
 	//last token of buffer
 	count++;
-	tokens[i].role |= ENDOFSENTENCE;
+	token.role |= ENDOFSENTENCE;
 	if (tokDebug >= 5){
 	  *Log(theErrLog) << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;
 	}
       }
+      ++i;
     }
     return count;
   }
@@ -1550,8 +1557,8 @@ namespace Tokenizer {
   }
 
   TokenizerClass::~TokenizerClass(){
-    for ( unsigned int i = 0; i < rules.size(); i++) {
-      delete rules[i];
+    for ( const auto rule : rules ) {
+      delete rule;
     }
     rulesmap.clear();
     delete theErrLog;
@@ -1977,16 +1984,16 @@ namespace Tokenizer {
       }
     }
     else {
-      for ( unsigned int i = 0; i < rules.size(); i++) {
+      for ( const auto& rule : rules ) {
 	if ( tokDebug >= 4){
-	  *Log(theErrLog) << "\tTESTING " << rules[i]->id << endl;
+	  *Log(theErrLog) << "\tTESTING " << rule->id << endl;
 	}
 	//Find first matching rule
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
-	if ( rules[i]->matchAll( input, pre, post, matches ) ){
+	if ( rule->matchAll( input, pre, post, matches ) ){
 	  if ( tokDebug >= 4 ){
-	    *Log(theErrLog) << "\tMATCH: " << rules[i]->id << endl;
+	    *Log(theErrLog) << "\tMATCH: " << rule->id << endl;
 	  }
 	  if ( pre.length() > 0 ){
 	    if ( tokDebug >= 4 ){
@@ -2006,18 +2013,21 @@ namespace Tokenizer {
 				<< matches[m] << endl;
 	      }
 	      if ( doPunctFilter
-		   && (&rules[i]->id)->startsWith("PUNCTUATION") ){
+		   && (&rule->id)->startsWith("PUNCTUATION") ){
 		if (tokDebug >= 2 ){
 		  *Log(theErrLog) << "   [tokenizeWord] skipped PUNCTUATION ["
 				  << matches[m] << "]" << endl;
 		}
-		if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
+		if ( !tokens.empty()
+		     && tokens[tokens.size()-1].role & NOSPACE ){
 		  tokens[tokens.size()-1].role ^= NOSPACE;
 		}
 	      }
 	      else {
-		if ( post.length() > 0 ) space = false;
-		UnicodeString type = rules[i]->id;
+		if ( post.length() > 0 ) {
+		  space = false;
+		}
+		UnicodeString type = rule->id;
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
@@ -2227,10 +2237,10 @@ namespace Tokenizer {
   void addOrder( vector<UnicodeString>& order, UnicodeString &line ){
     try {
       UnicodeRegexMatcher m( "\\s+" );
-      vector<UnicodeString> tmp;
-      int num = m.split( line, tmp );
-      for ( int i=0; i < num; ++i )
-	order.push_back( tmp[i] );
+      vector<UnicodeString> usv;
+      int num = m.split( line, usv );
+      for ( const auto& us : usv  )
+	order.push_back( us );
     }
     catch ( exception& e ){
       abort();
