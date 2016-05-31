@@ -483,6 +483,10 @@ namespace Tokenizer {
       //      cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       UnicodeString input_line;
       if ( line.size() == 1 && line[0] == 0 ){
+	// this is quite a hack.
+	// when processing UTF16, '0' bytes are present at EOL
+	// we discard them AND the next byte
+	// this works on Linux with GCC (atm)
 	IN.get();
 	line = "";
       }
@@ -2238,7 +2242,7 @@ namespace Tokenizer {
     try {
       UnicodeRegexMatcher m( "\\s+" );
       vector<UnicodeString> usv;
-      int num = m.split( line, usv );
+      m.split( line, usv );
       for ( const auto& us : usv  )
 	order.push_back( us );
     }
