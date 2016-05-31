@@ -308,7 +308,6 @@ namespace Tokenizer {
 
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar32 ) const;
-    std::string checkBOM( const std::string&, std::string& );
     std::string checkBOM( std::istream& );
     bool readsettings( const std::string& );
     bool readrules( const std::string& );

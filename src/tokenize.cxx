@@ -325,8 +325,8 @@ namespace Tokenizer {
   const UnicodeString type_unknown = "UNKNOWN";
 
   ostream& operator<<( ostream& os, const Quoting& q ){
-    for( size_t i=0; i < q.quotes.size(); ++i ){
-      os << q.quotes[i].openQuote << "\t" << q.quotes[i].closeQuote << endl;
+    for( const auto& quote : q.quotes ){
+      os << quote.openQuote << "\t" << quote.closeQuote << endl;
     }
     return os;
   }
@@ -370,18 +370,18 @@ namespace Tokenizer {
   }
 
   UnicodeString Quoting::lookupOpen( const UnicodeString &q ) const {
-    for ( size_t i=0; i < quotes.size(); ++i ){
-      if ( quotes[i].openQuote.indexOf(q) >=0 )
-	return quotes[i].closeQuote;
+    for ( const auto& quote : quotes ){
+      if ( quote.openQuote.indexOf(q) >=0 )
+	return quote.closeQuote;
     }
     return "";
   }
 
   UnicodeString Quoting::lookupClose( const UnicodeString &q ) const {
     UnicodeString res;
-    for ( size_t i=0; i < quotes.size(); ++i ){
-      if ( quotes[i].closeQuote.indexOf(q) >= 0 )
-	return quotes[i].openQuote;
+    for ( const auto& quote : quotes ){
+      if ( quote.closeQuote.indexOf(q) >= 0 )
+	return quote.openQuote;
     }
     return "";
   }
@@ -626,26 +626,26 @@ namespace Tokenizer {
     return doc;
   }
 
-  void TokenizerClass::tokenize( const string & ifile, const string & ofile) {
+  void TokenizerClass::tokenize( const string& ifile, const string& ofile) {
     ostream *OUT = NULL;
     if ( ofile.empty() )
-        OUT = &cout;
+      OUT = &cout;
     else {
-        OUT = new ofstream( ofile );
+      OUT = new ofstream( ofile );
     }
 
     istream *IN = NULL;
     if (!xmlin) {
-        if ( ifile.empty() )
-            IN = &cin;
-        else {
-            IN = new ifstream( ifile );
-            if ( !IN || !IN->good() ){
-                cerr << "Error: problems opening inputfile " << ifile << endl;
-                cerr << "Courageously refusing to start..."  << endl;
-                exit(EXIT_FAILURE);
-            }
-        }
+      if ( ifile.empty() )
+	IN = &cin;
+      else {
+	IN = new ifstream( ifile );
+	if ( !IN || !IN->good() ){
+	  cerr << "Error: problems opening inputfile " << ifile << endl;
+	  cerr << "Courageously refusing to start..."  << endl;
+	  exit(EXIT_FAILURE);
+	}
+      }
       this->tokenize( *IN, *OUT );
     } else {
       folia::Document doc;
@@ -833,7 +833,9 @@ namespace Tokenizer {
     outputTokensXML(root, tv );
   }
 
-  int TokenizerClass::outputTokensXML( folia::FoliaElement *root, const vector<Token>& tv, int parCount ) const {
+  int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
+				       const vector<Token>& tv,
+				       int parCount ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
@@ -858,9 +860,10 @@ namespace Tokenizer {
     }
 
     bool in_paragraph = false;
-    for ( size_t i=0; i < tv.size(); i++) {
-      if ( ( !root_is_structure_element && !root_is_sentence ) &&
-	   ( (tv[i].role & NEWPARAGRAPH) || !in_paragraph ) ) {
+    for ( const auto& token : tv ) {
+      if ( ( !root_is_structure_element && !root_is_sentence )
+	   &&
+	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
 	  root = root->parent();
@@ -876,7 +879,7 @@ namespace Tokenizer {
 	root = p;
 	quotelevel = 0;
       }
-      if ( tv[i].role & ENDQUOTE) {
+      if ( token.role & ENDQUOTE) {
 	if ( tokDebug > 0 ){
 	  *Log(theErrLog) << "[outputTokensXML] End of quote" << endl;
 	}
@@ -887,7 +890,7 @@ namespace Tokenizer {
 	  *Log(theErrLog) << "[outputTokensXML] back to " << root->classname() << endl;
 	}
       }
-      if (( tv[i].role & BEGINOFSENTENCE) && (!root_is_sentence)) {
+      if (( token.role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	folia::KWargs args;
 	if ( root->id().empty() )
 	  args["generate_id"] = root->parent()->id();
@@ -904,20 +907,20 @@ namespace Tokenizer {
 	lastS = root;
       }
       if  (tokDebug > 0) {
-	*Log(theErrLog) << "[outputTokensXML] Creating word element for " << tv[i].us << endl;
+	*Log(theErrLog) << "[outputTokensXML] Creating word element for " << token.us << endl;
       }
       folia::KWargs args;
       args["generate_id"] = lastS->id();
-      args["class"] = folia::UnicodeToUTF8( tv[i].type );
+      args["class"] = folia::UnicodeToUTF8( token.type );
       if ( passthru )
 	args["set"] = "passthru";
       else
 	args["set"] = settingsfilename;
-      if ( tv[i].role & NOSPACE) {
+      if ( token.role & NOSPACE) {
 	args["space"]= "no";
       }
       folia::FoliaElement *w = new folia::Word( args, root->doc() );
-      UnicodeString out = tv[i].us;
+      UnicodeString out = token.us;
       if (lowercase) {
 	out.toLower();
       }
@@ -925,9 +928,9 @@ namespace Tokenizer {
 	out.toUpper();
       }
       w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      //      *Log(theErrLog) << "created " << w << " text= " <<  tv[i].us << endl;
+      //      *Log(theErrLog) << "created " << w << " text= " <<  token.us << endl;
       root->append( w );
-      if ( tv[i].role & BEGINQUOTE) {
+      if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {
 	  *Log(theErrLog) << "[outputTokensXML] Creating quote element" << endl;
 	}
@@ -938,7 +941,7 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }
-      if ( ( tv[i].role & ENDOFSENTENCE) && (!root_is_sentence) ) {
+      if ( ( token.role & ENDOFSENTENCE) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) {
 	  *Log(theErrLog) << "[outputTokensXML] End of sentence" << endl;
 	}
@@ -967,43 +970,55 @@ namespace Tokenizer {
     return os;
   }
 
-  void TokenizerClass::outputTokens( ostream& OUT, const vector<Token>& toks, const bool continued) const {
-    //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation, makes paragraph boundaries work over multiple calls
+  void TokenizerClass::outputTokens( ostream& OUT,
+				     const vector<Token>& tokens,
+				     const bool continued ) const {
+    // continued should be set to true when outputTokens is invoked multiple
+    // times and it is not the first invokation
+    // this makes paragraph boundaries work over multiple calls
     short quotelevel = 0;
-    for ( size_t i = 0; i < toks.size(); i++) {
-      if ((detectPar) && ( toks[i].role & NEWPARAGRAPH) && (!verbose) && ((i != 0) || (continued))  ) {
+    bool first = true;
+    for ( const auto token : tokens ) {
+      if ( detectPar
+	   && (token.role & NEWPARAGRAPH)
+	   && !verbose
+	   && ( !first || continued ) ) {
 	//output paragraph separator
 	if (sentenceperlineoutput) {
 	  OUT << endl;
-	} else {
+	}
+	else {
 	  OUT << endl << endl;
 	}
       }
+      UnicodeString s = token.us;
       if (lowercase) {
-	UnicodeString s = toks[i].us;
-	OUT << s.toLower();
+	s = s.toLower();
       }
       else if (uppercase) {
-	UnicodeString s = toks[i].us;
-	OUT << s.toUpper();
+	s = s.toUpper();
       }
-      else {
-	OUT << toks[i].us;
+      OUT << s;
+      if ( token.role & NEWPARAGRAPH) {
+	quotelevel = 0;
       }
-      if ( toks[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if ( toks[i].role & BEGINQUOTE) quotelevel++;
+      if ( token.role & BEGINQUOTE) {
+	++quotelevel;
+      }
       if (verbose) {
-	OUT << "\t" << toks[i].type << "\t" << toks[i].role << endl;
+	OUT << "\t" << token.type << "\t" << token.role << endl;
       }
-      if ( toks[i].role & ENDQUOTE) quotelevel--;
+      if ( token.role & ENDQUOTE) {
+	--quotelevel;
+      }
 
-      if ( toks[i].role & ENDOFSENTENCE) {
+      if ( token.role & ENDOFSENTENCE) {
 	if ( verbose ) {
-	  if ( !(toks[i].role & NOSPACE ) ){
+	  if ( !(token.role & NOSPACE ) ){
 	    OUT << endl;
 	  }
 	}
-	else if (quotelevel == 0) {
+	else if ( quotelevel == 0 ) {
 	  if (sentenceperlineoutput) {
 	    OUT << endl;
 	  }
@@ -1012,12 +1027,15 @@ namespace Tokenizer {
 	  }
 	}
       }
-      if ( (i < toks.size() ) && (!verbose) ) {
-	if (!( ( toks[i].role & ENDOFSENTENCE) && (sentenceperlineoutput) )) {
+      if ( ( &token != &(*tokens.rbegin()) )
+	   && !verbose ) {
+	if ( !( (token.role & ENDOFSENTENCE)
+		&& sentenceperlineoutput ) ) {
 	  OUT << " ";
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
 	}
-	else if ((quotelevel > 0) && (sentenceperlineoutput)) {
+	else if ( (quotelevel > 0)
+		  && sentenceperlineoutput ) {
 	  OUT << " ";
 	}
       }
@@ -1676,21 +1694,6 @@ namespace Tokenizer {
       tokens[0].role |= BEGINOFSENTENCE;
       tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
     }
-  }
-
-  string TokenizerClass::checkBOM( const string& s, string& enc ){
-    UErrorCode err = U_ZERO_ERROR;
-    int32_t bomLength = 0;
-    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(), s.length(),
-							&bomLength, &err);
-    if ( bomLength ){
-      enc = encoding;
-      if ( tokDebug ){
-	*Log(theErrLog) << "Autodetected encoding: " << enc << endl;
-      }
-      return s.substr( bomLength );
-    }
-    return s;
   }
 
   string TokenizerClass::checkBOM( istream& in ){
