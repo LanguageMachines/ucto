@@ -485,11 +485,19 @@ namespace Tokenizer {
       }
       UnicodeString input_line;
       if ( line.size() > 0 && line[0] == 0 ){
-	// this is quite a hack.
-	// when processing UTF16, '0' bytes show up at pos 0
-	// we discard them
+	// when processing UTF16LE, '0' bytes show up at pos 0
+	// we discard them, not for UTF16BE!
 	// this works on Linux with GCC (atm)
-	line.erase(0,1);
+	if ( inputEncoding != "UTF16BE" ){
+	  line.erase(0,1);
+	}
+      }
+      if ( line.size() > 0 && inputEncoding == "UTF16BE" &&
+	   line[line.size()-1] == 0 ){
+	// when processing UTF16BE, '0' bytes show up at the end
+	// we discard them.
+	// this works on Linux with GCC (atm)
+	line.erase(line.size()-1);
       }
       if ( tokDebug > 0 ){
 	cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
@@ -1732,9 +1740,10 @@ namespace Tokenizer {
       result = encoding;
       if ( result == "UTF16BE"
 	   || result == "UTF-16BE" ){
-	throw uCodingError( string(" BigEndian UTF16 is not supported.\n")
-			    + "Please use 'iconv -f UTF16BE -t UTF16LE'"
-			    + " to convert your input to a supported format" );
+	// throw uCodingError( string(" BigEndian UTF16 is not supported.\n")
+	// 		    + "Please use 'iconv -f UTF16BE -t UTF16LE'"
+	// 		    + " to convert your input to a supported format" );
+	result = "UTF16BE";
       }
     }
     in.seekg( pos + (streampos)bomLength );
