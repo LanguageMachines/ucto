@@ -480,22 +480,28 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	*Log(theErrLog) << "[tokenize] Read input line # " << linenum << endl;
       }
-      //      cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
-      UnicodeString input_line;
-      if ( line.size() == 1 && line[0] == 0 ){
-	// this is quite a hack.
-	// when processing UTF16, '0' bytes are present at EOL
-	// we discard them AND the next byte
-	// this works on Linux with GCC (atm)
-	char bla = IN.get();
-	//	cerr << "got " << (int)bla << endl;
-	line = "";
+      if ( tokDebug > 0 ){
+	cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       }
-      //      cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
+      UnicodeString input_line;
+      if ( line.size() > 0 && line[0] == 0 ){
+	// this is quite a hack.
+	// when processing UTF16, '0' bytes show up at pos 0
+	// we discard them
+	// this works on Linux with GCC (atm)
+	line.erase(0,1);
+      }
+      if ( tokDebug > 0 ){
+	cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
+      }
       if ( !line.empty() ){
-	//	cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	if ( tokDebug > 0 ){
+	  cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	}
 	stripCR( line );
-	//	cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	if ( tokDebug > 0 ){
+	  cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	}
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
 	  input_line += " " + eosmark;
