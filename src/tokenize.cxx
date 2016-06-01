@@ -483,6 +483,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       }
+      stripCR( line );
       UnicodeString input_line;
       if ( line.size() > 0 && line[0] == 0 ){
 	// when processing UTF16LE, '0' bytes show up at pos 0
@@ -506,7 +507,6 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ){
 	  cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
-	stripCR( line );
 	if ( tokDebug > 0 ){
 	  cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
