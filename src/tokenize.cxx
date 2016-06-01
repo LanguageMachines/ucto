@@ -55,28 +55,28 @@ namespace Tokenizer {
 
   class uRangeError: public std::out_of_range {
   public:
-    uRangeError( const string& s ): out_of_range( "ucto: out of range :" + s ){};
+    uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
   };
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error :" + s ){};
+    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   class uOptionError: public std::invalid_argument {
   public:
-    uOptionError( const string& s ): invalid_argument( "ucto: option :" + s ){};
+    uOptionError( const string& s ): invalid_argument( "ucto: option:" + s ){};
   };
 
   class uConfigError: public std::invalid_argument {
   public:
-    uConfigError( const string& s ): invalid_argument( "ucto: config file :" + s ){};
-    uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file :" + folia::UnicodeToUTF8(us) ){};
+    uConfigError( const string& s ): invalid_argument( "ucto: config file:" + s ){};
+    uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file:" + folia::UnicodeToUTF8(us) ){};
   };
 
   class uCodingError: public std::runtime_error {
   public:
-    uCodingError( const string& s ): runtime_error( "ucto: coding problem :" + s ){};
+    uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
   };
 
 
@@ -487,13 +487,15 @@ namespace Tokenizer {
 	// when processing UTF16, '0' bytes are present at EOL
 	// we discard them AND the next byte
 	// this works on Linux with GCC (atm)
-	IN.get();
+	char bla = IN.get();
+	//	cerr << "got " << (int)bla << endl;
 	line = "";
       }
       //      cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
       if ( !line.empty() ){
 	//	cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	stripCR( line );
+	//	cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
 	  input_line += " " + eosmark;
@@ -505,7 +507,8 @@ namespace Tokenizer {
 	}
       }
       int numS;
-      if ( (done) || ( input_line.isEmpty()) ){
+      if ( done
+	   || input_line.isEmpty() ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
       }
@@ -1721,6 +1724,12 @@ namespace Tokenizer {
 	*Log(theErrLog) << "Autodetected encoding: " << encoding << endl;
       }
       result = encoding;
+      if ( result == "UTF16BE"
+	   || result == "UTF-16BE" ){
+	throw uCodingError( string(" BigEndian UTF16 is not supported.\n")
+			    + "Please use 'iconv -f UTF16BE -t UTF16LE'"
+			    + " to convert your input to a supported format" );
+      }
     }
     in.seekg( pos + (streampos)bomLength );
     return result;
