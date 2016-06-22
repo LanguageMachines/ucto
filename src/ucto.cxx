@@ -49,6 +49,7 @@ void usage(){
        << "\t-e <string>     - set input encoding (default UTF8)" << endl
        << "\t-N <string>     - set output normalization (default NFC)" << endl
        << "\t-f              - Disable filtering of special characters" << endl
+       << "\t-h or --help    - this message" << endl
        << "\t-L <language>   - Automatically selects a configuration file by language code" << endl
        << "\t-l              - Convert to all lowercase" << endl
        << "\t-u              - Convert to all uppercase" << endl
@@ -63,7 +64,7 @@ void usage(){
        << "\t-P              - Disable paragraph detection" << endl
        << "\t-S              - Disable sentence detection!" << endl
        << "\t-Q              - Enable quote detection (experimental)" << endl
-       << "\t-V              - Show version information" << endl
+       << "\t-V or --version - Show version information" << endl
        << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
        << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t-X              - Output FoLiA XML, use the Document ID specified with --id=" << endl
@@ -104,13 +105,15 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:");
+			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help");
     Opts.init(argc, argv );
-    if ( Opts.extract( 'h' ) ){
+    if ( Opts.extract( 'h' )
+	 || Opts.extract( "help" ) ){
       usage();
       return EXIT_SUCCESS;
     }
-    if ( Opts.extract( 'V' ) ){
+    if ( Opts.extract( 'V' ) ||
+	 Opts.extract( "version" ) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
 	   << "(c) ILK 2009 - 2014, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
