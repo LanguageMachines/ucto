@@ -47,8 +47,7 @@ FRACTIONORDATE=\p{N}{1,2}[/\-]\p{N}{1,2}
 
 FRACNUMBER=\p{N}+(?:/\p{N}+)+
 
-NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
-#NUMBER-YEAR=('\p{N}{2})\P{N}
+NUMBER-YEAR=(['`’‘´]\p{N}{2})(?:\P{N}|\z)
 
 #Times
 TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
@@ -68,10 +67,10 @@ UNKNOWN=.
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-\['`’‘][sS]
-\['`’‘][tT]
-\['`’‘][nN]
-\['`’‘][rR]
+\['`’‘´][sS]
+\['`’‘´][tT]
+\['`’‘´][nN]
+\['`’‘´][rR]
 
 [ORDINALS]
 e|E
@@ -81,12 +80,12 @@ er|ER
 
 
 [TOKENS]
-\['`’‘][sS]
-\['`’‘][kK]
-\['`’‘][mM]
-\['`’‘][nN]
-\['`’‘][tT]
-\['`’‘](?:ie|IE)
+\['`’‘´][sS]
+\['`’‘´][kK]
+\['`’‘´][mM]
+\['`’‘´][nN]
+\['`’‘´][tT]
+\['`’‘´](?:ie|IE)
 
 [UNITS]
 km

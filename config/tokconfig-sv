@@ -47,8 +47,7 @@ DATE-SHORT=\p{N}{1,2}[-]\p{Ps}?\p{N}{1,2}[-]\p{Ps}?\p{N}{2,4}
 
 FRACNUMBER=\p{N}+(?:/\p{N}+)+
 
-NUMBER-YEAR=('\p{N}{2})(?:\P{N}|\z)
-#NUMBER-YEAR=('\p{N}{2})\P{N}
+NUMBER-YEAR=(['`’‘´]\p{N}{2})(?:\P{N}|\z)
 
 #Times
 TIME=\p{N}{1,2}\.\p{N}{1,2}(?:\.\p{N})?(?i:am|pm)?
@@ -67,7 +66,7 @@ UNKNOWN=.
 [PREFIXES]
 
 [SUFFIXES]
-'[sS]
+['`’‘´][sS]
 :[nN]
 :[aA]
 :ar
@@ -81,7 +80,7 @@ UNKNOWN=.
 :[eE]
 
 [TOKENS]
-'[sS]
+['`’‘´][sS]
 
 [UNITS]
 km

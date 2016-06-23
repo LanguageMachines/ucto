@@ -24,7 +24,7 @@ SUFFIX = ((?:\p{L})+)( %SUFFIXES% )(?:\Z|\P{L})
 
 #Affixed proper nouns and compounds with dash/underscore.
 #Ex= <Mahir'in> <siyah-beyaz>
-NP-COMP=\p{L}+(?:['`’-]\p{L}+)+
+NP-COMP=\p{L}+(?:['`’‘´-]\p{L}+)+
 
 #Abbreviations with multiple periods as in <A.B.C>
 ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)(?:\Z|[,:;])
@@ -39,9 +39,9 @@ PUNCTUATION-MULTI=(?:\.|\-|[!\?]){2,}
 ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)\Z
 
 #Date
-DATE=\p{N}{1,2}\.\p{N}{1,2}\.\p{N}{2,4}(?:['`’-]\p{L}+)+
+DATE=\p{N}{1,2}\.\p{N}{1,2}\.\p{N}{2,4}(?:['`’‘´-]\p{L}+)+
 
-NUMBER-YEAR=(['`’]\p{N}{2})(?:\P{N}|\z)
+NUMBER-YEAR=(['`’‘´]\p{N}{2})(?:\P{N}|\z)
 
 FRACNUMBER=\p{N}+(?:/\p{N}+)+
 
