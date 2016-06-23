@@ -1,6 +1,6 @@
 [RULE-ORDER]
 GENITIVEPLACENAME WORD-WITHSUFFIX WORD-INFIX-COMPOUND QUOTE-SUFFIX
-WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL DATE-REVERSE DATE
+WORD-DIMIN WORD-TOKEN ABBREVIATION-KNOWN NUMBER-ORDINAL DATE-REVERSE DATE
 URL URL-WWW URL-DOMAIN E-MAIL
 ABBREVIATION-COMPOUND COMPOUND-ABBREVIATION
 QUOTE-COMPOUND WORD-COMPOUND NUMBER-COMPOUND
@@ -35,6 +35,9 @@ WORD-PARPREFIX=(?:\p{Ps}\p{L}+[\p{Pc}\p{Pd}]?\p{Pe}[\p{Pc}\p{Pd}]?)\p{L}+(?:[\p{
 
 #Ex: koning(in)
 WORD-PARSUFFIX=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{Pd}]?\p{L}+\p{Pe})
+
+#Ex: baby'tje
+WORD-DIMIN=[\p{L}\p{N}]+['`’‘´]tjes{0,1}
 
 #Keep dash/underscore connected parts (even if they are in parenthesis)
 WORD-COMPOUND=[\p{L}\p{N}]+(?:[\p{Pc}\p{Pd}][\p{L}\p{N}]+)+
