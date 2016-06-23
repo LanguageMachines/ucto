@@ -1219,10 +1219,12 @@ namespace Tokenizer {
   // FBK: return true if character is a quote.
   bool TokenizerClass::u_isquote( UChar32 c ) const {
     bool quote = false;
-    if ( u_hasBinaryProperty( c, UCHAR_QUOTATION_MARK ) ||
-	 c == '`' ) {
-      // the backtick is often used as a quote (apostroph)
-      // but is DOESN`T have the UCHAR_QUOTATION_MARK property
+    if ( u_hasBinaryProperty( c, UCHAR_QUOTATION_MARK )
+	 || c == '`'
+	 || c == U'´' ) {
+      // M$ users use the spacing grave and acute accents often as a
+      // quote (apostroph) but is DOESN`T have the UCHAR_QUOTATION_MARK property
+      // so trick that
       quote = true;
     }
     else {
