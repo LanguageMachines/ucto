@@ -668,7 +668,8 @@ namespace Tokenizer {
 	}
       }
       this->tokenize( *IN, *OUT );
-    } else {
+    }
+    else {
       folia::Document doc;
       doc.readFromFile(ifile);
       this->tokenize(doc);
@@ -1726,6 +1727,9 @@ namespace Tokenizer {
 
   string TokenizerClass::checkBOM( istream& in ){
     string result = inputEncoding;
+    if ( &in == &cin ){
+      return result;
+    }
     streampos pos = in.tellg();
     string s;
     in >> s;
