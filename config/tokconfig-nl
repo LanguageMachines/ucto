@@ -40,7 +40,7 @@ WORD-PARSUFFIX=\p{L}+(?:[\p{Pc}\p{Pd}]\p{L}+)*(?:[\p{Pc}\p{Pd}]?\p{Ps}[\p{Pc}\p{
 WORD-COMPOUND=[\p{L}\p{N}]+(?:[\p{Pc}\p{Pd}][\p{L}\p{N}]+)+
 
 #Keep quote connected parts.
-QUOTE-COMPOUND=[\p{L}\p{N}-]+(?:['`’‘]\p{L}{1})+(?:-[\p{L}\p{N}]+)+
+QUOTE-COMPOUND=[\p{L}\p{N}-]+(?:['`’‘´]\p{L}{1})+(?:-[\p{L}\p{N}]+)+
 
 #Abbreviations with multiple periods: a.u.b
 ABBREVIATION=^(\p{L}{1,3}(?:\.\p{L}{1,3})+\.?)(?:\Z|[,:;])
@@ -76,8 +76,7 @@ NUMBER-STRING=^\p{N}+(?:\p{Pd}?)(?:\p{L}+)
 STRING-NUMBER=\p{L}+\p{Pd}?\p{N}+
 
 #abbreviated year: '40
-NUMBER-YEAR=(['`’‘]\p{N}{2})(?:\P{N}|\z)
-#NUMBER-YEAR=('\p{N}{2})\P{N}
+NUMBER-YEAR=(['`’‘´]\p{N}{2})(?:\P{N}|\z)
 
 #Times
 TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
@@ -86,7 +85,7 @@ TIME=\p{N}{1,2}:\p{N}{1,2}(?::\p{N}{1,2})?(am|pm|AM|PM)?
 NUMBER=-?(?:[\.,]?\p{N}+)+
 
 #'s-Gravenhage, 's-Hertogenbosch
-GENITIVEPLACENAME=['`’‘][sS]-\p{Lu}\p{L}+
+GENITIVEPLACENAME=['`’‘´][sS]-\p{Lu}\p{L}+
 
 CURRENCY=\p{Sc}
 
@@ -96,15 +95,15 @@ PUNCTUATION=\p{P}
 
 UNKNOWN=.
 
-QUOTE-SUFFIX=(\p{Lu}(?:\p{L})+(?:s['`’‘]|x['`'‘]))
+QUOTE-SUFFIX=(\p{Lu}(?:\p{L})+(?:s['`’‘´]|x['`’‘´]))
 
 [PREFIXES]
 
 [ATTACHEDSUFFIXES]
-\['`’‘][sS]
-\['`’‘][tT]
-\['`’‘][nN]
-\['`’‘][rR]
+\['`’‘´][sS]
+\['`’‘´][tT]
+\['`’‘´][nN]
+\['`’‘´][rR]
 
 [ORDINALS]
 e|E
@@ -114,12 +113,12 @@ er|ER
 
 
 [TOKENS]
-\['`’‘][sS]
-\['`’‘][kK]
-\['`’‘][mM]
-\['`’‘][nN]
-\['`’‘][tT]
-\['`’‘](?:ie|IE)
+\['`’‘´][sS]
+\['`’‘´][kK]
+\['`’‘´][mM]
+\['`’‘´][nN]
+\['`’‘´][tT]
+\['`’‘´](?:ie|IE)
 
 [UNITS]
 km
