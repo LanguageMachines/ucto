@@ -48,6 +48,8 @@ AC_TYPE_INT32_T
 
 # Checks for library functions.
 
+AX_LIB_READLINE
+
 # ugly hack when PKG_CONFIG_PATH isn't defined.
 # couldn't get it to work otherwise
 if test "x$PKG_CONFIG_PATH" = x; then

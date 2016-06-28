@@ -42,6 +42,28 @@
 #include "libfolia/folia.h"
 #include "ucto/tokenize.h"
 
+#define DO_READLINE
+#ifdef HAVE_LIBREADLINE
+#  if defined(HAVE_READLINE_READLINE_H)
+#    include <readline/readline.h>
+#  elif defined(HAVE_READLINE_H)
+#    include <readline.h>
+#  else
+#    undef DO_READLINE
+#  endif /* !defined(HAVE_READLINE_H) */
+#else
+#  undef DO_READLINE
+#endif /* HAVE_LIBREADLINE */
+
+#ifdef HAVE_READLINE_HISTORY
+#  if defined(HAVE_READLINE_HISTORY_H)
+#    include <readline/history.h>
+#  elif defined(HAVE_HISTORY_H)
+#    include <history.h>
+#  endif /* defined(HAVE_READLINE_HISTORY_H) */
+#endif /* HAVE_READLINE_HISTORY */
+
+
 using namespace std;
 using namespace TiCC;
 
@@ -686,6 +708,64 @@ namespace Tokenizer {
       OUT << doc << endl;
       delete doc;
     }
+#ifdef DO_READLINE
+    else if ( &IN == &cin ){
+      // interactive use.
+      const char *prompt = "ucto> ";
+      string line;
+      bool eof = false;
+      while ( !eof ){
+	string data;
+	char *input = readline( prompt );
+	if ( !input ){
+	  eof = true;
+	  break;
+	}
+	line = input;
+	if ( sentenceperlineinput ){
+	  if ( line.empty() ){
+	    free( input );
+	    continue;
+	  }
+	  else {
+	    add_history( input );
+	    free( input );
+	    data += line + " ";
+	  }
+	}
+	else {
+	  if ( !line.empty() ){
+	    add_history( input );
+	    free( input );
+	    data = line + " ";
+	  }
+	  while ( !eof ){
+	    char *input = readline( prompt );
+	    if ( !input ){
+	      eof = true;
+	      break;
+	    }
+	    line = input;
+	    if ( line.empty() ){
+	      free( input );
+	      break;
+	    }
+	    add_history( input );
+	    free( input );
+	    data += line + " ";
+	  }
+	}
+	if ( !data.empty() ){
+	  istringstream inputstream(data,istringstream::in);
+	  vector<Token> v = tokenizeStream( inputstream );
+	  if ( !v.empty() ) {
+	    outputTokens( OUT, v );
+	  }
+	  OUT << endl;
+	}
+      }
+    }
+#endif
     else {
       int i = 0;
       inputEncoding = checkBOM( IN );
