@@ -25,6 +25,7 @@
 
 */
 
+#include <unistd.h>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
@@ -709,11 +710,12 @@ namespace Tokenizer {
       delete doc;
     }
 #ifdef DO_READLINE
-    else if ( &IN == &cin ){
-      // interactive use.
+    else if ( &IN == &cin && isatty(0) ){
+      // interactive use on a terminal (quite a hack..)
       const char *prompt = "ucto> ";
       string line;
       bool eof = false;
+      int i = 0;
       while ( !eof ){
 	string data;
 	char *input = readline( prompt );
@@ -722,45 +724,23 @@ namespace Tokenizer {
 	  break;
 	}
 	line = input;
-	if ( sentenceperlineinput ){
-	  if ( line.empty() ){
-	    free( input );
-	    continue;
-	  }
-	  else {
-	    add_history( input );
-	    free( input );
-	    data += line + " ";
-	  }
+	sentenceperlineinput = true;
+	if ( line.empty() ){
+	  free( input );
+	  continue;
 	}
 	else {
-	  if ( !line.empty() ){
-	    add_history( input );
-	    free( input );
-	    data = line + " ";
-	  }
-	  while ( !eof ){
-	    char *input = readline( prompt );
-	    if ( !input ){
-	      eof = true;
-	      break;
-	    }
-	    line = input;
-	    if ( line.empty() ){
-	      free( input );
-	      break;
-	    }
-	    add_history( input );
-	    free( input );
-	    data += line + " ";
-	  }
+	  add_history( input );
+	  free( input );
+	  data += line + " ";
 	}
 	if ( !data.empty() ){
 	  istringstream inputstream(data,istringstream::in);
 	  vector<Token> v = tokenizeStream( inputstream );
 	  if ( !v.empty() ) {
-	    outputTokens( OUT, v );
+	    outputTokens( OUT, v, (i>0) );
 	  }
+	  ++i;
 	  OUT << endl;
 	}
       }
