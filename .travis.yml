@@ -24,7 +24,7 @@ before_install:
     - make
     - sudo make install
     - cd ..
-    - git clone https://github.com/LanguagaMachines/uctodata
+    - git clone https://github.com/LanguageMachines/uctodata
     - cd uctodata
     - bash bootstrap.sh
     - ./configure
