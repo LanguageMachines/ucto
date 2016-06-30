@@ -2681,7 +2681,9 @@ namespace Tokenizer {
   bool TokenizerClass::init( const string& fname ){
     *Log(theErrLog) << "Initiating tokeniser..." << endl;
     if (!readsettings( fname ) ) {
-      throw uConfigError( "Cannot read Tokeniser settingsfile "+ fname );
+      string mess = "Cannot read Tokeniser settingsfile " + fname
+	+ "\nUnsupported language? (Did you install the uctodata package?)";
+      throw uConfigError( mess );
       return false;
     }
     settingsfilename = fname;
