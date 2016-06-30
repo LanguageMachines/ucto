@@ -28,6 +28,7 @@ before_install:
     - cd uctodata
     - bash bootstrap.sh
     - ./configure
+    - make
     - sudo make install
     - cd ..
 install:
