@@ -170,7 +170,7 @@ int main( int argc, char *argv[] ){
       }
     }
     if ( Opts.extract('L', value ) ){
-      L_file = string("tokconfig-") + string(value);
+      L_file = "tokconfig-" + value;
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
@@ -202,9 +202,7 @@ int main( int argc, char *argv[] ){
     else if ( !L_file.empty() )
       cfile = L_file;
     else {
-      cerr << "Error: Please specify either a language (-L) or a configuration file (-c)" << endl;
-      usage();
-      return EXIT_FAILURE;
+      cfile = "tokconfig-generic";
     }
   }
 
