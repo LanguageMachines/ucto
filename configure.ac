@@ -55,6 +55,7 @@ AX_LIB_READLINE
 if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH=""
 fi
+#AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
 
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
@@ -81,16 +82,13 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-PKG_CHECK_MODULES([uctodata], [uctodata >= 0.1] )
-
-
 AC_ARG_WITH(folia,
        [  --with-folia=DIR       use libfolia installed in <DIR>;
                note that you can install folia in a non-default directory with
                ./configure --prefix=<DIR> in the folia installation directory],
        [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH"],
        [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
-AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
+#AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 PKG_CHECK_MODULES([folia], [folia >= 1.0] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
@@ -105,6 +103,8 @@ AC_ARG_WITH(ticcutils,
 PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
+
+PKG_CHECK_MODULES([uctodata], [uctodata >= 0.1] )
 
 # Checks for library functions.
 
