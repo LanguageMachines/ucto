@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.8.7], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.9.0], [lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -81,6 +81,9 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
+PKG_CHECK_MODULES([uctodata], [uctodata >= 0.1] )
+
+
 AC_ARG_WITH(folia,
        [  --with-folia=DIR       use libfolia installed in <DIR>;
                note that you can install folia in a non-default directory with
@@ -102,7 +105,6 @@ AC_ARG_WITH(ticcutils,
 PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
-
 
 # Checks for library functions.
 

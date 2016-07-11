@@ -1,3 +1,15 @@
+0.9.0 2016-07-11
+[Ko van der Sloot]
+Major update
+- now use uctodata for language specific information
+  ucto itself only supports a generic tokenizer
+- interactive use now uses readline library
+- accept long options --help and --verision
+- UTF16BE now works
+- better support for crooked Windows files in general
+- added a --normalize option to map tokens in a certain TokenClass
+  to it's generic name
+
 0.8.6 2016-04-25
 [Ko van der Sloot]
 * Bug fix release: fixing Sentence boundaries after abbreviations
