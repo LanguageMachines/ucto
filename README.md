@@ -37,7 +37,7 @@ Features:
   other input encodings as well.
 - Ligature normalization (can undo for isntance fi,fl as single codepoints).
 - Optional conversion to all lowercase or uppercase.
-- Supports FoLiA XML (https://proycon.github.io/folia)
+- Supports [FoLiA XML](https://proycon.github.io/folia)
 
 Ucto was written by Maarten van Gompel and Ko van der Sloot. Work on Ucto was
 funded by NWO, the Netherlands Organisation for Scientific Research, under the
@@ -52,7 +52,7 @@ Installation
 
 To install ucto, first consult whether your distribution's package manager has an up-to-date package for it.
 If not, for easy installation of ucto and all dependencies, it is included as part of our software
-distribution LaMachine: https://proycon.github.io/LaMachine .
+distribution [LaMachine](https://proycon.github.io/LaMachine).
 
 To compile and install manually from source, provided you have all the
 dependencies installed:
@@ -91,7 +91,7 @@ If you want each sentence on a separate line (i.e. newline delimited rather than
 ``<utt>``), then pass the ``-n`` flag. If each sentence is already on one line
 in the input and you want to leave it at that, pass the ``-m`` flag.
 
-Tokenize plaintext to FoLiA XML using the ``-X`` flag, you can specify an ID
+Tokenize plaintext to [FoLiA XML](https://proycon.github.io/folia) using the ``-X`` flag, you can specify an ID
 for the FoLiA document using the ``--id=`` flag.
 
     $ ucto -L en -X --id=hamlet hamlet.txt hamlet.folia.xml
