@@ -2215,7 +2215,7 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length()
 			      << "): [" << post << "]" << endl;
 	    }
-	    tokenizeWord( post, space ? NOROLE : NOSPACE );
+	    tokenizeWord( post, !space );
 	  }
 	  break;
 	}
