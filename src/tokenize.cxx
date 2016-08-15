@@ -1961,7 +1961,7 @@ namespace Tokenizer {
 	  expliciteosfound = word.lastIndexOf(eosmark);
 
 	  if (expliciteosfound != -1) { // word contains eosmark
-	    if (tokDebug >= 2){
+	    if ( tokDebug >= 2){
 	      *Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
 	    }
 	    int eospos = tokens.size()-1;
@@ -1999,7 +1999,8 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
 			      << word << "]" << endl;;
 	    }
-	    tokens.push_back( Token( type_word, word ) );
+	    //	    tokens.push_back( Token( type_word, word ) );
+	    tokenizeWord( word, true );
 	  }
 	  else {
 	    if (tokDebug >= 2){
