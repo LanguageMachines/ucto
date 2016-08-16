@@ -2129,7 +2129,7 @@ namespace Tokenizer {
 	  type = type_currency;
 	}
 	else {
-	  type = type_unknown;
+	  type = type_word; // HACK for now
 	}
       }
       if ( doPunctFilter
