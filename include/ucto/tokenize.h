@@ -297,7 +297,7 @@ namespace Tokenizer {
     void add_rule( const UnicodeString&,
 		   const std::vector<std::string>&,
 		   const UnicodeString& );
-    void tokenizeWord( const UnicodeString&, bool);
+    void tokenizeWord( const UnicodeString&, bool );
 
     bool detectEos( size_t ) const;
     void detectSentenceBounds( const int offset = 0 );

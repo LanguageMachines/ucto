@@ -2076,7 +2076,8 @@ namespace Tokenizer {
     return false;
   }
 
-  void TokenizerClass::tokenizeWord( const UnicodeString& input, bool space ) {
+  void TokenizerClass::tokenizeWord( const UnicodeString& input,
+				     bool space ){
     int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 ){
       *Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
