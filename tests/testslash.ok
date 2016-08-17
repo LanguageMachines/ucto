@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.1" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.4" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-04-18T17:33:02" set="tokconfig-nl"/>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-08-17T13:21:44" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -39,7 +39,7 @@
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="UNKNOWN">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD">
             <t>&gt;</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION" space="no">
@@ -51,7 +51,7 @@
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="PUNCTUATION">
             <t>/</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="UNKNOWN" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="WORD" space="no">
             <t>&lt;</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.15" class="WORD" space="no">

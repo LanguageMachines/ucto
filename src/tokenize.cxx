@@ -2000,7 +2000,7 @@ namespace Tokenizer {
 			      << word << "]" << endl;;
 	    }
 	    //	    tokens.push_back( Token( type_word, word ) );
-	    tokenizeWord( word, true );
+	    tokenizeWord( word, true, type_word );
 	  }
 	  else {
 	    if (tokDebug >= 2){
@@ -2077,11 +2077,20 @@ namespace Tokenizer {
     return false;
   }
 
-  void TokenizerClass::tokenizeWord( const UnicodeString& input, bool space ) {
+  void TokenizerClass::tokenizeWord( const UnicodeString& input,
+				     bool space,
+				     const UnicodeString& type ) {
+    bool recurse = !type.isEmpty();
     int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 ){
-      *Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
-		      << "word=[" << input << "]" << endl;
+      if ( recurse ){
+	*Log(theErrLog) << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
+			<< "word=[" << input << "], type=" << type << endl;
+      }
+      else {
+	*Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
+			<< "word=[" << input << "]" << endl;
+      }
     }
     if ( input == eosmark ) {
       if (tokDebug >= 2){
@@ -2168,6 +2177,7 @@ namespace Tokenizer {
 	    *Log(theErrLog) << "\tMATCH: " << rule->id << endl;
 	  }
 	  if ( pre.length() > 0 ){
+	    recurse = false;
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN pre-context (" << pre.length()
 			      << "): [" << pre << "]" << endl;
@@ -2176,6 +2186,27 @@ namespace Tokenizer {
 	  }
 	  if ( matches.size() > 0 ){
 	    int max = matches.size();
+	    if ( recurse && max == 1 ){
+	      UnicodeString new_type = rule->id;
+	      if ( new_type == type
+		   || ( type != type_unknown
+			&& type != type_word ) ){
+		if ( tokDebug >= 4 ){
+		  *Log(theErrLog) << "\trecurse, match didn't do anything new" << endl;
+		}
+		tokens.push_back( Token( type, matches[0], space ? NOROLE : NOSPACE ) );
+		return;
+	      }
+	      else {
+		if ( tokDebug >= 4 ){
+		  *Log(theErrLog) << "\trecurse, match changes the type:"
+				  << type << " to " << new_type << endl;
+		}
+		tokens.push_back( Token( new_type, matches[0], space ? NOROLE : NOSPACE ) );
+		return;
+
+	      }
+	    }
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN match #=" << matches.size() << endl;
 	    }
@@ -2203,8 +2234,16 @@ namespace Tokenizer {
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
+		  tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
 		}
-		tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
+		else {
+		  if ( recurse ){
+		    tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
+		  }
+		  else {
+		    tokenizeWord( word, space, type );
+		  }
+		}
 	      }
 	    }
 	  }
@@ -2216,7 +2255,7 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length()
 			      << "): [" << post << "]" << endl;
 	    }
-	    tokenizeWord( post, space ? NOROLE : NOSPACE );
+	    tokenizeWord( post, !space );
 	  }
 	  break;
 	}
