@@ -2079,13 +2079,13 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenizeWord( const UnicodeString& input,
 				     bool space,
-				     const UnicodeString& type ) {
-    bool recurse = !type.isEmpty();
+				     const UnicodeString& recurse_type ) {
+    bool recurse = !recurse_type.isEmpty();
     int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 ){
       if ( recurse ){
 	*Log(theErrLog) << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
-			<< "word=[" << input << "], type=" << type << endl;
+			<< "word=[" << input << "], type=" << recurse_type << endl;
       }
       else {
 	*Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
@@ -2173,8 +2173,31 @@ namespace Tokenizer {
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
+	  UnicodeString type = rule->id;
 	  if ( tokDebug >= 4 ){
-	    *Log(theErrLog) << "\tMATCH: " << rule->id << endl;
+	    *Log(theErrLog) << "\tMATCH: " << type << endl;
+	    *Log(theErrLog) << "\tpre=  '" << pre << "'" << endl;
+	    *Log(theErrLog) << "\tpost= '" << post << "'" << endl;
+	  }
+	  if ( recurse &&
+	       pre.isEmpty()
+	       && post.isEmpty() ){
+	    if ( recurse_type == type || ( recurse_type != type_unknown &&
+					   recurse_type != type_word ) ){
+	      if ( tokDebug >= 4 ){
+		*Log(theErrLog) << "\trecurse, match didn't do anything new for " << input << endl;
+	      }
+	      tokens.push_back( Token( recurse_type, input, space ? NOROLE : NOSPACE ) );
+	      return;
+	    }
+	    else {
+	      if ( tokDebug >= 4 ){
+		*Log(theErrLog) << "\trecurse, match changes the type:"
+				<< recurse_type << " to " << type << endl;
+	      }
+	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) );
+	      return;
+	    }
 	  }
 	  if ( pre.length() > 0 ){
 	    recurse = false;
@@ -2186,27 +2209,6 @@ namespace Tokenizer {
 	  }
 	  if ( matches.size() > 0 ){
 	    int max = matches.size();
-	    if ( recurse && max == 1 ){
-	      UnicodeString new_type = rule->id;
-	      if ( new_type == type
-		   || ( type != type_unknown
-			&& type != type_word ) ){
-		if ( tokDebug >= 4 ){
-		  *Log(theErrLog) << "\trecurse, match didn't do anything new" << endl;
-		}
-		tokens.push_back( Token( type, matches[0], space ? NOROLE : NOSPACE ) );
-		return;
-	      }
-	      else {
-		if ( tokDebug >= 4 ){
-		  *Log(theErrLog) << "\trecurse, match changes the type:"
-				  << type << " to " << new_type << endl;
-		}
-		tokens.push_back( Token( new_type, matches[0], space ? NOROLE : NOSPACE ) );
-		return;
-
-	      }
-	    }
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN match #=" << matches.size() << endl;
 	    }
@@ -2230,7 +2232,6 @@ namespace Tokenizer {
 		if ( post.length() > 0 ) {
 		  space = false;
 		}
-		UnicodeString type = rule->id;
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
