@@ -2194,11 +2194,13 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tmatch[" << ++cnt << "]=" << m << endl;
 	    }
 	  }
-	  if ( recurse &&
-	       pre.isEmpty()
-	       && post.isEmpty() ){
-	    if ( assigned_type == type || ( assigned_type != type_unknown &&
-					    assigned_type != type_word ) ){
+	  if ( recurse
+	       && ( type == type_word
+		    || ( pre.isEmpty()
+			 && post.isEmpty() ) ) ){
+	    if ( (assigned_type == type)
+		 || ( assigned_type != type_unknown &&
+		      assigned_type != type_word ) ){
 	      if ( tokDebug >= 4 ){
 		*Log(theErrLog) << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
