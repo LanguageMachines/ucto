@@ -295,8 +295,7 @@ namespace Tokenizer {
     TokenizerClass( const TokenizerClass& ); // inhibit copies
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
     void add_rule( const UnicodeString&,
-		   const std::vector<std::string>&,
-		   const UnicodeString& );
+		   const std::vector<UnicodeString>& );
     void tokenizeWord( const UnicodeString&, bool, const UnicodeString& ="" );
 
     bool detectEos( size_t ) const;

@@ -105,7 +105,7 @@ namespace Tokenizer {
 
   class UnicodeRegexMatcher {
   public:
-    UnicodeRegexMatcher( const UnicodeString& );
+    UnicodeRegexMatcher( const UnicodeString&, const UnicodeString& name="" );
     ~UnicodeRegexMatcher();
     bool match_all( const UnicodeString&, UnicodeString&, UnicodeString&  );
     const UnicodeString get_match( unsigned int ) const;
@@ -120,19 +120,29 @@ namespace Tokenizer {
     RegexMatcher *matcher;
     UnicodeRegexMatcher();
     vector<UnicodeString> results;
+    const UnicodeString _name;
   };
 
-  UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat ){
-    failString = "";
+  UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat,
+					    const UnicodeString& name ):
+    _name(name)
+  {
+    failString.clear();
     matcher = NULL;
     UErrorCode u_stat = U_ZERO_ERROR;
     UParseError errorInfo;
     pattern = RegexPattern::compile( pat, 0, errorInfo, u_stat );
     if ( U_FAILURE(u_stat) ){
-      failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat)
-	+ "' ";
-      if ( errorInfo.offset >0 )
-	failString += ", at position " + toString( errorInfo.offset );
+      string spat = folia::UnicodeToUTF8(pat);
+      failString = folia::UnicodeToUTF8(_name);
+      if ( errorInfo.offset >0 ){
+	failString += " Invalid regular expression at position " + toString( errorInfo.offset ) + "\n";
+	UnicodeString pat1 = UnicodeString( pat, 0, errorInfo.offset -1 );
+	failString += folia::UnicodeToUTF8(pat1) + " <== HERE\n";
+      }
+      else {
+	failString += " Invalid regular expression '" + spat + "' ";
+      }
       throw uConfigError(failString);
     }
     else {
@@ -428,7 +438,7 @@ namespace Tokenizer {
 
   Rule::Rule( const UnicodeString& _id, const UnicodeString& _pattern):
     id(_id), pattern(_pattern) {
-    regexp = new UnicodeRegexMatcher(pattern);
+    regexp = new UnicodeRegexMatcher( pattern, id );
   }
 
   ostream& operator<< (std::ostream& os, const Rule& r ){
@@ -2079,13 +2089,14 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenizeWord( const UnicodeString& input,
 				     bool space,
-				     const UnicodeString& recurse_type ) {
-    bool recurse = !recurse_type.isEmpty();
+				     const UnicodeString& assigned_type ) {
+    bool recurse = !assigned_type.isEmpty();
+
     int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 ){
       if ( recurse ){
 	*Log(theErrLog) << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
-			<< "word=[" << input << "], type=" << recurse_type << endl;
+			<< "word=[" << input << "], type=" << assigned_type << endl;
       }
       else {
 	*Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
@@ -2178,29 +2189,32 @@ namespace Tokenizer {
 	    *Log(theErrLog) << "\tMATCH: " << type << endl;
 	    *Log(theErrLog) << "\tpre=  '" << pre << "'" << endl;
 	    *Log(theErrLog) << "\tpost= '" << post << "'" << endl;
+	    int cnt = 0;
+	    for ( const auto& m : matches ){
+	      *Log(theErrLog) << "\tmatch[" << ++cnt << "]=" << m << endl;
+	    }
 	  }
 	  if ( recurse &&
 	       pre.isEmpty()
 	       && post.isEmpty() ){
-	    if ( recurse_type == type || ( recurse_type != type_unknown &&
-					   recurse_type != type_word ) ){
+	    if ( assigned_type == type || ( assigned_type != type_unknown &&
+					    assigned_type != type_word ) ){
 	      if ( tokDebug >= 4 ){
 		*Log(theErrLog) << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
-	      tokens.push_back( Token( recurse_type, input, space ? NOROLE : NOSPACE ) );
+	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
 	      return;
 	    }
 	    else {
 	      if ( tokDebug >= 4 ){
 		*Log(theErrLog) << "\trecurse, match changes the type:"
-				<< recurse_type << " to " << type << endl;
+				<< assigned_type << " to " << type << endl;
 	      }
 	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) );
 	      return;
 	    }
 	  }
 	  if ( pre.length() > 0 ){
-	    recurse = false;
 	    if ( tokDebug >= 4 ){
 	      *Log(theErrLog) << "\tTOKEN pre-context (" << pre.length()
 			      << "): [" << pre << "]" << endl;
@@ -2496,11 +2510,11 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::add_rule( const UnicodeString& name,
-				 const vector<string>& parts,
-				 const UnicodeString& list ){
-    UnicodeString pat = folia::UTF8ToUnicode( parts[0] );
-    pat += list;
-    pat += folia::UTF8ToUnicode( parts[2] );
+				 const vector<UnicodeString>& parts ){
+    UnicodeString pat;
+    for ( auto const& part : parts ){
+      pat += part;
+    }
     rulesmap[name] = new Rule( name, pat );
   }
 
@@ -2716,33 +2730,44 @@ namespace Tokenizer {
       }
       vector<string> parts;
       size_t num = TiCC::split_at( rule, parts, split );
-      if ( num != 3 ){
-	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
-      }
+      // if ( num != 3 ){
+      // 	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
+      // }
       for ( auto& str : parts ){
 	str = TiCC::trim( str );
       }
-      UnicodeString meta =  folia::UTF8ToUnicode( parts[1] );
-      ConfigMode mode = getMode( "[" + meta + "]" );
-      if ( mode == NONE ){
-	throw uConfigError( "invalid REFERENCE '" + meta + "' in META-RULE: "
-			    + folia::UTF8ToUnicode(mr) );
-      }
-      switch ( mode ){
-      case ORDINALS:
-      case ABBREVIATIONS:
-      case TOKENS:
-      case ATTACHEDPREFIXES:
-      case ATTACHEDSUFFIXES:
-      case UNITS:
-      case PREFIXES:
-      case SUFFIXES:
-	if ( !pattern[mode].isEmpty()){
-	  add_rule( name, parts, pattern[mode] );
+      vector<UnicodeString> new_parts;
+      bool skip_rule = false;
+      for ( const auto& part : parts ){
+	UnicodeString meta = folia::UTF8ToUnicode( part );
+	ConfigMode mode = getMode( "[" + meta + "]" );
+	switch ( mode ){
+	case ORDINALS:
+	case ABBREVIATIONS:
+	case TOKENS:
+	case ATTACHEDPREFIXES:
+	case ATTACHEDSUFFIXES:
+	case UNITS:
+	case PREFIXES:
+	case SUFFIXES:
+	  if ( !pattern[mode].isEmpty()){
+	    new_parts.push_back( pattern[mode] );
+	  }
+	  else {
+	    skip_rule = true;
+	  }
+	  break;
+	case NONE:
+	default:
+	  new_parts.push_back( folia::UTF8ToUnicode(part) );
+	  break;
 	}
-	break;
-      default:
-	break;
+      }
+      if ( skip_rule ){
+	*Log(theErrLog) << "skipping META rule: '" << name << "'" << endl;
+      }
+      else {
+	add_rule( name, new_parts );
       }
     }
 
