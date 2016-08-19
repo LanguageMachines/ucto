@@ -103,6 +103,7 @@ for f in glob.glob(mask):
                 checkVGsummary( id, lang )
             else:
                 print color_text("OK", 'GREEN', True)
+                os.system('rm testoutput/' + id + '.' + lang + '.diff')
         else:
             print color_text("FAILED", 'RED', True)
             log += "testoutput/" + id + '.' + lang + '.diff\n'

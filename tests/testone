@@ -32,7 +32,8 @@ if test -x $file
             exit 0
 	     fi
 	else
-        echo -e $OK
-        exit 0
+	    \rm -f testoutput/$file.diff
+	    echo -e $OK
+            exit 0
 	fi
 fi
