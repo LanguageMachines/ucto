@@ -2245,20 +2245,21 @@ namespace Tokenizer {
 		}
 	      }
 	      else {
+		bool internal_space = space;
 		if ( post.length() > 0 ) {
-		  space = false;
+		  internal_space = false;
 		}
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
-		  tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
+		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
 		}
 		else {
 		  if ( recurse ){
-		    tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
+		    tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
 		  }
 		  else {
-		    tokenizeWord( word, space, type );
+		    tokenizeWord( word, internal_space, type );
 		  }
 		}
 	      }
@@ -2272,7 +2273,7 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length()
 			      << "): [" << post << "]" << endl;
 	    }
-	    tokenizeWord( post, !space );
+	    tokenizeWord( post, space );
 	  }
 	  break;
 	}
