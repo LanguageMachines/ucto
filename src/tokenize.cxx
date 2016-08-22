@@ -74,7 +74,10 @@ namespace Tokenizer {
   std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
-  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER, METARULES };
+  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
+		    ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS,
+		    ORDINALS, EOSMARKERS, QUOTES, CURRENCY,
+		    FILTER, RULEORDER, METARULES };
 
   class uRangeError: public std::out_of_range {
   public:
@@ -511,10 +514,9 @@ namespace Tokenizer {
       done = !getline( IN, line );
       ++linenum;
       if ( tokDebug > 0 ){
-	*Log(theErrLog) << "[tokenize] Read input line # " << linenum << endl;
-      }
-      if ( tokDebug > 0 ){
-	cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	*Log(theErrLog) << "[tokenize] Read input line # " << linenum
+			<< "\nline:'" << TiCC::format_nonascii( line )
+			<< "'" << endl;
       }
       stripCR( line );
       UnicodeString input_line;
@@ -533,15 +535,9 @@ namespace Tokenizer {
 	// this works on Linux with GCC (atm)
 	line.erase(line.size()-1);
       }
-      if ( tokDebug > 0 ){
-	cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
-      }
       if ( !line.empty() ){
 	if ( tokDebug > 0 ){
-	  cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
-	}
-	if ( tokDebug > 0 ){
-	  cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	  *Log(theErrLog) << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
@@ -2445,6 +2441,9 @@ namespace Tokenizer {
     else if (line == "[TOKENS]") {
       mode = TOKENS;
     }
+    else if (line == "[CURRENCY]") {
+      mode = CURRENCY;
+    }
     else if (line == "[UNITS]") {
       mode = UNITS;
     }
@@ -2459,6 +2458,9 @@ namespace Tokenizer {
     }
     else if (line == "[FILTER]") {
       mode = FILTER;
+    }
+    else {
+      mode = NONE;
     }
     return mode;
   }
@@ -2644,6 +2646,7 @@ namespace Tokenizer {
 	    case PREFIXES:
 	    case SUFFIXES:
 	    case TOKENS:
+	    case CURRENCY:
 	    case UNITS:
 	    case ORDINALS:
 	      if ( !pattern[mode].isEmpty() )
@@ -2751,6 +2754,7 @@ namespace Tokenizer {
 	case ATTACHEDPREFIXES:
 	case ATTACHEDSUFFIXES:
 	case UNITS:
+	case CURRENCY:
 	case PREFIXES:
 	case SUFFIXES:
 	  if ( !pattern[mode].isEmpty()){
