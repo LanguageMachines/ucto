@@ -4,7 +4,7 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-08-22T15:10:26" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-08-23T13:40:30" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -39,7 +39,7 @@
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD" space="no">
             <t>o</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="SYMBOL">
             <t>&gt;</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION" space="no">
@@ -51,7 +51,7 @@
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="PUNCTUATION">
             <t>/</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="SYMBOL" space="no">
             <t>&lt;</t>
           </w>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.15" class="WORD" space="no">
