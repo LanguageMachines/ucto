@@ -2021,7 +2021,7 @@ namespace Tokenizer {
 	      tokenizeWord( realword, false );
 	      eospos++;
 	    }
-	    if (expliciteosfound + eosmark.length() < word.length())  {
+	    if ( expliciteosfound + eosmark.length() < word.length() ){
 	      UnicodeString realword;
 	      word.extract(expliciteosfound+eosmark.length(),word.length() - expliciteosfound - eosmark.length(),realword);
 	      if (tokDebug >= 2){
@@ -2038,21 +2038,17 @@ namespace Tokenizer {
 	    }
 	  }
 	}
-	if ((word.length() > 0) && (expliciteosfound == -1)) {
-	  if (!tokenizeword) {
-	    //single character or nothing tokenisable found, so no need to tokenize anything
-	    if (tokDebug >= 2){
-	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
-			      << word << "]" << endl;;
-	    }
-	    tokenizeWord( word, true, type_word );
+	if ( word.length() > 0
+	     && expliciteosfound == -1 ) {
+	  if (tokDebug >= 2){
+	    *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: ["
+			    << word << "]" << endl;
+	  }
+	  if ( tokenizeword ) {
+	    tokenizeWord( word, true );
 	  }
 	  else {
-	    if (tokDebug >= 2){
-	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: ["
-			      << word << "]" << endl;
-	    }
-	    tokenizeWord( word, true );
+	    tokenizeWord( word, true, type_word );
 	  }
 	}
 	//reset values for new word
@@ -2207,9 +2203,12 @@ namespace Tokenizer {
 	       && ( type == type_word
 		    || ( pre.isEmpty()
 			 && post.isEmpty() ) ) ){
-	    if ( (assigned_type == type)
-		 || ( assigned_type != type_unknown &&
-		      assigned_type != type_word ) ){
+	    // so only do this recurse step when:
+	    //   OR we have a WORD
+	    //   OR we have an exact match of the rule (no pre or post)
+	    if ( assigned_type != type_word ){
+	      // don't change the type when:
+	      //   it was already non-WORD
 	      if ( tokDebug >= 4 ){
 		*Log(theErrLog) << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
