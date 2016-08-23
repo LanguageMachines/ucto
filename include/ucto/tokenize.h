@@ -316,7 +316,6 @@ namespace Tokenizer {
     bool readabbreviations( const std::string&, UnicodeString& );
 
     void sortRules( std::map<UnicodeString,Rule*>&,
-		    std::vector<Rule *>&,
 		    const std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
@@ -335,6 +334,7 @@ namespace Tokenizer {
     std::vector<Token> tokens;
     std::map<UnicodeString, Rule *> rulesmap;
     std::vector<Rule *> rules;
+    std::map<UnicodeString, int> rules_index;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 

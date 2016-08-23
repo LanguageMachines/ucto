@@ -2185,11 +2185,11 @@ namespace Tokenizer {
 	if ( tokDebug >= 4){
 	  *Log(theErrLog) << "\tTESTING " << rule->id << endl;
 	}
+	UnicodeString type = rule->id;
 	//Find first matching rule
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
-	  UnicodeString type = rule->id;
 	  if ( tokDebug >= 4 ){
 	    *Log(theErrLog) << "\tMATCH: " << type << endl;
 	    *Log(theErrLog) << "\tpre=  '" << pre << "'" << endl;
@@ -2477,31 +2477,41 @@ namespace Tokenizer {
     return mode;
   }
 
-  void addOrder( vector<UnicodeString>& order, UnicodeString &line ){
+  void addOrder( vector<UnicodeString>& order,
+		 map<UnicodeString,int>& reverse_order,
+		 int& index,
+		 UnicodeString &line ){
     try {
       UnicodeRegexMatcher m( "\\s+" );
       vector<UnicodeString> usv;
       m.split( line, usv );
-      for ( const auto& us : usv  )
+      for ( const auto& us : usv  ){
+	if ( reverse_order.find( us ) != reverse_order.end() ){
+	  cerr << "multiple entry " << us << " in RULE-ORDER" << endl;
+	  exit( EXIT_FAILURE );
+	}
 	order.push_back( us );
+	reverse_order[us] = ++index;
+      }
     }
     catch ( exception& e ){
-      abort();
+      throw uConfigError( "problem in line:" + line );
     }
   }
 
   void TokenizerClass::sortRules( map<UnicodeString, Rule *>& rulesmap,
-				  vector<Rule *>& result,
 				  const vector<UnicodeString>& sort ){
     // *Log(theErrLog) << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
     // }
+    int index = 0;
     if ( !sort.empty() ){
       for ( auto const& id : sort ){
 	auto it = rulesmap.find( id );
 	if ( it != rulesmap.end() ){
-	  result.push_back( it->second );
+	  rules.push_back( it->second );
+	  rules_index[id] = ++index;
 	  rulesmap.erase( it );
 	}
 	else {
@@ -2512,12 +2522,14 @@ namespace Tokenizer {
       for ( auto const& it : rulesmap ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '"
 			<< it.first << "' (put at end)." << endl;
-	result.push_back( it.second );
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
       }
     }
     else {
       for ( auto const& it : rulesmap ){
-	result.push_back( it.second );
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
       }
     }
     // *Log(theErrLog) << "rules NA sort : " << endl;
@@ -2567,6 +2579,7 @@ namespace Tokenizer {
 					       { ORDINALS, "" } };
 
     vector<UnicodeString> rules_order;
+    int rule_count = 0;
     vector<string> meta_rules;
 
     string conffile = get_filename( settings_name );
@@ -2647,7 +2660,7 @@ namespace Tokenizer {
 	    }
 	      break;
 	    case RULEORDER:
-	      addOrder( rules_order, line );
+	      addOrder( rules_order, rules_index, rule_count, line );
 	      break;
 	    case METARULES:
 	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
@@ -2830,7 +2843,7 @@ namespace Tokenizer {
       rulesmap["SUFFIX"] = new Rule("SUFFIX", "((?:\\p{L})+)(" + pattern[SUFFIXES] + ")(?:\\Z|\\P{L})");
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
-    sortRules( rulesmap, rules, rules_order );
+    sortRules( rulesmap, rules_order );
     return true;
   }
 
