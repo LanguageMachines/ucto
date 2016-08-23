@@ -353,9 +353,11 @@ namespace Tokenizer {
     return result;
   }
 
+  const UnicodeString type_space = "SPACE";
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
   const UnicodeString type_word = "WORD";
+  const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_unknown = "UNKNOWN";
@@ -1833,6 +1835,44 @@ namespace Tokenizer {
     return s == UBLOCK_EMOTICONS;
   }
 
+  bool u_iscurrency( UChar32 c ){
+    return u_charType( c ) == U_CURRENCY_SYMBOL;
+  }
+
+  bool u_issymbol( UChar32 c ){
+    return u_charType( c ) == U_CURRENCY_SYMBOL
+      || u_charType( c ) == U_MATH_SYMBOL
+      || u_charType( c ) == U_MODIFIER_SYMBOL
+      || u_charType( c ) == U_OTHER_SYMBOL;
+  }
+
+  const UnicodeString& detect_type( UChar32 c ){
+    if ( u_isspace(c)) {
+      return type_space;
+    }
+    else if ( u_iscurrency(c)) {
+      return type_currency;
+    }
+    else if ( u_ispunct(c)) {
+      return type_punctuation;
+    }
+    else if ( u_isemo( c ) ) {
+      return type_emoticon;
+    }
+    else if ( u_isalpha(c)) {
+      return type_word;
+    }
+    else if ( u_isdigit(c)) {
+      return type_number;
+    }
+    else if ( u_issymbol(c)) {
+      return type_symbol;
+    }
+    else {
+      return type_unknown;
+    }
+  }
+
   std::string toString( int8_t c ){
     switch ( c ){
     case 0:
@@ -2005,7 +2045,6 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
 			      << word << "]" << endl;;
 	    }
-	    //	    tokens.push_back( Token( type_word, word ) );
 	    tokenizeWord( word, true, type_word );
 	  }
 	  else {
@@ -2118,35 +2157,9 @@ namespace Tokenizer {
     if ( inpLen == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
-      UnicodeString type;
-
-      if ( u_ispunct(c)) {
-	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = type_currency;
-	}
-	else {
-	  type = type_punctuation;
-	}
-      }
-      else if ( u_isemo( c ) ) {
-	type = type_emoticon;
-      }
-      else if ( u_isalpha(c)) {
-	type = type_word;
-      }
-      else if ( u_isdigit(c)) {
-	type = type_number;
-      }
-      else if ( u_isspace(c)) {
+      UnicodeString type = detect_type( c );
+      if ( type == type_space ){
 	return;
-      }
-      else {
-	if ( u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = type_currency;
-	}
-	else {
-	  type = type_word; // HACK for now
-	}
       }
       if ( doPunctFilter
 	   && ( type == type_punctuation || type == type_currency ||
@@ -2735,7 +2748,7 @@ namespace Tokenizer {
 	*Log(theErrLog) << "SPLIT using: '" << split << "'" << endl;
       }
       vector<string> parts;
-      size_t num = TiCC::split_at( rule, parts, split );
+      TiCC::split_at( rule, parts, split );
       // if ( num != 3 ){
       // 	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
       // }
