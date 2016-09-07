@@ -74,7 +74,10 @@ namespace Tokenizer {
   std::string VersionName() { return PACKAGE_STRING; }
   string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
 
-  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES, ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS, ORDINALS, EOSMARKERS, QUOTES, FILTER, RULEORDER, METARULES };
+  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
+		    ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS,
+		    ORDINALS, EOSMARKERS, QUOTES, CURRENCY,
+		    FILTER, RULEORDER, METARULES };
 
   class uRangeError: public std::out_of_range {
   public:
@@ -105,7 +108,7 @@ namespace Tokenizer {
 
   class UnicodeRegexMatcher {
   public:
-    UnicodeRegexMatcher( const UnicodeString& );
+    UnicodeRegexMatcher( const UnicodeString&, const UnicodeString& name="" );
     ~UnicodeRegexMatcher();
     bool match_all( const UnicodeString&, UnicodeString&, UnicodeString&  );
     const UnicodeString get_match( unsigned int ) const;
@@ -120,19 +123,29 @@ namespace Tokenizer {
     RegexMatcher *matcher;
     UnicodeRegexMatcher();
     vector<UnicodeString> results;
+    const UnicodeString _name;
   };
 
-  UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat ){
-    failString = "";
+  UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat,
+					    const UnicodeString& name ):
+    _name(name)
+  {
+    failString.clear();
     matcher = NULL;
     UErrorCode u_stat = U_ZERO_ERROR;
     UParseError errorInfo;
     pattern = RegexPattern::compile( pat, 0, errorInfo, u_stat );
     if ( U_FAILURE(u_stat) ){
-      failString = "Invalid regular expression '" + folia::UnicodeToUTF8(pat)
-	+ "' ";
-      if ( errorInfo.offset >0 )
-	failString += ", at position " + toString( errorInfo.offset );
+      string spat = folia::UnicodeToUTF8(pat);
+      failString = folia::UnicodeToUTF8(_name);
+      if ( errorInfo.offset >0 ){
+	failString += " Invalid regular expression at position " + toString( errorInfo.offset ) + "\n";
+	UnicodeString pat1 = UnicodeString( pat, 0, errorInfo.offset -1 );
+	failString += folia::UnicodeToUTF8(pat1) + " <== HERE\n";
+      }
+      else {
+	failString += " Invalid regular expression '" + spat + "' ";
+      }
       throw uConfigError(failString);
     }
     else {
@@ -340,9 +353,11 @@ namespace Tokenizer {
     return result;
   }
 
+  const UnicodeString type_space = "SPACE";
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
   const UnicodeString type_word = "WORD";
+  const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_unknown = "UNKNOWN";
@@ -428,7 +443,7 @@ namespace Tokenizer {
 
   Rule::Rule( const UnicodeString& _id, const UnicodeString& _pattern):
     id(_id), pattern(_pattern) {
-    regexp = new UnicodeRegexMatcher(pattern);
+    regexp = new UnicodeRegexMatcher( pattern, id );
   }
 
   ostream& operator<< (std::ostream& os, const Rule& r ){
@@ -501,10 +516,9 @@ namespace Tokenizer {
       done = !getline( IN, line );
       ++linenum;
       if ( tokDebug > 0 ){
-	*Log(theErrLog) << "[tokenize] Read input line # " << linenum << endl;
-      }
-      if ( tokDebug > 0 ){
-	cerr << "read line:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	*Log(theErrLog) << "[tokenize] Read input line # " << linenum
+			<< "\nline:'" << TiCC::format_nonascii( line )
+			<< "'" << endl;
       }
       stripCR( line );
       UnicodeString input_line;
@@ -523,15 +537,9 @@ namespace Tokenizer {
 	// this works on Linux with GCC (atm)
 	line.erase(line.size()-1);
       }
-      if ( tokDebug > 0 ){
-	cerr << " now line:'" << TiCC::format_nonascii( line ) << "'" << endl;
-      }
       if ( !line.empty() ){
 	if ( tokDebug > 0 ){
-	  cerr << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
-	}
-	if ( tokDebug > 0 ){
-	  cerr << "na strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	  *Log(theErrLog) << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
@@ -1827,6 +1835,44 @@ namespace Tokenizer {
     return s == UBLOCK_EMOTICONS;
   }
 
+  bool u_iscurrency( UChar32 c ){
+    return u_charType( c ) == U_CURRENCY_SYMBOL;
+  }
+
+  bool u_issymbol( UChar32 c ){
+    return u_charType( c ) == U_CURRENCY_SYMBOL
+      || u_charType( c ) == U_MATH_SYMBOL
+      || u_charType( c ) == U_MODIFIER_SYMBOL
+      || u_charType( c ) == U_OTHER_SYMBOL;
+  }
+
+  const UnicodeString& detect_type( UChar32 c ){
+    if ( u_isspace(c)) {
+      return type_space;
+    }
+    else if ( u_iscurrency(c)) {
+      return type_currency;
+    }
+    else if ( u_ispunct(c)) {
+      return type_punctuation;
+    }
+    else if ( u_isemo( c ) ) {
+      return type_emoticon;
+    }
+    else if ( u_isalpha(c)) {
+      return type_word;
+    }
+    else if ( u_isdigit(c)) {
+      return type_number;
+    }
+    else if ( u_issymbol(c)) {
+      return type_symbol;
+    }
+    else {
+      return type_unknown;
+    }
+  }
+
   std::string toString( int8_t c ){
     switch ( c ){
     case 0:
@@ -1961,7 +2007,7 @@ namespace Tokenizer {
 	  expliciteosfound = word.lastIndexOf(eosmark);
 
 	  if (expliciteosfound != -1) { // word contains eosmark
-	    if (tokDebug >= 2){
+	    if ( tokDebug >= 2){
 	      *Log(theErrLog) << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
 	    }
 	    int eospos = tokens.size()-1;
@@ -1975,7 +2021,7 @@ namespace Tokenizer {
 	      tokenizeWord( realword, false );
 	      eospos++;
 	    }
-	    if (expliciteosfound + eosmark.length() < word.length())  {
+	    if ( expliciteosfound + eosmark.length() < word.length() ){
 	      UnicodeString realword;
 	      word.extract(expliciteosfound+eosmark.length(),word.length() - expliciteosfound - eosmark.length(),realword);
 	      if (tokDebug >= 2){
@@ -1992,21 +2038,17 @@ namespace Tokenizer {
 	    }
 	  }
 	}
-	if ((word.length() > 0) && (expliciteosfound == -1)) {
-	  if (!tokenizeword) {
-	    //single character or nothing tokenisable found, so no need to tokenize anything
-	    if (tokDebug >= 2){
-	      *Log(theErrLog) << "[tokenizeLine] Word ok, no need for further tokenisation for: ["
-			      << word << "]" << endl;;
-	    }
-	    tokens.push_back( Token( type_word, word ) );
+	if ( word.length() > 0
+	     && expliciteosfound == -1 ) {
+	  if (tokDebug >= 2){
+	    *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: ["
+			    << word << "]" << endl;
+	  }
+	  if ( tokenizeword ) {
+	    tokenizeWord( word, true );
 	  }
 	  else {
-	    if (tokDebug >= 2){
-	      *Log(theErrLog) << "[tokenizeLine] Further tokenisation necessary for: ["
-			      << word << "]" << endl;
-	    }
-	    tokenizeWord( word, true );
+	    tokenizeWord( word, true, type_word );
 	  }
 	}
 	//reset values for new word
@@ -2077,11 +2119,20 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenizeWord( const UnicodeString& input,
-				     bool space ){
+				     bool space,
+				     const UnicodeString& assigned_type ) {
+    bool recurse = !assigned_type.isEmpty();
+
     int32_t inpLen = input.countChar32();
     if ( tokDebug > 2 ){
-      *Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
-		      << "word=[" << input << "]" << endl;
+      if ( recurse ){
+	*Log(theErrLog) << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
+			<< "word=[" << input << "], type=" << assigned_type << endl;
+      }
+      else {
+	*Log(theErrLog) << "   [tokenizeWord] Input: (" << inpLen << ") "
+			<< "word=[" << input << "]" << endl;
+      }
     }
     if ( input == eosmark ) {
       if (tokDebug >= 2){
@@ -2102,35 +2153,9 @@ namespace Tokenizer {
     if ( inpLen == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
-      UnicodeString type;
-
-      if ( u_ispunct(c)) {
-	if (  u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = type_currency;
-	}
-	else {
-	  type = type_punctuation;
-	}
-      }
-      else if ( u_isemo( c ) ) {
-	type = type_emoticon;
-      }
-      else if ( u_isalpha(c)) {
-	type = type_word;
-      }
-      else if ( u_isdigit(c)) {
-	type = type_number;
-      }
-      else if ( u_isspace(c)) {
+      UnicodeString type = detect_type( c );
+      if ( type == type_space ){
 	return;
-      }
-      else {
-	if ( u_charType( c ) == U_CURRENCY_SYMBOL ) {
-	  type = type_currency;
-	}
-	else {
-	  type = type_unknown;
-	}
       }
       if ( doPunctFilter
 	   && ( type == type_punctuation || type == type_currency ||
@@ -2160,12 +2185,44 @@ namespace Tokenizer {
 	if ( tokDebug >= 4){
 	  *Log(theErrLog) << "\tTESTING " << rule->id << endl;
 	}
+	UnicodeString type = rule->id;
 	//Find first matching rule
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
 	  if ( tokDebug >= 4 ){
-	    *Log(theErrLog) << "\tMATCH: " << rule->id << endl;
+	    *Log(theErrLog) << "\tMATCH: " << type << endl;
+	    *Log(theErrLog) << "\tpre=  '" << pre << "'" << endl;
+	    *Log(theErrLog) << "\tpost= '" << post << "'" << endl;
+	    int cnt = 0;
+	    for ( const auto& m : matches ){
+	      *Log(theErrLog) << "\tmatch[" << ++cnt << "]=" << m << endl;
+	    }
+	  }
+	  if ( recurse
+	       && ( type == type_word
+		    || ( pre.isEmpty()
+			 && post.isEmpty() ) ) ){
+	    // so only do this recurse step when:
+	    //   OR we have a WORD
+	    //   OR we have an exact match of the rule (no pre or post)
+	    if ( assigned_type != type_word ){
+	      // don't change the type when:
+	      //   it was already non-WORD
+	      if ( tokDebug >= 4 ){
+		*Log(theErrLog) << "\trecurse, match didn't do anything new for " << input << endl;
+	      }
+	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
+	      return;
+	    }
+	    else {
+	      if ( tokDebug >= 4 ){
+		*Log(theErrLog) << "\trecurse, match changes the type:"
+				<< assigned_type << " to " << type << endl;
+	      }
+	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) );
+	      return;
+	    }
 	  }
 	  if ( pre.length() > 0 ){
 	    if ( tokDebug >= 4 ){
@@ -2196,15 +2253,23 @@ namespace Tokenizer {
 		}
 	      }
 	      else {
+		bool internal_space = space;
 		if ( post.length() > 0 ) {
-		  space = false;
+		  internal_space = false;
 		}
-		UnicodeString type = rule->id;
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
+		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
 		}
-		tokens.push_back( Token( type, word, space ? NOROLE : NOSPACE ) );
+		else {
+		  if ( recurse ){
+		    tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
+		  }
+		  else {
+		    tokenizeWord( word, internal_space, type );
+		  }
+		}
 	      }
 	    }
 	  }
@@ -2216,7 +2281,7 @@ namespace Tokenizer {
 	      *Log(theErrLog) << "\tTOKEN post-context (" << post.length()
 			      << "): [" << post << "]" << endl;
 	    }
-	    tokenizeWord( post, !space );
+	    tokenizeWord( post, space );
 	  }
 	  break;
 	}
@@ -2388,6 +2453,9 @@ namespace Tokenizer {
     else if (line == "[TOKENS]") {
       mode = TOKENS;
     }
+    else if (line == "[CURRENCY]") {
+      mode = CURRENCY;
+    }
     else if (line == "[UNITS]") {
       mode = UNITS;
     }
@@ -2403,34 +2471,47 @@ namespace Tokenizer {
     else if (line == "[FILTER]") {
       mode = FILTER;
     }
+    else {
+      mode = NONE;
+    }
     return mode;
   }
 
-  void addOrder( vector<UnicodeString>& order, UnicodeString &line ){
+  void addOrder( vector<UnicodeString>& order,
+		 map<UnicodeString,int>& reverse_order,
+		 int& index,
+		 UnicodeString &line ){
     try {
       UnicodeRegexMatcher m( "\\s+" );
       vector<UnicodeString> usv;
       m.split( line, usv );
-      for ( const auto& us : usv  )
+      for ( const auto& us : usv  ){
+	if ( reverse_order.find( us ) != reverse_order.end() ){
+	  cerr << "multiple entry " << us << " in RULE-ORDER" << endl;
+	  exit( EXIT_FAILURE );
+	}
 	order.push_back( us );
+	reverse_order[us] = ++index;
+      }
     }
     catch ( exception& e ){
-      abort();
+      throw uConfigError( "problem in line:" + line );
     }
   }
 
   void TokenizerClass::sortRules( map<UnicodeString, Rule *>& rulesmap,
-				  vector<Rule *>& result,
 				  const vector<UnicodeString>& sort ){
     // *Log(theErrLog) << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   *Log(theErrLog) << "rule " << i << " " << *rules[i] << endl;
     // }
+    int index = 0;
     if ( !sort.empty() ){
       for ( auto const& id : sort ){
 	auto it = rulesmap.find( id );
 	if ( it != rulesmap.end() ){
-	  result.push_back( it->second );
+	  rules.push_back( it->second );
+	  rules_index[id] = ++index;
 	  rulesmap.erase( it );
 	}
 	else {
@@ -2441,12 +2522,14 @@ namespace Tokenizer {
       for ( auto const& it : rulesmap ){
 	*Log(theErrLog) << "No RULE-ORDER specified for RULE '"
 			<< it.first << "' (put at end)." << endl;
-	result.push_back( it.second );
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
       }
     }
     else {
       for ( auto const& it : rulesmap ){
-	result.push_back( it.second );
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
       }
     }
     // *Log(theErrLog) << "rules NA sort : " << endl;
@@ -2456,11 +2539,11 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::add_rule( const UnicodeString& name,
-				 const vector<string>& parts,
-				 const UnicodeString& list ){
-    UnicodeString pat = folia::UTF8ToUnicode( parts[0] );
-    pat += list;
-    pat += folia::UTF8ToUnicode( parts[2] );
+				 const vector<UnicodeString>& parts ){
+    UnicodeString pat;
+    for ( auto const& part : parts ){
+      pat += part;
+    }
     rulesmap[name] = new Rule( name, pat );
   }
 
@@ -2496,6 +2579,7 @@ namespace Tokenizer {
 					       { ORDINALS, "" } };
 
     vector<UnicodeString> rules_order;
+    int rule_count = 0;
     vector<string> meta_rules;
 
     string conffile = get_filename( settings_name );
@@ -2576,7 +2660,7 @@ namespace Tokenizer {
 	    }
 	      break;
 	    case RULEORDER:
-	      addOrder( rules_order, line );
+	      addOrder( rules_order, rules_index, rule_count, line );
 	      break;
 	    case METARULES:
 	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
@@ -2587,6 +2671,7 @@ namespace Tokenizer {
 	    case PREFIXES:
 	    case SUFFIXES:
 	    case TOKENS:
+	    case CURRENCY:
 	    case UNITS:
 	    case ORDINALS:
 	      if ( !pattern[mode].isEmpty() )
@@ -2675,34 +2760,46 @@ namespace Tokenizer {
 	*Log(theErrLog) << "SPLIT using: '" << split << "'" << endl;
       }
       vector<string> parts;
-      size_t num = TiCC::split_at( rule, parts, split );
-      if ( num != 3 ){
-	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
-      }
+      TiCC::split_at( rule, parts, split );
+      // if ( num != 3 ){
+      // 	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
+      // }
       for ( auto& str : parts ){
 	str = TiCC::trim( str );
       }
-      UnicodeString meta =  folia::UTF8ToUnicode( parts[1] );
-      ConfigMode mode = getMode( "[" + meta + "]" );
-      if ( mode == NONE ){
-	throw uConfigError( "invalid REFERENCE '" + meta + "' in META-RULE: "
-			    + folia::UTF8ToUnicode(mr) );
-      }
-      switch ( mode ){
-      case ORDINALS:
-      case ABBREVIATIONS:
-      case TOKENS:
-      case ATTACHEDPREFIXES:
-      case ATTACHEDSUFFIXES:
-      case UNITS:
-      case PREFIXES:
-      case SUFFIXES:
-	if ( !pattern[mode].isEmpty()){
-	  add_rule( name, parts, pattern[mode] );
+      vector<UnicodeString> new_parts;
+      bool skip_rule = false;
+      for ( const auto& part : parts ){
+	UnicodeString meta = folia::UTF8ToUnicode( part );
+	ConfigMode mode = getMode( "[" + meta + "]" );
+	switch ( mode ){
+	case ORDINALS:
+	case ABBREVIATIONS:
+	case TOKENS:
+	case ATTACHEDPREFIXES:
+	case ATTACHEDSUFFIXES:
+	case UNITS:
+	case CURRENCY:
+	case PREFIXES:
+	case SUFFIXES:
+	  if ( !pattern[mode].isEmpty()){
+	    new_parts.push_back( pattern[mode] );
+	  }
+	  else {
+	    skip_rule = true;
+	  }
+	  break;
+	case NONE:
+	default:
+	  new_parts.push_back( folia::UTF8ToUnicode(part) );
+	  break;
 	}
-	break;
-      default:
-	break;
+      }
+      if ( skip_rule ){
+	*Log(theErrLog) << "skipping META rule: '" << name << "'" << endl;
+      }
+      else {
+	add_rule( name, new_parts );
       }
     }
 
@@ -2746,7 +2843,7 @@ namespace Tokenizer {
       rulesmap["SUFFIX"] = new Rule("SUFFIX", "((?:\\p{L})+)(" + pattern[SUFFIXES] + ")(?:\\Z|\\P{L})");
       //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
-    sortRules( rulesmap, rules, rules_order );
+    sortRules( rulesmap, rules_order );
     return true;
   }
 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.1" version="1.0.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.4" version="1.2.0">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-04-18T17:31:41" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-08-23T13:40:30" set="tokconfig-nl"/>
     </annotations>
   </metadata>
   <text xml:id="foliatest.text">
@@ -106,13 +106,13 @@
         <w xml:id="foliatest.p.2.s.1.w.12" class="WORD">
           <t>of</t>
         </w>
-        <w xml:id="foliatest.p.2.s.1.w.13" class="UNKNOWN" space="no">
+        <w xml:id="foliatest.p.2.s.1.w.13" class="SYMBOL" space="no">
           <t>&lt;</t>
         </w>
         <w xml:id="foliatest.p.2.s.1.w.14" class="WORD" space="no">
           <t>dit</t>
         </w>
-        <w xml:id="foliatest.p.2.s.1.w.15" class="UNKNOWN" space="no">
+        <w xml:id="foliatest.p.2.s.1.w.15" class="SYMBOL" space="no">
           <t>&gt;</t>
         </w>
         <w xml:id="foliatest.p.2.s.1.w.16" class="PUNCTUATION">
