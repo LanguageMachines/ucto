@@ -377,6 +377,7 @@ namespace Tokenizer {
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
+    std::string version;  // the version of the datafile
   };
 
   template< typename T >
