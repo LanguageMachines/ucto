@@ -69,7 +69,7 @@ AC_ARG_WITH(icu,
 	fi] )
 
 if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [5.0],
+  AX_ICU_CHECK( [4.9],
 		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
 		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
 		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
