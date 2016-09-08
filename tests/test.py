@@ -73,15 +73,15 @@ for f in glob.glob(mask):
     if os.path.isfile(id + '.' + lang + '.tok.V'):
         reffile = id + '.' + lang + '.tok.V'
         outputfile = 'testoutput/' + id + '.' + lang + '.tok.V'
-        cmd = VG+'../src/.libs/ucto -Q -v -c ../../uctodata/config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+        cmd = VG+'../src/.libs/ucto -Q -v -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
     elif os.path.isfile(id + '.' + lang + '.tok'):
         reffile = id + '.' + lang + '.tok'
         outputfile = 'testoutput/' + id + '.' + lang + '.tok'
-        cmd = VG+'../src/.libs/ucto -Q -c ../../uctodata/config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+        cmd = VG+'../src/.libs/ucto -Q -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
     elif os.path.isfile(id + '.' + lang + '.xml'):
         reffile = id + '.' + lang + '.xml'
         outputfile = 'testoutput/' + id + '.' + lang + '.xml'
-        cmd = VG+'../src/.libs/ucto --id="test" -Q -X -c ../../uctodata/config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
+        cmd = VG+'../src/.libs/ucto --id="test" -Q -X -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
     else:
         print color_text("MISSING", 'RED', True)
         exitcode += 1
