@@ -472,12 +472,6 @@ namespace Tokenizer {
   {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
-
-    //TODO: add test ICU for bug http://bugs.icu-project.org/trac/ticket/8826, if it's
-    //fixed assume 8824 (?i) handing -  is fixed too:
-    //test if pattern (?i)aßx matched against aßx produces results, if not, bug
-    //is present and users should be warned
-
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
@@ -2811,47 +2805,6 @@ namespace Tokenizer {
       else {
 	add_rule( name, new_parts );
       }
-    }
-
-    // old style /defaultstuff...
-    if ( rulesmap.find( "NUMBER-ORDINAL" ) == rulesmap.end()
-	 && !pattern[ORDINALS].isEmpty() ){
-      rulesmap["NUMBER-ORDINAL"] = new Rule("NUMBER-ORDINAL", "\\p{N}+-?(?:" + pattern[ORDINALS] + ")(?:\\Z|\\P{Lu}|\\P{Ll})$");
-      ////
-      // NB: (?i) is not used for the whole expression because of icu bug 8824
-      //     see http://bugs.icu-project.org/trac/ticket/8824
-      //     If you want mixed case Ordinals, you have to enumerate them all
-      //     in the config file
-    }
-    /* if ( rulesmap.find( "UNIT" ) == rulesmap.end()
-       && !pattern[UNITS].empty() ){
-       rulesmap["UNIT"] = new Rule("UNIT", "(?i)(?:\\a|\\P{L})(" + pattern[UNITS] + ")(?:\\z|\\P{L})");
-       }
-    */
-    if ( rulesmap.find( "ABBREVIATION-KNOWN" ) == rulesmap.end()
-	 && !pattern[ABBREVIATIONS].isEmpty() ){
-      rulesmap["ABBREVIATION-KNOWN"] = new Rule("ABBREVIATION-KNOWN",  "(?:\\p{P}*)?(?:\\A|[^\\p{L}\\.])((?:" + pattern[ABBREVIATIONS] + ")\\.)(?:\\Z|\\P{L})");
-    }
-    if ( rulesmap.find( "WORD-TOKEN" ) == rulesmap.end()
-	 && !pattern[TOKENS].isEmpty() ){
-      rulesmap["WORD-TOKEN"] = new Rule("WORD-TOKEN", "(" + pattern[TOKENS] + ")(?:\\p{P}*)?$");
-    }
-    if ( rulesmap.find( "WORD-WITHPREFIX" ) == rulesmap.end()
-	 && !pattern[ATTACHEDPREFIXES].isEmpty() ){
-      rulesmap["WORD-WITHPREFIX"] = new Rule("WORD-WITHPREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(?:" + pattern[ATTACHEDPREFIXES] + ")\\p{L}+");
-    }
-    if ( rulesmap.find( "WORD-WITHSUFFIX" ) == rulesmap.end()
-	 && !pattern[ATTACHEDSUFFIXES].isEmpty() ){
-      rulesmap["WORD-WITHSUFFIX"] = new Rule("WORD-WITHSUFFIX", "((?:\\p{L}|\\p{N}|-)+(?:" + pattern[ATTACHEDSUFFIXES] + "))(?:\\Z|\\p{P})");
-    }
-    if ( rulesmap.find( "PREFIX" ) == rulesmap.end()
-	 && !pattern[PREFIXES].isEmpty() ){
-      rulesmap["PREFIX"] = new Rule("PREFIX", "(?:\\A|[^\\p{Lu}\\.]|[^\\p{Ll}\\.])(" + pattern[PREFIXES] + ")(\\p{L}+)");
-    }
-    if ( rulesmap.find( "SUFFIX" ) == rulesmap.end()
-	 && !pattern[SUFFIXES].isEmpty() ){
-      rulesmap["SUFFIX"] = new Rule("SUFFIX", "((?:\\p{L})+)(" + pattern[SUFFIXES] + ")(?:\\Z|\\P{L})");
-      //adding (?i) causes RegexMatcher->find() to get caught in an endless loop :(
     }
     sortRules( rulesmap, rules_order );
     return true;
