@@ -1,4 +1,1 @@
-configfile = ./small.cfg
-inputfile = small.txt
-outputfile = 
-Initiating tokeniser...
+. <utt> 
