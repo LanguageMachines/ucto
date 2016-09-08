@@ -18,4 +18,8 @@ do
 done
 
 python test.py
-exit $?
+if [ $? -ne 0 ]; then
+   RETURN=1
+fi
+
+exit $RETURN

@@ -84,6 +84,7 @@ for f in glob.glob(mask):
         cmd = VG+'../src/.libs/ucto --id="test" -Q -X -c ../../uctodata/config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
     else:
         print color_text("MISSING", 'RED', True)
+        exitcode += 1
         continue
 
     #print cmd
@@ -121,4 +122,4 @@ if log:
     print "--------------------------"
     print "Files to inspect:"
     print log
-    sys.exit(exitcode)
+sys.exit(exitcode)
