@@ -10,6 +10,8 @@ COLORS = [
     'BLUE', 'MAGENTA', 'CYAN', 'WHITE'
 ]
 
+exitcode = 0
+
 def color_text(text, color_name, bold=False):
     if color_name in COLORS:
         return "\033[%d;%dm%s\033[0m"  % (int(bold), COLORS.index(color_name) + 30, text)
@@ -90,6 +92,7 @@ for f in glob.glob(mask):
         print color_text("CRASHED!!!", 'RED', True)
         if retcode == 2: # lame attempt to bail out on ^C
             break
+        exitcode += 1
     else:
         if outputfile[-4:] == ".xml":
             for f2 in (reffile, outputfile):
@@ -106,6 +109,7 @@ for f in glob.glob(mask):
                 os.system('rm testoutput/' + id + '.' + lang + '.diff')
         else:
             print color_text("FAILED", 'RED', True)
+            exitcode += 1
             log += "testoutput/" + id + '.' + lang + '.diff\n'
             log += "testoutput/" + id + '.' + lang + '.err\n'
             if outputfile[-4:] != ".xml":
@@ -117,3 +121,4 @@ if log:
     print "--------------------------"
     print "Files to inspect:"
     print log
+    sys.exit(exitcode)
