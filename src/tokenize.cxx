@@ -2177,6 +2177,7 @@ namespace Tokenizer {
       }
     }
     else {
+      bool a_rule_matched = false;
       for ( const auto& rule : rules ) {
 	if ( tokDebug >= 4){
 	  LOG << "\tTESTING " << rule->id << endl;
@@ -2186,6 +2187,7 @@ namespace Tokenizer {
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
+	  a_rule_matched = true;
 	  if ( tokDebug >= 4 ){
 	    LOG << "\tMATCH: " << type << endl;
 	    LOG << "\tpre=  '" << pre << "'" << endl;
@@ -2270,7 +2272,8 @@ namespace Tokenizer {
 	    }
 	  }
 	  else if ( tokDebug >=4 ){
-	    LOG << "\tthere's no match" << endl;
+	    // should never come here?
+	    LOG << "\tPANIC there's no match" << endl;
 	  }
 	  if ( post.length() > 0 ){
 	    if ( tokDebug >= 4 ){
@@ -2281,6 +2284,13 @@ namespace Tokenizer {
 	  }
 	  break;
 	}
+      }
+      if ( ! a_rule_matched ){
+	// no rule matched
+	if ( tokDebug >=4 ){
+	  LOG << "\tthere's no match at all" << endl;
+	}
+	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
       }
     }
   }
