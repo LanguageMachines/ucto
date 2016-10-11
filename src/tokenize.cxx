@@ -490,6 +490,12 @@ namespace Tokenizer {
     theErrLog = os;
   }
 
+  string TokenizerClass::setLanguage( const std::string& lan ){
+    string old = language;
+    language = lan;
+    return old;
+  }
+
   string TokenizerClass::setInputEncoding( const std::string& enc ){
     string old = inputEncoding;
     inputEncoding = enc;
@@ -839,6 +845,12 @@ namespace Tokenizer {
 	  // already words, bail out
 	  return;
 	}
+      }
+      // now let's check our language
+      string lan = element->language();
+      if ( !lan.empty() && lan != language ){
+	// skip elements in the wrong language
+	return;
       }
       if ( inputclass != outputclass && outputclass == "current" ){
 	if ( element->hastext( outputclass ) ){

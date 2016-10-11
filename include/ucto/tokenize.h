@@ -247,6 +247,10 @@ namespace Tokenizer {
     std::string setInputEncoding( const std::string& );
     std::string getInputEncoding() const { return inputEncoding; };
 
+    // set languge
+    std::string setLanguage( const std::string& );
+    std::string getLanguage() const { return language; };
+
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
@@ -329,6 +333,7 @@ namespace Tokenizer {
     UnicodeNormalizer normalizer;
     UnicodeString eosmarkers;
     std::string inputEncoding;
+    std::string language;
 
     UnicodeString eosmark;
     std::vector<Token> tokens;

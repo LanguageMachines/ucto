@@ -95,7 +95,8 @@ int main( int argc, char *argv[] ){
   string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string cfile = "tokconfig-en";
+  string language = "nld";
+  string cfile = "tokconfig-nl";
   string ifile;
   string ofile;
   string c_file;
@@ -169,8 +170,42 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
-    if ( Opts.extract('L', value ) ){
-      L_file = "tokconfig-" + value;
+    if ( Opts.extract('L', language ) ){
+      string l = language;
+      if ( language ==  "nld" ){
+	l = "nl";
+	language = "dut";
+      }
+      else if ( language == "dut" ){
+	l = "nl";
+      }
+      else if ( language ==  "ger" ){
+	l = "de";
+      }
+      else if ( language == "deu" ) {
+	l = "de";
+	language = "ger";
+      }
+      else if ( language ==  "fre" ){
+	l = "fr";
+      }
+      else if ( language == "fra" ) {
+	l = "fr";
+	language = "fre";
+      }
+      else if ( language == "nl" ){
+	language = "dut";
+      }
+      else if ( language == "en" ){
+	language = "eng";
+      }
+      else if ( language == "de" ){
+	language = "ger";
+      }
+      else if ( language == "fr" ){
+	language = "fre";
+      }
+      L_file = "tokconfig-" + l;
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
@@ -255,6 +290,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
+    tokenizer.setLanguage(language);
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
     tokenizer.setNormSet(norm_set_string);
