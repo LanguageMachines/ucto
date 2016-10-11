@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.4" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-11T16:07:56" set="tokconfig-nl"/>
+    </annotations>
+    <meta id="language">dut</meta>
+  </metadata>
+  <text xml:id="text">
+    <div xml:id="div">
+      <p xml:id="p1">
+        <s xml:id="s1">
+          <t>Dit is een test.</t>
+          <lang class="dut"/>
+          <w xml:id="s1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="s1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="s1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="s1.w.4" class="WORD" space="no">
+            <t>test</t>
+          </w>
+          <w xml:id="s1.w.5" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </p>
+      <p xml:id="p2">
+        <s xml:id="s2">
+          <t>This isn't dutch.</t>
+          <lang class="eng"/>
+        </s>
+      </p>
+      <p xml:id="p3">
+        <s xml:id="s3">
+          <t>En dit is zin 2.</t>
+          <w xml:id="s3.w.1" class="WORD">
+            <t>En</t>
+          </w>
+          <w xml:id="s3.w.2" class="WORD">
+            <t>dit</t>
+          </w>
+          <w xml:id="s3.w.3" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="s3.w.4" class="WORD">
+            <t>zin</t>
+          </w>
+          <w xml:id="s3.w.5" class="NUMBER" space="no">
+            <t>2</t>
+          </w>
+          <w xml:id="s3.w.6" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.4" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-11T16:07:56" set="tokconfig-en"/>
+    </annotations>
+    <meta id="language">dut</meta>
+  </metadata>
+  <text xml:id="text">
+    <div xml:id="div">
+      <p xml:id="p1">
+        <s xml:id="s1">
+          <t>Dit is een test.</t>
+          <lang class="dut"/>
+        </s>
+      </p>
+      <p xml:id="p2">
+        <s xml:id="s2">
+          <t>This isn't dutch.</t>
+          <lang class="eng"/>
+          <w xml:id="s2.w.1" class="WORD">
+            <t>This</t>
+          </w>
+          <w xml:id="s2.w.2" class="WORD" space="no">
+            <t>is</t>
+          </w>
+          <w xml:id="s2.w.3" class="SUFFIX">
+            <t>n't</t>
+          </w>
+          <w xml:id="s2.w.4" class="WORD" space="no">
+            <t>dutch</t>
+          </w>
+          <w xml:id="s2.w.5" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </p>
+      <p xml:id="p3">
+        <s xml:id="s3">
+          <t>En dit is zin 2.</t>
+        </s>
+      </p>
+    </div>
+  </text>
+</FoLiA>
+
+
