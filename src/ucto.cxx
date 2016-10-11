@@ -95,7 +95,7 @@ int main( int argc, char *argv[] ){
   string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string language = "nld";
+  string language = "dut";
   string cfile = "tokconfig-nl";
   string ifile;
   string ofile;

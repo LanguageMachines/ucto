@@ -848,8 +848,11 @@ namespace Tokenizer {
       }
       // now let's check our language
       string lan = element->language();
-      if ( !lan.empty() && lan != language ){
+      if ( !language.empty() && !lan.empty() && lan != language ){
 	// skip elements in the wrong language
+	if (tokDebug >= 1){
+	  LOG << "skip tokenize because element:" << lan << " !=" << language << endl;
+	}
 	return;
       }
       if ( inputclass != outputclass && outputclass == "current" ){
