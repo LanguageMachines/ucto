@@ -5,13 +5,13 @@
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
     </annotations>
-    <meta id="language">dut</meta>
+    <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
       <div xml:id="div">
 	<p xml:id="p1">
           <s xml:id="s1">
-	    <lang class="dut"/>
+	    <lang class="nld"/>
 	    <t>Dit is een test.</t>
 	  </s>
 	</p>
