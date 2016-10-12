@@ -171,6 +171,40 @@ int main( int argc, char *argv[] ){
       }
     }
     if ( Opts.extract('L', language ) ){
+      // support some backward compatability to old ISO 639-1 codes
+      if ( language == "nl" ){
+	language = "nld";
+      }
+      else if ( language == "de" ){
+	language = "deu";
+      }
+      else if ( language == "fr" ){
+	language = "fra";
+      }
+      else if ( language == "pt" ){
+	language = "por";
+      }
+      else if ( language == "es" ){
+	language = "spa";
+      }
+      else if ( language == "fy" ){
+	language = "fry";
+      }
+      else if ( language == "se" ){
+	language = "swe";
+      }
+      else if ( language == "en" ){
+	language = "eng";
+      }
+      else if ( language == "it" ){
+	language = "ita";
+      }
+      else if ( language == "ru" ){
+	language = "rus";
+      }
+      else if ( language == "tr" ){
+	language = "tur";
+      }
       L_file = "tokconfig-" + language;
     }
     Opts.extract("normalize", norm_set_string );

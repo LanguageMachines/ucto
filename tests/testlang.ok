@@ -4,16 +4,16 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-11T16:07:56" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-12T14:35:06" set="tokconfig-nld"/>
     </annotations>
-    <meta id="language">dut</meta>
+    <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
     <div xml:id="div">
       <p xml:id="p1">
         <s xml:id="s1">
           <t>Dit is een test.</t>
-          <lang class="dut"/>
+          <lang class="nld"/>
           <w xml:id="s1.w.1" class="WORD">
             <t>Dit</t>
           </w>
@@ -71,16 +71,16 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-11T16:07:56" set="tokconfig-en"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-12T14:35:06" set="tokconfig-eng"/>
     </annotations>
-    <meta id="language">dut</meta>
+    <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
     <div xml:id="div">
       <p xml:id="p1">
         <s xml:id="s1">
           <t>Dit is een test.</t>
-          <lang class="dut"/>
+          <lang class="nld"/>
         </s>
       </p>
       <p xml:id="p2">
