@@ -95,8 +95,8 @@ int main( int argc, char *argv[] ){
   string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string language = "dut";
-  string cfile = "tokconfig-nl";
+  string language = "nld";
+  string cfile = "tokconfig-nld";
   string ifile;
   string ofile;
   string c_file;
@@ -171,41 +171,7 @@ int main( int argc, char *argv[] ){
       }
     }
     if ( Opts.extract('L', language ) ){
-      string l = language;
-      if ( language ==  "nld" ){
-	l = "nl";
-	language = "dut";
-      }
-      else if ( language == "dut" ){
-	l = "nl";
-      }
-      else if ( language ==  "ger" ){
-	l = "de";
-      }
-      else if ( language == "deu" ) {
-	l = "de";
-	language = "ger";
-      }
-      else if ( language ==  "fre" ){
-	l = "fr";
-      }
-      else if ( language == "fra" ) {
-	l = "fr";
-	language = "fre";
-      }
-      else if ( language == "nl" ){
-	language = "dut";
-      }
-      else if ( language == "en" ){
-	language = "eng";
-      }
-      else if ( language == "de" ){
-	language = "ger";
-      }
-      else if ( language == "fr" ){
-	language = "fre";
-      }
-      L_file = "tokconfig-" + l;
+      L_file = "tokconfig-" + language;
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){

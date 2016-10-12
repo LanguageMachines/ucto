@@ -104,7 +104,7 @@ PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
-PKG_CHECK_MODULES([uctodata], [uctodata >= 0.1] )
+PKG_CHECK_MODULES([uctodata], [uctodata >= 0.3] )
 
 # Checks for library functions.
 
