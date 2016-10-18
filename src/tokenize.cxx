@@ -2586,6 +2586,466 @@ namespace Tokenizer {
     return result;
   }
 
+  class Setting {
+  public:
+    bool read( const string&, int, LogStream* );
+    bool readrules( const string&, int, LogStream* );
+    bool readfilters( const string&, int, LogStream* );
+    bool readquotes( const string&, int, LogStream* );
+    bool readeosmarkers( const string&, int, LogStream* );
+    bool readabbreviations( const string&,  UnicodeString&, int, LogStream* );
+    void add_rule( const UnicodeString&, const vector<UnicodeString>& );
+    void sortRules( map<UnicodeString, Rule *>&,
+		    const vector<UnicodeString>&, LogStream* );
+    UnicodeString eosmarkers;
+    std::vector<Rule *> rules;
+    std::map<UnicodeString, Rule *> rulesmap;
+    std::map<UnicodeString, int> rules_index;
+    Quoting quotes;
+    UnicodeFilter filter;
+    std::string version;  // the version of the datafile
+  };
+
+  bool Setting::readrules( const string& fname,
+			   int tokDebug, LogStream* theErrLog ) {
+    if ( tokDebug > 0 ){
+      *theErrLog << "%include " << fname << endl;
+    }
+    ifstream f( fname );
+    if ( !f ){
+      return false;
+    }
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 ){
+	    *theErrLog << "include line = " << rawline << endl;
+	  }
+	  const int splitpoint = line.indexOf("=");
+	  if ( splitpoint < 0 ){
+	    throw uConfigError( "invalid RULES entry: " + line );
+	  }
+	  UnicodeString id = UnicodeString( line, 0,splitpoint);
+	  UnicodeString pattern = UnicodeString( line, splitpoint+1);
+	  rulesmap[id] = new Rule( id, pattern);
+	}
+      }
+    }
+    return true;
+  }
+
+  bool Setting::readfilters( const string& fname,
+			     int tokDebug, LogStream* theErrLog ) {
+    if ( tokDebug > 0 ){
+      *theErrLog << "%include " << fname << endl;
+    }
+    return filter.fill( fname );
+  }
+
+  bool Setting::readquotes( const string& fname,
+			    int tokDebug, LogStream* theErrLog ) {
+    if ( tokDebug > 0 ){
+      *theErrLog << "%include " << fname << endl;
+    }
+    ifstream f( fname );
+    if ( !f ){
+      return false;
+    }
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 ){
+	    *theErrLog << "include line = " << rawline << endl;
+	  }
+	  int splitpoint = line.indexOf(" ");
+	  if ( splitpoint == -1 )
+	    splitpoint = line.indexOf("\t");
+	  if ( splitpoint == -1 ){
+	    throw uConfigError( "invalid QUOTES entry: " + line
+				+ " (missing whitespace)" );
+	  }
+	  UnicodeString open = UnicodeString( line, 0,splitpoint);
+	  UnicodeString close = UnicodeString( line, splitpoint+1);
+	  open = open.trim().unescape();
+	  close = close.trim().unescape();
+	  if ( open.isEmpty() || close.isEmpty() ){
+	    throw uConfigError( "invalid QUOTES entry: " + line );
+	  }
+	  else {
+	    quotes.add( open, close );
+	  }
+	}
+      }
+    }
+    return true;
+  }
+
+  bool Setting::readeosmarkers( const string& fname,
+				int tokDebug, LogStream* theErrLog ) {
+    if ( tokDebug > 0 ){
+      *theErrLog << "%include " << fname << endl;
+    }
+    ifstream f( fname );
+    if ( !f ){
+      return false;
+    }
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 ){
+	    *theErrLog << "include line = " << rawline << endl;
+	  }
+	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
+	       ( line.startsWith("\\U") && line.length() == 10 ) ){
+	    UnicodeString uit = line.unescape();
+	    if ( uit.isEmpty() ){
+	      throw uConfigError( "Invalid EOSMARKERS entry: " + line );
+	    }
+	    eosmarkers += uit;
+	  }
+	}
+      }
+    }
+    return true;
+  }
+
+  bool Setting::readabbreviations( const string& fname,
+				   UnicodeString& abbreviations,
+				   int tokDebug, LogStream* theErrLog ) {
+    if ( tokDebug > 0 ){
+      *theErrLog << "%include " << fname << endl;
+    }
+    ifstream f( fname );
+    if ( !f ){
+      return false;
+    }
+    else {
+      string rawline;
+      while ( getline(f,rawline) ){
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if ( tokDebug >= 5 ){
+	    *theErrLog << "include line = " << rawline << endl;
+	  }
+	  if ( !abbreviations.isEmpty())
+	    abbreviations += '|';
+	  abbreviations += line;
+	}
+      }
+    }
+    return true;
+  }
+
+  void Setting::add_rule( const UnicodeString& name,
+			  const vector<UnicodeString>& parts ){
+    UnicodeString pat;
+    for ( auto const& part : parts ){
+      pat += part;
+    }
+    rulesmap[name] = new Rule( name, pat );
+  }
+
+  void Setting::sortRules( map<UnicodeString, Rule *>& rulesmap,
+			   const vector<UnicodeString>& sort,
+			   LogStream* theErrLog ){
+    // LOG << "rules voor sort : " << endl;
+    // for ( size_t i=0; i < rules.size(); ++i ){
+    //   LOG << "rule " << i << " " << *rules[i] << endl;
+    // }
+    int index = 0;
+    if ( !sort.empty() ){
+      for ( auto const& id : sort ){
+	auto it = rulesmap.find( id );
+	if ( it != rulesmap.end() ){
+	  rules.push_back( it->second );
+	  rules_index[id] = ++index;
+	  rulesmap.erase( it );
+	}
+	else {
+	  LOG << "RULE-ORDER specified for undefined RULE '"
+			  << id << "'" << endl;
+	}
+      }
+      for ( auto const& it : rulesmap ){
+	LOG << "No RULE-ORDER specified for RULE '"
+			<< it.first << "' (put at end)." << endl;
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
+      }
+    }
+    else {
+      for ( auto const& it : rulesmap ){
+	rules.push_back( it.second );
+	rules_index[it.first] = ++index;
+      }
+    }
+    // LOG << "rules NA sort : " << endl;
+    // for ( size_t i=0; i < result.size(); ++i ){
+    //   LOG << "rule " << i << " " << *result[i] << endl;
+    // }
+  }
+
+  bool Setting::read( const string& settings_name,
+		      int tokDebug, LogStream* theErrLog ) {
+
+    ConfigMode mode = NONE;
+
+    map<ConfigMode, UnicodeString> pattern = { { ABBREVIATIONS, "" },
+					       { TOKENS, "" },
+					       { PREFIXES, "" },
+					       { SUFFIXES, "" },
+					       { ATTACHEDPREFIXES, "" },
+					       { ATTACHEDSUFFIXES, "" },
+					       { UNITS, "" },
+					       { ORDINALS, "" } };
+
+    vector<UnicodeString> rules_order;
+    int rule_count = 0;
+    vector<string> meta_rules;
+
+    string conffile = get_filename( settings_name );
+
+    ifstream f( conffile );
+    if ( !f ){
+      return false;
+    }
+    else {
+      if ( tokDebug ){
+	LOG << "config file=" << conffile << endl;
+      }
+      string rawline;
+      while ( getline(f,rawline) ){
+	if ( rawline.find( "%include" ) != string::npos ){
+	  string file = rawline.substr( 9 );
+	  switch ( mode ){
+	  case RULES: {
+	    file += ".rule";
+	    file = get_filename( file );
+	    if ( !readrules( file, tokDebug, theErrLog ) )
+	      throw uConfigError( "'" + rawline + "' failed" );
+	  }
+	    break;
+	  case FILTER:{
+	    file += ".filter";
+	    file = get_filename( file );
+	    if ( !readfilters( file, tokDebug, theErrLog ) )
+	      throw uConfigError( "'" + rawline + "' failed" );
+	  }
+	    break;
+	  case QUOTES:{
+	    file += ".quote";
+	    file = get_filename( file );
+	    if ( !readquotes( file, tokDebug, theErrLog ) )
+	      throw uConfigError( "'" + rawline + "' failed" );
+	  }
+	    break;
+	  case EOSMARKERS:{
+	    file += ".eos";
+	    file = get_filename( file );
+	    if ( !readeosmarkers( file, tokDebug, theErrLog ) )
+	      throw uConfigError( "'" + rawline + "' failed" );
+	  }
+	    break;
+	  case ABBREVIATIONS:{
+	    file += ".abr";
+	    file = get_filename( file );
+	    if ( !readabbreviations( file, pattern[ABBREVIATIONS],
+				     tokDebug, theErrLog) )
+	      throw uConfigError( "'" + rawline + "' failed" );
+	  }
+	    break;
+	  default:
+	    throw uConfigError( string("%include not implemented for this section" ) );
+	  }
+	  continue;
+	}
+
+	UnicodeString line = folia::UTF8ToUnicode(rawline);
+	line.trim();
+	if ((line.length() > 0) && (line[0] != '#')) {
+	  if (line[0] == '[') {
+	    mode = getMode( line );
+	  }
+	  else {
+	    if ( line[0] == '\\' && line.length() > 1 && line[1] == '[' ){
+	      line = UnicodeString( line, 1 );
+	    }
+	    switch( mode ){
+	    case RULES: {
+	      const int splitpoint = line.indexOf("=");
+	      if ( splitpoint < 0 ){
+		throw uConfigError( "invalid RULES entry: " + line );
+	      }
+	      UnicodeString id = UnicodeString( line, 0,splitpoint);
+	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
+	      rulesmap[id] = new Rule( id, pattern);
+	    }
+	      break;
+	    case RULEORDER:
+	      addOrder( rules_order, rules_index, rule_count, line );
+	      break;
+	    case METARULES:
+	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
+	      break;
+	    case ABBREVIATIONS:
+	    case ATTACHEDPREFIXES:
+	    case ATTACHEDSUFFIXES:
+	    case PREFIXES:
+	    case SUFFIXES:
+	    case TOKENS:
+	    case CURRENCY:
+	    case UNITS:
+	    case ORDINALS:
+	      if ( !pattern[mode].isEmpty() )
+		pattern[mode] += '|';
+	      pattern[mode] += line;
+	      break;
+	    case EOSMARKERS:
+	      if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
+		   ( line.startsWith("\\U") && line.length() == 10 ) ){
+		UnicodeString uit = line.unescape();
+		if ( uit.isEmpty() ){
+		  throw uConfigError( "Invalid EOSMARKERS entry: " + line );
+		}
+		eosmarkers += uit;
+	      }
+	      break;
+	    case QUOTES: {
+	      int splitpoint = line.indexOf(" ");
+	      if ( splitpoint == -1 )
+		splitpoint = line.indexOf("\t");
+	      if ( splitpoint == -1 ){
+		throw uConfigError( "invalid QUOTES entry: " + line
+				    + " (missing whitespace)" );
+	      }
+	      UnicodeString open = UnicodeString( line, 0,splitpoint);
+	      UnicodeString close = UnicodeString( line, splitpoint+1);
+	      open = open.trim().unescape();
+	      close = close.trim().unescape();
+	      if ( open.isEmpty() || close.isEmpty() ){
+		throw uConfigError( "invalid QUOTES entry: " + line );
+	      }
+	      else {
+		quotes.add( open, close );
+	      }
+	    }
+	      break;
+	    case FILTER:
+	      filter.add( line );
+	      break;
+	    case NONE: {
+	      vector<string> parts;
+	      split_at( rawline, parts, "=" );
+	      if ( parts.size() == 2 ) {
+		if ( parts[0] == "version" ){
+		  version = parts[1];
+		}
+	      }
+	    }
+	      break;
+	    default:
+	      throw uLogicError("unhandled case in switch");
+	    }
+	  }
+	}
+      }
+    }
+
+    // set reasonable defaults for those items that ar NOT set
+    // in the configfile
+    if ( eosmarkers.length() == 0 ){
+      eosmarkers = ".!?";
+    }
+    if ( quotes.empty() ){
+      quotes.add( '"', '"' );
+      quotes.add( "‘", "’" );
+      quotes.add( "“„‟", "”" );
+    }
+
+    string split = "%";
+    // Create Rules for every pattern that is set
+    // first the meta rules...
+    for ( const auto& mr : meta_rules ){
+      string::size_type pos = mr.find( "=" );
+      if ( pos == string::npos ){
+	throw uConfigError( "invalid entry in META-RULES: " + mr );
+      }
+      string nam = TiCC::trim( mr.substr( 0, pos ) );
+      if ( nam == "SPLITTER" ){
+	split = mr.substr( pos+1 );
+	if ( split.empty() ) {
+	  throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr );
+	}
+	if ( split[0] == '"' && split[split.length()-1] == '"' ){
+	  split = split.substr(1,split.length()-2);
+	}
+	if ( tokDebug > 5 ){
+	  LOG << "SET SPLIT: '" << split << "'" << endl;
+	}
+	continue;
+      }
+      UnicodeString name = folia::UTF8ToUnicode( nam );
+      string rule = mr.substr( pos+1 );
+      if ( tokDebug > 5 ){
+	LOG << "SPLIT using: '" << split << "'" << endl;
+      }
+      vector<string> parts;
+      TiCC::split_at( rule, parts, split );
+      // if ( num != 3 ){
+      // 	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
+      // }
+      for ( auto& str : parts ){
+	str = TiCC::trim( str );
+      }
+      vector<UnicodeString> new_parts;
+      bool skip_rule = false;
+      for ( const auto& part : parts ){
+	UnicodeString meta = folia::UTF8ToUnicode( part );
+	ConfigMode mode = getMode( "[" + meta + "]" );
+	switch ( mode ){
+	case ORDINALS:
+	case ABBREVIATIONS:
+	case TOKENS:
+	case ATTACHEDPREFIXES:
+	case ATTACHEDSUFFIXES:
+	case UNITS:
+	case CURRENCY:
+	case PREFIXES:
+	case SUFFIXES:
+	  if ( !pattern[mode].isEmpty()){
+	    new_parts.push_back( pattern[mode] );
+	  }
+	  else {
+	    skip_rule = true;
+	  }
+	  break;
+	case NONE:
+	default:
+	  new_parts.push_back( folia::UTF8ToUnicode(part) );
+	  break;
+	}
+      }
+      if ( skip_rule ){
+	LOG << "skipping META rule: '" << name << "'" << endl;
+      }
+      else {
+	add_rule( name, new_parts );
+      }
+    }
+    sortRules( rulesmap, rules_order, theErrLog );
+    return true;
+  }
+
   bool TokenizerClass::readsettings( const string& settings_name ) {
 
     ConfigMode mode = NONE;
@@ -2878,6 +3338,19 @@ namespace Tokenizer {
 	}
       }
     }
+  }
+
+  bool TokenizerClass::init( const vector<string>& languages ){
+    for ( const auto& name : languages ){
+      string fname = "tokconfig-" + name;
+      if (!readsettings( fname ) ) {
+	string mess = "Cannot read Tokeniser settingsfile " + fname
+	  + "\nUnsupported language? (Did you install the uctodata package?)";
+	throw uConfigError( mess );
+	return false;
+      }
+    }
+    return true;
   }
 
   bool TokenizerClass::init( const string& fname ){

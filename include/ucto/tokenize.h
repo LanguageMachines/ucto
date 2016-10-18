@@ -145,6 +145,7 @@ namespace Tokenizer {
     TokenizerClass();
     ~TokenizerClass();
     bool init( const std::string& );
+    bool init( const std::vector<std::string>& );
     bool reset();
     void setErrorLog( TiCC::LogStream *os );
 
@@ -247,7 +248,7 @@ namespace Tokenizer {
     std::string setInputEncoding( const std::string& );
     std::string getInputEncoding() const { return inputEncoding; };
 
-    // set languge
+    // set language
     std::string setLanguage( const std::string& );
     std::string getLanguage() const { return language; };
 

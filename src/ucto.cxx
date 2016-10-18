@@ -300,7 +300,12 @@ int main( int argc, char *argv[] ){
     }
     else {
       // init exept for passthru mode
-      tokenizer.init( cfile );
+      if ( language_list.size() == 1 ){
+	tokenizer.init( cfile );
+      }
+      else {
+	tokenizer.init( language_list );
+      }
     }
 
     tokenizer.setEosMarker( eosmarker );
@@ -318,7 +323,6 @@ int main( int argc, char *argv[] ){
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
     tokenizer.setPunctFilter(dopunctfilter);
-    //    tokenizer.setLanguagedetection(language_list);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);
