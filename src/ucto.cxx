@@ -34,6 +34,7 @@
 #include "ticcutils/StringOps.h"
 #include "libfolia/folia.h"
 #include "ticcutils/CommandLine.h"
+#include "ticcutils/PrettyPrint.h"
 #include "ucto/tokenize.h"
 #include <unistd.h>
 
@@ -44,31 +45,32 @@ void usage(){
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
-       << "\t-c <configfile> - Explicitly specify a configuration file" << endl
-       << "\t-d <value>      - set debug level" << endl
-       << "\t-e <string>     - set input encoding (default UTF8)" << endl
-       << "\t-N <string>     - set output normalization (default NFC)" << endl
-       << "\t-f              - Disable filtering of special characters" << endl
-       << "\t-h or --help    - this message" << endl
-       << "\t-L <language>   - Automatically selects a configuration file by language code" << endl
-       << "\t-l              - Convert to all lowercase" << endl
-       << "\t-u              - Convert to all uppercase" << endl
-       << "\t-n              - One sentence per line (output)" << endl
-       << "\t-m              - One sentence per line (input)" << endl
-       << "\t-v              - Verbose mode" << endl
-       << "\t-s <string>     - End-of-Sentence marker (default: <utt>)" << endl
-       << "\t--passthru      - Don't tokenize, but perform input decoding and simple token role detection" << endl
+       << "\t-c <configfile>  - Explicitly specify a configuration file" << endl
+       << "\t-d <value>       - set debug level" << endl
+       << "\t-e <string>      - set input encoding (default UTF8)" << endl
+       << "\t-N <string>      - set output normalization (default NFC)" << endl
+       << "\t-f               - Disable filtering of special characters" << endl
+       << "\t-h or --help     - this message" << endl
+       << "\t-L <language>    - Automatically selects a configuration file by language code" << endl
+       << "\t-l               - Convert to all lowercase" << endl
+       << "\t-u               - Convert to all uppercase" << endl
+       << "\t-n               - One sentence per line (output)" << endl
+       << "\t-m               - One sentence per line (input)" << endl
+       << "\t-v               - Verbose mode" << endl
+       << "\t-s <string>      - End-of-Sentence marker (default: <utt>)" << endl
+       << "\t--passthru       - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
-       << "\t                - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
-       << "\t--filterpunct   - remove all punctuation from the output" << endl
-       << "\t-P              - Disable paragraph detection" << endl
-       << "\t-S              - Disable sentence detection!" << endl
-       << "\t-Q              - Enable quote detection (experimental)" << endl
-       << "\t-V or --version - Show version information" << endl
-       << "\t-x <DocID>      - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
-       << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
-       << "\t-X              - Output FoLiA XML, use the Document ID specified with --id=" << endl
-       << "\t--id <DocID>    - use the specified Document ID to label the FoLia doc." << endl
+       << "\t                 - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
+       << "\t--filterpunct    - remove all punctuation from the output" << endl
+       << "\t--detectlanguages=<lang1,lang2,..langn> - try to detect languages. Default = 'lang1'" << endl
+       << "\t-P               - Disable paragraph detection" << endl
+       << "\t-S               - Disable sentence detection!" << endl
+       << "\t-Q               - Enable quote detection (experimental)" << endl
+       << "\t-V or --version  - Show version information" << endl
+       << "\t-x <DocID>       - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
+       << "\t-F               - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
+       << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
        << "\t--textclass <class> - use the specified class to search text in the the FoLia doc. (deprecated. use --inputclass)" << endl
        << "\t--inputclass <class> - use the specified class to search text in the the FoLia doc." << endl
        << "\t--outputclass <class> - use the specified class to output text in the the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
@@ -85,6 +87,7 @@ int main( int argc, char *argv[] ){
   bool quotedetection = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
+  bool do_language_detect = false;
   bool splitsentences = true;
   bool xmlin = false;
   bool xmlout = false;
@@ -95,7 +98,7 @@ int main( int argc, char *argv[] ){
   string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string language = "nld";
+  vector<string> language_list;
   string cfile = "tokconfig-nld";
   string ifile;
   string ofile;
@@ -106,7 +109,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help");
+			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -170,42 +173,57 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
-    if ( Opts.extract('L', language ) ){
-      // support some backward compatability to old ISO 639-1 codes
-      if ( language == "nl" ){
-	language = "nld";
+    string languages;
+    Opts.extract( "detectlanguages", languages );
+    do_language_detect = !languages.empty();
+    if ( do_language_detect ){
+      if ( Opts.is_present( 'L' ) ){
+	throw TiCC::OptionError( "both -L and --detectlanguages specified " );
       }
-      else if ( language == "de" ){
-	language = "deu";
+      if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
+	throw TiCC::OptionError( "invalid language list: " + languages );
       }
-      else if ( language == "fr" ){
-	language = "fra";
+    }
+    else {
+      string language="nld";
+      if ( Opts.extract('L', language ) ){
+	// support some backward compatability to old ISO 639-1 codes
+	if ( language == "nl" ){
+	  language = "nld";
+	}
+	else if ( language == "de" ){
+	  language = "deu";
+	}
+	else if ( language == "fr" ){
+	  language = "fra";
+	}
+	else if ( language == "pt" ){
+	  language = "por";
+	}
+	else if ( language == "es" ){
+	  language = "spa";
+	}
+	else if ( language == "fy" ){
+	  language = "fry";
+	}
+	else if ( language == "se" ){
+	  language = "swe";
+	}
+	else if ( language == "en" ){
+	  language = "eng";
+	}
+	else if ( language == "it" ){
+	  language = "ita";
+	}
+	else if ( language == "ru" ){
+	  language = "rus";
+	}
+	else if ( language == "tr" ){
+	  language = "tur";
+	}
+	L_file = "tokconfig-" + language;
       }
-      else if ( language == "pt" ){
-	language = "por";
-      }
-      else if ( language == "es" ){
-	language = "spa";
-      }
-      else if ( language == "fy" ){
-	language = "fry";
-      }
-      else if ( language == "se" ){
-	language = "swe";
-      }
-      else if ( language == "en" ){
-	language = "eng";
-      }
-      else if ( language == "it" ){
-	language = "ita";
-      }
-      else if ( language == "ru" ){
-	language = "rus";
-      }
-      else if ( language == "tr" ){
-	language = "tur";
-      }
-      L_file = "tokconfig-" + language;
+      language_list.push_back( language );
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
@@ -290,7 +308,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
-    tokenizer.setLanguage(language);
+    tokenizer.setLanguage(language_list[0]);
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
     tokenizer.setNormSet(norm_set_string);
@@ -300,6 +318,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
     tokenizer.setPunctFilter(dopunctfilter);
+    //    tokenizer.setLanguagedetection(language_list);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);
