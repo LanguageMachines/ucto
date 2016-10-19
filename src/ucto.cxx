@@ -301,10 +301,14 @@ int main( int argc, char *argv[] ){
     else {
       // init exept for passthru mode
       if ( language_list.size() == 1 ){
-	tokenizer.init( cfile );
+	if ( !tokenizer.init( cfile ) ){
+	  return EXIT_FAILURE;
+	}
       }
       else {
-	tokenizer.init( language_list );
+	if ( !tokenizer.init( language_list ) ){
+	  return EXIT_FAILURE;
+	}
       }
     }
 

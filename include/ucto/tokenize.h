@@ -119,7 +119,7 @@ namespace Tokenizer {
     void add( const UnicodeString&, const UnicodeString& );
     UnicodeString lookupOpen( const UnicodeString &) const;
     UnicodeString lookupClose( const UnicodeString & ) const;
-    bool empty() const { return quotes.empty(); };
+    bool empty() const { return _quotes.empty(); };
     bool emptyStack() const { return quotestack.empty(); };
     void clearStack() { quoteindexstack.clear(); quotestack.clear(); };
     int lookup( const UnicodeString&, int& );
@@ -133,9 +133,33 @@ namespace Tokenizer {
       quotestack.push_back(c);
     }
   private:
-    std::vector<QuotePair> quotes;
+    std::vector<QuotePair> _quotes;
     std::vector<int> quoteindexstack;
     std::vector<UChar32> quotestack;
+  };
+
+  class Setting {
+  public:
+    ~Setting();
+    bool read( const std::string&, int, TiCC::LogStream* );
+    bool readrules( const std::string& );
+    bool readfilters( const std::string& );
+    bool readquotes( const std::string& );
+    bool readeosmarkers( const std::string& );
+    bool readabbreviations( const std::string&,  UnicodeString& );
+    void add_rule( const UnicodeString&, const std::vector<UnicodeString>& );
+    void sortRules( std::map<UnicodeString, Rule *>&,
+		    const std::vector<UnicodeString>& );
+    UnicodeString eosmarkers;
+    std::vector<Rule *> rules;
+    std::map<UnicodeString, Rule *> rulesmap;
+    std::map<UnicodeString, int> rules_index;
+    Quoting quotes;
+    UnicodeFilter filter;
+    std::string settingsfilename; // the name of the settingsfile
+    std::string version;  // the version of the datafile
+    int tokDebug;
+    TiCC::LogStream *theErrLog;
   };
 
   class TokenizerClass{
@@ -144,8 +168,8 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string& );
-    bool init( const std::vector<std::string>& );
+    bool init( const std::string& ); // init from a configfile
+    bool init( const std::vector<std::string>& ); // init 1 or more languages
     bool reset();
     void setErrorLog( TiCC::LogStream *os );
 
@@ -313,15 +337,6 @@ namespace Tokenizer {
     bool resolveQuote( int, const UnicodeString& );
     bool u_isquote( UChar32 ) const;
     std::string checkBOM( std::istream& );
-    bool readsettings( const std::string& );
-    bool readrules( const std::string& );
-    bool readfilters( const std::string& );
-    bool readquotes( const std::string& );
-    bool readeosmarkers( const std::string& );
-    bool readabbreviations( const std::string&, UnicodeString& );
-
-    void sortRules( std::map<UnicodeString,Rule*>&,
-		    const std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
@@ -329,21 +344,17 @@ namespace Tokenizer {
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );
 
-    Quoting quotes;
-    UnicodeFilter filter;
     UnicodeNormalizer normalizer;
-    UnicodeString eosmarkers;
     std::string inputEncoding;
     std::string language;
 
     UnicodeString eosmark;
     std::vector<Token> tokens;
-    std::map<UnicodeString, Rule *> rulesmap;
-    std::vector<Rule *> rules;
-    std::map<UnicodeString, int> rules_index;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
+    Setting* setting;
+    std::map<std::string,Setting*> settings;
     //debug flag
     int tokDebug;
 
@@ -383,7 +394,6 @@ namespace Tokenizer {
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
-    std::string version;  // the version of the datafile
   };
 
   template< typename T >
