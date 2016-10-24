@@ -272,9 +272,7 @@ namespace Tokenizer {
     std::string setInputEncoding( const std::string& );
     std::string getInputEncoding() const { return inputEncoding; };
 
-    // set language
-    std::string setLanguage( const std::string& );
-    std::string getLanguage() const { return language; };
+    void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
@@ -346,14 +344,14 @@ namespace Tokenizer {
 
     UnicodeNormalizer normalizer;
     std::string inputEncoding;
-    std::string language;
 
     UnicodeString eosmark;
     std::vector<Token> tokens;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
-    Setting* setting;
+    std::string default_language;
+    Setting* default_setting;
     std::map<std::string,Setting*> settings;
     //debug flag
     int tokDebug;

@@ -99,11 +99,11 @@ int main( int argc, char *argv[] ){
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
   vector<string> language_list;
-  string cfile = "tokconfig-nld";
+  string cfile;
   string ifile;
   string ofile;
   string c_file;
-  string L_file;
+  string L_value;
   bool passThru = false;
   string norm_set_string;
 
@@ -131,7 +131,6 @@ int main( int argc, char *argv[] ){
     splitsentences = !Opts.extract( 'S' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
-    Opts.extract( 'c', c_file );
     Opts.extract( 's', eosmarker );
     touppercase = Opts.extract( 'u' );
     tolowercase = Opts.extract( 'l' );
@@ -173,19 +172,33 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
+    if ( Opts.is_present('L') ) {
+      if ( Opts.is_present('c') ){
+	cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
+	return EXIT_FAILURE;
+      }
+      else if ( Opts.is_present( "detectlanguages" ) ){
+	cerr << "Error: -L and --detectlangusages options conflict. Use only one of them." << endl;
+	return EXIT_FAILURE;
+      }
+    }
+    else if ( Opts.is_present( 'c' )
+	      && Opts.is_present( "detectlanguages" ) ){
+      cerr << "Error: -c and --detectlangusages options conflict. Use only one of them." << endl;
+      return EXIT_FAILURE;
+    }
+
+    Opts.extract( 'c', c_file );
     string languages;
     Opts.extract( "detectlanguages", languages );
     do_language_detect = !languages.empty();
     if ( do_language_detect ){
-      if ( Opts.is_present( 'L' ) ){
-	throw TiCC::OptionError( "both -L and --detectlanguages specified " );
-      }
       if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
 	throw TiCC::OptionError( "invalid language list: " + languages );
       }
     }
     else {
-      string language="nld";
+      string language;
       if ( Opts.extract('L', language ) ){
 	// support some backward compatability to old ISO 639-1 codes
 	if ( language == "nl" ){
@@ -221,9 +234,10 @@ int main( int argc, char *argv[] ){
 	else if ( language == "tr" ){
 	  language = "tur";
 	}
-	L_file = "tokconfig-" + language;
       }
-      language_list.push_back( language );
+      if ( !language.empty() ){
+	language_list.push_back( language );
+      }
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
@@ -245,16 +259,10 @@ int main( int argc, char *argv[] ){
   }
 
   if ( !passThru ){
-    if ( !c_file.empty() && !L_file.empty()) {
-      cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
-      return EXIT_FAILURE;
-    }
     if ( !c_file.empty() ){
       cfile = c_file;
     }
-    else if ( !L_file.empty() )
-      cfile = L_file;
-    else {
+    else if ( language_list.empty() ){
       cfile = "tokconfig-generic";
     }
   }
@@ -300,7 +308,7 @@ int main( int argc, char *argv[] ){
     }
     else {
       // init exept for passthru mode
-      if ( language_list.size() == 1 ){
+      if ( !cfile.empty() ){
 	if ( !tokenizer.init( cfile ) ){
 	  return EXIT_FAILURE;
 	}
@@ -317,7 +325,9 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
-    tokenizer.setLanguage(language_list[0]);
+    if ( !language_list.empty() ){
+      tokenizer.setLanguage(language_list[0]);
+    }
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
     tokenizer.setNormSet(norm_set_string);

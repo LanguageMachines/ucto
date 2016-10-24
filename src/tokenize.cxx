@@ -460,7 +460,7 @@ namespace Tokenizer {
   TokenizerClass::TokenizerClass():
     linenum(0),
     inputEncoding( "UTF-8" ), eosmark("<utt>"),
-    setting(0),
+    default_setting(0),
     tokDebug(0), verbose(false),
     detectBounds(true), detectQuotes(false),
     doFilter(true), doPunctFilter(false),
@@ -489,12 +489,6 @@ namespace Tokenizer {
       delete theErrLog;
     }
     theErrLog = os;
-  }
-
-  string TokenizerClass::setLanguage( const std::string& lan ){
-    string old = language;
-    language = lan;
-    return old;
   }
 
   string TokenizerClass::setInputEncoding( const std::string& enc ){
@@ -849,10 +843,11 @@ namespace Tokenizer {
       }
       // now let's check our language
       string lan = element->language();
-      if ( !language.empty() && !lan.empty() && lan != language ){
+      if ( !default_language.empty() && !lan.empty() && lan != default_language ){
 	// skip elements in the wrong language
 	if (tokDebug >= 1){
-	  LOG << "skip tokenize because element:" << lan << " !=" << language << endl;
+	  LOG << "skip tokenize because element:" << lan << " !="
+	      << default_language << endl;
 	}
 	return;
       }
@@ -1221,14 +1216,14 @@ namespace Tokenizer {
     }
     if (begin == size) {
       tokens.clear();
-      if ( setting ){
-	setting->quotes.clearStack();
+      if ( default_setting ){
+	default_setting->quotes.clearStack();
       }
     }
     else {
       tokens.erase (tokens.begin(),tokens.begin()+begin);
-      if ( setting && !setting->quotes.emptyStack() ) {
-	setting->quotes.flushStack( begin );
+      if ( default_setting && !default_setting->quotes.emptyStack() ) {
+	default_setting->quotes.flushStack( begin );
       }
     }
     //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
@@ -1310,14 +1305,16 @@ namespace Tokenizer {
       quote = true;
     }
     else {
-      UnicodeString opening = setting->quotes.lookupOpen( c );
-      if (!opening.isEmpty()) {
-	quote = true;
-      }
-      else {
-	UnicodeString closing = setting->quotes.lookupClose( c );
-	if (!closing.isEmpty()) {
+      if ( default_setting ){
+	UnicodeString opening = default_setting->quotes.lookupOpen( c );
+	if (!opening.isEmpty()) {
 	  quote = true;
+	}
+	else {
+	  UnicodeString closing = default_setting->quotes.lookupClose( c );
+	  if (!closing.isEmpty()) {
+	    quote = true;
+	  }
 	}
       }
     }
@@ -1345,7 +1342,7 @@ namespace Tokenizer {
   bool TokenizerClass::resolveQuote(int endindex, const UnicodeString& open ) {
     //resolve a quote
     int stackindex = -1;
-    int beginindex = setting->quotes.lookup( open, stackindex );
+    int beginindex = default_setting->quotes.lookup( open, stackindex );
 
     if (beginindex >= 0) {
       if (tokDebug >= 2) {
@@ -1410,7 +1407,7 @@ namespace Tokenizer {
 	//something is wrong. Sentences within quote are not balanced, so we won't mark the quote.
       }
       //remove from stack (ok, granted, stack is a bit of a misnomer here)
-      setting->quotes.eraseAtPos( stackindex );
+      default_setting->quotes.eraseAtPos( stackindex );
       //FBK: ENDQUOTES NEED TO BE MARKED AS ENDOFSENTENCE IF THE PREVIOUS TOKEN
       //WAS AN ENDOFSENTENCE. OTHERWISE THE SENTENCES WILL NOT BE SPLIT.
       if ((tokens[endindex].role & ENDQUOTE) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
@@ -1442,7 +1439,7 @@ namespace Tokenizer {
   bool TokenizerClass::detectEos( size_t i ) const {
     bool is_eos = false;
     UChar32 c = tokens[i].us.char32At(0);
-    if ( c == '.' || setting->eosmarkers.indexOf( c ) >= 0 ){
+    if ( c == '.' || default_setting->eosmarkers.indexOf( c ) >= 0 ){
       if (i + 1 == tokens.size() ) {	//No next character?
 	is_eos = true; //Newline after eosmarker
       }
@@ -1483,7 +1480,7 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) {
 	  LOG << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	}
-	setting->quotes.push( i, c );
+	default_setting->quotes.push( i, c );
       }
     }
     else if ( c == '\'' ) {
@@ -1494,26 +1491,28 @@ namespace Tokenizer {
 	if (tokDebug > 1 ) {
 	  LOG << "[detectQuoteBounds] Doesn't resolve, so assuming beginquote, pushing to stack for resolution later" << endl;
 	}
-	setting->quotes.push( i, c );
+	default_setting->quotes.push( i, c );
       }
     }
     else {
-      UnicodeString close = setting->quotes.lookupOpen( c );
-      if ( !close.isEmpty() ){ // we have a opening quote
-	if ( tokDebug > 1 ) {
-	  LOG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;
-	}
-	setting->quotes.push( i, c ); // remember it
-      }
-      else {
-	UnicodeString open = setting->quotes.lookupClose( c );
-	if ( !open.isEmpty() ) { // we have a closeing quote
-	  if (tokDebug > 1 ) {
-	    LOG << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
+      if ( default_setting ){
+	UnicodeString close = default_setting->quotes.lookupOpen( c );
+	if ( !close.isEmpty() ){ // we have a opening quote
+	  if ( tokDebug > 1 ) {
+	    LOG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;
 	  }
-	  if (!resolveQuote(i, open )) { // resolve the matching opening
+	  default_setting->quotes.push( i, c ); // remember it
+	}
+	else {
+	  UnicodeString open = default_setting->quotes.lookupClose( c );
+	  if ( !open.isEmpty() ) { // we have a closeing quote
 	    if (tokDebug > 1 ) {
-	      LOG << "[detectQuoteBounds] Unable to resolve" << endl;
+	      LOG << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
+	    }
+	    if (!resolveQuote(i, open )) { // resolve the matching opening
+	      if (tokDebug > 1 ) {
+		LOG << "[detectQuoteBounds] Unable to resolve" << endl;
+	      }
 	    }
 	  }
 	}
@@ -1616,7 +1615,7 @@ namespace Tokenizer {
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i );
 	if (is_eos) {
-	  if ( !setting->quotes.emptyStack() ) {
+	  if ( !default_setting->quotes.emptyStack() ) {
 	    if ( tokDebug > 1 ){
 	      LOG << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
 	    }
@@ -1967,7 +1966,7 @@ namespace Tokenizer {
     }
     UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
-      input = setting->filter.filter( input );
+      input = default_setting->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
       *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
@@ -2201,7 +2200,7 @@ namespace Tokenizer {
     }
     else {
       bool a_rule_matched = false;
-      for ( const auto& rule : setting->rules ) {
+      for ( const auto& rule : default_setting->rules ) {
 	if ( tokDebug >= 4){
 	  LOG << "\tTESTING " << rule->id << endl;
 	}
@@ -2913,7 +2912,7 @@ namespace Tokenizer {
 
   bool TokenizerClass::reset(){
     tokens.clear();
-    setting->quotes.clearStack();
+    default_setting->quotes.clearStack();
     return true;
   }
 
@@ -2927,18 +2926,18 @@ namespace Tokenizer {
       return false;
     }
     else {
-      setting = set;
+      default_setting = set;
     }
     string sub;
     settingsfilename = fname;
     if ( tokDebug ){
       LOG << "effective rules: " << endl;
-      for ( size_t i=0; i < setting->rules.size(); ++i ){
-	LOG << "rule " << i << " " << *(setting->rules[i]) << endl;
+      for ( size_t i=0; i < default_setting->rules.size(); ++i ){
+	LOG << "rule " << i << " " << *(default_setting->rules[i]) << endl;
       }
-      LOG << "EOS markers: " << setting->eosmarkers << endl;
-      LOG << "Quotations: " << setting->quotes << endl;
-      LOG << "Filter: " << setting->filter << endl;
+      LOG << "EOS markers: " << default_setting->eosmarkers << endl;
+      LOG << "Quotations: " << default_setting->quotes << endl;
+      LOG << "Filter: " << default_setting->filter << endl;
     }
     return true;
   }
@@ -2975,7 +2974,7 @@ namespace Tokenizer {
       return false;
     }
     settingsfilename = defalt->settingsfilename;
-    setting = defalt;
+    default_setting = defalt;
     return true;
   }
 
