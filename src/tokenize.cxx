@@ -2010,16 +2010,7 @@ namespace Tokenizer {
 	if ( defalt == 0 ){
 	  defalt = set;
 	}
-	settings["lang"] = set;
-	if ( tokDebug ){
-	  LOG << "settings for " << lang << endl;
-	  for ( size_t i=0; i < set->rules.size(); ++i ){
-	    LOG << "rule " << i << " " << *(set->rules[i]) << endl;
-	  }
-	  LOG << "EOS markers: " << set->eosmarkers << endl;
-	  LOG << "Quotations: " << set->quotes << endl;
-	  LOG << "Filter: " << set->filter << endl;
-	}
+	settings[lang] = set;
       }
     }
     if ( settings.empty() ){

@@ -54,6 +54,59 @@ namespace Tokenizer {
 		    ORDINALS, EOSMARKERS, QUOTES, CURRENCY,
 		    FILTER, RULEORDER, METARULES };
 
+  ConfigMode getMode( const UnicodeString& line ) {
+    ConfigMode mode = NONE;
+    if (line == "[RULES]") {
+      mode = RULES;
+    }
+    else if (line == "[META-RULES]") {
+      mode = METARULES;
+    }
+    else if (line == "[RULE-ORDER]") {
+      mode = RULEORDER;
+    }
+    else if (line == "[ABBREVIATIONS]") {
+      mode = ABBREVIATIONS;
+    }
+    else if (line == "[ATTACHEDPREFIXES]") {
+      mode = ATTACHEDPREFIXES;
+    }
+    else if (line == "[ATTACHEDSUFFIXES]") {
+      mode = ATTACHEDSUFFIXES;
+    }
+    else if (line == "[PREFIXES]") {
+      mode = PREFIXES;
+    }
+    else if (line == "[SUFFIXES]") {
+      mode = SUFFIXES;
+    }
+    else if (line == "[TOKENS]") {
+      mode = TOKENS;
+    }
+    else if (line == "[CURRENCY]") {
+      mode = CURRENCY;
+    }
+    else if (line == "[UNITS]") {
+      mode = UNITS;
+    }
+    else if (line == "[ORDINALS]") {
+      mode = ORDINALS;
+    }
+    else if (line == "[EOSMARKERS]") {
+      mode = EOSMARKERS;
+    }
+    else if (line == "[QUOTES]") {
+      mode = QUOTES;
+    }
+    else if (line == "[FILTER]") {
+      mode = FILTER;
+    }
+    else {
+      mode = NONE;
+    }
+    return mode;
+  }
+
   class uConfigError: public std::invalid_argument {
   public:
     uConfigError( const string& s ): invalid_argument( "ucto: config file:" + s ){};
@@ -377,59 +430,6 @@ namespace Tokenizer {
       }
     }
     return result;
-  }
-
-    ConfigMode getMode( const UnicodeString& line ) {
-    ConfigMode mode = NONE;
-    if (line == "[RULES]") {
-      mode = RULES;
-    }
-    else if (line == "[META-RULES]") {
-      mode = METARULES;
-    }
-    else if (line == "[RULE-ORDER]") {
-      mode = RULEORDER;
-    }
-    else if (line == "[ABBREVIATIONS]") {
-      mode = ABBREVIATIONS;
-    }
-    else if (line == "[ATTACHEDPREFIXES]") {
-      mode = ATTACHEDPREFIXES;
-    }
-    else if (line == "[ATTACHEDSUFFIXES]") {
-      mode = ATTACHEDSUFFIXES;
-    }
-    else if (line == "[PREFIXES]") {
-      mode = PREFIXES;
-    }
-    else if (line == "[SUFFIXES]") {
-      mode = SUFFIXES;
-    }
-    else if (line == "[TOKENS]") {
-      mode = TOKENS;
-    }
-    else if (line == "[CURRENCY]") {
-      mode = CURRENCY;
-    }
-    else if (line == "[UNITS]") {
-      mode = UNITS;
-    }
-    else if (line == "[ORDINALS]") {
-      mode = ORDINALS;
-    }
-    else if (line == "[EOSMARKERS]") {
-      mode = EOSMARKERS;
-    }
-    else if (line == "[QUOTES]") {
-      mode = QUOTES;
-    }
-    else if (line == "[FILTER]") {
-      mode = FILTER;
-    }
-    else {
-      mode = NONE;
-    }
-    return mode;
   }
 
 
