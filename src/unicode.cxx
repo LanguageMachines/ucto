@@ -28,11 +28,9 @@
 #include <ostream>
 #include <fstream>
 #include <map>
-#include <stdexcept>
 #include "unicode/ustream.h"
 #include "unicode/regex.h"
 #include "unicode/ucnv.h"
-#include "unicode/schriter.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
@@ -40,7 +38,7 @@
 
 using namespace std;
 
-namespace icu_tools {
+namespace Tokenizer {
 
   UNormalizationMode toNorm( const string& enc ){
     UNormalizationMode mode = UNORM_NFC;
@@ -392,4 +390,4 @@ namespace icu_tools {
     return numWords;
   }
 
-} // namespace icu_tools
+} // namespace Tokenizer

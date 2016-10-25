@@ -26,22 +26,15 @@
 */
 
 #include <unistd.h>
-#include <cstring>
-#include <cstdlib>
 #include <iostream>
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include "config.h"
-#include "unicode/ustream.h"
-#include "unicode/regex.h"
-#include "unicode/ucnv.h"
 #include "unicode/schriter.h"
-#include "ucto/unicode.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
-#include "ucto/regex.h"
+#include "ucto/unicode.h"
 #include "ucto/setting.h"
 #include "ucto/tokenize.h"
 
@@ -76,11 +69,6 @@ namespace Tokenizer {
 
   std::string Version() { return VERSION; }
   std::string VersionName() { return PACKAGE_STRING; }
-
-  enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
-		    ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS,
-		    ORDINALS, EOSMARKERS, QUOTES, CURRENCY,
-		    FILTER, RULEORDER, METARULES };
 
   class uRangeError: public std::out_of_range {
   public:

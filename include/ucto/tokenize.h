@@ -32,6 +32,7 @@
 #include <sstream>
 #include <stdexcept>
 #include "ucto/unicode.h"
+#include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
 
 namespace Tokenizer {
@@ -269,7 +270,7 @@ namespace Tokenizer {
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );
 
-    icu_tools::UnicodeNormalizer normalizer;
+    UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     UnicodeString eosmark;

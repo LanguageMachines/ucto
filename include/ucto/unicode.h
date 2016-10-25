@@ -34,8 +34,9 @@
 #include "unicode/uchar.h"
 #include "unicode/unistr.h"
 #include "unicode/normlzr.h"
+#include "unicode/regex.h"
 
-namespace icu_tools {
+namespace Tokenizer {
 
   class UnicodeNormalizer {
   public:

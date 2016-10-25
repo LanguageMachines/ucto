@@ -42,7 +42,7 @@ namespace Tokenizer {
     ~Rule();
     UnicodeString id;
     UnicodeString pattern;
-    icu_tools::UnicodeRegexMatcher *regexp;
+    UnicodeRegexMatcher *regexp;
     bool matchAll( const UnicodeString&,
 		   UnicodeString&,
 		   UnicodeString&,
@@ -99,7 +99,7 @@ namespace Tokenizer {
     std::map<UnicodeString, Rule *> rulesmap;
     std::map<UnicodeString, int> rules_index;
     Quoting quotes;
-    icu_tools::UnicodeFilter filter;
+    UnicodeFilter filter;
     std::string settingsfilename; // the name of the settingsfile
     std::string version;  // the version of the datafile
     int tokDebug;
