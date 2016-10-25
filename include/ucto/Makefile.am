@@ -1,1 +1,1 @@
-pkginclude_HEADERS = tokenize.h unicode.h
+pkginclude_HEADERS = setting.h tokenize.h unicode.h

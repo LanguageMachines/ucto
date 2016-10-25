@@ -88,79 +88,6 @@ namespace Tokenizer {
     std::string typetostring();
   };
 
-  class UnicodeRegexMatcher;
-
-  class Rule {
-    friend std::ostream& operator<< (std::ostream&, const Rule& );
-  public:
-  Rule(): regexp(0){
-    };
-    Rule( const UnicodeString& id, const UnicodeString& pattern);
-    ~Rule();
-    UnicodeString id;
-    UnicodeString pattern;
-    UnicodeRegexMatcher *regexp;
-    bool matchAll( const UnicodeString&,
-		   UnicodeString&,
-		   UnicodeString&,
-		   std::vector<UnicodeString>& );
-  private:
-    Rule( const Rule& ); // inhibit copies
-    Rule& operator=( const Rule& ); // inhibit copies
-  };
-
-  class Quoting {
-    friend std::ostream& operator<<( std::ostream&, const Quoting& );
-    struct QuotePair {
-      UnicodeString openQuote;
-      UnicodeString closeQuote;
-    };
-  public:
-    void add( const UnicodeString&, const UnicodeString& );
-    UnicodeString lookupOpen( const UnicodeString &) const;
-    UnicodeString lookupClose( const UnicodeString & ) const;
-    bool empty() const { return _quotes.empty(); };
-    bool emptyStack() const { return quotestack.empty(); };
-    void clearStack() { quoteindexstack.clear(); quotestack.clear(); };
-    int lookup( const UnicodeString&, int& );
-    void eraseAtPos( int pos ) {
-      quotestack.erase( quotestack.begin()+pos );
-      quoteindexstack.erase( quoteindexstack.begin()+pos );
-    }
-    void flushStack( int ); //renamed from eraseBeforeIndex
-    void push( int i, UChar32 c ){
-      quoteindexstack.push_back(i);
-      quotestack.push_back(c);
-    }
-  private:
-    std::vector<QuotePair> _quotes;
-    std::vector<int> quoteindexstack;
-    std::vector<UChar32> quotestack;
-  };
-
-  class Setting {
-  public:
-    ~Setting();
-    bool read( const std::string&, int, TiCC::LogStream* );
-    bool readrules( const std::string& );
-    bool readfilters( const std::string& );
-    bool readquotes( const std::string& );
-    bool readeosmarkers( const std::string& );
-    bool readabbreviations( const std::string&,  UnicodeString& );
-    void add_rule( const UnicodeString&, const std::vector<UnicodeString>& );
-    void sortRules( std::map<UnicodeString, Rule *>&,
-		    const std::vector<UnicodeString>& );
-    UnicodeString eosmarkers;
-    std::vector<Rule *> rules;
-    std::map<UnicodeString, Rule *> rulesmap;
-    std::map<UnicodeString, int> rules_index;
-    Quoting quotes;
-    UnicodeFilter filter;
-    std::string settingsfilename; // the name of the settingsfile
-    std::string version;  // the version of the datafile
-    int tokDebug;
-    TiCC::LogStream *theErrLog;
-  };
 
   class TokenizerClass{
   protected:
@@ -342,7 +269,7 @@ namespace Tokenizer {
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement * );
 
-    UnicodeNormalizer normalizer;
+    icu_tools::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     UnicodeString eosmark;

@@ -35,7 +35,7 @@
 #include "unicode/unistr.h"
 #include "unicode/normlzr.h"
 
-namespace Tokenizer {
+namespace icu_tools {
 
   class UnicodeNormalizer {
   public:
@@ -58,6 +58,26 @@ namespace Tokenizer {
   private:
     void add( UChar uc, const UnicodeString& us ) { the_map[uc] = us; };
     std::map<UChar, UnicodeString> the_map;
+  };
+
+  class UnicodeRegexMatcher {
+  public:
+    UnicodeRegexMatcher( const UnicodeString&, const UnicodeString& name="" );
+    ~UnicodeRegexMatcher();
+    bool match_all( const UnicodeString&, UnicodeString&, UnicodeString&  );
+    const UnicodeString get_match( unsigned int ) const;
+    int NumOfMatches() const;
+    int split( const UnicodeString&, std::vector<UnicodeString>& );
+    UnicodeString Pattern() const;
+  private:
+    UnicodeRegexMatcher( const UnicodeRegexMatcher& );  // inhibit copies
+    UnicodeRegexMatcher& operator=( const UnicodeRegexMatcher& ); // inhibit copies
+    std::string failString;
+    RegexPattern *pattern;
+    RegexMatcher *matcher;
+    UnicodeRegexMatcher();
+    std::vector<UnicodeString> results;
+    const UnicodeString _name;
   };
 
 } // namespace

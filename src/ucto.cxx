@@ -35,6 +35,8 @@
 #include "libfolia/folia.h"
 #include "ticcutils/CommandLine.h"
 #include "ticcutils/PrettyPrint.h"
+#include "ucto/unicode.h"
+#include "ucto/setting.h"
 #include "ucto/tokenize.h"
 #include <unistd.h>
 

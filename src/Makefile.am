@@ -13,7 +13,7 @@ ucto_SOURCES = ucto.cxx
 lib_LTLIBRARIES = libucto.la
 libucto_la_LDFLAGS = -version-info 2:0:0
 
-libucto_la_SOURCES =  tokenize.cxx unicode.cxx
+libucto_la_SOURCES =  unicode.cxx setting.cxx tokenize.cxx
 
 TESTS = tst.sh
 
