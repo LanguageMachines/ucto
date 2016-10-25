@@ -40,8 +40,6 @@ namespace Tokenizer {
   std::string Version();
   std::string VersionName();
 
-  //enum RuleTrigger { PUNCTUATION, PERIOD, NUMBER }; //TODO: implement
-
   enum TokenRole {
     NOROLE                      = 0,
     NOSPACE                     = 1,

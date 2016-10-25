@@ -80,17 +80,6 @@ namespace Tokenizer {
     uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
-  class uOptionError: public std::invalid_argument {
-  public:
-    uOptionError( const string& s ): invalid_argument( "ucto: option:" + s ){};
-  };
-
-  class uConfigError: public std::invalid_argument {
-  public:
-    uConfigError( const string& s ): invalid_argument( "ucto: config file:" + s ){};
-    uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file:" + folia::UnicodeToUTF8(us) ){};
-  };
-
   class uCodingError: public std::runtime_error {
   public:
     uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
@@ -139,22 +128,51 @@ namespace Tokenizer {
     return os;
   }
 
+  ostream& operator<<( ostream& os, const TokenRole& tok ){
+    if ( tok & NOSPACE) os << "NOSPACE ";
+    if ( tok & BEGINOFSENTENCE) os << "BEGINOFSENTENCE ";
+    if ( tok & ENDOFSENTENCE) os << "ENDOFSENTENCE ";
+    if ( tok & NEWPARAGRAPH) os << "NEWPARAGRAPH ";
+    if ( tok & BEGINQUOTE) os << "BEGINQUOTE ";
+    if ( tok & ENDQUOTE) os << "ENDQUOTE ";
+    return os;
+  }
+
   TokenizerClass::TokenizerClass():
     linenum(0),
-    inputEncoding( "UTF-8" ), eosmark("<utt>"),
+    inputEncoding( "UTF-8" ),
+    eosmark("<utt>"),
     default_setting(0),
-    tokDebug(0), verbose(false),
-    detectBounds(true), detectQuotes(false),
-    doFilter(true), doPunctFilter(false),
+    tokDebug(0),
+    verbose(false),
+    detectBounds(true),
+    detectQuotes(false),
+    doFilter(true),
+    doPunctFilter(false),
     detectPar(true),
     paragraphsignal(true),
-    sentenceperlineoutput(false), sentenceperlineinput(false),
-    lowercase(false), uppercase(false),
-    xmlout(false), passthru(false),
-    inputclass("current"), outputclass("current")
+    sentenceperlineoutput(false),
+    sentenceperlineinput(false),
+    lowercase(false),
+    uppercase(false),
+    xmlout(false),
+    passthru(false),
+    inputclass("current"),
+    outputclass("current")
   {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
+  }
+
+  TokenizerClass::~TokenizerClass(){
+    //    delete setting;
+    delete theErrLog;
+  }
+
+  bool TokenizerClass::reset(){
+    tokens.clear();
+    default_setting->quotes.clearStack();
+    return true;
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
@@ -737,16 +755,6 @@ namespace Tokenizer {
       appendText( root, outputclass );
     }
     return parCount;
-  }
-
-  ostream& operator<<( ostream& os, const TokenRole& tok ){
-    if ( tok & NOSPACE) os << "NOSPACE ";
-    if ( tok & BEGINOFSENTENCE) os << "BEGINOFSENTENCE ";
-    if ( tok & ENDOFSENTENCE) os << "ENDOFSENTENCE ";
-    if ( tok & NEWPARAGRAPH) os << "NEWPARAGRAPH ";
-    if ( tok & BEGINQUOTE) os << "BEGINQUOTE ";
-    if ( tok & ENDQUOTE) os << "ENDQUOTE ";
-    return os;
   }
 
   void TokenizerClass::outputTokens( ostream& OUT,
@@ -1341,12 +1349,6 @@ namespace Tokenizer {
 	detectQuoteBounds(i);
       }
     }
-  }
-
-
-  TokenizerClass::~TokenizerClass(){
-    //    delete setting;
-    delete theErrLog;
   }
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
@@ -1965,13 +1967,6 @@ namespace Tokenizer {
 	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
       }
     }
-  }
-
-
-  bool TokenizerClass::reset(){
-    tokens.clear();
-    default_setting->quotes.clearStack();
-    return true;
   }
 
   bool TokenizerClass::init( const string& fname ){

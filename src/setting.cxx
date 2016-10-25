@@ -66,15 +66,6 @@ namespace Tokenizer {
   };
 
 
-  const UnicodeString type_space = "SPACE";
-  const UnicodeString type_currency = "CURRENCY";
-  const UnicodeString type_emoticon = "EMOTICON";
-  const UnicodeString type_word = "WORD";
-  const UnicodeString type_symbol = "SYMBOL";
-  const UnicodeString type_punctuation = "PUNCTUATION";
-  const UnicodeString type_number = "NUMBER";
-  const UnicodeString type_unknown = "UNKNOWN";
-
   ostream& operator<<( ostream& os, const Quoting& q ){
     for( const auto& quote : q._quotes ){
       os << quote.openQuote << "\t" << quote.closeQuote << endl;
