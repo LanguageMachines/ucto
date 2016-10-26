@@ -53,7 +53,7 @@ void usage(){
        << "\t-N <string>      - set output normalization (default NFC)" << endl
        << "\t-f               - Disable filtering of special characters" << endl
        << "\t-h or --help     - this message" << endl
-       << "\t-L <language>    - Automatically selects a configuration file by language code" << endl
+       << "\t-L <language>    - Automatically selects a configuration file by language code. (default 'generic')" << endl
        << "\t-l               - Convert to all lowercase" << endl
        << "\t-u               - Convert to all uppercase" << endl
        << "\t-n               - One sentence per line (output)" << endl
@@ -327,9 +327,6 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
-    if ( !language_list.empty() ){
-      tokenizer.setLanguage(language_list[0]);
-    }
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
     tokenizer.setNormSet(norm_set_string);

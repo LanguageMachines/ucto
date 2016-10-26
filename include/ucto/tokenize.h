@@ -96,7 +96,7 @@ namespace Tokenizer {
     ~TokenizerClass();
     bool init( const std::string& ); // init from a configfile
     bool init( const std::vector<std::string>& ); // init 1 or more languages
-    bool reset();
+    bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
     // Tokenize from input stream to a FoLiA document
@@ -108,12 +108,14 @@ namespace Tokenizer {
     //Tokenize from input stream to a vector of Tokens
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
-    std::vector<Token> tokenizeStream( std::istream& );
+    std::vector<Token> tokenizeStream( std::istream&,
+				       const std::string& = "default" );
 
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
-    std::string tokenizeSentenceStream( std::istream& );
+    std::string tokenizeSentenceStream( std::istream&,
+					const std::string& = "default" );
 
     //Tokenize from input file to output file (support xmlin + xmlout)
     void tokenize( const std::string&, const std::string& );
@@ -126,15 +128,19 @@ namespace Tokenizer {
 
     // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
-    int tokenizeLine( const UnicodeString& ); // Unicode chars
-    int tokenizeLine( const std::string& );   // UTF8 chars
+    int tokenizeLine( const UnicodeString&,
+		      const std::string& = "default" ); // Unicode chars
+    int tokenizeLine( const std::string&,
+		      const std::string& = "default" ); // UTF8 chars
 
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
-    int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
-    int flushSentences( int ); //Flush n sentences from buffer (does some extra validation as well)
+    int countSentences(bool forceentirebuffer = false);
+    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
+    int flushSentences( int, const std::string& = "default" );
+    //Flush n sentences from buffer (does some extra validation as well)
 
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
@@ -249,24 +255,32 @@ namespace Tokenizer {
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
     void add_rule( const UnicodeString&,
 		   const std::vector<UnicodeString>& );
-    void tokenizeWord( const UnicodeString&, bool, const UnicodeString& ="" );
+    void tokenizeWord( const UnicodeString&,
+		       bool,
+		       const std::string&,
+		       const UnicodeString& ="" );
 
-    bool detectEos( size_t ) const;
-    void detectSentenceBounds( const int offset = 0 );
-    void detectQuotedSentenceBounds( const int offset = 0 );
-    void detectQuoteBounds( const int );
+    bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
+    void detectSentenceBounds( const int offset,
+			       const std::string& = "default" );
+    void detectQuotedSentenceBounds( const int offset,
+				     const std::string& = "default" );
+    void detectQuoteBounds( const int,
+			    Quoting& );
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
 
-    bool resolveQuote( int, const UnicodeString& );
-    bool u_isquote( UChar32 ) const;
+    bool resolveQuote( int, const UnicodeString&, Quoting& );
+    bool u_isquote( UChar32,
+		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
     int outputTokensXML( folia::FoliaElement *, const std::vector<Token>& , int parCount=0 ) const;
     void tokenizeElement( folia::FoliaElement * );
-    void tokenizeSentenceElement( folia::FoliaElement * );
+    void tokenizeSentenceElement( folia::FoliaElement *,
+				  const std::string& );
 
     UnicodeNormalizer normalizer;
     std::string inputEncoding;
@@ -277,7 +291,6 @@ namespace Tokenizer {
     TiCC::LogStream *theErrLog;
 
     std::string default_language;
-    Setting* default_setting;
     std::map<std::string,Setting*> settings;
     //debug flag
     int tokDebug;
