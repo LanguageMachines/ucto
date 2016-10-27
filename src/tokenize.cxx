@@ -848,7 +848,9 @@ namespace Tokenizer {
       }
       // now let's check our language
       string lan = element->language();
-      if ( !language.empty() && !lan.empty() && lan != language ){
+      if ( !language.empty()
+	   && language != "none"
+	   && !lan.empty() && lan != language ){
 	// skip elements in the wrong language
 	if (tokDebug >= 1){
 	  LOG << "skip tokenize because element:" << lan << " !=" << language << endl;
@@ -2918,6 +2920,7 @@ namespace Tokenizer {
     try{
       string name = "tokconfig-" + languages[0];
       init( name );
+      language = language[0];
       return true;
     }
     catch ( ... ){
