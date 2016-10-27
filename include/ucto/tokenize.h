@@ -87,6 +87,16 @@ namespace Tokenizer {
     std::string typetostring();
   };
 
+  class TCdata {
+  public:
+    TCdata( const std::string& cf );
+    TCdata( const TCdata& in );
+    ~TCdata();
+    bool isInit() const { return TC != 0; };
+    std::string guess( const std::string& );
+    void *TC;
+    std::string cfName;
+  };
 
   class TokenizerClass{
   protected:
@@ -331,6 +341,7 @@ namespace Tokenizer {
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
+    TCdata *tc;
   };
 
   template< typename T >

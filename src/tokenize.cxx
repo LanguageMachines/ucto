@@ -59,11 +59,32 @@
 #  endif /* defined(HAVE_READLINE_HISTORY_H) */
 #endif /* HAVE_READLINE_HISTORY */
 
+#ifdef HAVE_TEXTCAT_H
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#include "textcat.h"
+
+#ifdef __cplusplus
+}
+#endif
+
+#else
+#ifdef HAVE_LIBTEXTCAT_TEXTCAT_H
+#include "libtextcat/textcat.h"
+#else
+#ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
+#include "libexttextcat/textcat.h"
+#endif
+#endif
+#endif
 
 using namespace std;
 using namespace TiCC;
 
 #define LOG *Log(theErrLog)
+
 
 namespace Tokenizer {
 
@@ -138,6 +159,34 @@ namespace Tokenizer {
     return os;
   }
 
+  TCdata::~TCdata() { textcat_Done( TC ); }
+
+  TCdata::TCdata( const std::string& cf ) {
+    cfName = cf;
+    TC = textcat_Init( cf.c_str() );
+  }
+
+  TCdata::TCdata( const TCdata& in ) {
+    TC = textcat_Init( in.cfName.c_str() );
+    cfName = in.cfName;
+  }
+
+  string TCdata::guess( const string& in ){
+    char *res = textcat_Classify( TC, in.c_str(), in.size() );
+    if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
+      string val = res;
+      vector<string> vals;
+      size_t num = split_at( val, vals, "[]" );
+      if ( num == 0 ){
+	cerr << "O JEE: unexpected language value: '" << val << "'" << endl;
+      }
+      else {
+	return vals[0];
+      }
+    }
+    return "";
+  }
+
   TokenizerClass::TokenizerClass():
     linenum(0),
     inputEncoding( "UTF-8" ),
@@ -157,10 +206,12 @@ namespace Tokenizer {
     xmlout(false),
     passthru(false),
     inputclass("current"),
-    outputclass("current")
+    outputclass("current"),
+    tc( 0 )
   {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
+    //    tc = new TCdata( "bla" );
   }
 
   TokenizerClass::~TokenizerClass(){
