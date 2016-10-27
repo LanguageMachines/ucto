@@ -78,6 +78,17 @@ else
   AC_MSG_ERROR("ICU support is required")
 fi
 
+AC_CHECK_HEADERS([libexttextcat/textcat.h],
+	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
+                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+		                   [AC_CHECK_HEADERS([textcat.h],
+						     [AC_DEFINE(HAVE_TEXTCAT_H, 1 have textcat headers)],
+		                                     [AC_MSG_NOTICE([textcat support not available])])])])
+
+AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
+  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
+
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
