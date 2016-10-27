@@ -145,6 +145,7 @@ namespace Tokenizer {
     TokenizerClass();
     ~TokenizerClass();
     bool init( const std::string& );
+    bool init( const std::vector<std::string>& );
     bool reset();
     void setErrorLog( TiCC::LogStream *os );
 

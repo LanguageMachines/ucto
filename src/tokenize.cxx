@@ -2912,4 +2912,19 @@ namespace Tokenizer {
     return true;
   }
 
+  bool TokenizerClass::init( const vector<string>& languages ){
+    // stub for upward comptability
+    LOG << "Initiating tokeniser from language list..." << endl;
+    try{
+      string name = "tokconfig-" + languages[0];
+      init( name );
+      return true;
+    }
+    catch ( ... ){
+      LOG << "unable to initialize form a language list." << endl;
+      LOG << "this feature will be fully implemented in the next release." << endl;
+    }
+    return false;
+  }
+
 }//namespace
