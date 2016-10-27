@@ -552,7 +552,7 @@ namespace Tokenizer {
       }
       // now let's check our language
       string lan = element->language();
-      if ( lan.empty() || default_language == "default" ){
+      if ( lan.empty() || default_language == "none" ){
 	lan = "default";
       }
       auto const it = settings.find(lan);
@@ -560,12 +560,18 @@ namespace Tokenizer {
 	LOG << "Found a supported language! " << lan << endl;
       }
       else if ( !default_language.empty() ){
-	// skip elements in the wrong language
-	if (tokDebug >= 1){
-	  LOG << "skip tokenize because:" << lan << " isn't supported" << endl;
+	if ( default_language != lan ){
+	  // skip elements in the wrong language
+	  if (tokDebug >= 1){
+	    LOG << "skip tokenize because:" << lan << " isn't supported" << endl;
+	  }
+	  return;
 	}
-	return;
+	else {
+	  lan = "default";
+	}
       }
+      LOG << "so lan=" << lan << " and default = " << default_language << endl;
       // so we have text, in an element without 'formatting' yet, good
       // lets Tokenize the available text!
       tokenizeSentenceElement( element, lan );
