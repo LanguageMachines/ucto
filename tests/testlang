@@ -5,3 +5,5 @@ exe=../src/ucto
 $exe -L nl -F folia-lang.xml
 $exe -L en -F folia-lang.xml
 $exe --detectlanguages=nld,eng -F folia-lang.xml
+$exe --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml
+cat ml.xml

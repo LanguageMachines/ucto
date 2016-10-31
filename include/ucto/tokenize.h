@@ -81,8 +81,9 @@ namespace Tokenizer {
     TokenRole role;
     Token( const UnicodeString&,
 	   const UnicodeString&,
-	   TokenRole role = NOROLE );
-
+	   TokenRole role = NOROLE,
+	   const std::string& = "" );
+    std::string lc;                // ISO 639-3 language code
     std::string texttostring();
     std::string typetostring();
   };
@@ -289,8 +290,7 @@ namespace Tokenizer {
 
     int outputTokensXML( folia::FoliaElement *,
 			 const std::vector<Token>& ,
-			 int = 0,
-			 const std::string& = "" ) const;
+			 int = 0 ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );

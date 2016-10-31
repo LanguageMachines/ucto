@@ -180,13 +180,13 @@ int main( int argc, char *argv[] ){
 	return EXIT_FAILURE;
       }
       else if ( Opts.is_present( "detectlanguages" ) ){
-	cerr << "Error: -L and --detectlangusages options conflict. Use only one of them." << endl;
+	cerr << "Error: -L and --detectlanguages options conflict. Use only one of them." << endl;
 	return EXIT_FAILURE;
       }
     }
     else if ( Opts.is_present( 'c' )
 	      && Opts.is_present( "detectlanguages" ) ){
-      cerr << "Error: -c and --detectlangusages options conflict. Use only one of them." << endl;
+      cerr << "Error: -c and --detectlanguages options conflict. Use only one of them." << endl;
       return EXIT_FAILURE;
     }
 

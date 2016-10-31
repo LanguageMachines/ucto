@@ -141,7 +141,8 @@ namespace Tokenizer {
 
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
-		TokenRole _role): type(_type), us(_s), role(_role) {}
+		TokenRole _role, const string& _lc ):
+    type(_type), us(_s), role(_role), lc(_lc) {}
 
 
   std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
@@ -217,12 +218,9 @@ namespace Tokenizer {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
 #ifdef ENABLE_TEXTCAT
-    if ( !settings.size() > 1  ){
-      // only enable textcat when language detection is wanted
-      // signaled by not only a "default" entry
-      string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-      tc = new TCdata( textcat_cfg );
-    }
+    string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
+    tc = new TCdata( textcat_cfg );
+    LOG << "created the textcat classifier" << endl;
 #endif
   }
 
@@ -698,7 +696,7 @@ namespace Tokenizer {
       vector<Token> v = getSentence( i );
       outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
     }
-    outputTokensXML( element, outputTokens, 0, lang );
+    outputTokensXML( element, outputTokens, 0 );
     flushSentences( numS, lang );
   }
 
@@ -725,8 +723,7 @@ namespace Tokenizer {
 
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 				       const vector<Token>& tv,
-				       int parCount,
-				       const string& language ) const {
+				       int parCount ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
@@ -807,7 +804,7 @@ namespace Tokenizer {
 	args["set"] = "passthru";
       }
       else {
-	auto it = settings.find(language);
+	auto it = settings.find(token.lc);
 	if ( it == settings.end() ){
 	  it = settings.find("default");
 	}
@@ -1754,16 +1751,20 @@ namespace Tokenizer {
     if ( lang.empty() ){
       lang = "default";
     }
+    else {
+      auto const it = settings.find( lang );
+      if ( it == settings.end() ){
+	LOG << "tokenizeLine: no settings found for language=" + lang << endl
+	    << "using the default language instead:" << default_language << endl;
+	lang = "default";
+      }
+    }
     if (tokDebug){
       LOG << "[tokenizeLine] input: line=["
 	  << originput << "] (" << lang << ")" << endl;
     }
     UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
-      auto const it = settings.find( lang );
-      if ( it == settings.end() ){
-	throw uLogicError( "no settings found for language=" + lang );
-      }
       input = settings[lang]->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
@@ -2014,7 +2015,7 @@ namespace Tokenizer {
 	      if ( tokDebug >= 4 ){
 		LOG << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
-	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
+	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE, lang ) );
 	      return;
 	    }
 	    else {
@@ -2022,7 +2023,7 @@ namespace Tokenizer {
 		LOG << "\trecurse, match changes the type:"
 				<< assigned_type << " to " << type << endl;
 	      }
-	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE ) );
+	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE, lang ) );
 	      return;
 	    }
 	  }
@@ -2062,11 +2063,11 @@ namespace Tokenizer {
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
-		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
+		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE, lang ) );
 		}
 		else {
 		  if ( recurse ){
-		    tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE ) );
+		    tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE, lang ) );
 		  }
 		  else {
 		    tokenizeWord( word, internal_space, lang, type );
@@ -2094,7 +2095,7 @@ namespace Tokenizer {
 	if ( tokDebug >=4 ){
 	  LOG << "\tthere's no match at all" << endl;
 	}
-	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
+	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE , lang ) );
       }
     }
   }
