@@ -1974,7 +1974,7 @@ namespace Tokenizer {
 	if ( norm_set.find( type ) != norm_set.end() ){
 	  word = "{{" + type + "}}";
 	}
-	Token T( type, word, space ? NOROLE : NOSPACE );
+	Token T( type, word, space ? NOROLE : NOSPACE, lang );
 	tokens.push_back( T );
 	if (tokDebug >= 2){
 	  LOG << "   [tokenizeWord] added token " << T << endl;
