@@ -4,7 +4,7 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T15:11:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -71,7 +71,7 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T15:11:32" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -120,8 +120,8 @@
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T15:11:32" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T15:11:32" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -193,6 +193,716 @@
         </s>
       </p>
     </div>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.5" version="1.3.2">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-deu"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-fra"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-10-31T16:11:00" set="tokconfig-spa"/>
+    </annotations>
+  </metadata>
+  <text xml:id="ml.text">
+    <p xml:id="ml.p.1">
+      <t>BILTHOVEN - In de Mariapolder vlakbij Moerdijk is op de dag van de brand bij Chemie-Pack veel meer lood gemeten in neergedaalde roetdeeltjes dan is toegestaan. Het betreft vermoedelijk een eenmalige uitschieter, aldus een woordvoerder van het RIVM woensdag.</t>
+      <s xml:id="ml.p.1.s.1">
+        <t>BILTHOVEN - In de Mariapolder vlakbij Moerdijk is op de dag van de brand bij Chemie-Pack veel meer lood gemeten in neergedaalde roetdeeltjes dan is toegestaan.</t>
+        <w xml:id="ml.p.1.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t>BILTHOVEN</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.2" class="PUNCTUATION" set="tokconfig-nld">
+          <t>-</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.3" class="WORD" set="tokconfig-nld">
+          <t>In</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.4" class="WORD" set="tokconfig-nld">
+          <t>de</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.5" class="WORD" set="tokconfig-nld">
+          <t>Mariapolder</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.6" class="WORD" set="tokconfig-nld">
+          <t>vlakbij</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.7" class="WORD" set="tokconfig-nld">
+          <t>Moerdijk</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.8" class="WORD" set="tokconfig-nld">
+          <t>is</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.9" class="WORD" set="tokconfig-nld">
+          <t>op</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.10" class="WORD" set="tokconfig-nld">
+          <t>de</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.11" class="WORD" set="tokconfig-nld">
+          <t>dag</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.12" class="WORD" set="tokconfig-nld">
+          <t>van</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.13" class="WORD" set="tokconfig-nld">
+          <t>de</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.14" class="WORD" set="tokconfig-nld">
+          <t>brand</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.15" class="WORD" set="tokconfig-nld">
+          <t>bij</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.16" class="WORD-COMPOUND" set="tokconfig-nld">
+          <t>Chemie-Pack</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.17" class="WORD" set="tokconfig-nld">
+          <t>veel</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.18" class="WORD" set="tokconfig-nld">
+          <t>meer</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.19" class="WORD" set="tokconfig-nld">
+          <t>lood</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.20" class="WORD" set="tokconfig-nld">
+          <t>gemeten</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.21" class="WORD" set="tokconfig-nld">
+          <t>in</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.22" class="WORD" set="tokconfig-nld">
+          <t>neergedaalde</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.23" class="WORD" set="tokconfig-nld">
+          <t>roetdeeltjes</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.24" class="WORD" set="tokconfig-nld">
+          <t>dan</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.25" class="WORD" set="tokconfig-nld">
+          <t>is</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.26" class="WORD" set="tokconfig-nld" space="no">
+          <t>toegestaan</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.27" class="PUNCTUATION" set="tokconfig-nld">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.1.s.2">
+        <t>Het betreft vermoedelijk een eenmalige uitschieter, aldus een woordvoerder van het RIVM woensdag.</t>
+        <w xml:id="ml.p.1.s.2.w.1" class="WORD" set="tokconfig-nld">
+          <t>Het</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.2" class="WORD" set="tokconfig-nld">
+          <t>betreft</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.3" class="WORD" set="tokconfig-nld">
+          <t>vermoedelijk</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.4" class="WORD" set="tokconfig-nld">
+          <t>een</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.5" class="WORD" set="tokconfig-nld">
+          <t>eenmalige</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.6" class="WORD" set="tokconfig-nld" space="no">
+          <t>uitschieter</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.7" class="PUNCTUATION" set="tokconfig-nld">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.8" class="WORD" set="tokconfig-nld">
+          <t>aldus</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.9" class="WORD" set="tokconfig-nld">
+          <t>een</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.10" class="WORD" set="tokconfig-nld">
+          <t>woordvoerder</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.11" class="WORD" set="tokconfig-nld">
+          <t>van</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.12" class="WORD" set="tokconfig-nld">
+          <t>het</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.13" class="WORD" set="tokconfig-nld">
+          <t>RIVM</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.14" class="WORD" set="tokconfig-nld" space="no">
+          <t>woensdag</t>
+        </w>
+        <w xml:id="ml.p.1.s.2.w.15" class="PUNCTUATION" set="tokconfig-nld">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.2">
+      <t>I'm sure that I won't have any tokenisation errors here, you'll see if only you'd pay attention! We're sure we've already seen such examples before. My father's house is nice.</t>
+      <s xml:id="ml.p.2.s.1">
+        <t>I'm sure that I won't have any tokenisation errors here, you'll see if only you'd pay attention!</t>
+        <w xml:id="ml.p.2.s.1.w.1" class="WORD" set="tokconfig-eng" space="no">
+          <t>I</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.2" class="SUFFIX" set="tokconfig-eng">
+          <t>'m</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.3" class="WORD" set="tokconfig-eng">
+          <t>sure</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.4" class="WORD" set="tokconfig-eng">
+          <t>that</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.5" class="WORD" set="tokconfig-eng">
+          <t>I</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.6" class="WORD" set="tokconfig-eng" space="no">
+          <t>wo</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.7" class="SUFFIX" set="tokconfig-eng">
+          <t>n't</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.8" class="WORD" set="tokconfig-eng">
+          <t>have</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.9" class="WORD" set="tokconfig-eng">
+          <t>any</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.10" class="WORD" set="tokconfig-eng">
+          <t>tokenisation</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.11" class="WORD" set="tokconfig-eng">
+          <t>errors</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.12" class="WORD" set="tokconfig-eng" space="no">
+          <t>here</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.13" class="PUNCTUATION" set="tokconfig-eng">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.14" class="WORD" set="tokconfig-eng" space="no">
+          <t>you</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.15" class="SUFFIX" set="tokconfig-eng">
+          <t>'ll</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.16" class="WORD" set="tokconfig-eng">
+          <t>see</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.17" class="WORD" set="tokconfig-eng">
+          <t>if</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.18" class="WORD" set="tokconfig-eng">
+          <t>only</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.19" class="WORD" set="tokconfig-eng" space="no">
+          <t>you</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.20" class="SUFFIX" set="tokconfig-eng">
+          <t>'d</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.21" class="WORD" set="tokconfig-eng">
+          <t>pay</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.22" class="WORD" set="tokconfig-eng" space="no">
+          <t>attention</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.23" class="PUNCTUATION" set="tokconfig-eng">
+          <t>!</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.2.s.2">
+        <t>We're sure we've already seen such examples before.</t>
+        <w xml:id="ml.p.2.s.2.w.1" class="WORD" set="tokconfig-eng" space="no">
+          <t>We</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.2" class="SUFFIX" set="tokconfig-eng">
+          <t>'re</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.3" class="WORD" set="tokconfig-eng">
+          <t>sure</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.4" class="WORD" set="tokconfig-eng" space="no">
+          <t>we</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.5" class="SUFFIX" set="tokconfig-eng">
+          <t>'ve</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.6" class="WORD" set="tokconfig-eng">
+          <t>already</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.7" class="WORD" set="tokconfig-eng">
+          <t>seen</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.8" class="WORD" set="tokconfig-eng">
+          <t>such</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.9" class="WORD" set="tokconfig-eng">
+          <t>examples</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.10" class="WORD" set="tokconfig-eng" space="no">
+          <t>before</t>
+        </w>
+        <w xml:id="ml.p.2.s.2.w.11" class="PUNCTUATION" set="tokconfig-eng">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.2.s.3">
+        <t>My father's house is nice.</t>
+        <w xml:id="ml.p.2.s.3.w.1" class="WORD" set="tokconfig-eng">
+          <t>My</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.2" class="WORD" set="tokconfig-eng" space="no">
+          <t>father</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.3" class="SUFFIX" set="tokconfig-eng">
+          <t>'s</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.4" class="WORD" set="tokconfig-eng">
+          <t>house</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.5" class="WORD" set="tokconfig-eng">
+          <t>is</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.6" class="WORD" set="tokconfig-eng" space="no">
+          <t>nice</t>
+        </w>
+        <w xml:id="ml.p.2.s.3.w.7" class="PUNCTUATION" set="tokconfig-eng">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.3">
+      <t>Ich fahre von Kleve Hbf. nach Neuburg a.d. Donau. Das ist ziemlich langweilig, d.h. das es eine lange Reise ist. Mein Brüder und meine Schwester fahren auch mit, sie sind 23 bzw. 19 Jahre alt.</t>
+      <s xml:id="ml.p.3.s.1">
+        <t>Ich fahre von Kleve Hbf. nach Neuburg a.d. Donau.</t>
+        <w xml:id="ml.p.3.s.1.w.1" class="WORD" set="tokconfig-deu">
+          <t>Ich</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.2" class="WORD" set="tokconfig-deu">
+          <t>fahre</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.3" class="WORD" set="tokconfig-deu">
+          <t>von</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.4" class="WORD" set="tokconfig-deu">
+          <t>Kleve</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.5" class="ABBREVIATION-KNOWN" set="tokconfig-deu">
+          <t>Hbf.</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.6" class="WORD" set="tokconfig-deu">
+          <t>nach</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.7" class="WORD" set="tokconfig-deu">
+          <t>Neuburg</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.8" class="ABBREVIATION" set="tokconfig-deu">
+          <t>a.d.</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.9" class="WORD" set="tokconfig-deu" space="no">
+          <t>Donau</t>
+        </w>
+        <w xml:id="ml.p.3.s.1.w.10" class="PUNCTUATION" set="tokconfig-deu">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.3.s.2">
+        <t>Das ist ziemlich langweilig, d.h. das es eine lange Reise ist.</t>
+        <w xml:id="ml.p.3.s.2.w.1" class="WORD" set="tokconfig-deu">
+          <t>Das</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.2" class="WORD" set="tokconfig-deu">
+          <t>ist</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.3" class="WORD" set="tokconfig-deu">
+          <t>ziemlich</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.4" class="WORD" set="tokconfig-deu" space="no">
+          <t>langweilig</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.5" class="PUNCTUATION" set="tokconfig-deu">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.6" class="ABBREVIATION" set="tokconfig-deu">
+          <t>d.h.</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.7" class="WORD" set="tokconfig-deu">
+          <t>das</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.8" class="WORD" set="tokconfig-deu">
+          <t>es</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.9" class="WORD" set="tokconfig-deu">
+          <t>eine</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.10" class="WORD" set="tokconfig-deu">
+          <t>lange</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.11" class="WORD" set="tokconfig-deu">
+          <t>Reise</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.12" class="WORD" set="tokconfig-deu" space="no">
+          <t>ist</t>
+        </w>
+        <w xml:id="ml.p.3.s.2.w.13" class="PUNCTUATION" set="tokconfig-deu">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.3.s.3">
+        <t>Mein Brüder und meine Schwester fahren auch mit, sie sind 23 bzw. 19 Jahre alt.</t>
+        <w xml:id="ml.p.3.s.3.w.1" class="WORD" set="tokconfig-deu">
+          <t>Mein</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.2" class="WORD" set="tokconfig-deu">
+          <t>Brüder</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.3" class="WORD" set="tokconfig-deu">
+          <t>und</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.4" class="WORD" set="tokconfig-deu">
+          <t>meine</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.5" class="WORD" set="tokconfig-deu">
+          <t>Schwester</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.6" class="WORD" set="tokconfig-deu">
+          <t>fahren</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.7" class="WORD" set="tokconfig-deu">
+          <t>auch</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.8" class="WORD" set="tokconfig-deu" space="no">
+          <t>mit</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.9" class="PUNCTUATION" set="tokconfig-deu">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.10" class="WORD" set="tokconfig-deu">
+          <t>sie</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.11" class="WORD" set="tokconfig-deu">
+          <t>sind</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.12" class="NUMBER" set="tokconfig-deu">
+          <t>23</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.13" class="ABBREVIATION-KNOWN" set="tokconfig-deu">
+          <t>bzw.</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.14" class="NUMBER" set="tokconfig-deu">
+          <t>19</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.15" class="WORD" set="tokconfig-deu">
+          <t>Jahre</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.16" class="WORD" set="tokconfig-deu" space="no">
+          <t>alt</t>
+        </w>
+        <w xml:id="ml.p.3.s.3.w.17" class="PUNCTUATION" set="tokconfig-deu">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.4">
+      <t>Qu'est-ce que c'est? Ce n'est pas une avion , j'en suis sur , mais peut-être c'est superman? Sais-tu voler aussi? Les derniers mots de Ceasar sont: "Et tu? Brute? ", avant qu'il était trahi.</t>
+      <s xml:id="ml.p.4.s.1">
+        <t>Qu'est-ce que c'est?</t>
+        <w xml:id="ml.p.4.s.1.w.1" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>Qu'</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.2" class="WORD" set="tokconfig-fra" space="no">
+          <t>est</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.3" class="SUFFIX" set="tokconfig-fra">
+          <t>-ce</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.4" class="WORD" set="tokconfig-fra">
+          <t>que</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.5" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>c'</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.6" class="WORD" set="tokconfig-fra" space="no">
+          <t>est</t>
+        </w>
+        <w xml:id="ml.p.4.s.1.w.7" class="PUNCTUATION" set="tokconfig-fra">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.4.s.2">
+        <t>Ce n'est pas une avion , j'en suis sur , mais peut-être c'est superman?</t>
+        <w xml:id="ml.p.4.s.2.w.1" class="WORD" set="tokconfig-fra">
+          <t>Ce</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.2" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>n'</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.3" class="WORD" set="tokconfig-fra">
+          <t>est</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.4" class="WORD" set="tokconfig-fra">
+          <t>pas</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.5" class="WORD" set="tokconfig-fra">
+          <t>une</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.6" class="WORD" set="tokconfig-fra">
+          <t>avion</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.7" class="PUNCTUATION" set="tokconfig-fra">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.8" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>j'</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.9" class="WORD" set="tokconfig-fra">
+          <t>en</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.10" class="WORD" set="tokconfig-fra">
+          <t>suis</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.11" class="WORD" set="tokconfig-fra">
+          <t>sur</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.12" class="PUNCTUATION" set="tokconfig-fra">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.13" class="WORD" set="tokconfig-fra">
+          <t>mais</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.14" class="WORD-COMPOUND" set="tokconfig-fra">
+          <t>peut-être</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.15" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>c'</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.16" class="WORD" set="tokconfig-fra">
+          <t>est</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.17" class="WORD" set="tokconfig-fra" space="no">
+          <t>superman</t>
+        </w>
+        <w xml:id="ml.p.4.s.2.w.18" class="PUNCTUATION" set="tokconfig-fra">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.4.s.3">
+        <t>Sais-tu voler aussi?</t>
+        <w xml:id="ml.p.4.s.3.w.1" class="WORD" set="tokconfig-fra" space="no">
+          <t>Sais</t>
+        </w>
+        <w xml:id="ml.p.4.s.3.w.2" class="SUFFIX" set="tokconfig-fra">
+          <t>-tu</t>
+        </w>
+        <w xml:id="ml.p.4.s.3.w.3" class="WORD" set="tokconfig-fra">
+          <t>voler</t>
+        </w>
+        <w xml:id="ml.p.4.s.3.w.4" class="WORD" set="tokconfig-fra" space="no">
+          <t>aussi</t>
+        </w>
+        <w xml:id="ml.p.4.s.3.w.5" class="PUNCTUATION" set="tokconfig-fra">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.4.s.4">
+        <t>Les derniers mots de Ceasar sont: "Et tu?</t>
+        <w xml:id="ml.p.4.s.4.w.1" class="WORD" set="tokconfig-fra">
+          <t>Les</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.2" class="WORD" set="tokconfig-fra">
+          <t>derniers</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.3" class="WORD" set="tokconfig-fra">
+          <t>mots</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.4" class="WORD" set="tokconfig-fra">
+          <t>de</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.5" class="WORD" set="tokconfig-fra">
+          <t>Ceasar</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.6" class="WORD" set="tokconfig-fra" space="no">
+          <t>sont</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.7" class="PUNCTUATION" set="tokconfig-fra">
+          <t>:</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.8" class="PUNCTUATION" set="tokconfig-fra" space="no">
+          <t>"</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.9" class="WORD" set="tokconfig-fra">
+          <t>Et</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.10" class="WORD" set="tokconfig-fra" space="no">
+          <t>tu</t>
+        </w>
+        <w xml:id="ml.p.4.s.4.w.11" class="PUNCTUATION" set="tokconfig-fra">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.4.s.5">
+        <t>Brute?</t>
+        <w xml:id="ml.p.4.s.5.w.1" class="WORD" set="tokconfig-fra" space="no">
+          <t>Brute</t>
+        </w>
+        <w xml:id="ml.p.4.s.5.w.2" class="PUNCTUATION" set="tokconfig-fra" space="no">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.4.s.6">
+        <t>", avant qu'il était trahi.</t>
+        <w xml:id="ml.p.4.s.6.w.1" class="PUNCTUATION" set="tokconfig-fra" space="no">
+          <t>"</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.2" class="PUNCTUATION" set="tokconfig-fra">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.3" class="WORD" set="tokconfig-fra">
+          <t>avant</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.4" class="PREFIX" set="tokconfig-fra" space="no">
+          <t>qu'</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.5" class="WORD" set="tokconfig-fra">
+          <t>il</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.6" class="WORD" set="tokconfig-fra">
+          <t>était</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.7" class="WORD" set="tokconfig-fra" space="no">
+          <t>trahi</t>
+        </w>
+        <w xml:id="ml.p.4.s.6.w.8" class="PUNCTUATION" set="tokconfig-fra">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.5">
+      <t>He llamado a Sr. Mendoza y a Sra. María, pero no sabían la respuesta. ¿Quizás Uds. me pueden contestar?</t>
+      <s xml:id="ml.p.5.s.1">
+        <t>He llamado a Sr. Mendoza y a Sra. María, pero no sabían la respuesta.</t>
+        <w xml:id="ml.p.5.s.1.w.1" class="WORD" set="tokconfig-spa">
+          <t>He</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.2" class="WORD" set="tokconfig-spa">
+          <t>llamado</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.3" class="WORD" set="tokconfig-spa">
+          <t>a</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.4" class="ABBREVIATION-KNOWN" set="tokconfig-spa">
+          <t>Sr.</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.5" class="WORD" set="tokconfig-spa">
+          <t>Mendoza</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.6" class="WORD" set="tokconfig-spa">
+          <t>y</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.7" class="WORD" set="tokconfig-spa">
+          <t>a</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.8" class="ABBREVIATION-KNOWN" set="tokconfig-spa">
+          <t>Sra.</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.9" class="WORD" set="tokconfig-spa" space="no">
+          <t>María</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.10" class="PUNCTUATION" set="tokconfig-spa">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.11" class="WORD" set="tokconfig-spa">
+          <t>pero</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.12" class="WORD" set="tokconfig-spa">
+          <t>no</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.13" class="WORD" set="tokconfig-spa">
+          <t>sabían</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.14" class="WORD" set="tokconfig-spa">
+          <t>la</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.15" class="WORD" set="tokconfig-spa" space="no">
+          <t>respuesta</t>
+        </w>
+        <w xml:id="ml.p.5.s.1.w.16" class="PUNCTUATION" set="tokconfig-spa">
+          <t>.</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.5.s.2">
+        <t>¿Quizás Uds. me pueden contestar?</t>
+        <w xml:id="ml.p.5.s.2.w.1" class="PUNCTUATION" set="tokconfig-spa" space="no">
+          <t>¿</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.2" class="WORD" set="tokconfig-spa">
+          <t>Quizás</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.3" class="ABBREVIATION-KNOWN" set="tokconfig-spa">
+          <t>Uds.</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.4" class="WORD" set="tokconfig-spa">
+          <t>me</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.5" class="WORD" set="tokconfig-spa">
+          <t>pueden</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.6" class="WORD" set="tokconfig-spa" space="no">
+          <t>contestar</t>
+        </w>
+        <w xml:id="ml.p.5.s.2.w.7" class="PUNCTUATION" set="tokconfig-spa">
+          <t>?</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.6">
+      <t>No hé podido contarte eso, porque no quiero dañarte.</t>
+      <s xml:id="ml.p.6.s.1">
+        <t>No hé podido contarte eso, porque no quiero dañarte.</t>
+        <w xml:id="ml.p.6.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t>No</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.2" class="WORD" set="tokconfig-nld">
+          <t>hé</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.3" class="WORD" set="tokconfig-nld">
+          <t>podido</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.4" class="WORD" set="tokconfig-nld">
+          <t>contarte</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.5" class="WORD" set="tokconfig-nld" space="no">
+          <t>eso</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.6" class="PUNCTUATION" set="tokconfig-nld">
+          <t>,</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.7" class="WORD" set="tokconfig-nld">
+          <t>porque</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.8" class="ABBREVIATION-KNOWN" set="tokconfig-nld">
+          <t>no</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.9" class="WORD" set="tokconfig-nld">
+          <t>quiero</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.10" class="WORD" set="tokconfig-nld" space="no">
+          <t>dañarte</t>
+        </w>
+        <w xml:id="ml.p.6.s.1.w.11" class="PUNCTUATION" set="tokconfig-nld">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
 
