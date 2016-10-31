@@ -287,7 +287,10 @@ namespace Tokenizer {
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
-    int outputTokensXML( folia::FoliaElement *, const std::vector<Token>& , int parCount=0 ) const;
+    int outputTokensXML( folia::FoliaElement *,
+			 const std::vector<Token>& ,
+			 int = 0,
+			 const std::string& = "" ) const;
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );
@@ -337,7 +340,6 @@ namespace Tokenizer {
     bool xmlin;
     bool passthru;
 
-    std::string settingsfilename;
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text

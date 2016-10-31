@@ -759,7 +759,7 @@ namespace Tokenizer {
 	  << "' seems out of date!" << endl;
       LOG << "         for best results, you should use uctodata version >=0.2 " << endl;
     }
-    settingsfilename = settings_name;
+    set_file = settings_name;
     if ( tokDebug ){
       LOG << "effective rules: " << endl;
       for ( size_t i=0; i < rules.size(); ++i ){

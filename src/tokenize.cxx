@@ -60,6 +60,7 @@
 #endif /* HAVE_READLINE_HISTORY */
 
 #ifdef HAVE_TEXTCAT_H
+#define ENABLE_TEXTCAT
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -73,9 +74,11 @@ extern "C" {
 #else
 #ifdef HAVE_LIBTEXTCAT_TEXTCAT_H
 #include "libtextcat/textcat.h"
+#define ENABLE_TEXTCAT
 #else
 #ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
 #include "libexttextcat/textcat.h"
+#define ENABLE_TEXTCAT
 #endif
 #endif
 #endif
@@ -159,6 +162,7 @@ namespace Tokenizer {
     return os;
   }
 
+#ifdef ENABLE_TEXTCAT
   TCdata::~TCdata() { textcat_Done( TC ); }
 
   TCdata::TCdata( const std::string& cf ) {
@@ -176,7 +180,7 @@ namespace Tokenizer {
     if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
       string val = res;
       vector<string> vals;
-      size_t num = split_at( val, vals, "[]" );
+      size_t num = split_at_first_of( val, vals, "[]" );
       if ( num == 0 ){
 	cerr << "O JEE: unexpected language value: '" << val << "'" << endl;
       }
@@ -186,6 +190,7 @@ namespace Tokenizer {
     }
     return "";
   }
+#endif
 
   TokenizerClass::TokenizerClass():
     linenum(0),
@@ -211,7 +216,14 @@ namespace Tokenizer {
   {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->setstamp( NoStamp );
-    //    tc = new TCdata( "bla" );
+#ifdef ENABLE_TEXTCAT
+    if ( !settings.size() > 1  ){
+      // only enable textcat when language detection is wanted
+      // signaled by not only a "default" entry
+      string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
+      tc = new TCdata( textcat_cfg );
+    }
+#endif
   }
 
   TokenizerClass::~TokenizerClass(){
@@ -310,7 +322,18 @@ namespace Tokenizer {
 	  passthruLine( input_line, bos );
 	}
 	else {
-	  tokenizeLine( input_line );
+	  string language;
+	  if ( tc ){
+	    UnicodeString temp = input_line;
+	    temp.toLower();
+	    string lan = tc->guess( folia::UnicodeToUTF8(temp) );
+	    if ( settings.find( lan ) != settings.end() ){
+	      LOG << "Guessed supported language: " << lan
+		  << " for: " << temp << endl;
+	    }
+	    language = lan;
+	  }
+	  tokenizeLine( input_line, language );
 	}
 	numS = countSentences(); //count full sentences in token buffer
       }
@@ -645,7 +668,9 @@ namespace Tokenizer {
       doc->declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     else {
-      doc->declare( folia::AnnotationType::TOKEN, settingsfilename, "annotator='ucto', annotatortype='auto', datetime='now()'" );
+      doc->declare( folia::AnnotationType::TOKEN,
+		    settings[lang]->set_file,
+		    "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     if  ( tokDebug > 0 ){
       cerr << "tokenize sentence element: " << element->id() << endl;
@@ -673,7 +698,7 @@ namespace Tokenizer {
       vector<Token> v = getSentence( i );
       outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
     }
-    outputTokensXML( element, outputTokens );
+    outputTokensXML( element, outputTokens, 0, lang );
     flushSentences( numS, lang );
   }
 
@@ -683,8 +708,10 @@ namespace Tokenizer {
       doc.declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     else {
-      doc.declare( folia::AnnotationType::TOKEN, settingsfilename,
-		   "annotator='ucto', annotatortype='auto', datetime='now()'");
+      for ( const auto& s : settings ){
+	doc.declare( folia::AnnotationType::TOKEN, s.second->set_file,
+		     "annotator='ucto', annotatortype='auto', datetime='now()'");
+      }
     }
     folia::Text *text = new folia::Text( folia::getArgs("id='" + docid + ".text'") );
     doc.append( text );
@@ -698,7 +725,8 @@ namespace Tokenizer {
 
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 				       const vector<Token>& tv,
-				       int parCount ) const {
+				       int parCount,
+				       const string& language ) const {
     short quotelevel = 0;
     folia::FoliaElement *lastS = 0;
     if  (tokDebug > 0) {
@@ -775,10 +803,16 @@ namespace Tokenizer {
       folia::KWargs args;
       args["generate_id"] = lastS->id();
       args["class"] = folia::UnicodeToUTF8( token.type );
-      if ( passthru )
+      if ( passthru ){
 	args["set"] = "passthru";
-      else
-	args["set"] = settingsfilename;
+      }
+      else {
+	auto it = settings.find(language);
+	if ( it == settings.end() ){
+	  it = settings.find("default");
+	}
+	args["set"] = it->second->set_file;
+      }
       if ( token.role & NOSPACE) {
 	args["space"]= "no";
       }
@@ -2078,7 +2112,6 @@ namespace Tokenizer {
       settings["default"] = set;
       default_language = "default";
     }
-    settingsfilename = fname;
     if ( tokDebug ){
       LOG << "effective rules: " << endl;
       for ( size_t i=0; i < set->rules.size(); ++i ){
@@ -2116,7 +2149,6 @@ namespace Tokenizer {
       cerr << "No useful settingsfile(s) could be found." << endl;
       return false;
     }
-    settingsfilename = defalt->settingsfilename;
     return true;
   }
 

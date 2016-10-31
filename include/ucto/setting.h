@@ -100,7 +100,7 @@ namespace Tokenizer {
     std::map<UnicodeString, int> rules_index;
     Quoting quotes;
     UnicodeFilter filter;
-    std::string settingsfilename; // the name of the settingsfile
+    std::string set_file; // the name of the settingsfile
     std::string version;  // the version of the datafile
     int tokDebug;
     TiCC::LogStream *theErrLog;
