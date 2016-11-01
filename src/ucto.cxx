@@ -73,9 +73,9 @@ void usage(){
        << "\t-F               - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
-       << "\t--textclass <class> - use the specified class to search text in the the FoLia doc. (deprecated. use --inputclass)" << endl
-       << "\t--inputclass <class> - use the specified class to search text in the the FoLia doc." << endl
-       << "\t--outputclass <class> - use the specified class to output text in the the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
+       << "\t--textclass <class> - use the specified class to search text in the FoLia doc. (deprecated. use --inputclass)" << endl
+       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc." << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
