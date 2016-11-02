@@ -26,6 +26,7 @@
 #include <string>
 #include <vector>
 #include "ticcutils/StringOps.h"
+#include "config.h"
 #include "ucto/textcat.h"
 
 using namespace std;
@@ -47,7 +48,7 @@ TextCat::TextCat( const TextCat& in ) {
   cfName = in.cfName;
 }
 
-vector<string> TextCat::get_languages( const string& in ){
+vector<string> TextCat::get_languages( const string& in ) const {
   vector<string> vals;
   char *res = textcat_Classify( TC, in.c_str(), in.size() );
   if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
@@ -57,7 +58,7 @@ vector<string> TextCat::get_languages( const string& in ){
   return vals;
 }
 
-string TextCat::get_language( const string& in ){
+string TextCat::get_language( const string& in ) const {
   vector<string> vals = get_languages( in );
   if ( vals.size() > 0 ){
     return vals[0];
@@ -78,11 +79,11 @@ TextCat::TextCat( const TextCat& in ) {
   throw runtime_error( "TextCat::TextCat(): TextCat Support not available" );
 }
 
-vector<string> TextCat::get_languages( const string& in ){
+vector<string> TextCat::get_languages( const string& in ) const {
   throw runtime_error( "TextCat::get_languages(): TextCat Support not available" );
 }
 
-string TextCat::get_language( const string& in ){
+string TextCat::get_language( const string& in ) const {
   throw runtime_error( "TextCat::get_language(): TextCat Support not available" );
 }
 

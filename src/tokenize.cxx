@@ -166,7 +166,6 @@ namespace Tokenizer {
 #ifdef ENABLE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg );
-    LOG << "created the textcat classifier" << endl;
 #endif
   }
 

@@ -28,7 +28,6 @@
 #define TEXTCAT_H
 
 #include <cstring>
-#include "config.h"
 
 #ifdef HAVE_TEXTCAT_H
 #define ENABLE_TEXTCAT
@@ -60,8 +59,8 @@ class TextCat {
   TextCat( const TextCat& in );
   ~TextCat();
   bool isInit() const { return TC != 0; };
-  std::string get_language( const std::string& );
-  std::vector<std::string> get_languages( const std::string& );
+  std::string get_language( const std::string& ) const;
+  std::vector<std::string> get_languages( const std::string& ) const;
  private:
   void *TC;
   std::string cfName;

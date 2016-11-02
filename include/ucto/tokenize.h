@@ -35,6 +35,8 @@
 #include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
 
+class TextCat;
+
 namespace Tokenizer {
 
   std::string Version();
