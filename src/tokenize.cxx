@@ -35,6 +35,7 @@
 #include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
 #include "ucto/unicode.h"
+#include "ucto/textcat.h"
 #include "ucto/setting.h"
 #include "ucto/tokenize.h"
 
@@ -59,35 +60,10 @@
 #  endif /* defined(HAVE_READLINE_HISTORY_H) */
 #endif /* HAVE_READLINE_HISTORY */
 
-#ifdef HAVE_TEXTCAT_H
-#define ENABLE_TEXTCAT
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-#include "textcat.h"
-
-#ifdef __cplusplus
-}
-#endif
-
-#else
-#ifdef HAVE_LIBTEXTCAT_TEXTCAT_H
-#include "libtextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#else
-#ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
-#include "libexttextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#endif
-#endif
-#endif
-
 using namespace std;
 using namespace TiCC;
 
 #define LOG *Log(theErrLog)
-
 
 namespace Tokenizer {
 
@@ -163,36 +139,6 @@ namespace Tokenizer {
     return os;
   }
 
-#ifdef ENABLE_TEXTCAT
-  TCdata::~TCdata() { textcat_Done( TC ); }
-
-  TCdata::TCdata( const std::string& cf ) {
-    cfName = cf;
-    TC = textcat_Init( cf.c_str() );
-  }
-
-  TCdata::TCdata( const TCdata& in ) {
-    TC = textcat_Init( in.cfName.c_str() );
-    cfName = in.cfName;
-  }
-
-  string TCdata::guess( const string& in ){
-    char *res = textcat_Classify( TC, in.c_str(), in.size() );
-    if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
-      string val = res;
-      vector<string> vals;
-      size_t num = split_at_first_of( val, vals, "[]" );
-      if ( num == 0 ){
-	cerr << "O JEE: unexpected language value: '" << val << "'" << endl;
-      }
-      else {
-	return vals[0];
-      }
-    }
-    return "";
-  }
-#endif
-
   TokenizerClass::TokenizerClass():
     linenum(0),
     inputEncoding( "UTF-8" ),
@@ -219,7 +165,7 @@ namespace Tokenizer {
     theErrLog->setstamp( NoStamp );
 #ifdef ENABLE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-    tc = new TCdata( textcat_cfg );
+    tc = new TextCat( textcat_cfg );
     LOG << "created the textcat classifier" << endl;
 #endif
   }
@@ -324,7 +270,7 @@ namespace Tokenizer {
 	  if ( tc ){
 	    UnicodeString temp = input_line;
 	    temp.toLower();
-	    string lan = tc->guess( folia::UnicodeToUTF8(temp) );
+	    string lan = tc->get_language( folia::UnicodeToUTF8(temp) );
 	    if ( settings.find( lan ) != settings.end() ){
 	      LOG << "Guessed supported language: " << lan
 		  << " for: " << temp << endl;
