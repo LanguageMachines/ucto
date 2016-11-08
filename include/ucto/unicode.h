@@ -30,6 +30,7 @@
 #include <string>
 #include <map>
 #include <iosfwd>
+#include "unicode/ucnv.h"
 #include "unicode/ustream.h"
 #include "unicode/uchar.h"
 #include "unicode/unistr.h"
