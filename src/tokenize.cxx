@@ -1537,7 +1537,7 @@ namespace Tokenizer {
 	}
       }
     }
-    if (sentenceperlineinput) {
+    if ( sentenceperlineinput && tokens.size() > 0 ) {
       tokens[0].role |= BEGINOFSENTENCE;
       tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
     }
