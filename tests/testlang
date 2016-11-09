@@ -1,0 +1,6 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -L nl -F folia-lang.xml
+$exe -L en -F folia-lang.xml

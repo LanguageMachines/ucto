@@ -114,9 +114,9 @@ for f in glob.glob(mask):
             log += "testoutput/" + id + '.' + lang + '.diff\n'
             log += "testoutput/" + id + '.' + lang + '.err\n'
             if outputfile[-4:] != ".xml":
-                os.system('../src/.libs/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../../uctodata//config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
+                os.system('../src/.libs/ucto -Q -d ' + str(DEBUGLEVEL) + ' -v -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
             else:
-                os.system('../src/.libs/ucto --id="test" -X -Q -d ' + str(DEBUGLEVEL) + ' -v -c ../../uctodata/config/tokconfig-' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
+                os.system('../src/.libs/ucto --id="test" -X -Q -d ' + str(DEBUGLEVEL) + ' -v -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
 
 if log:
     print "--------------------------"

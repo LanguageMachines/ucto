@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.9.3], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.9.4], [lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -69,7 +69,7 @@ AC_ARG_WITH(icu,
 	fi] )
 
 if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [4.8],
+  AX_ICU_CHECK( [5.2],
 		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
 		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
 		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
@@ -104,7 +104,7 @@ PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
-PKG_CHECK_MODULES([uctodata], [uctodata >= 0.1] )
+PKG_CHECK_MODULES([uctodata], [uctodata >= 0.3] )
 
 # Checks for library functions.
 

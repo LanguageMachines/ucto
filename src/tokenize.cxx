@@ -490,6 +490,12 @@ namespace Tokenizer {
     theErrLog = os;
   }
 
+  string TokenizerClass::setLanguage( const std::string& lan ){
+    string old = language;
+    language = lan;
+    return old;
+  }
+
   string TokenizerClass::setInputEncoding( const std::string& enc ){
     string old = inputEncoding;
     inputEncoding = enc;
@@ -839,6 +845,17 @@ namespace Tokenizer {
 	  // already words, bail out
 	  return;
 	}
+      }
+      // now let's check our language
+      string lan = element->language();
+      if ( !language.empty()
+	   && language != "none"
+	   && !lan.empty() && lan != language ){
+	// skip elements in the wrong language
+	if (tokDebug >= 1){
+	  LOG << "skip tokenize because element:" << lan << " !=" << language << endl;
+	}
+	return;
       }
       if ( inputclass != outputclass && outputclass == "current" ){
 	if ( element->hastext( outputclass ) ){
@@ -2177,6 +2194,7 @@ namespace Tokenizer {
       }
     }
     else {
+      bool a_rule_matched = false;
       for ( const auto& rule : rules ) {
 	if ( tokDebug >= 4){
 	  LOG << "\tTESTING " << rule->id << endl;
@@ -2186,6 +2204,7 @@ namespace Tokenizer {
 	UnicodeString pre, post;
 	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
+	  a_rule_matched = true;
 	  if ( tokDebug >= 4 ){
 	    LOG << "\tMATCH: " << type << endl;
 	    LOG << "\tpre=  '" << pre << "'" << endl;
@@ -2270,7 +2289,8 @@ namespace Tokenizer {
 	    }
 	  }
 	  else if ( tokDebug >=4 ){
-	    LOG << "\tthere's no match" << endl;
+	    // should never come here?
+	    LOG << "\tPANIC there's no match" << endl;
 	  }
 	  if ( post.length() > 0 ){
 	    if ( tokDebug >= 4 ){
@@ -2281,6 +2301,13 @@ namespace Tokenizer {
 	  }
 	  break;
 	}
+      }
+      if ( ! a_rule_matched ){
+	// no rule matched
+	if ( tokDebug >=4 ){
+	  LOG << "\tthere's no match at all" << endl;
+	}
+	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE ) );
       }
     }
   }
@@ -2885,6 +2912,22 @@ namespace Tokenizer {
       LOG << "Filter: " << filter << endl;
     }
     return true;
+  }
+
+  bool TokenizerClass::init( const vector<string>& languages ){
+    // stub for upward comptability
+    LOG << "Initiating tokeniser from language list..." << endl;
+    try{
+      string name = "tokconfig-" + languages[0];
+      init( name );
+      language = language[0];
+      return true;
+    }
+    catch ( ... ){
+      LOG << "unable to initialize form a language list." << endl;
+      LOG << "this feature will be fully implemented in the next release." << endl;
+    }
+    return false;
   }
 
 }//namespace

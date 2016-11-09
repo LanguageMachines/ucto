@@ -69,9 +69,9 @@ void usage(){
        << "\t-F              - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t-X              - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>    - use the specified Document ID to label the FoLia doc." << endl
-       << "\t--textclass <class> - use the specified class to search text in the the FoLia doc. (deprecated. use --inputclass)" << endl
-       << "\t--inputclass <class> - use the specified class to search text in the the FoLia doc." << endl
-       << "\t--outputclass <class> - use the specified class to output text in the the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
+       << "\t--textclass <class> - use the specified class to search text in the FoLia doc. (deprecated. use --inputclass)" << endl
+       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc." << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
@@ -95,7 +95,8 @@ int main( int argc, char *argv[] ){
   string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
-  string cfile = "tokconfig-en";
+  string language = "nld";
+  string cfile = "tokconfig-nld";
   string ifile;
   string ofile;
   string c_file;
@@ -169,8 +170,42 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
-    if ( Opts.extract('L', value ) ){
-      L_file = "tokconfig-" + value;
+    if ( Opts.extract('L', language ) ){
+      // support some backward compatability to old ISO 639-1 codes
+      if ( language == "nl" ){
+	language = "nld";
+      }
+      else if ( language == "de" ){
+	language = "deu";
+      }
+      else if ( language == "fr" ){
+	language = "fra";
+      }
+      else if ( language == "pt" ){
+	language = "por";
+      }
+      else if ( language == "es" ){
+	language = "spa";
+      }
+      else if ( language == "fy" ){
+	language = "fry";
+      }
+      else if ( language == "se" ){
+	language = "swe";
+      }
+      else if ( language == "en" ){
+	language = "eng";
+      }
+      else if ( language == "it" ){
+	language = "ita";
+      }
+      else if ( language == "ru" ){
+	language = "rus";
+      }
+      else if ( language == "tr" ){
+	language = "tur";
+      }
+      L_file = "tokconfig-" + language;
     }
     Opts.extract("normalize", norm_set_string );
     if ( !Opts.empty() ){
@@ -255,6 +290,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
+    tokenizer.setLanguage(language);
     tokenizer.setLowercase(tolowercase);
     tokenizer.setUppercase(touppercase);
     tokenizer.setNormSet(norm_set_string);

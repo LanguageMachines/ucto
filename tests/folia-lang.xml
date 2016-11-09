@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
+  <metadata>
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <lang-annotation annotator="ko" annotatortype="manual"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+      <div xml:id="div">
+	<p xml:id="p1">
+          <s xml:id="s1">
+	    <lang class="nld"/>
+	    <t>Dit is een test.</t>
+	  </s>
+	</p>
+	<p xml:id="p2">
+          <s xml:id="s2">
+	    <lang class="eng"/>
+	    <t>This isn't dutch.</t>
+	  </s>
+	</p>
+	<p xml:id="p3">
+          <s xml:id="s3">
+	    <t>En dit is zin 2.</t>
+	  </s>
+	</p>
+      </div>
+  </text>
+</FoLiA>
