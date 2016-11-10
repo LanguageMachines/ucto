@@ -295,6 +295,7 @@ namespace Tokenizer {
     TiCC::LogStream *theErrLog;
 
     std::string default_language;
+    std::string document_language; // in case of an input FoLiA document
     std::map<std::string,Setting*> settings;
     //debug flag
     int tokDebug;

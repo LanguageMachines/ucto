@@ -372,6 +372,8 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
+    cerr << "doc_init: SET document language=" << default_language << endl;
+    doc->set_metadata( "language", default_language );
     outputTokensDoc_init( *doc );
     folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
@@ -487,6 +489,14 @@ namespace Tokenizer {
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
     }
+    string lan = doc.doc()->language();
+    if ( lan.empty() ){
+      cerr << "tokenize(FoLiA) SET document language=" << default_language << endl;
+      doc.set_metadata( "language", default_language );
+    }
+    else {
+      cerr << "Document taal=" << lan << endl;
+    }
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) {
 	LOG << "[tokenize] Invoking processing of first-level element " << doc.doc()->index(i)->id() << endl;
@@ -588,9 +598,20 @@ namespace Tokenizer {
 	  lan = "default";
 	}
       }
-      LOG << "so lan=" << lan << " and default = " << default_language << endl;
+      LOG << "==> so lan=" << lan << " and default = " << default_language << endl;
+      LOG << "==> and my languge = " << element->language() << endl;
       // so we have text, in an element without 'formatting' yet, good
       // lets Tokenize the available text!
+      if ( lan != default_language
+	   && lan != "default" ){
+	LOG << "==> SO set languae of this node to " << lan << endl;
+	folia::KWargs args;
+	args["class"] = lan;
+	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
+	node->setAttributes( args );
+	element->replace( node );
+      }
+      LOG << endl << endl;
       tokenizeSentenceElement( element, lan );
       return;
     }
@@ -632,8 +653,9 @@ namespace Tokenizer {
       bool bos = true;
       passthruLine( line, bos );
     }
-    else
+    else {
       tokenizeLine( line, lang );
+    }
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
@@ -663,6 +685,14 @@ namespace Tokenizer {
   void TokenizerClass::outputTokensDoc( folia::Document& doc,
 					const vector<Token>& tv ) const {
     folia::FoliaElement *root = doc.doc()->index(0);
+    string lan = doc.doc()->language();
+    if ( lan.empty() ){
+      cerr << "output_to_doc SET language=" << default_language << endl;
+      doc.set_metadata( "language", default_language );
+    }
+    else {
+      cerr << "Document taal=" << lan << endl;
+    }
     outputTokensXML(root, tv );
   }
 
@@ -736,6 +766,20 @@ namespace Tokenizer {
 	folia::FoliaElement *s = new folia::Sentence( args, root->doc() );
 	// LOG << "created " << s << endl;
 	root->append( s );
+	string tok_lan = token.lc;
+	auto it = settings.find(tok_lan);
+	if ( it == settings.end() ){
+	  tok_lan = root->doc()->language();
+	}
+	if ( tok_lan != default_language
+	     && tok_lan != "default" ){
+	  s->doc()->declare( folia::AnnotationType::LANG, "iso" );
+	  folia::KWargs args;
+	  args["class"] = tok_lan;
+	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
+	  node->setAttributes( args );
+	  s->replace( node );
+	}
 	root = s;
 	lastS = root;
       }

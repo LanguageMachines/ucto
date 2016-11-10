@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.4" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.5" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-08-23T13:40:30" set="tokconfig-nl"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2016-11-10T18:42:07" set="tokconfig-nld"/>
     </annotations>
+    <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">

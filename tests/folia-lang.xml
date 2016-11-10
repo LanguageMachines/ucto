@@ -5,7 +5,6 @@
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
     </annotations>
-    <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
       <div xml:id="div">
