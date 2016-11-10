@@ -67,6 +67,8 @@ using namespace TiCC;
 
 namespace Tokenizer {
 
+  const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset";
+
   std::string Version() { return VERSION; }
   std::string VersionName() { return PACKAGE_STRING; }
 
@@ -608,11 +610,11 @@ namespace Tokenizer {
 	   && lan != "default"
 	   && !element->hasannotation<folia::LangAnnotation>() ){
 	element->doc()->declare( folia::AnnotationType::LANG,
-				 "iso", "annotator='ucto'" );
+				 ISO_SET, "annotator='ucto'" );
 	LOG << "==> SO set languae of this node to " << lan << endl;
 	folia::KWargs args;
 	args["class"] = lan;
-	args["set"] = "iso";
+	args["set"] = ISO_SET;
 	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
 	node->setAttributes( args );
 	element->replace( node );
@@ -781,10 +783,10 @@ namespace Tokenizer {
 	     tok_lan != default_language
 	     && tok_lan != "default" ){
 	  s->doc()->declare( folia::AnnotationType::LANG,
-			     "iso", "annotator='ucto'" );
+			     ISO_SET, "annotator='ucto'" );
 	  folia::KWargs args;
 	  args["class"] = tok_lan;
-	  args["set"] = "iso";
+	  args["set"] = ISO_SET;
 	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
 	  node->setAttributes( args );
 	  s->replace( node );
