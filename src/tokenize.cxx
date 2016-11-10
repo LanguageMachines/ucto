@@ -372,8 +372,10 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
-    cerr << "doc_init: SET document language=" << default_language << endl;
-    doc->set_metadata( "language", default_language );
+    if ( default_language != "none" ){
+      LOG << "doc_init: SET document language=" << default_language << endl;
+      doc->set_metadata( "language", default_language );
+    }
     outputTokensDoc_init( *doc );
     folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
@@ -490,12 +492,12 @@ namespace Tokenizer {
       LOG << "tokenize doc " << doc << endl;
     }
     string lan = doc.doc()->language();
-    if ( lan.empty() ){
-      cerr << "tokenize(FoLiA) SET document language=" << default_language << endl;
+    if ( lan.empty() && default_language != "none" ){
+      LOG << "tokenize(FoLiA) SET document language=" << default_language << endl;
       doc.set_metadata( "language", default_language );
     }
     else {
-      cerr << "Document taal=" << lan << endl;
+      LOG << "Document taal=" << lan << endl;
     }
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) {
@@ -687,11 +689,11 @@ namespace Tokenizer {
     folia::FoliaElement *root = doc.doc()->index(0);
     string lan = doc.doc()->language();
     if ( lan.empty() ){
-      cerr << "output_to_doc SET language=" << default_language << endl;
+      LOG << "output_to_doc SET language=" << default_language << endl;
       doc.set_metadata( "language", default_language );
     }
     else {
-      cerr << "Document taal=" << lan << endl;
+      LOG << "Document taal=" << lan << endl;
     }
     outputTokensXML(root, tv );
   }
