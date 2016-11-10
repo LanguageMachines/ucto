@@ -605,10 +605,14 @@ namespace Tokenizer {
       // so we have text, in an element without 'formatting' yet, good
       // lets Tokenize the available text!
       if ( lan != default_language
-	   && lan != "default" ){
+	   && lan != "default"
+	   && !element->hasannotation<folia::LangAnnotation>() ){
+	element->doc()->declare( folia::AnnotationType::LANG,
+				 "iso", "annotator='ucto'" );
 	LOG << "==> SO set languae of this node to " << lan << endl;
 	folia::KWargs args;
 	args["class"] = lan;
+	args["set"] = "iso";
 	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
 	node->setAttributes( args );
 	element->replace( node );
@@ -773,11 +777,14 @@ namespace Tokenizer {
 	if ( it == settings.end() ){
 	  tok_lan = root->doc()->language();
 	}
-	if ( tok_lan != default_language
+	if ( !tok_lan.empty() &&
+	     tok_lan != default_language
 	     && tok_lan != "default" ){
-	  s->doc()->declare( folia::AnnotationType::LANG, "iso" );
+	  s->doc()->declare( folia::AnnotationType::LANG,
+			     "iso", "annotator='ucto'" );
 	  folia::KWargs args;
 	  args["class"] = tok_lan;
+	  args["set"] = "iso";
 	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
 	  node->setAttributes( args );
 	  s->replace( node );
