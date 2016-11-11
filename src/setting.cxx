@@ -755,9 +755,17 @@ namespace Tokenizer {
       LOG << "datafile version=" << version << endl;
     }
     if ( major < 0 || minor < 2 ){
-      LOG << "WARNING: your datafile '" + settings_name
-	  << "' seems out of date!" << endl;
-      LOG << "         for best results, you should use uctodata version >=0.2 " << endl;
+      if ( version.empty() ){
+	LOG << "WARNING: your datafile '" + settings_name
+	    << "' is missing a version number" << endl;
+	LOG << "         Did you install uctodata version >=0.2 ?" << endl;
+	LOG << "         or do you use your own setingsfile? Then please add a version number." << endl;
+      }
+      else {
+	LOG << "WARNING: your datafile '" + settings_name
+	    << "' has version: " << version << endl;
+	LOG << "         for best results, you should a file with version >=0.2 " << endl;
+      }
     }
     set_file = settings_name;
     if ( tokDebug ){
