@@ -56,6 +56,16 @@ if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH=""
 fi
 #AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
+AC_CHECK_HEADERS([libexttextcat/textcat.h],
+	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
+                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+		                   [AC_CHECK_HEADERS([textcat.h],
+						     [],
+		                                     [AC_MSG_NOTICE([textcat support not available])])])])
+
+AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
+  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
@@ -77,17 +87,6 @@ if test "$useICU" = "1"; then
 else
   AC_MSG_ERROR("ICU support is required")
 fi
-
-AC_CHECK_HEADERS([libexttextcat/textcat.h],
-	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
-                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-		                   [AC_CHECK_HEADERS([textcat.h],
-						     [AC_DEFINE(HAVE_TEXTCAT_H, 1 have textcat headers)],
-		                                     [AC_MSG_NOTICE([textcat support not available])])])])
-
-AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
-  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
