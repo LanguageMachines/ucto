@@ -109,15 +109,16 @@ namespace Tokenizer {
 
   class uConfigError: public std::invalid_argument {
   public:
-    uConfigError( const string& s ): invalid_argument( "ucto: config file:" + s ){};
-    uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file:" + folia::UnicodeToUTF8(us) ){};
+    uConfigError( const string& s, const string& f ):
+      invalid_argument( "ucto: " + s + " (" + f + ")"  ){};
+    uConfigError( const UnicodeString& us, const string& f ):
+      uConfigError( folia::UnicodeToUTF8(us), f ){};
   };
 
   class uLogicError: public std::logic_error {
   public:
     uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
-
 
   ostream& operator<<( ostream& os, const Quoting& q ){
     for( const auto& quote : q._quotes ){
@@ -231,6 +232,7 @@ namespace Tokenizer {
     rulesmap.clear();
     delete theErrLog;
   }
+
   bool Setting::readrules( const string& fname ){
     if ( tokDebug > 0 ){
       *theErrLog << "%include " << fname << endl;
@@ -250,7 +252,8 @@ namespace Tokenizer {
 	  }
 	  const int splitpoint = line.indexOf("=");
 	  if ( splitpoint < 0 ){
-	    throw uConfigError( "invalid RULES entry: " + line );
+	    throw uConfigError( "invalid RULES entry: " + line,
+				fname );
 	  }
 	  UnicodeString id = UnicodeString( line, 0,splitpoint);
 	  UnicodeString pattern = UnicodeString( line, splitpoint+1);
@@ -290,14 +293,15 @@ namespace Tokenizer {
 	    splitpoint = line.indexOf("\t");
 	  if ( splitpoint == -1 ){
 	    throw uConfigError( "invalid QUOTES entry: " + line
-				+ " (missing whitespace)" );
+				+ " (missing whitespace)",
+				fname );
 	  }
 	  UnicodeString open = UnicodeString( line, 0,splitpoint);
 	  UnicodeString close = UnicodeString( line, splitpoint+1);
 	  open = open.trim().unescape();
 	  close = close.trim().unescape();
 	  if ( open.isEmpty() || close.isEmpty() ){
-	    throw uConfigError( "invalid QUOTES entry: " + line );
+	    throw uConfigError( "invalid QUOTES entry: " + line, fname );
 	  }
 	  else {
 	    quotes.add( open, close );
@@ -329,7 +333,7 @@ namespace Tokenizer {
 	       ( line.startsWith("\\U") && line.length() == 10 ) ){
 	    UnicodeString uit = line.unescape();
 	    if ( uit.isEmpty() ){
-	      throw uConfigError( "Invalid EOSMARKERS entry: " + line );
+	      throw uConfigError( "Invalid EOSMARKERS entry: " + line, fname );
 	    }
 	    eosmarkers += uit;
 	  }
@@ -436,22 +440,25 @@ namespace Tokenizer {
   void addOrder( vector<UnicodeString>& order,
 		 map<UnicodeString,int>& reverse_order,
 		 int& index,
-		 UnicodeString &line ){
+		 UnicodeString &line,
+		 const string& fn ){
     try {
       UnicodeRegexMatcher m( "\\s+" );
       vector<UnicodeString> usv;
       m.split( line, usv );
       for ( const auto& us : usv  ){
 	if ( reverse_order.find( us ) != reverse_order.end() ){
-	  cerr << "multiple entry " << us << " in RULE-ORDER" << endl;
-	  exit( EXIT_FAILURE );
+	  throw uConfigError( "multiple entry " + us + " in RULE-ORDER", fn );
 	}
 	order.push_back( us );
 	reverse_order[us] = ++index;
       }
     }
+    catch ( const uConfigError& ){
+      throw;
+    }
     catch ( exception& e ){
-      throw uConfigError( "problem in line:" + line );
+      throw uConfigError( "problem in line:" + line, "" );
     }
   }
 
@@ -529,7 +536,7 @@ namespace Tokenizer {
 	    file += ".rule";
 	    file = get_filename( file );
 	    if ( !readrules( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed", settings_name );
 	    }
 	  }
 	    break;
@@ -537,7 +544,7 @@ namespace Tokenizer {
 	    file += ".filter";
 	    file = get_filename( file );
 	    if ( !readfilters( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed", settings_name );
 	    }
 	  }
 	    break;
@@ -545,7 +552,7 @@ namespace Tokenizer {
 	    file += ".quote";
 	    file = get_filename( file );
 	    if ( !readquotes( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed", settings_name );
 	    }
 	  }
 	    break;
@@ -553,7 +560,7 @@ namespace Tokenizer {
 	    file += ".eos";
 	    file = get_filename( file );
 	    if ( !readeosmarkers( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed", settings_name );
 	    }
 	  }
 	    break;
@@ -561,12 +568,13 @@ namespace Tokenizer {
 	    file += ".abr";
 	    file = get_filename( file );
 	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) ){
-	      throw uConfigError( "'" + rawline + "' failed" );
+	      throw uConfigError( "'" + rawline + "' failed", settings_name );
 	    }
 	  }
 	    break;
 	  default:
-	    throw uConfigError( string("%include not implemented for this section" ) );
+	    throw uConfigError( string("%include not implemented for this section"),
+				settings_name );
 	  }
 	  continue;
 	}
@@ -585,7 +593,8 @@ namespace Tokenizer {
 	    case RULES: {
 	      const int splitpoint = line.indexOf("=");
 	      if ( splitpoint < 0 ){
-		throw uConfigError( "invalid RULES entry: " + line );
+		throw uConfigError( "invalid RULES entry: " + line,
+				    settings_name );
 	      }
 	      UnicodeString id = UnicodeString( line, 0,splitpoint);
 	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
@@ -593,7 +602,8 @@ namespace Tokenizer {
 	    }
 	      break;
 	    case RULEORDER:
-	      addOrder( rules_order, rules_index, rule_count, line );
+	      addOrder( rules_order, rules_index,
+			rule_count, line, settings_name );
 	      break;
 	    case METARULES:
 	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
@@ -616,7 +626,8 @@ namespace Tokenizer {
 		   ( line.startsWith("\\U") && line.length() == 10 ) ){
 		UnicodeString uit = line.unescape();
 		if ( uit.isEmpty() ){
-		  throw uConfigError( "Invalid EOSMARKERS entry: " + line );
+		  throw uConfigError( "Invalid EOSMARKERS entry: " + line,
+				      settings_name );
 		}
 		eosmarkers += uit;
 	      }
@@ -627,14 +638,16 @@ namespace Tokenizer {
 		splitpoint = line.indexOf("\t");
 	      if ( splitpoint == -1 ){
 		throw uConfigError( "invalid QUOTES entry: " + line
-				    + " (missing whitespace)" );
+				    + " (missing whitespace)",
+				    settings_name );
 	      }
 	      UnicodeString open = UnicodeString( line, 0,splitpoint);
 	      UnicodeString close = UnicodeString( line, splitpoint+1);
 	      open = open.trim().unescape();
 	      close = close.trim().unescape();
 	      if ( open.isEmpty() || close.isEmpty() ){
-		throw uConfigError( "invalid QUOTES entry: " + line );
+		throw uConfigError( "invalid QUOTES entry: " + line,
+				    settings_name );
 	      }
 	      else {
 		quotes.add( open, close );
@@ -678,13 +691,15 @@ namespace Tokenizer {
       for ( const auto& mr : meta_rules ){
 	string::size_type pos = mr.find( "=" );
 	if ( pos == string::npos ){
-	  throw uConfigError( "invalid entry in META-RULES: " + mr );
+	  throw uConfigError( "invalid entry in META-RULES: " + mr,
+			      settings_name );
 	}
 	string nam = TiCC::trim( mr.substr( 0, pos ) );
 	if ( nam == "SPLITTER" ){
 	  split = mr.substr( pos+1 );
 	  if ( split.empty() ) {
-	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr );
+	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr,
+				settings_name );
 	  }
 	  if ( split[0] == '"' && split[split.length()-1] == '"' ){
 	    split = split.substr(1,split.length()-2);
@@ -701,9 +716,6 @@ namespace Tokenizer {
 	}
 	vector<string> parts;
 	TiCC::split_at( rule, parts, split );
-	// if ( num != 3 ){
-	// 	throw uConfigError( "invalid entry in META-RULES: " + mr + " 3 parts expected" );
-	// }
 	for ( auto& str : parts ){
 	  str = TiCC::trim( str );
 	}
