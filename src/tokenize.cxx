@@ -416,7 +416,7 @@ namespace Tokenizer {
 	if ( !IN || !IN->good() ){
 	  cerr << "Error: problems opening inputfile " << ifile << endl;
 	  cerr << "Courageously refusing to start..."  << endl;
-	  exit(EXIT_FAILURE);
+	  throw runtime_error( "unable to find or read file: '" + ifile + "'" );
 	}
       }
       this->tokenize( *IN, *OUT );

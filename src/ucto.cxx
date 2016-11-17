@@ -258,7 +258,7 @@ int main( int argc, char *argv[] ){
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
     usage();
-    exit(EXIT_FAILURE);
+    return EXIT_FAILURE;
   }
 
   if ( !passThru ){
