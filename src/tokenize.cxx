@@ -269,12 +269,23 @@ namespace Tokenizer {
 	else {
 	  string language;
 	  if ( tc ){
+	    if ( tokDebug > 3 ){
+	      LOG << "use textCat to guess language from: "
+		  << input_line << endl;
+	    }
 	    UnicodeString temp = input_line;
 	    temp.toLower();
 	    string lan = tc->get_language( folia::UnicodeToUTF8(temp) );
 	    if ( settings.find( lan ) != settings.end() ){
-	      LOG << "Guessed supported language: " << lan
-		  << " for: " << temp << endl;
+	      if ( tokDebug > 3 ){
+		LOG << "found a supported language: " << lan << endl;
+	      }
+	    }
+	    else {
+	      if ( tokDebug > 3 ){
+		LOG << "found an unsupported language: " << lan << endl;
+	      }
+	      lan = "default";
 	    }
 	    language = lan;
 	  }
@@ -375,7 +386,9 @@ namespace Tokenizer {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
     if ( default_language != "none" ){
-      LOG << "doc_init: SET document language=" << default_language << endl;
+      if ( tokDebug > 0 ){
+	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
+      }
       doc->set_metadata( "language", default_language );
     }
     outputTokensDoc_init( *doc );
@@ -495,11 +508,15 @@ namespace Tokenizer {
     }
     string lan = doc.doc()->language();
     if ( lan.empty() && default_language != "none" ){
-      LOG << "tokenize(FoLiA) SET document language=" << default_language << endl;
+      if ( tokDebug > 1 ){
+	LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
+      }
       doc.set_metadata( "language", default_language );
     }
     else {
-      LOG << "Document taal=" << lan << endl;
+      if ( tokDebug >= 2 ){
+	LOG << "[tokenize](FoLiA) Document has language " << lan << endl;
+      }
     }
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
       if (tokDebug >= 2) {
@@ -582,19 +599,22 @@ namespace Tokenizer {
 	}
       }
       // now let's check our language
-      string lan = element->language();
+      string lan = element->language(); // remember thus recurses upward
+      // to get a language from the node, it's parents OR the doc
       if ( lan.empty() || default_language == "none" ){
 	lan = "default";
       }
       auto const it = settings.find(lan);
       if ( it != settings.end() ){
-	LOG << "Found a supported language! " << lan << endl;
+	if ( tokDebug >= 2 ){
+	  LOG << "[tokenizeElement] Found a supported language! " << lan << endl;
+	}
       }
       else if ( !default_language.empty() ){
 	if ( default_language != lan ){
 	  // skip elements in the wrong language
-	  if (tokDebug >= 1){
-	    LOG << "skip tokenize because:" << lan << " isn't supported" << endl;
+	  if ( tokDebug >= 2 ){
+	    LOG << "[tokenizeElement] skip tokenizing because:" << lan << " isn't supported" << endl;
 	  }
 	  return;
 	}
@@ -602,8 +622,6 @@ namespace Tokenizer {
 	  lan = "default";
 	}
       }
-      LOG << "==> so lan=" << lan << " and default = " << default_language << endl;
-      LOG << "==> and my languge = " << element->language() << endl;
       // so we have text, in an element without 'formatting' yet, good
       // lets Tokenize the available text!
       if ( lan != default_language
@@ -611,15 +629,16 @@ namespace Tokenizer {
 	   && !element->hasannotation<folia::LangAnnotation>() ){
 	element->doc()->declare( folia::AnnotationType::LANG,
 				 ISO_SET, "annotator='ucto'" );
-	LOG << "==> SO set languae of this node to " << lan << endl;
+	if ( tokDebug >= 2 ){
+	  LOG << "[tokenizeElement] set language to " << lan << endl;
+	}
 	folia::KWargs args;
 	args["class"] = lan;
 	args["set"] = ISO_SET;
 	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
 	node->setAttributes( args );
-	element->replace( node );
+	element->append( node );
       }
-      LOG << endl << endl;
       tokenizeSentenceElement( element, lan );
       return;
     }
@@ -653,7 +672,7 @@ namespace Tokenizer {
       return;
     }
     line += " "  + eosmark;
-    if (tokDebug >= 1){
+    if ( tokDebug >= 1 ){
       LOG << "[tokenizeSentenceElement] Processing sentence:"
 		      << line << endl;
     }
@@ -695,11 +714,16 @@ namespace Tokenizer {
     folia::FoliaElement *root = doc.doc()->index(0);
     string lan = doc.doc()->language();
     if ( lan.empty() ){
-      LOG << "output_to_doc SET language=" << default_language << endl;
+      if ( tokDebug >= 1 ){
+	LOG << "[outputTokensDoc] SET docuemnt language="
+	    << default_language << endl;
+      }
       doc.set_metadata( "language", default_language );
     }
     else {
-      LOG << "Document taal=" << lan << endl;
+      if ( tokDebug >= 2 ){
+	LOG << "[outputTokensDoc] Document has language " << lan << endl;
+      }
     }
     outputTokensXML(root, tv );
   }
@@ -767,12 +791,11 @@ namespace Tokenizer {
 	  args["generate_id"] = root->parent()->id();
 	else
 	  args["generate_id"] = root->id();
-	if  (tokDebug > 0) {
+	if ( tokDebug > 0 ) {
 	  LOG << "[outputTokensXML] Creating sentence in '"
 			  << args["generate_id"] << "'" << endl;
 	}
 	folia::FoliaElement *s = new folia::Sentence( args, root->doc() );
-	// LOG << "created " << s << endl;
 	root->append( s );
 	string tok_lan = token.lc;
 	auto it = settings.find(tok_lan);
@@ -782,6 +805,9 @@ namespace Tokenizer {
 	if ( !tok_lan.empty() &&
 	     tok_lan != default_language
 	     && tok_lan != "default" ){
+	  if  (tokDebug > 0) {
+	    LOG << "[outputTokensXML] set language: " << tok_lan << endl;
+	  }
 	  s->doc()->declare( folia::AnnotationType::LANG,
 			     ISO_SET, "annotator='ucto'" );
 	  folia::KWargs args;
@@ -789,7 +815,7 @@ namespace Tokenizer {
 	  args["set"] = ISO_SET;
 	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
 	  node->setAttributes( args );
-	  s->replace( node );
+	  s->append( node );
 	}
 	root = s;
 	lastS = root;
@@ -2126,10 +2152,14 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::init( const vector<string>& languages ){
-    LOG << "Initiating tokeniser from language list..." << endl;
+    if ( tokDebug > 0 ){
+      LOG << "Initiating tokeniser from language list..." << endl;
+    }
     Setting *defalt = 0;
     for ( const auto& lang : languages ){
-      LOG << "language=" << lang << endl;
+      if ( tokDebug > 0 ){
+	LOG << "init language=" << lang << endl;
+      }
       string fname = "tokconfig-" + lang;
       Setting *set = new Setting();
       if ( !set->read( fname, tokDebug, theErrLog ) ){

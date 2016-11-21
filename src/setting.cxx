@@ -395,13 +395,13 @@ namespace Tokenizer {
 	  rulesmap.erase( it );
 	}
 	else {
-	  LOG << "RULE-ORDER specified for undefined RULE '"
-			  << id << "'" << endl;
+	  LOG << set_file << ": RULE-ORDER specified for undefined RULE '"
+	      << id << "'" << endl;
 	}
       }
       for ( auto const& it : rulesmap ){
-	LOG << "No RULE-ORDER specified for RULE '"
-			<< it.first << "' (put at end)." << endl;
+	LOG << set_file << ": No RULE-ORDER specified for RULE '"
+	    << it.first << "' (put at end)." << endl;
 	rules.push_back( it.second );
 	rules_index[it.first] = ++index;
       }
@@ -524,6 +524,7 @@ namespace Tokenizer {
 
     ifstream f( conffile );
     if ( f ){
+      set_file = settings_name;
       if ( tokDebug ){
 	LOG << "config file=" << conffile << endl;
       }
@@ -536,7 +537,7 @@ namespace Tokenizer {
 	    file += ".rule";
 	    file = get_filename( file );
 	    if ( !readrules( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", settings_name );
+	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
 	    break;
@@ -544,7 +545,7 @@ namespace Tokenizer {
 	    file += ".filter";
 	    file = get_filename( file );
 	    if ( !readfilters( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", settings_name );
+	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
 	    break;
@@ -552,7 +553,7 @@ namespace Tokenizer {
 	    file += ".quote";
 	    file = get_filename( file );
 	    if ( !readquotes( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", settings_name );
+	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
 	    break;
@@ -560,7 +561,7 @@ namespace Tokenizer {
 	    file += ".eos";
 	    file = get_filename( file );
 	    if ( !readeosmarkers( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", settings_name );
+	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
 	    break;
@@ -568,13 +569,13 @@ namespace Tokenizer {
 	    file += ".abr";
 	    file = get_filename( file );
 	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) ){
-	      throw uConfigError( "'" + rawline + "' failed", settings_name );
+	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
 	    break;
 	  default:
 	    throw uConfigError( string("%include not implemented for this section"),
-				settings_name );
+				set_file );
 	  }
 	  continue;
 	}
@@ -594,7 +595,7 @@ namespace Tokenizer {
 	      const int splitpoint = line.indexOf("=");
 	      if ( splitpoint < 0 ){
 		throw uConfigError( "invalid RULES entry: " + line,
-				    settings_name );
+				    set_file );
 	      }
 	      UnicodeString id = UnicodeString( line, 0,splitpoint);
 	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
@@ -603,7 +604,7 @@ namespace Tokenizer {
 	      break;
 	    case RULEORDER:
 	      addOrder( rules_order, rules_index,
-			rule_count, line, settings_name );
+			rule_count, line, set_file );
 	      break;
 	    case METARULES:
 	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
@@ -627,7 +628,7 @@ namespace Tokenizer {
 		UnicodeString uit = line.unescape();
 		if ( uit.isEmpty() ){
 		  throw uConfigError( "Invalid EOSMARKERS entry: " + line,
-				      settings_name );
+				      set_file );
 		}
 		eosmarkers += uit;
 	      }
@@ -639,7 +640,7 @@ namespace Tokenizer {
 	      if ( splitpoint == -1 ){
 		throw uConfigError( "invalid QUOTES entry: " + line
 				    + " (missing whitespace)",
-				    settings_name );
+				    set_file );
 	      }
 	      UnicodeString open = UnicodeString( line, 0,splitpoint);
 	      UnicodeString close = UnicodeString( line, splitpoint+1);
@@ -647,7 +648,7 @@ namespace Tokenizer {
 	      close = close.trim().unescape();
 	      if ( open.isEmpty() || close.isEmpty() ){
 		throw uConfigError( "invalid QUOTES entry: " + line,
-				    settings_name );
+				    set_file );
 	      }
 	      else {
 		quotes.add( open, close );
@@ -692,14 +693,14 @@ namespace Tokenizer {
 	string::size_type pos = mr.find( "=" );
 	if ( pos == string::npos ){
 	  throw uConfigError( "invalid entry in META-RULES: " + mr,
-			      settings_name );
+			      set_file );
 	}
 	string nam = TiCC::trim( mr.substr( 0, pos ) );
 	if ( nam == "SPLITTER" ){
 	  split = mr.substr( pos+1 );
 	  if ( split.empty() ) {
 	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr,
-				settings_name );
+				set_file );
 	  }
 	  if ( split[0] == '"' && split[split.length()-1] == '"' ){
 	    split = split.substr(1,split.length()-2);
@@ -720,6 +721,7 @@ namespace Tokenizer {
 	  str = TiCC::trim( str );
 	}
 	vector<UnicodeString> new_parts;
+	vector<UnicodeString> undef_parts;
 	bool skip_rule = false;
 	for ( const auto& part : parts ){
 	  UnicodeString meta = folia::UTF8ToUnicode( part );
@@ -738,6 +740,7 @@ namespace Tokenizer {
 	      new_parts.push_back( pattern[mode] );
 	    }
 	    else {
+	      undef_parts.push_back( meta );
 	      skip_rule = true;
 	    }
 	    break;
@@ -748,7 +751,10 @@ namespace Tokenizer {
 	  }
 	}
 	if ( skip_rule ){
-	  LOG << "skipping META rule: '" << name << "'" << endl;
+	  using TiCC::operator<<;
+	  LOG << set_file << ": skipping META rule: '" << name
+	      << "', it mentions unknown pattern: '"
+	      << undef_parts <<"'" << endl;
 	}
 	else {
 	  add_rule( name, new_parts );
@@ -764,22 +770,21 @@ namespace Tokenizer {
     string sub;
     if ( !version.empty() ){
       split( version, major, minor, sub );
-      LOG << "datafile version=" << version << endl;
+      LOG << set_file << ": version=" << version << endl;
     }
     if ( major < 0 || minor < 2 ){
       if ( version.empty() ){
-	LOG << "WARNING: your datafile '" + settings_name
+	LOG << "WARNING: your datafile for '" + set_file
 	    << "' is missing a version number" << endl;
 	LOG << "         Did you install uctodata version >=0.2 ?" << endl;
 	LOG << "         or do you use your own setingsfile? Then please add a version number." << endl;
       }
       else {
-	LOG << "WARNING: your datafile '" + settings_name
+	LOG << "WARNING: your datafile '" + set_file
 	    << "' has version: " << version << endl;
 	LOG << "         for best results, you should a file with version >=0.2 " << endl;
       }
     }
-    set_file = settings_name;
     if ( tokDebug ){
       LOG << "effective rules: " << endl;
       for ( size_t i=0; i < rules.size(); ++i ){
