@@ -344,7 +344,7 @@ namespace Tokenizer {
 	    if (!U_FAILURE(u_stat)){
 	      results.push_back( UnicodeString( line, start, end - start ) );
 #ifdef MATCH_DEBUG
-	      cerr << "added result " << folia::UnicodeToUTF8( results[results.size()-1] ) << endl;
+	      cerr << "added result " << folia::UnicodeToUTF8( results.back() ) << endl;
 #endif
 	    }
 	    else

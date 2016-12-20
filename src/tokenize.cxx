@@ -236,7 +236,7 @@ namespace Tokenizer {
 	}
       }
       if ( line.size() > 0 && inputEncoding == "UTF16BE" &&
-	   line[line.size()-1] == 0 ){
+	   line.back() == 0 ){
 	// when processing UTF16BE, '0' bytes show up at the end
 	// we discard them.
 	// this works on Linux with GCC (atm)
@@ -1513,7 +1513,7 @@ namespace Tokenizer {
 	if ( word == eosmark ) {
 	  word = "";
 	  if (!tokens.empty())
-	    tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	    tokens.back().role |= ENDOFSENTENCE;
 	  bos = true;
 	}
 	else {
@@ -1537,8 +1537,8 @@ namespace Tokenizer {
 	      LOG << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
 	    }
-	    if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
-	      tokens[tokens.size()-1].role ^= NOSPACE;
+	    if ( !tokens.empty() && tokens.back().role & NOSPACE ){
+	      tokens.back().role ^= NOSPACE;
 	    }
 	  }
 	  else {
@@ -1577,7 +1577,7 @@ namespace Tokenizer {
       if ( word == eosmark ) {
 	word = "";
 	if (!tokens.empty())
-	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	  tokens.back().role |= ENDOFSENTENCE;
       }
       else {
 	UnicodeString type;
@@ -1600,8 +1600,8 @@ namespace Tokenizer {
 	    LOG << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
 	  }
-	  if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
-	    tokens[tokens.size()-1].role ^= NOSPACE;
+	  if ( !tokens.empty() && tokens.back().role & NOSPACE ){
+	    tokens.back().role ^= NOSPACE;
 	  }
 	}
 	else {
@@ -1620,7 +1620,7 @@ namespace Tokenizer {
     }
     if ( sentenceperlineinput && tokens.size() > 0 ) {
       tokens[0].role |= BEGINOFSENTENCE;
-      tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+      tokens.back().role |= ENDOFSENTENCE;
     }
   }
 
@@ -1926,7 +1926,7 @@ namespace Tokenizer {
 	//find sentence boundaries
 	if (sentenceperlineinput) {
 	  tokens[begintokencount].role |= BEGINOFSENTENCE;
-	  tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	  tokens.back().role |= ENDOFSENTENCE;
 	  if ( detectQuotes ){
 	    detectQuotedSentenceBounds( begintokencount );
 	  }
@@ -1969,7 +1969,7 @@ namespace Tokenizer {
 	if (tokDebug >= 2){
 	  LOG << "   [tokenizeWord] Assigned EOS" << endl;
 	}
-	tokens[tokens.size() - 1].role |= ENDOFSENTENCE;
+	tokens.back().role |= ENDOFSENTENCE;
       }
       else {
 	LOG << "[WARNING] Found explicit EOS marker by itself, this will have no effect!" << endl;
@@ -1991,8 +1991,8 @@ namespace Tokenizer {
 	  LOG << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
 	}
-	if ( !tokens.empty() && tokens[tokens.size()-1].role & NOSPACE ){
-	  tokens[tokens.size()-1].role ^= NOSPACE;
+	if ( !tokens.empty() && tokens.back().role & NOSPACE ){
+	  tokens.back().role ^= NOSPACE;
 	}
       }
       else {
@@ -2077,8 +2077,8 @@ namespace Tokenizer {
 				  << matches[m] << "]" << endl;
 		}
 		if ( !tokens.empty()
-		     && tokens[tokens.size()-1].role & NOSPACE ){
-		  tokens[tokens.size()-1].role ^= NOSPACE;
+		     && tokens.back().role & NOSPACE ){
+		  tokens.back().role ^= NOSPACE;
 		}
 	      }
 	      else {
