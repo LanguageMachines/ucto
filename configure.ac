@@ -114,8 +114,22 @@ PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
-PKG_CHECK_MODULES([uctodata], [uctodata >= 0.3] )
+PKG_CHECK_MODULES(
+	[uctodata],
+	[uctodata],
+	[PKG_CHECK_MODULES(
+		[uctodata],
+		[uctodata >= 0.3],
+		[],
+		[AC_MSG_NOTICE([ATTENTION:
+	Your ucto datafiles are are outdated
+	You should consider installing a newer version of the uctodata package!])])
 
+	],
+	[AC_MSG_NOTICE([ATTENTION:
+	ucto datafiles are not installed!
+	ucto will work with only a minimal default configuration.
+	You should consider installing the uctodata package!] )] )
 # Checks for library functions.
 
 AC_OUTPUT([
