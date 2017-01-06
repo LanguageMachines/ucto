@@ -1317,7 +1317,7 @@ namespace Tokenizer {
       UnicodeString close = quotes.lookupOpen( c );
       if ( !close.isEmpty() ){ // we have a opening quote
 	if ( tokDebug > 1 ) {
-	  LOG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resultion later..." << endl;
+	  LOG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resolution later..." << endl;
 	}
 	quotes.push( i, c ); // remember it
       }
