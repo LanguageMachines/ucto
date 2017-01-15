@@ -11,7 +11,8 @@ compiler:
     - clang
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev libicu-dev libxml2-dev libbz2-dev zlib1g-dev libexttextcat-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck clang libicu-dev libxml2-dev libbz2-dev zlib1g-dev libexttextcat-dev
+    - cppcheck --enable=all --quiet --error-exitcode=2 .
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
@@ -35,8 +36,8 @@ before_install:
     - cd ..
 install:
     - bash bootstrap.sh
-    - ./configure
-    - make
+    - scan-build --status-bugs ./configure
+    - scan-build --status-bugs make
     - sudo make install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
