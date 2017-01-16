@@ -31,7 +31,7 @@ Features:
   Spanish, Portuguese and Swedish; easily extendible to other languages. Rules
   consists of regular expressions and lists. They are
   packaged separately as [uctodata](https://github.com/LanguageMachines/uctodata).
-- Recognizes dates, times, units, currencies, abbreviations.
+- Recognizes units, currencies, abbreviations, and simple dates and times like dd-mm-yyyy
 - Recognizes paired quote spans, sentences, and paragraphs.
 - Produces UTF8 encoding and NFC output normalization, optionally accepting
   other input encodings as well.
