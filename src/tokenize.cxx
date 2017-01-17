@@ -456,13 +456,11 @@ namespace Tokenizer {
       // interactive use on a terminal (quite a hack..)
       const char *prompt = "ucto> ";
       string line;
-      bool eof = false;
       int i = 0;
-      while ( !eof ){
+      while ( true ){
 	string data;
 	char *input = readline( prompt );
 	if ( !input ){
-	  eof = true;
 	  break;
 	}
 	line = input;
