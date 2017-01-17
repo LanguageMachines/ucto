@@ -422,10 +422,6 @@ namespace Tokenizer {
     string result;
     if ( TiCC::isFile( name ) ){
       result = name;
-      if ( name.find_first_of( "/" ) != string::npos ){
-	// name seems a relative or absolute path
-	string::size_type pos = name.rfind("/");
-      }
     }
     else {
       result = defaultConfigDir + name;
