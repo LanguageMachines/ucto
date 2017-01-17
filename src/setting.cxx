@@ -432,7 +432,6 @@ namespace Tokenizer {
     return result;
   }
 
-
   void addOrder( vector<UnicodeString>& order,
 		 map<UnicodeString,int>& reverse_order,
 		 int& index,
@@ -513,7 +512,6 @@ namespace Tokenizer {
 					       { ORDINALS, "" } };
 
     vector<UnicodeString> rules_order;
-    int rule_count = 0;
     vector<string> meta_rules;
 
     string conffile = get_filename( settings_name );
@@ -524,6 +522,7 @@ namespace Tokenizer {
       if ( tokDebug ){
 	LOG << "config file=" << conffile << endl;
       }
+      int rule_count = 0;
       string rawline;
       while ( getline(f,rawline) ){
 	if ( rawline.find( "%include" ) != string::npos ){
