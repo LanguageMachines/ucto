@@ -730,7 +730,7 @@ namespace Tokenizer {
 				       const vector<Token>& tv,
 				       int parCount ) const {
     short quotelevel = 0;
-    folia::FoliaElement *lastS = 0;
+    folia::FoliaElement *lastS = root;
     if  (tokDebug > 0) {
       LOG << "[outputTokensXML] root=<" << root->classname()
 		      << ">" << endl;
@@ -739,7 +739,6 @@ namespace Tokenizer {
     bool root_is_sentence = false;
     bool root_is_structure_element = false;
     if ( root->isinstance( folia::Sentence_t ) ){
-      lastS = root;
       root_is_sentence = true;
     }
     else if ( root->isinstance( folia::Paragraph_t )
