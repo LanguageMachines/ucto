@@ -500,8 +500,6 @@ namespace Tokenizer {
 		      int dbg, LogStream* ls ) {
     tokDebug = dbg;
     theErrLog = ls;
-    ConfigMode mode = NONE;
-
     map<ConfigMode, UnicodeString> pattern = { { ABBREVIATIONS, "" },
 					       { TOKENS, "" },
 					       { PREFIXES, "" },
@@ -510,14 +508,13 @@ namespace Tokenizer {
 					       { ATTACHEDSUFFIXES, "" },
 					       { UNITS, "" },
 					       { ORDINALS, "" } };
-
     vector<UnicodeString> rules_order;
     vector<string> meta_rules;
-
     string conffile = get_filename( settings_name );
 
     ifstream f( conffile );
     if ( f ){
+      ConfigMode mode = NONE;
       set_file = settings_name;
       if ( tokDebug ){
 	LOG << "config file=" << conffile << endl;
