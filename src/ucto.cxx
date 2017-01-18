@@ -90,7 +90,6 @@ int main( int argc, char *argv[] ){
   bool quotedetection = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
-  bool do_language_detect = false;
   bool splitsentences = true;
   bool xmlin = false;
   bool xmlout = false;
@@ -106,7 +105,6 @@ int main( int argc, char *argv[] ){
   string ifile;
   string ofile;
   string c_file;
-  string L_value;
   bool passThru = false;
   string norm_set_string;
 
@@ -194,7 +192,7 @@ int main( int argc, char *argv[] ){
     Opts.extract( 'c', c_file );
     string languages;
     Opts.extract( "detectlanguages", languages );
-    do_language_detect = !languages.empty();
+    bool do_language_detect = !languages.empty();
     if ( do_language_detect ){
       if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
 	throw TiCC::OptionError( "invalid language list: " + languages );
