@@ -33,12 +33,12 @@
         (*) Induction of Linguistic Knowledge Research Group\\
 		Tilburg Centre for Cognition and Communication\\ 
         Tilburg University \\ \\                    
-        URL: http://ilk.uvt.nl/ucto/}
+        URL: https://languagemachines.github.io/ucto/}
 
 
 \title{{\huge Ucto: Unicode Tokeniser} \\ \vspace*{0.5cm}
-{\bf version 0.5.3} \\ \vspace*{0.5cm}{\huge Reference Guide}\\
-\vspace*{1cm} {\it ILK Technical Report -- ILK 12-05}}
+{\bf version 0.9.6} \\ \vspace*{0.5cm}{\huge Reference Guide}\\
+\vspace*{1cm}} %{\it LST Technical Report -- ILK 12-05}}
 
 %better paragraph indentation
 \parindent 0pt
@@ -75,7 +75,8 @@ You should have received a copy of the GNU General Public License along with Uct
 
 In publication of research that makes use of the Software, a citation should be given of: {\em ``Maarten van Gompel, Ko van der Sloot, Antal van den Bosch (2012). Ucto: Unicode Tokeniser. Reference Guide. ILK Technical Report 12-05, \\ Available from {\tt http://ilk.uvt.nl/downloads/pub/papers/ilk.1205.pdf}''}
 
-For information about commercial licenses for the Software, contact {\tt timbl@uvt.nl}, or send your request to:
+For information about commercial licenses for the Software, contact {\tt
+lamasoftware@science.ru.nl}, or send your request to:
 
 {\footnotesize
 Prof. dr.~Antal van den Bosch\\
@@ -89,32 +90,39 @@ Email: a.vandenbosch@let.ru.nl}
 \chapter{Installation}
 \vspace{-1cm}
 
+The ucto source can be obtained from:
 
-You can get the Ucto package as a gzipped tar archive from:
+{\tt https://github.com/LanguageMachines/ucto}
 
-{\tt http://ilk.uvt.nl/ucto}
+These sources need to be compiled for the software to run.
 
-Following the links from that page, you can download the archive, which contains the complete C++ source code for the program, tokeniser configurations for various language, the license and this documentation. On most recent Debian and Ubuntu systems, Ucto can be found in the respective software repositories and can be installed with a simple:
+However, on most recent Debian and Ubuntu systems, Ucto can be found in the respective software repositories and can be installed with a simple:
 
 {\tt \$ apt-get install ucto}    
 
-If this is the case, you can skip the remainder of this section. If you however install from the source archive, the compilation and installation should also be relatively straightforward on most UNIX systems, and will be explained in the remainder of this section. 
+On Arch Linux, ucto is available from the Arch User Repository. If you have a
+package for your distribution, you can skip the remainder of this section.
 
-Ucto depends on the \texttt{libicu} library. This library can be obtainaed from \\
-{\tt http://site.icu-project.org/} but also present in the package manager of all major Linux distributions. It also depends on \texttt{libfolia}, available from \texttt{http://proycon.github.com/folia}. It will not compile without either of them.
+To facilitate installation in other situations, we recommend to use our
+LaMachine software distribution, which includes ucto and all dependencies:
 
-To install the package on your computer, unpack the downloaded file:
+{\tt http://proycon.github.io/LaMachine/}
 
-{\tt \$ tar -xvzf ucto*.tar.gz}
+If you however install from the source archive, the compilation and installation should also be relatively straightforward on most UNIX systems, and will be explained in the remainder of this section. 
 
-This will make a directory {\tt ucto-0.5.1} under your current directory, the precise version number may differ.
+Ucto depends on the \texttt{libicu} library. This library can be obtained from \\
+{\tt http://site.icu-project.org/} but is also present in the package manager of all major Linux distributions.
+Ucto also depends on \texttt{uctodata}, \texttt{libfolia} (available from
+\texttt{http://proycon.github.com/folia}), which in turn depends on \texttt{libticcutils} (available from
+\texttt{http://github.com/LanguageMachines/ticcutils}). It will not compile
+without any of them.
 
-Go into this directry and configure the package by typing
+If all dependencies are satisfied, to compile ucto on your computer, run the
+following from the ucto source directory:
 
-{\tt \$ cd ucto-*}
+{\tt \$ bash bootstrap.sh}
 
 {\tt \$ ./configure}
-
 
 Note: It is possible to install Ucto in a different location than the global default using the \texttt{--prefix=<dir>} option, but this tends to make further operations (such as compiling higher-level packages like Frog\footnote{\url{http://ilk.uvt.nl/frog}}) more complicated. Use the {\tt --with-ucto=} option in configure. 
  
@@ -136,7 +144,7 @@ Ucto should now be ready for use. Reopen your terminal and issue the {\tt ucto} 
 That's all!
 
 The e-mail address for problems with the installation, bug reports,
-comments and questions is {\tt timbl@uvt.nl}.
+comments and questions is {\tt lamasoftware@science.ru.nl}.
 
 %\chapter{Changes}
 %\label{changes}
@@ -240,11 +248,12 @@ Ucto has two input formats and three output formats. It can take either an untok
 
 Output by default is to standard error output in a simplistic format which will simply show all of the tokens and places a \texttt{<utt>} symbol where sentence boundaries are detected. Consider the following untokenised input text: \emph{Mr. John Doe goes to the pet store. He sees a cute rabbit, falls in love, and buys it. They lived happily ever after.}, and observe the output in the example below.
 
-We save the file to \texttt{/tmp/input.txt} and we run ucto on it. The \texttt{-L en} option sets the language to English and loads the English configuration for ucto. Instead of \texttt{-L}, which is nothign more than a convenient shortcut, we could also use \texttt{-c} and point to the full path of the configuration file.
+We save the file to \texttt{/tmp/input.txt} and we run ucto on it. The
+\texttt{-L eng} option sets the language to English and loads the English configuration for ucto. Instead of \texttt{-L}, which is nothign more than a convenient shortcut, we could also use \texttt{-c} and point to the full path of the configuration file.
 
 \begin{verbatim}
-$ ucto -L en /tmp/input.txt
-configfile = tokconfig-en
+$ ucto -L eng /tmp/input.txt
+configfile = tokconfig-eng
 inputfile = /tmp/input.txt
 outputfile = 
 Initiating tokeniser...
@@ -255,8 +264,8 @@ in love , and buys it . <utt> They lived happily ever after . <utt>
 Alternatively, you can use the \texttt{-n} option to output each sentence on a separate line, instead of using the \texttt{<utt>} symbol:
 
 \begin{verbatim}
-$ ucto -L en -n /tmp/input.txt
-configfile = tokconfig-en
+$ ucto -L eng -n /tmp/input.txt
+configfile = tokconfig-eng
 inputfile = /tmp/input.txt
 outputfile = 
 Initiating tokeniser...
@@ -268,14 +277,14 @@ They lived happily ever after .
 To output to an output file instead of standard output, we would invoke ucto as follows:
 
 \begin{verbatim}
-$ ucto -L en /tmp/input.txt /tmp/output.txt 
+$ ucto -L eng /tmp/input.txt /tmp/output.txt 
 \end{verbatim}
 
 This simplest form of output does not show all of the information ucto has on the tokens. For a more verbose view, add the \texttt{-v} option:
 
 \begin{verbatim}
-$ ucto -L en -v /tmp/input.txt
-configfile = tokconfig-en
+$ ucto -L eng -v /tmp/input.txt
+configfile = tokconfig-eng
 inputfile = /tmp/input.txt
 outputfile = 
 Initiating tokeniser...
@@ -317,8 +326,8 @@ As you see, this outputs the token types (the matching regular expressions) and 
 For further processing of your file in a natural language processing pipeline, or when releasing a corpus. It is recommended to make use of the FoLiA XML format \cite{FOLIA} \footnote{See also:  http://proycon.github.com/folia}. FoLiA is a format for linguistic annotation supporting a wide variety of annotation types. FoLiA XML output is enabled by specifying the \texttt{-X} flag. An ID for the FoLiA document can be specified using the \texttt{--id=} flag.
 
 \begin{lstlisting}[language=xml]
-$ ucto -L en -v -X --id=example /tmp/input.txt
-configfile = tokconfig-en
+$ ucto -L eng -v -X --id=example /tmp/input.txt
+configfile = tokconfig-eng
 inputfile = /tmp/input.txt
 outputfile = 
 Initiating tokeniser...
