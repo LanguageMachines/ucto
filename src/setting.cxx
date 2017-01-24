@@ -117,7 +117,7 @@ namespace Tokenizer {
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
+    explicit uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   ostream& operator<<( ostream& os, const Quoting& q ){
@@ -661,7 +661,7 @@ namespace Tokenizer {
 	    }
 	      break;
 	    default:
-	      throw uLogicError("unhandled case in switch");
+	      throw uLogicError( "unhandled case in switch" );
 	    }
 	  }
 	}

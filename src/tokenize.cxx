@@ -74,17 +74,17 @@ namespace Tokenizer {
 
   class uRangeError: public std::out_of_range {
   public:
-    uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
+    explicit uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
   };
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
+    explicit uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   class uCodingError: public std::runtime_error {
   public:
-    uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
+    explicit uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
   };
 
 
@@ -157,6 +157,7 @@ namespace Tokenizer {
     sentenceperlineinput(false),
     lowercase(false),
     uppercase(false),
+    xmlin(false),
     xmlout(false),
     passthru(false),
     inputclass("current"),

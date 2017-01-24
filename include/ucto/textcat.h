@@ -55,7 +55,7 @@ extern "C" {
 
 class TextCat {
  public:
-  TextCat( const std::string& cf );
+  explicit TextCat( const std::string& cf );
   TextCat( const TextCat& in );
   ~TextCat();
   bool isInit() const { return TC != 0; };

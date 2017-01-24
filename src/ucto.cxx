@@ -281,23 +281,35 @@ int main( int argc, char *argv[] ){
 
   istream *IN = 0;
   if (!xmlin) {
-    if ( ifile.empty() )
+    if ( ifile.empty() ){
       IN = &cin;
+    }
     else {
       IN = new ifstream( ifile );
       if ( !IN || !IN->good() ){
 	cerr << "Error: problems opening inputfile " << ifile << endl;
 	cerr << "Courageously refusing to start..."  << endl;
+	delete IN;
 	return EXIT_FAILURE;
       }
     }
   }
 
   ostream *OUT = 0;
-  if ( ofile.empty() )
+  if ( ofile.empty() ){
     OUT = &cout;
+  }
   else {
     OUT = new ofstream( ofile );
+    if ( !OUT || !OUT->good() ){
+      cerr << "Error: problems opening outputfile " << ofile << endl;
+      cerr << "Courageously refusing to start..."  << endl;
+      delete OUT;
+      if ( IN != &cin ){
+	delete IN;
+      }
+      return EXIT_FAILURE;
+    }
   }
 
   try {
@@ -309,15 +321,24 @@ int main( int argc, char *argv[] ){
     }
     else {
       // init exept for passthru mode
-      if ( !cfile.empty() ){
-	if ( !tokenizer.init( cfile ) ){
-	  return EXIT_FAILURE;
+      if ( !cfile.empty()
+	   && !tokenizer.init( cfile ) ){
+	if ( IN != &cin ){
+	  delete IN;
 	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	return EXIT_FAILURE;
       }
-      else {
-	if ( !tokenizer.init( language_list ) ){
-	  return EXIT_FAILURE;
+      else if ( !tokenizer.init( language_list ) ){
+	if ( IN != &cin ){
+	  delete IN;
 	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	return EXIT_FAILURE;
       }
     }
 
