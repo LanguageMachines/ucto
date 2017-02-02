@@ -157,8 +157,8 @@ namespace Tokenizer {
     sentenceperlineinput(false),
     lowercase(false),
     uppercase(false),
-    xmlin(false),
     xmlout(false),
+    xmlin(false),
     passthru(false),
     inputclass("current"),
     outputclass("current"),
@@ -1054,14 +1054,21 @@ namespace Tokenizer {
     short quotelevel = 0;
     size_t begin = 0;
     size_t end = 0;
-    for ( int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
 	begin = i;
       }
       //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
 
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (count == index) {
@@ -1075,7 +1082,7 @@ namespace Tokenizer {
 	  }
 	  return outToks;
 	}
-	count++;
+	++count;
       }
     }
     throw uRangeError( "No sentence exists with the specified index: "
