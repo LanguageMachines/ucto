@@ -212,6 +212,63 @@ namespace Tokenizer {
     }
   }
 
+  void TokenizerClass::extractSentencesAndFlush( int numS,
+						 vector<Token>& outputTokens,
+						 const string& lang ){
+    int count = 0;
+    const int size = tokens.size();
+    short quotelevel = 0;
+    size_t begin = 0;
+    size_t end = 0;
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
+	begin = i;
+      }
+      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	end = i+1;
+	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
+	if (tokDebug >= 1){
+	  LOG << "[tokenize] extracted sentence " << count << ", begin="<<begin << ",end="<< end << endl;
+	}
+	for ( size_t i=begin; i < end; ++i ){
+	  outputTokens.push_back( tokens[i] );
+	}
+	if ( ++count == numS ){
+	  if (tokDebug >= 1){
+	    LOG << "[tokenize] erase " << end  << " tokens from " << tokens.size() << endl;
+	  }
+	  tokens.erase( tokens.begin(),tokens.begin()+end );
+	  if ( !passthru ){
+	    if ( !settings[lang]->quotes.emptyStack() ) {
+	      settings[lang]->quotes.flushStack( end );
+	    }
+	  }
+	  //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
+	  if (!tokens.empty()) {
+	    tokens[0].role |= BEGINOFSENTENCE;
+	  }
+	  return;
+	}
+      }
+    }
+    if ( count < numS ){
+      throw uRangeError( "Not enough sentences exists in the buffer: ("
+			 + toString( count ) + " found. " + toString( numS)
+			 + " wanted)" );
+    }
+  }
+
   vector<Token> TokenizerClass::tokenizeStream( istream& IN,
 						const string& lang ) {
     vector<Token> outputTokens;
@@ -298,15 +355,7 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ){
 	  LOG << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	}
-	for (int i = 0; i < numS; i++) {
-	  vector<Token> v = getSentence( i );
-	  outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-	}
-	// clear processed sentences from buffer
-	if ( tokDebug > 0 ){
-	  LOG << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	}
-	flushSentences(numS, lang );
+	extractSentencesAndFlush( numS, outputTokens, lang );
 	return outputTokens;
       }
       else {
@@ -685,12 +734,8 @@ namespace Tokenizer {
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
-    for (int i = 0; i < numS; i++) {
-      vector<Token> v = getSentence( i );
-      outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-    }
+    extractSentencesAndFlush( numS, outputTokens, lang );
     outputTokensXML( element, outputTokens, 0 );
-    flushSentences( numS, lang );
   }
 
   void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {

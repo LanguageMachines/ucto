@@ -149,6 +149,7 @@ namespace Tokenizer {
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
+    void extractSentencesAndFlush( int, std::vector<Token>&, const std::string& );
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();

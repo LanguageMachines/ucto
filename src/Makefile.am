@@ -1,8 +1,5 @@
-# $Id$
-# $URL $
-
 AM_CPPFLAGS = -I@top_srcdir@/include
-AM_CXXFLAGS = -DSYSCONF_PATH=\"$(datadir)\" -std=c++0x -W -Wpedantic -O3 -g
+AM_CXXFLAGS = -DSYSCONF_PATH=\"$(datadir)\" -std=c++0x -W -Wall -pedantic -O3 -g
 
 bin_PROGRAMS = ucto
 
