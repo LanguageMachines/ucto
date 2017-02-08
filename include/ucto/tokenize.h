@@ -228,6 +228,7 @@ namespace Tokenizer {
     const std::string setTextClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
+      outputclass = cls;
       return res;
     }
     const std::string getInputClass( ) const { return inputclass; }

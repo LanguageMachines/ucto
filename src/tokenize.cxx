@@ -579,12 +579,13 @@ namespace Tokenizer {
 		   const string& outputclass  ){
     //    cerr << endl << "appendText:" << root->id() << endl;
     if ( root->hastext( outputclass ) ){
+      //      cerr << "return" << endl;
       return;
     }
     UnicodeString utxt = root->text( outputclass, false, false );
-    //    cerr << "untok: '" << utxt << "'" << endl;
-    //    UnicodeString txt = root->text( outputclass, true );
-    //    cerr << "  tok: '" << txt << "'" << endl;
+    // cerr << "untok: '" << utxt << "'" << endl;
+    // UnicodeString txt = root->text( outputclass, true );
+    // cerr << "  tok: '" << txt << "'" << endl;
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
@@ -596,6 +597,7 @@ namespace Tokenizer {
       return;
     if ( tokDebug >= 2 ){
       LOG << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
+      LOG << "[tokenizeElement] inputclass=" << inputclass << " outputclass=" << outputclass << endl;
     }
     if ( element->hastext( inputclass ) ) {
       // We have an element which contains text. That's nice
@@ -802,12 +804,12 @@ namespace Tokenizer {
       if ( ( !root_is_structure_element && !root_is_sentence )
 	   &&
 	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Creating paragraph" << endl;
+	}
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
 	  root = root->parent();
-	}
-	if ( tokDebug > 0 ) {
-	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
@@ -891,7 +893,9 @@ namespace Tokenizer {
 	out.toUpper();
       }
       w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      // LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
+      if ( tokDebug > 1 ) {
+	LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
+      }
       root->append( w );
       if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {
@@ -918,6 +922,9 @@ namespace Tokenizer {
       in_paragraph = true;
     }
     if ( tv.size() > 0 ){
+      if ( tokDebug > 0 ) {
+	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+      }
       appendText( root, outputclass );
     }
     return parCount;
