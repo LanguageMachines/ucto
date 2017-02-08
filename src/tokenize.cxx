@@ -582,9 +582,9 @@ namespace Tokenizer {
       return;
     }
     UnicodeString utxt = root->text( outputclass, false, false );
-    // cerr << "untok: '" << utxt << "'" << endl;
-    // UnicodeString txt = root->text( outputclass, true );
-    // cerr << "  tok: '" << txt << "'" << endl;
+    //    cerr << "untok: '" << utxt << "'" << endl;
+    //    UnicodeString txt = root->text( outputclass, true );
+    //    cerr << "  tok: '" << txt << "'" << endl;
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
@@ -891,7 +891,7 @@ namespace Tokenizer {
 	out.toUpper();
       }
       w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      //      LOG << "created " << w << " text= " <<  token.us << endl;
+      // LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
       root->append( w );
       if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {

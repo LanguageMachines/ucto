@@ -96,10 +96,10 @@ int main( int argc, char *argv[] ){
   bool verbose = false;
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
-  string inputclass = "current";
-  string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
+  string inputclass  = "current";
+  string outputclass = "current";
   vector<string> language_list;
   string cfile;
   string ifile;
@@ -153,9 +153,20 @@ int main( int argc, char *argv[] ){
       Opts.extract( "id", docid );
     }
     passThru = Opts.extract( "passthru" );
-    Opts.extract( "textclass", inputclass );
+    string textclass;
+    Opts.extract( "textclass", textclass );
     Opts.extract( "inputclass", inputclass );
     Opts.extract( "outputclass", outputclass );
+    if ( !textclass.empty() ){
+      if ( inputclass != "current" ){
+	throw TiCC::OptionError( "--textclass conflicts with --inputclass" );
+      }
+      if ( outputclass != "current" ){
+	throw TiCC::OptionError( "--textclass conflicts with --outputclass");
+      }
+      inputclass = textclass;
+      outputclass = textclass;
+    }
     if ( xmlin && outputclass.empty() ){
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
