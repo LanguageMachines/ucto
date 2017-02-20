@@ -233,6 +233,16 @@ namespace Tokenizer {
     delete theErrLog;
   }
 
+  vector<string> Setting::installed_languages() {
+    vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
+    vector<string> result;
+    for ( auto const& f : files ){
+      string lang = f.substr( f.find("tokconfig-")+10 );
+      result.push_back( lang );
+    }
+    return result;
+  }
+
   bool Setting::readrules( const string& fname ){
     if ( tokDebug > 0 ){
       *theErrLog << "%include " << fname << endl;

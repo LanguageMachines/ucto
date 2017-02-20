@@ -45,6 +45,7 @@ using namespace std;
 using namespace Tokenizer;
 
 void usage(){
+  vector<string> languages = Setting::installed_languages();
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
@@ -55,7 +56,13 @@ void usage(){
        << "\t-f               - Disable filtering of special characters" << endl
        << "\t-h or --help     - this message" << endl
        << "\t-L <language>    - Automatically selects a configuration file by language code. (default 'generic')" << endl
-       << "\t-l               - Convert to all lowercase" << endl
+       << "\t                 - Available Languages:" << endl
+       << "\t                   ";
+  for( const auto l : languages ){
+    cerr << l << ",";
+  }
+  cerr << endl;
+  cerr << "\t-l               - Convert to all lowercase" << endl
        << "\t-u               - Convert to all uppercase" << endl
        << "\t-n               - One sentence per line (output)" << endl
        << "\t-m               - One sentence per line (input)" << endl
