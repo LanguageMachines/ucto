@@ -55,7 +55,7 @@ void usage(){
        << "\t-N <string>      - set output normalization (default NFC)" << endl
        << "\t-f               - Disable filtering of special characters" << endl
        << "\t-h or --help     - this message" << endl
-       << "\t-L <language>    - Automatically selects a configuration file by language code. (default 'generic')" << endl
+       << "\t-L <language>    - Automatically selects a configuration file by language code." << endl
        << "\t                 - Available Languages:" << endl
        << "\t                   ";
   for( const auto l : languages ){
@@ -277,11 +277,23 @@ int main( int argc, char *argv[] ){
     return EXIT_FAILURE;
   }
   if ( !passThru ){
+    set<string> available_languages = Setting::installed_languages();
     if ( !c_file.empty() ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
-      cfile = "tokconfig-generic";
+      cerr << "missing a language specification (-L or --detectlanguages option)" << endl;
+      if ( available_languages.size() == 1 ){
+	cerr << "use -L generic " << " for a simple tokenizer" << endl;
+      }
+      else {
+	cerr << "Available Languages: ";
+	for( const auto& l : available_languages ){
+	  cerr << l << ",";
+	}
+	cerr << endl;
+      }
+      return EXIT_FAILURE;
     }
     else {
       set<string> available_languages = Setting::installed_languages();
