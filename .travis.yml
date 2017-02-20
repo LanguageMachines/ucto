@@ -36,7 +36,7 @@ matrix:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck scan-build-3.7 libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
     - cppcheck --enable=all --quiet --error-exitcode=2 .
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
@@ -61,8 +61,8 @@ before_install:
     - cd ..
 install:
     - bash bootstrap.sh
-    - scan-build --status-bugs ./configure
-    - scan-build --status-bugs make CXX=$COMPILER
+    - scan-build-3.7 --status-bugs ./configure
+    - scan-build-3.7 --status-bugs make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
