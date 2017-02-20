@@ -62,6 +62,7 @@ before_install:
     - cd ..
 install:
     - bash bootstrap.sh
+    - ./configure
     - $SCAN --status-bugs ./configure
     - $SCAN --status-bugs make CXX=$COMPILER
     - make CXX=$COMPILER
