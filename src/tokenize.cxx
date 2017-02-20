@@ -1972,6 +1972,10 @@ namespace Tokenizer {
       }
       sit.next32();
       ++i;
+      if ( i > 2500 ){
+	LOG << "Rediculous long word (over 2500 characters) detected in the input. Skipped whole line!" << endl;
+	return 0;
+      }
     }
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
