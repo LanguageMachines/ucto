@@ -233,12 +233,12 @@ namespace Tokenizer {
     delete theErrLog;
   }
 
-  vector<string> Setting::installed_languages() {
+  set<string> Setting::installed_languages() {
     vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
-    vector<string> result;
+    set<string> result;
     for ( auto const& f : files ){
       string lang = f.substr( f.find("tokconfig-")+10 );
-      result.push_back( lang );
+      result.insert( lang );
     }
     return result;
   }

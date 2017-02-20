@@ -45,7 +45,7 @@ using namespace std;
 using namespace Tokenizer;
 
 void usage(){
-  vector<string> languages = Setting::installed_languages();
+  set<string> languages = Setting::installed_languages();
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
