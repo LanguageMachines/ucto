@@ -64,6 +64,7 @@ install:
     - bash bootstrap.sh
     - $SCAN --status-bugs ./configure
     - $SCAN --status-bugs make CXX=$COMPILER
+    - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
