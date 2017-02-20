@@ -276,13 +276,26 @@ int main( int argc, char *argv[] ){
     usage();
     return EXIT_FAILURE;
   }
-
   if ( !passThru ){
     if ( !c_file.empty() ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
       cfile = "tokconfig-generic";
+    }
+    else {
+      set<string> available_languages = Setting::installed_languages();
+      for ( const auto& l : language_list ){
+	if ( available_languages.find(l) == available_languages.end() ){
+	  cerr << "unsupported language '" << l << "'" << endl;
+	  cerr << "Available Languages: ";
+	  for( const auto& l : available_languages ){
+	    cerr << l << ",";
+	  }
+	  cerr << endl;
+	  return EXIT_FAILURE;
+	}
+      }
     }
   }
 
