@@ -16,6 +16,7 @@ matrix:
           sources: ['ubuntu-toolchain-r-test']
           packages: ['g++-4.9']
       env: COMPILER=g++-4.9
+           SCAN=echo
 
 #    - os: linux
 #      compiler: gcc
@@ -32,7 +33,7 @@ matrix:
           sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
           packages: ['clang-3.7']
       env: COMPILER=clang++-3.7
-
+           SCAN=scan-build-3.7
 
 before_install:
     - sudo apt-get update
@@ -61,8 +62,8 @@ before_install:
     - cd ..
 install:
     - bash bootstrap.sh
-    - scan-build-3.7 --status-bugs ./configure
-    - scan-build-3.7 --status-bugs make CXX=$COMPILER
+    - $SCAN --status-bugs ./configure
+    - $SCAN --status-bugs make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
