@@ -36,7 +36,7 @@ matrix:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck scan-build-3.7 libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck scan-build libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
     - cppcheck --enable=all --quiet --error-exitcode=2 .
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
