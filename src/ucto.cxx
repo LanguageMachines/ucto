@@ -282,8 +282,12 @@ int main( int argc, char *argv[] ){
     }
     else if ( language_list.empty() ){
       cerr << "missing a language specification (-L or --detectlanguages option)" << endl;
-      if ( available_languages.size() == 1 ){
-	cerr << "use -L generic " << " for a simple tokenizer" << endl;
+      if ( available_languages.size() == 1
+	   && *available_languages.begin() == "generic" ){
+	cerr << "The uctodata package seems not to be installed." << endl;
+	cerr << "You can use '-L generic' to run a simple default tokenizer."
+	     << endl;
+	cerr << "Installing uctodata is highly recommended." << endl;
       }
       else {
 	cerr << "Available Languages: ";
@@ -295,15 +299,23 @@ int main( int argc, char *argv[] ){
       return EXIT_FAILURE;
     }
     else {
-      set<string> available_languages = Setting::installed_languages();
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
 	  cerr << "unsupported language '" << l << "'" << endl;
-	  cerr << "Available Languages: ";
-	  for( const auto& l : available_languages ){
-	    cerr << l << ",";
+	  if ( available_languages.size() == 1
+	       && *available_languages.begin() == "generic" ){
+	    cerr << "The uctodata package seems not to be installed." << endl;
+	    cerr << "You can use '-L generic' to run a simple default tokenizer."
+		 << endl;
+	    cerr << "Installing uctodata is highly recommended." << endl;
 	  }
-	  cerr << endl;
+	  else {
+	    cerr << "Available Languages: ";
+	    for( const auto& l : available_languages ){
+	      cerr << l << ",";
+	    }
+	    cerr << endl;
+	  }
 	  return EXIT_FAILURE;
 	}
       }

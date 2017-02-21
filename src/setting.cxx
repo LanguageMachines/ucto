@@ -234,11 +234,17 @@ namespace Tokenizer {
   }
 
   set<string> Setting::installed_languages() {
+    // we only return 'languages' which are installed as 'tokconfig-*'
+    //
     vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
     set<string> result;
     for ( auto const& f : files ){
-      string lang = f.substr( f.find("tokconfig-")+10 );
-      result.insert( lang );
+      string base = TiCC::basename(f);
+      size_t pos = base.find("tokconfig-");
+      if ( pos == 0 ){
+	string lang = base.substr( 10 );
+	result.insert( lang );
+      }
     }
     return result;
   }
