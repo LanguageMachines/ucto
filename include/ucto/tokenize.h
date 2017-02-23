@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2016
+  Copyright (c) 2006 - 2017
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -32,14 +32,15 @@
 #include <sstream>
 #include <stdexcept>
 #include "ucto/unicode.h"
+#include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
+
+class TextCat;
 
 namespace Tokenizer {
 
   std::string Version();
   std::string VersionName();
-
-  //enum RuleTrigger { PUNCTUATION, PERIOD, NUMBER }; //TODO: implement
 
   enum TokenRole {
     NOROLE                      = 0,
@@ -82,60 +83,11 @@ namespace Tokenizer {
     TokenRole role;
     Token( const UnicodeString&,
 	   const UnicodeString&,
-	   TokenRole role = NOROLE );
-
+	   TokenRole role = NOROLE,
+	   const std::string& = "" );
+    std::string lc;                // ISO 639-3 language code
     std::string texttostring();
     std::string typetostring();
-  };
-
-  class UnicodeRegexMatcher;
-
-  class Rule {
-    friend std::ostream& operator<< (std::ostream&, const Rule& );
-  public:
-  Rule(): regexp(0){
-    };
-    Rule( const UnicodeString& id, const UnicodeString& pattern);
-    ~Rule();
-    UnicodeString id;
-    UnicodeString pattern;
-    UnicodeRegexMatcher *regexp;
-    bool matchAll( const UnicodeString&,
-		   UnicodeString&,
-		   UnicodeString&,
-		   std::vector<UnicodeString>& );
-  private:
-    Rule( const Rule& ); // inhibit copies
-    Rule& operator=( const Rule& ); // inhibit copies
-  };
-
-  class Quoting {
-    friend std::ostream& operator<<( std::ostream&, const Quoting& );
-    struct QuotePair {
-      UnicodeString openQuote;
-      UnicodeString closeQuote;
-    };
-  public:
-    void add( const UnicodeString&, const UnicodeString& );
-    UnicodeString lookupOpen( const UnicodeString &) const;
-    UnicodeString lookupClose( const UnicodeString & ) const;
-    bool empty() const { return quotes.empty(); };
-    bool emptyStack() const { return quotestack.empty(); };
-    void clearStack() { quoteindexstack.clear(); quotestack.clear(); };
-    int lookup( const UnicodeString&, int& );
-    void eraseAtPos( int pos ) {
-      quotestack.erase( quotestack.begin()+pos );
-      quoteindexstack.erase( quoteindexstack.begin()+pos );
-    }
-    void flushStack( int ); //renamed from eraseBeforeIndex
-    void push( int i, UChar32 c ){
-      quoteindexstack.push_back(i);
-      quotestack.push_back(c);
-    }
-  private:
-    std::vector<QuotePair> quotes;
-    std::vector<int> quoteindexstack;
-    std::vector<UChar32> quotestack;
   };
 
   class TokenizerClass{
@@ -144,9 +96,9 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string& );
-    bool init( const std::vector<std::string>& );
-    bool reset();
+    bool init( const std::string& ); // init from a configfile
+    bool init( const std::vector<std::string>& ); // init 1 or more languages
+    bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
     // Tokenize from input stream to a FoLiA document
@@ -158,12 +110,14 @@ namespace Tokenizer {
     //Tokenize from input stream to a vector of Tokens
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
-    std::vector<Token> tokenizeStream( std::istream& );
+    std::vector<Token> tokenizeStream( std::istream&,
+				       const std::string& = "default" );
 
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
     // should be called multiple times until EOF
-    std::string tokenizeSentenceStream( std::istream& );
+    std::string tokenizeSentenceStream( std::istream&,
+					const std::string& = "default" );
 
     //Tokenize from input file to output file (support xmlin + xmlout)
     void tokenize( const std::string&, const std::string& );
@@ -176,21 +130,26 @@ namespace Tokenizer {
 
     // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
-    int tokenizeLine( const UnicodeString& ); // Unicode chars
-    int tokenizeLine( const std::string& );   // UTF8 chars
+    int tokenizeLine( const UnicodeString&,
+		      const std::string& = "default" ); // Unicode chars
+    int tokenizeLine( const std::string&,
+		      const std::string& = "default" ); // UTF8 chars
 
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
-    int countSentences(bool forceentirebuffer = false); //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
-    int flushSentences( int ); //Flush n sentences from buffer (does some extra validation as well)
+    int countSentences(bool forceentirebuffer = false);
+    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
+    int flushSentences( int, const std::string& = "default" );
+    //Flush n sentences from buffer (does some extra validation as well)
 
     //Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
+    void extractSentencesAndFlush( int, std::vector<Token>&, const std::string& );
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
@@ -248,9 +207,7 @@ namespace Tokenizer {
     std::string setInputEncoding( const std::string& );
     std::string getInputEncoding() const { return inputEncoding; };
 
-    // set languge
-    std::string setLanguage( const std::string& );
-    std::string getLanguage() const { return language; };
+    void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
@@ -271,6 +228,7 @@ namespace Tokenizer {
     const std::string setTextClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
+      outputclass = cls;
       return res;
     }
     const std::string getInputClass( ) const { return inputclass; }
@@ -301,49 +259,46 @@ namespace Tokenizer {
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
     void add_rule( const UnicodeString&,
 		   const std::vector<UnicodeString>& );
-    void tokenizeWord( const UnicodeString&, bool, const UnicodeString& ="" );
+    void tokenizeWord( const UnicodeString&,
+		       bool,
+		       const std::string&,
+		       const UnicodeString& ="" );
 
-    bool detectEos( size_t ) const;
-    void detectSentenceBounds( const int offset = 0 );
-    void detectQuotedSentenceBounds( const int offset = 0 );
-    void detectQuoteBounds( const int );
+    bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
+    void detectSentenceBounds( const int offset,
+			       const std::string& = "default" );
+    void detectQuotedSentenceBounds( const int offset,
+				     const std::string& = "default" );
+    void detectQuoteBounds( const int,
+			    Quoting& );
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
 
-    bool resolveQuote( int, const UnicodeString& );
-    bool u_isquote( UChar32 ) const;
+    bool resolveQuote( int, const UnicodeString&, Quoting& );
+    bool u_isquote( UChar32,
+		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
-    bool readsettings( const std::string& );
-    bool readrules( const std::string& );
-    bool readfilters( const std::string& );
-    bool readquotes( const std::string& );
-    bool readeosmarkers( const std::string& );
-    bool readabbreviations( const std::string&, UnicodeString& );
-
-    void sortRules( std::map<UnicodeString,Rule*>&,
-		    const std::vector<UnicodeString>& );
     void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
-    int outputTokensXML( folia::FoliaElement *, const std::vector<Token>& , int parCount=0 ) const;
+    int outputTokensXML( folia::FoliaElement *,
+			 const std::vector<Token>& ,
+			 int = 0 ) const;
     void tokenizeElement( folia::FoliaElement * );
-    void tokenizeSentenceElement( folia::FoliaElement * );
+    void tokenizeSentenceElement( folia::FoliaElement *,
+				  const std::string& );
 
-    Quoting quotes;
-    UnicodeFilter filter;
     UnicodeNormalizer normalizer;
-    UnicodeString eosmarkers;
     std::string inputEncoding;
-    std::string language;
 
     UnicodeString eosmark;
     std::vector<Token> tokens;
-    std::map<UnicodeString, Rule *> rulesmap;
-    std::vector<Rule *> rules;
-    std::map<UnicodeString, int> rules_index;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
+    std::string default_language;
+    std::string document_language; // in case of an input FoLiA document
+    std::map<std::string,Setting*> settings;
     //debug flag
     int tokDebug;
 
@@ -379,11 +334,10 @@ namespace Tokenizer {
     bool xmlin;
     bool passthru;
 
-    std::string settingsfilename;
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
-    std::string version;  // the version of the datafile
+    TextCat *tc;
   };
 
   template< typename T >

@@ -1,30 +1,57 @@
 sudo: required
 dist: trusty
+
 # whitelist
 branches:
   only:
     - master
 
 language: cpp
-compiler:
-    - gcc
-    - clang
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9']
+      env: COMPILER=g++-4.9
+           SCAN=echo
+
+#    - os: linux
+#      compiler: gcc
+#      addons:
+#        apt:
+#          sources: ['ubuntu-toolchain-r-test']
+#          packages: ['g++-5']
+#      env: COMPILER=g++-5
+
+    - os: linux
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+          packages: ['clang-3.7']
+      env: COMPILER=clang++-3.7
+           SCAN=scan-build-3.7
+
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev libicu-dev libxml2-dev libbz2-dev zlib1g-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck  libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - cppcheck --enable=all --quiet --error-exitcode=2 .
     - git clone https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
     - ./configure
-    - make
-    - sudo make install
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
     - cd ..
     - git clone https://github.com/proycon/libfolia
     - cd libfolia
     - bash bootstrap.sh
     - ./configure
-    - make
-    - sudo make install
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
     - cd ..
     - git clone https://github.com/LanguageMachines/uctodata
     - cd uctodata
@@ -36,8 +63,10 @@ before_install:
 install:
     - bash bootstrap.sh
     - ./configure
-    - make
-    - sudo make install
+    - $SCAN --status-bugs ./configure
+    - $SCAN --status-bugs make CXX=$COMPILER
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 after_failure:

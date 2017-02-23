@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.9.4], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.9.7], [lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -56,6 +56,16 @@ if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH=""
 fi
 #AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
+AC_CHECK_HEADERS([libexttextcat/textcat.h],
+	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
+                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+		                   [AC_CHECK_HEADERS([textcat.h],
+						     [],
+		                                     [AC_MSG_NOTICE([textcat support not available])])])])
+
+AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
+  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
 useICU=1;
 # inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
@@ -104,8 +114,22 @@ PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
-PKG_CHECK_MODULES([uctodata], [uctodata >= 0.3] )
+PKG_CHECK_MODULES(
+	[uctodata],
+	[uctodata],
+	[PKG_CHECK_MODULES(
+		[uctodata],
+		[uctodata >= 0.4],
+		[],
+		[AC_MSG_NOTICE([ATTENTION:
+	Your ucto datafiles are are outdated
+	You should consider installing a newer version of the uctodata package!])])
 
+	],
+	[AC_MSG_NOTICE([ATTENTION:
+	ucto datafiles are not installed!
+	ucto will work with only a minimal default configuration.
+	You should consider installing the uctodata package!] )] )
 # Checks for library functions.
 
 AC_OUTPUT([

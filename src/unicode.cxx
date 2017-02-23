@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2016
+  Copyright (c) 2006 - 2017
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -28,8 +28,11 @@
 #include <ostream>
 #include <fstream>
 #include <map>
-#include <stdexcept>
+#include "unicode/ustream.h"
+#include "unicode/regex.h"
+#include "unicode/ucnv.h"
 #include "ticcutils/StringOps.h"
+#include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
 #include "ucto/unicode.h"
 
@@ -167,6 +170,223 @@ namespace Tokenizer {
       }
     }
     return true;
+  }
+
+  class uRegexError: public std::invalid_argument {
+  public:
+    explicit uRegexError( const string& s ): invalid_argument( "Invalid regular expression: " + s ){};
+    explicit uRegexError( const UnicodeString& us ): invalid_argument( "Invalid regular expression: " + folia::UnicodeToUTF8(us) ){};
+  };
+
+
+  UnicodeString UnicodeRegexMatcher::Pattern() const{
+    return pattern->pattern();
+  }
+
+  UnicodeRegexMatcher::UnicodeRegexMatcher( const UnicodeString& pat,
+					    const UnicodeString& name ):
+    _name(name)
+  {
+    failString.clear();
+    matcher = NULL;
+    UErrorCode u_stat = U_ZERO_ERROR;
+    UParseError errorInfo;
+    pattern = RegexPattern::compile( pat, 0, errorInfo, u_stat );
+    if ( U_FAILURE(u_stat) ){
+      string spat = folia::UnicodeToUTF8(pat);
+      failString = folia::UnicodeToUTF8(_name);
+      if ( errorInfo.offset >0 ){
+	failString += " at position " + TiCC::toString( errorInfo.offset ) + "\n";
+	UnicodeString pat1 = UnicodeString( pat, 0, errorInfo.offset -1 );
+	failString += folia::UnicodeToUTF8(pat1) + " <== HERE\n";
+      }
+      else {
+	failString += "'" + spat + "' ";
+      }
+      throw uRegexError(failString);
+    }
+    else {
+      matcher = pattern->matcher( u_stat );
+      if (U_FAILURE(u_stat)){
+	failString = "'" + folia::UnicodeToUTF8(pat) + "'";
+	throw uRegexError(failString);
+      }
+    }
+  }
+
+  UnicodeRegexMatcher::~UnicodeRegexMatcher(){
+    delete pattern;
+    delete matcher;
+  }
+
+  //#define MATCH_DEBUG 1
+
+  bool UnicodeRegexMatcher::match_all( const UnicodeString& line,
+				       UnicodeString& pre,
+				       UnicodeString& post ){
+    UErrorCode u_stat = U_ZERO_ERROR;
+    pre = "";
+    post = "";
+    results.clear();
+    if ( matcher ){
+#ifdef MATCH_DEBUG
+      cerr << "start matcher [" << line << "], pattern = " << Pattern() << endl;
+#endif
+      matcher->reset( line );
+      if ( matcher->find() ){
+#ifdef MATCH_DEBUG
+	cerr << "matched " << folia::UnicodeToUTF8(line) << endl;
+	for ( int i=0; i <= matcher->groupCount(); ++i ){
+	  cerr << "group[" << i << "] =" << matcher->group(i,u_stat) << endl;
+	}
+#endif
+	if ( matcher->groupCount() == 0 ){
+	  // case 1: a rule without capture groups matches
+	  UnicodeString us = matcher->group(0,u_stat) ;
+#ifdef MATCH_DEBUG
+	  cerr << "case 1, result = " << us << endl;
+#endif
+	  results.push_back( us );
+	  int start = matcher->start( 0, u_stat );
+	  if ( start > 0 ){
+	    pre = UnicodeString( line, 0, start );
+#ifdef MATCH_DEBUG
+	    cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+#endif
+	  }
+	  int end = matcher->end( 0, u_stat );
+	  if ( end < line.length() ){
+	    post = UnicodeString( line, end );
+#ifdef MATCH_DEBUG
+	    cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+#endif
+	  }
+	  return true;
+	}
+	else if ( matcher->groupCount() == 1 ){
+	  // case 2: a rule with one capture group matches
+	  int start = matcher->start( 1, u_stat );
+	  if ( start >= 0 ){
+	    UnicodeString us = matcher->group(1,u_stat) ;
+#ifdef MATCH_DEBUG
+	    cerr << "case 2a , result = " << us << endl;
+#endif
+	    results.push_back( us );
+	    if ( start > 0 ){
+	      pre = UnicodeString( line, 0, start );
+#ifdef MATCH_DEBUG
+	      cerr << "found pre " << pre << endl;
+#endif
+	    }
+	    int end = matcher->end( 1, u_stat );
+	    if ( end < line.length() ){
+	      post = UnicodeString( line, end );
+#ifdef MATCH_DEBUG
+	      cerr << "found post " << post << endl;
+#endif
+	    }
+	  }
+	  else {
+	    // group 1 is empty, return group 0
+	    UnicodeString us = matcher->group(0,u_stat) ;
+#ifdef MATCH_DEBUG
+	    cerr << "case 2b , result = " << us << endl;
+#endif
+	    results.push_back( us );
+	    start = matcher->start( 0, u_stat );
+	    if ( start > 0 ){
+	      pre = UnicodeString( line, 0, start );
+#ifdef MATCH_DEBUG
+	      cerr << "found pre " << pre << endl;
+#endif
+	    }
+	    int end = matcher->end( 0, u_stat );
+	    if ( end < line.length() ){
+	      post = UnicodeString( line, end );
+#ifdef MATCH_DEBUG
+	      cerr << "found post " << post << endl;
+#endif
+	    }
+	  }
+	  return true;
+	}
+	else {
+	  // a rule with more then 1 capture group
+	  // this is quite ugly...
+	  int end = 0;
+	  for ( int i=0; i <= matcher->groupCount(); ++i ){
+#ifdef MATCH_DEBUG
+	    cerr << "group " << i << endl;
+#endif
+	    u_stat = U_ZERO_ERROR;
+	    int start = matcher->start( i, u_stat );
+#ifdef MATCH_DEBUG
+	    cerr << "start = " << start << endl;
+#endif
+	    if (!U_FAILURE(u_stat)){
+	      if ( start < 0 ){
+		continue;
+	      }
+	    }
+	    else
+	      break;
+	    if ( start > end ){
+	      pre = UnicodeString( line, end, start );
+#ifdef MATCH_DEBUG
+	      cerr << "found pre " << folia::UnicodeToUTF8(pre) << endl;
+#endif
+	    }
+	    end = matcher->end( i, u_stat );
+#ifdef MATCH_DEBUG
+	    cerr << "end = " << end << endl;
+#endif
+	    if (!U_FAILURE(u_stat)){
+	      results.push_back( UnicodeString( line, start, end - start ) );
+#ifdef MATCH_DEBUG
+	      cerr << "added result " << folia::UnicodeToUTF8( results.back() ) << endl;
+#endif
+	    }
+	    else
+	      break;
+	  }
+	  if ( end < line.length() ){
+	    post = UnicodeString( line, end );
+#ifdef MATCH_DEBUG
+	    cerr << "found post " << folia::UnicodeToUTF8(post) << endl;
+#endif
+	  }
+	  return true;
+	}
+      }
+    }
+    results.clear();
+    return false;
+  }
+
+  const UnicodeString UnicodeRegexMatcher::get_match( unsigned int n ) const{
+    if ( n < results.size() )
+      return results[n];
+    else
+      return "";
+  }
+
+  int UnicodeRegexMatcher::NumOfMatches() const {
+    if ( results.size() > 0 )
+      return results.size()-1;
+    else
+      return 0;
+  }
+
+  int UnicodeRegexMatcher::split( const UnicodeString& us,
+				  vector<UnicodeString>& result ){
+    result.clear();
+    const int maxWords = 256;
+    UnicodeString words[maxWords];
+    UErrorCode status = U_ZERO_ERROR;
+    int numWords = matcher->split( us, words, maxWords, status );
+    for ( int i = 0; i < numWords; ++i )
+      result.push_back( words[i] );
+    return numWords;
   }
 
 } // namespace Tokenizer
