@@ -1973,7 +1973,8 @@ namespace Tokenizer {
       sit.next32();
       ++i;
       if ( i > 2500 ){
-	LOG << "Ridiculous long word (over 2500 characters) detected in the input. Skipped whole line!" << endl;
+	LOG << "Ridiculously long word (over 2500 characters) detected in the input. Skipped whole line!" << endl;
+	LOG << "The line starts with " << UnicodeString( word, 0, 75 ) << "..." << endl;
 	return 0;
       }
     }
