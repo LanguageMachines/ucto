@@ -347,7 +347,7 @@ namespace Tokenizer {
 	    }
 	    language = lan;
 	  }
-	  tokenizeLine( input_line, language );
+	  tokenizeLine( input_line, language, "" );
 	}
 	numS = countSentences(); //count full sentences in token buffer
       }
@@ -405,7 +405,7 @@ namespace Tokenizer {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
-	  tokenizeLine( line );
+	  tokenizeLine( line, lang );
 	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) {
@@ -731,7 +731,7 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      tokenizeLine( line, lang );
+      tokenizeLine( line, lang, element->id() );
     }
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
@@ -1714,7 +1714,7 @@ namespace Tokenizer {
   int TokenizerClass::tokenizeLine( const string& s,
 				    const string& lang ){
     UnicodeString uinputstring = convert( s, inputEncoding );
-    return tokenizeLine( uinputstring, lang );
+    return tokenizeLine( uinputstring, lang, "" );
   }
 
   bool u_isemo( UChar32 c ){
@@ -1829,7 +1829,8 @@ namespace Tokenizer {
   }
 
   int TokenizerClass::tokenizeLine( const UnicodeString& originput,
-				    const string& _lang ){
+				    const string& _lang,
+				    const string& id ){
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";
@@ -1851,7 +1852,14 @@ namespace Tokenizer {
       input = settings[lang]->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
-      *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
+      if ( id.empty() ){
+	LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
+	    << "   '" << input << "'" << endl;
+      }
+      else {
+	LOG << "ERROR: Invalid UTF-8 in element:" << id << endl
+	    << "   '" << input << "'" << endl;
+      }
       return 0;
     }
     int32_t len = input.countChar32();
@@ -1973,8 +1981,18 @@ namespace Tokenizer {
       sit.next32();
       ++i;
       if ( i > 2500 ){
-	LOG << "Ridiculously long word (over 2500 characters) detected in the input. Skipped whole line!" << endl;
-	LOG << "The line starts with " << UnicodeString( word, 0, 75 ) << "..." << endl;
+	if ( id.empty() ){
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in line: " << linenum << ". Skipped ..." << endl;
+	  LOG << "The line starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
+	else {
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in element: " << id << ". Skipped ..." << endl;
+	  LOG << "The text starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
 	return 0;
       }
     }

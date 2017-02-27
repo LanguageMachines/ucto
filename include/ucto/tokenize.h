@@ -263,6 +263,9 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
+    int tokenizeLine( const UnicodeString&,
+		      const std::string&,
+		      const std::string& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
