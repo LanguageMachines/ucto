@@ -327,9 +327,6 @@ int main( int argc, char *argv[] ){
     return EXIT_FAILURE;
   }
 
-  if ( !passThru ){
-    cerr << "configfile = " << cfile << endl;
-  }
   cerr << "inputfile = "  << ifile << endl;
   cerr << "outputfile = " << ofile << endl;
 
