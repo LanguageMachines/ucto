@@ -1717,6 +1717,12 @@ namespace Tokenizer {
     return tokenizeLine( uinputstring, lang, "" );
   }
 
+  // UnicodeString wrapper
+  int TokenizerClass::tokenizeLine( const UnicodeString& u,
+				    const string& lang ){
+    return tokenizeLine( u, lang, "" );
+  }
+
   bool u_isemo( UChar32 c ){
     UBlockCode s = ublock_getCode(c);
     return s == UBLOCK_EMOTICONS;
