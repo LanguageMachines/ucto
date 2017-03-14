@@ -10,6 +10,7 @@ language: cpp
 matrix:
   include:
     - os: linux
+      cache: ccache
       compiler: gcc
       addons:
         apt:
@@ -27,6 +28,7 @@ matrix:
 #      env: COMPILER=g++-5
 
     - os: linux
+      cache: ccache
       compiler: clang
       addons:
         apt:
@@ -37,23 +39,24 @@ matrix:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck  libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev ccache cppcheck  libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - export PATH="/usr/lib/ccache/bin/:$PATH"
     - cppcheck --enable=all --quiet --error-exitcode=2 .
-    - git clone https://github.com/proycon/ticcutils
+    - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
     - ./configure
     - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
     - cd ..
-    - git clone https://github.com/proycon/libfolia
+    - git clone --depth=1 --single-branch https://github.com/proycon/libfolia
     - cd libfolia
     - bash bootstrap.sh
     - ./configure
     - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
     - cd ..
-    - git clone https://github.com/LanguageMachines/uctodata
+    - git clone --depth=1 --single-branch https://github.com/LanguageMachines/uctodata
     - cd uctodata
     - bash bootstrap.sh
     - ./configure
