@@ -81,10 +81,16 @@ Usage
 Tokenize an english text file to standard output, tokens will be
 space-seperated, sentences delimiter by ``<utt>``:
 
-    $ ucto -L en yourfile.txt 
+    $ ucto -L eng yourfile.txt 
 
-The -L flag specifies the language (as an iso-639-1 code), provided a configuration file exists for
-that language. To output to file instead of standard output, just add another
+The -L flag specifies the language (as a three letter iso-639-3 code), provided
+a configuration file exists for that language. The configurations are provided
+separately, for various languages, in the
+[uctodata](https://github.com/LanguageMachines/uctodata) package. Note that
+older versions of ucto used different two-letter codes, so you may need to
+update the way you invoke ucto.
+
+To output to file instead of standard output, just add another
 positional argument with the desired output filename.
 
 If you want each sentence on a separate line (i.e. newline delimited rather than delimited by
@@ -94,7 +100,7 @@ in the input and you want to leave it at that, pass the ``-m`` flag.
 Tokenize plaintext to [FoLiA XML](https://proycon.github.io/folia) using the ``-X`` flag, you can specify an ID
 for the FoLiA document using the ``--id=`` flag.
 
-    $ ucto -L en -X --id=hamlet hamlet.txt hamlet.folia.xml
+    $ ucto -L eng -X --id=hamlet hamlet.txt hamlet.folia.xml
 
 Note that in the FoLiA XML output, ucto encodes the class of the token (date, url, smiley, etc...) based
 on the rule that matched.

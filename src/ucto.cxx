@@ -45,6 +45,7 @@ using namespace std;
 using namespace Tokenizer;
 
 void usage(){
+  set<string> languages = Setting::installed_languages();
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
@@ -54,8 +55,14 @@ void usage(){
        << "\t-N <string>      - set output normalization (default NFC)" << endl
        << "\t-f               - Disable filtering of special characters" << endl
        << "\t-h or --help     - this message" << endl
-       << "\t-L <language>    - Automatically selects a configuration file by language code. (default 'generic')" << endl
-       << "\t-l               - Convert to all lowercase" << endl
+       << "\t-L <language>    - Automatically selects a configuration file by language code." << endl
+       << "\t                 - Available Languages:" << endl
+       << "\t                   ";
+  for( const auto l : languages ){
+    cerr << l << ",";
+  }
+  cerr << endl;
+  cerr << "\t-l               - Convert to all lowercase" << endl
        << "\t-u               - Convert to all uppercase" << endl
        << "\t-n               - One sentence per line (output)" << endl
        << "\t-m               - One sentence per line (input)" << endl
@@ -74,9 +81,8 @@ void usage(){
        << "\t-F               - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
        << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
-       << "\t--textclass <class> - use the specified class to search text in the FoLia doc. (deprecated. use --inputclass)" << endl
-       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc." << endl
-       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current'. changing this is dangerous!)" << endl
+       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl       << "\t--textclass <class> - use the specified class for noth input and output of text in the FoLia doc. (default is 'current')" << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
@@ -96,10 +102,10 @@ int main( int argc, char *argv[] ){
   bool verbose = false;
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
-  string inputclass = "current";
-  string outputclass = "current";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
+  string inputclass  = "current";
+  string outputclass = "current";
   vector<string> language_list;
   string cfile;
   string ifile;
@@ -153,9 +159,20 @@ int main( int argc, char *argv[] ){
       Opts.extract( "id", docid );
     }
     passThru = Opts.extract( "passthru" );
-    Opts.extract( "textclass", inputclass );
+    string textclass;
+    Opts.extract( "textclass", textclass );
     Opts.extract( "inputclass", inputclass );
     Opts.extract( "outputclass", outputclass );
+    if ( !textclass.empty() ){
+      if ( inputclass != "current" ){
+	throw TiCC::OptionError( "--textclass conflicts with --inputclass" );
+      }
+      if ( outputclass != "current" ){
+	throw TiCC::OptionError( "--textclass conflicts with --outputclass");
+      }
+      inputclass = textclass;
+      outputclass = textclass;
+    }
     if ( xmlin && outputclass.empty() ){
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
@@ -258,13 +275,50 @@ int main( int argc, char *argv[] ){
     usage();
     return EXIT_FAILURE;
   }
-
   if ( !passThru ){
+    set<string> available_languages = Setting::installed_languages();
     if ( !c_file.empty() ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
-      cfile = "tokconfig-generic";
+      cerr << "missing a language specification (-L or --detectlanguages option)" << endl;
+      if ( available_languages.size() == 1
+	   && *available_languages.begin() == "generic" ){
+	cerr << "The uctodata package seems not to be installed." << endl;
+	cerr << "You can use '-L generic' to run a simple default tokenizer."
+	     << endl;
+	cerr << "Installing uctodata is highly recommended." << endl;
+      }
+      else {
+	cerr << "Available Languages: ";
+	for( const auto& l : available_languages ){
+	  cerr << l << ",";
+	}
+	cerr << endl;
+      }
+      return EXIT_FAILURE;
+    }
+    else {
+      for ( const auto& l : language_list ){
+	if ( available_languages.find(l) == available_languages.end() ){
+	  cerr << "unsupported language '" << l << "'" << endl;
+	  if ( available_languages.size() == 1
+	       && *available_languages.begin() == "generic" ){
+	    cerr << "The uctodata package seems not to be installed." << endl;
+	    cerr << "You can use '-L generic' to run a simple default tokenizer."
+		 << endl;
+	    cerr << "Installing uctodata is highly recommended." << endl;
+	  }
+	  else {
+	    cerr << "Available Languages: ";
+	    for( const auto& l : available_languages ){
+	      cerr << l << ",";
+	    }
+	    cerr << endl;
+	  }
+	  return EXIT_FAILURE;
+	}
+      }
     }
   }
 
@@ -273,31 +327,40 @@ int main( int argc, char *argv[] ){
     return EXIT_FAILURE;
   }
 
-  if ( !passThru ){
-    cerr << "configfile = " << cfile << endl;
-  }
   cerr << "inputfile = "  << ifile << endl;
   cerr << "outputfile = " << ofile << endl;
 
   istream *IN = 0;
   if (!xmlin) {
-    if ( ifile.empty() )
+    if ( ifile.empty() ){
       IN = &cin;
+    }
     else {
       IN = new ifstream( ifile );
       if ( !IN || !IN->good() ){
 	cerr << "Error: problems opening inputfile " << ifile << endl;
 	cerr << "Courageously refusing to start..."  << endl;
+	delete IN;
 	return EXIT_FAILURE;
       }
     }
   }
 
   ostream *OUT = 0;
-  if ( ofile.empty() )
+  if ( ofile.empty() ){
     OUT = &cout;
+  }
   else {
     OUT = new ofstream( ofile );
+    if ( !OUT || !OUT->good() ){
+      cerr << "Error: problems opening outputfile " << ofile << endl;
+      cerr << "Courageously refusing to start..."  << endl;
+      delete OUT;
+      if ( IN != &cin ){
+	delete IN;
+      }
+      return EXIT_FAILURE;
+    }
   }
 
   try {
@@ -309,15 +372,24 @@ int main( int argc, char *argv[] ){
     }
     else {
       // init exept for passthru mode
-      if ( !cfile.empty() ){
-	if ( !tokenizer.init( cfile ) ){
-	  return EXIT_FAILURE;
+      if ( !cfile.empty()
+	   && !tokenizer.init( cfile ) ){
+	if ( IN != &cin ){
+	  delete IN;
 	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	return EXIT_FAILURE;
       }
-      else {
-	if ( !tokenizer.init( language_list ) ){
-	  return EXIT_FAILURE;
+      else if ( !tokenizer.init( language_list ) ){
+	if ( IN != &cin ){
+	  delete IN;
 	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	return EXIT_FAILURE;
       }
     }
 

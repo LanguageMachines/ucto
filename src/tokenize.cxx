@@ -74,17 +74,17 @@ namespace Tokenizer {
 
   class uRangeError: public std::out_of_range {
   public:
-    uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
+    explicit uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
   };
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
+    explicit uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   class uCodingError: public std::runtime_error {
   public:
-    uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
+    explicit uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
   };
 
 
@@ -158,6 +158,7 @@ namespace Tokenizer {
     lowercase(false),
     uppercase(false),
     xmlout(false),
+    xmlin(false),
     passthru(false),
     inputclass("current"),
     outputclass("current"),
@@ -208,6 +209,63 @@ namespace Tokenizer {
     string::size_type pos = s.rfind( '\r' );
     if ( pos != string::npos ){
       s.erase( pos );
+    }
+  }
+
+  void TokenizerClass::extractSentencesAndFlush( int numS,
+						 vector<Token>& outputTokens,
+						 const string& lang ){
+    int count = 0;
+    const int size = tokens.size();
+    short quotelevel = 0;
+    size_t begin = 0;
+    size_t end = 0;
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
+	begin = i;
+      }
+      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	end = i+1;
+	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
+	if (tokDebug >= 1){
+	  LOG << "[tokenize] extracted sentence " << count << ", begin="<<begin << ",end="<< end << endl;
+	}
+	for ( size_t i=begin; i < end; ++i ){
+	  outputTokens.push_back( tokens[i] );
+	}
+	if ( ++count == numS ){
+	  if (tokDebug >= 1){
+	    LOG << "[tokenize] erase " << end  << " tokens from " << tokens.size() << endl;
+	  }
+	  tokens.erase( tokens.begin(),tokens.begin()+end );
+	  if ( !passthru ){
+	    if ( !settings[lang]->quotes.emptyStack() ) {
+	      settings[lang]->quotes.flushStack( end );
+	    }
+	  }
+	  //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
+	  if (!tokens.empty()) {
+	    tokens[0].role |= BEGINOFSENTENCE;
+	  }
+	  return;
+	}
+      }
+    }
+    if ( count < numS ){
+      throw uRangeError( "Not enough sentences exists in the buffer: ("
+			 + toString( count ) + " found. " + toString( numS)
+			 + " wanted)" );
     }
   }
 
@@ -289,7 +347,7 @@ namespace Tokenizer {
 	    }
 	    language = lan;
 	  }
-	  tokenizeLine( input_line, language );
+	  tokenizeLine( input_line, language, "" );
 	}
 	numS = countSentences(); //count full sentences in token buffer
       }
@@ -297,15 +355,7 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ){
 	  LOG << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	}
-	for (int i = 0; i < numS; i++) {
-	  vector<Token> v = getSentence( i );
-	  outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-	}
-	// clear processed sentences from buffer
-	if ( tokDebug > 0 ){
-	  LOG << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	}
-	flushSentences(numS, lang );
+	extractSentencesAndFlush( numS, outputTokens, lang );
 	return outputTokens;
       }
       else {
@@ -355,7 +405,7 @@ namespace Tokenizer {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
-	  tokenizeLine( line );
+	  tokenizeLine( line, lang );
 	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) {
@@ -529,6 +579,7 @@ namespace Tokenizer {
 		   const string& outputclass  ){
     //    cerr << endl << "appendText:" << root->id() << endl;
     if ( root->hastext( outputclass ) ){
+      //      cerr << "return" << endl;
       return;
     }
     UnicodeString utxt = root->text( outputclass, false, false );
@@ -546,6 +597,7 @@ namespace Tokenizer {
       return;
     if ( tokDebug >= 2 ){
       LOG << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
+      LOG << "[tokenizeElement] inputclass=" << inputclass << " outputclass=" << outputclass << endl;
     }
     if ( element->hastext( inputclass ) ) {
       // We have an element which contains text. That's nice
@@ -679,17 +731,13 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      tokenizeLine( line, lang );
+      tokenizeLine( line, lang, element->id() );
     }
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
-    for (int i = 0; i < numS; i++) {
-      vector<Token> v = getSentence( i );
-      outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-    }
+    extractSentencesAndFlush( numS, outputTokens, lang );
     outputTokensXML( element, outputTokens, 0 );
-    flushSentences( numS, lang );
   }
 
   void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {
@@ -756,12 +804,12 @@ namespace Tokenizer {
       if ( ( !root_is_structure_element && !root_is_sentence )
 	   &&
 	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Creating paragraph" << endl;
+	}
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
 	  root = root->parent();
-	}
-	if ( tokDebug > 0 ) {
-	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
@@ -845,7 +893,9 @@ namespace Tokenizer {
 	out.toUpper();
       }
       w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      //      LOG << "created " << w << " text= " <<  token.us << endl;
+      if ( tokDebug > 1 ) {
+	LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
+      }
       root->append( w );
       if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {
@@ -872,6 +922,9 @@ namespace Tokenizer {
       in_paragraph = true;
     }
     if ( tv.size() > 0 ){
+      if ( tokDebug > 0 ) {
+	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+      }
       appendText( root, outputclass );
     }
     return parCount;
@@ -1053,14 +1106,21 @@ namespace Tokenizer {
     short quotelevel = 0;
     size_t begin = 0;
     size_t end = 0;
-    for ( int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
 	begin = i;
       }
       //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
 
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (count == index) {
@@ -1074,7 +1134,7 @@ namespace Tokenizer {
 	  }
 	  return outToks;
 	}
-	count++;
+	++count;
       }
     }
     throw uRangeError( "No sentence exists with the specified index: "
@@ -1654,7 +1714,13 @@ namespace Tokenizer {
   int TokenizerClass::tokenizeLine( const string& s,
 				    const string& lang ){
     UnicodeString uinputstring = convert( s, inputEncoding );
-    return tokenizeLine( uinputstring, lang );
+    return tokenizeLine( uinputstring, lang, "" );
+  }
+
+  // UnicodeString wrapper
+  int TokenizerClass::tokenizeLine( const UnicodeString& u,
+				    const string& lang ){
+    return tokenizeLine( u, lang, "" );
   }
 
   bool u_isemo( UChar32 c ){
@@ -1769,7 +1835,8 @@ namespace Tokenizer {
   }
 
   int TokenizerClass::tokenizeLine( const UnicodeString& originput,
-				    const string& _lang ){
+				    const string& _lang,
+				    const string& id ){
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";
@@ -1791,7 +1858,14 @@ namespace Tokenizer {
       input = settings[lang]->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
-      *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
+      if ( id.empty() ){
+	LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
+	    << "   '" << input << "'" << endl;
+      }
+      else {
+	LOG << "ERROR: Invalid UTF-8 in element:" << id << endl
+	    << "   '" << input << "'" << endl;
+      }
       return 0;
     }
     int32_t len = input.countChar32();
@@ -1912,6 +1986,21 @@ namespace Tokenizer {
       }
       sit.next32();
       ++i;
+      if ( i > 2500 ){
+	if ( id.empty() ){
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in line: " << linenum << ". Skipped ..." << endl;
+	  LOG << "The line starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
+	else {
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in element: " << id << ". Skipped ..." << endl;
+	  LOG << "The text starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
+	return 0;
+      }
     }
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){

@@ -149,6 +149,7 @@ namespace Tokenizer {
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
+    void extractSentencesAndFlush( int, std::vector<Token>&, const std::string& );
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
@@ -227,6 +228,7 @@ namespace Tokenizer {
     const std::string setTextClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
+      outputclass = cls;
       return res;
     }
     const std::string getInputClass( ) const { return inputclass; }
@@ -261,6 +263,9 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
+    int tokenizeLine( const UnicodeString&,
+		      const std::string&,
+		      const std::string& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,

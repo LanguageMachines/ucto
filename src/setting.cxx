@@ -117,7 +117,7 @@ namespace Tokenizer {
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
+    explicit uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   ostream& operator<<( ostream& os, const Quoting& q ){
@@ -231,6 +231,22 @@ namespace Tokenizer {
     }
     rulesmap.clear();
     delete theErrLog;
+  }
+
+  set<string> Setting::installed_languages() {
+    // we only return 'languages' which are installed as 'tokconfig-*'
+    //
+    vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
+    set<string> result;
+    for ( auto const& f : files ){
+      string base = TiCC::basename(f);
+      size_t pos = base.find("tokconfig-");
+      if ( pos == 0 ){
+	string lang = base.substr( 10 );
+	result.insert( lang );
+      }
+    }
+    return result;
   }
 
   bool Setting::readrules( const string& fname ){
@@ -661,7 +677,7 @@ namespace Tokenizer {
 	    }
 	      break;
 	    default:
-	      throw uLogicError("unhandled case in switch");
+	      throw uLogicError( "unhandled case in switch" );
 	    }
 	  }
 	}

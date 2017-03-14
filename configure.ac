@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.9.6], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.9.7], [lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -119,7 +119,7 @@ PKG_CHECK_MODULES(
 	[uctodata],
 	[PKG_CHECK_MODULES(
 		[uctodata],
-		[uctodata >= 0.3],
+		[uctodata >= 0.4],
 		[],
 		[AC_MSG_NOTICE([ATTENTION:
 	Your ucto datafiles are are outdated
