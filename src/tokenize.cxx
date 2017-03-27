@@ -1885,16 +1885,18 @@ namespace Tokenizer {
     UnicodeString word;
     StringCharacterIterator sit(input);
     long int i = 0;
+    long int tok_size = 0;
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( tokDebug > 8 ){
 	UnicodeString s = c;
 	int8_t charT = u_charType( c );
 	LOG << "examine character: " << s << " type= "
-			<< toString( charT  ) << endl;
+	    << toString( charT  ) << endl;
       }
       if (reset) { //reset values for new word
 	reset = false;
+	tok_size = 0;
 	if (!u_isspace(c))
 	  word = c;
 	else
@@ -1986,7 +1988,8 @@ namespace Tokenizer {
       }
       sit.next32();
       ++i;
-      if ( i > 2500 ){
+      ++tok_size;
+      if ( tok_size > 2500 ){
 	if ( id.empty() ){
 	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
 	      << "in line: " << linenum << ". Skipped ..." << endl;
