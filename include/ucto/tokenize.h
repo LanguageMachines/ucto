@@ -186,6 +186,10 @@ namespace Tokenizer {
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
     bool getQuoteDetection() const { return detectQuotes; }
 
+    //Enable language detection
+    bool setLangDetection( bool b=true ) { bool t = doDetectLang; doDetectLang = b; return t; }
+    bool getLangDetection() const { return doDetectLang; }
+
     //Enable filtering
     bool setFiltering( bool b=true ) {
       bool t = doFilter; doFilter = b; return t;
@@ -325,6 +329,9 @@ namespace Tokenizer {
 
     //has a paragraph been signaled?
     bool paragraphsignal;
+
+    //has do we attempt to assign languages?
+    bool doDetectLang;
 
     //one sentence per line output
     bool sentenceperlineoutput;

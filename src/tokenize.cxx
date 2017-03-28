@@ -153,6 +153,7 @@ namespace Tokenizer {
     doPunctFilter(false),
     detectPar(true),
     paragraphsignal(true),
+    doDetectLang(false),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
     lowercase(false),
@@ -435,7 +436,7 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
-    if ( default_language != "none" ){
+    if ( /*doDetectLang &&*/ default_language != "none" ){
       if ( tokDebug > 0 ){
 	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
       }
@@ -554,16 +555,18 @@ namespace Tokenizer {
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
     }
-    string lan = doc.doc()->language();
-    if ( lan.empty() && default_language != "none" ){
-      if ( tokDebug > 1 ){
-	LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
+    if ( true /*doDetectLang*/ ){
+      string lan = doc.doc()->language();
+      if ( lan.empty() && default_language != "none" ){
+	if ( tokDebug > 1 ){
+	  LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
+	}
+	doc.set_metadata( "language", default_language );
       }
-      doc.set_metadata( "language", default_language );
-    }
-    else {
-      if ( tokDebug >= 2 ){
-	LOG << "[tokenize](FoLiA) Document has language " << lan << endl;
+      else {
+	if ( tokDebug >= 2 ){
+	  LOG << "[tokenize](FoLiA) Document has language " << lan << endl;
+	}
       }
     }
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
@@ -589,8 +592,31 @@ namespace Tokenizer {
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
+  const string get_language( folia::FoliaElement *f ) {
+    // get the language of this element, if any, don't look up.
+    // we search in ALL possible sets!
+    string st = "";
+    std::set<folia::ElementType> exclude;
+    vector<folia::LangAnnotation*> v
+      = f->select<folia::LangAnnotation>( st, exclude, false );
+    string result;
+    if ( v.size() > 0 ){
+      result = v[0]->cls();
+    }
+    return result;
+  }
 
-  void TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
+  void set_language( folia::FoliaElement* e, const string& lan ){
+    // set or reset the language: append a LangAnnotation child of class 'lan'
+    folia::KWargs args;
+    args["class"] = lan;
+    args["set"] = ISO_SET;
+    folia::LangAnnotation *node = new folia::LangAnnotation( e->doc() );
+    node->setAttributes( args );
+    e->replace( node );
+  }
+
+  void TokenizerClass::tokenizeElement( folia::FoliaElement * element) {
     if ( element->isinstance(folia::Word_t)
 	 || element->isinstance(folia::TextContent_t))
       // shortcut
@@ -649,10 +675,31 @@ namespace Tokenizer {
 	}
       }
       // now let's check our language
-      string lan = element->language(); // remember thus recurses upward
-      // to get a language from the node, it's parents OR the doc
-      if ( lan.empty() || default_language == "none" ){
-	lan = "default";
+      string lan;
+      if ( doDetectLang ){
+	lan = get_language( element ); // is there a local element language?
+	if ( lan.empty() ){
+	  // no, so try to detect it!
+	  UnicodeString temp = element->text( inputclass );
+	  temp.toLower();
+	  lan = tc->get_language( folia::UnicodeToUTF8(temp) );
+	  if ( lan.empty() ){
+	    // too bad
+	    lan = "default";
+	  }
+	  else {
+	    if ( tokDebug >= 2 ){
+	      LOG << "[tokenizeElement] textcat found a supported language! " << lan << endl;
+	    }
+	  }
+	}
+      }
+      else {
+	lan = element->language(); // remember thus recurses upward
+	// to get a language from the node, it's parents OR the doc
+	if ( lan.empty() || default_language == "none" ){
+	  lan = "default";
+	}
       }
       auto const it = settings.find(lan);
       if ( it != settings.end() ){
@@ -682,12 +729,7 @@ namespace Tokenizer {
 	if ( tokDebug >= 2 ){
 	  LOG << "[tokenizeElement] set language to " << lan << endl;
 	}
-	folia::KWargs args;
-	args["class"] = lan;
-	args["set"] = ISO_SET;
-	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
-	node->setAttributes( args );
-	element->append( node );
+	set_language( element, lan );
       }
       tokenizeSentenceElement( element, lan );
       return;
@@ -855,12 +897,7 @@ namespace Tokenizer {
 	  }
 	  s->doc()->declare( folia::AnnotationType::LANG,
 			     ISO_SET, "annotator='ucto'" );
-	  folia::KWargs args;
-	  args["class"] = tok_lan;
-	  args["set"] = ISO_SET;
-	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
-	  node->setAttributes( args );
-	  s->append( node );
+	  set_language( s, tok_lan );
 	}
 	root = s;
 	lastS = root;

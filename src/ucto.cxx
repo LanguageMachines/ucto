@@ -72,7 +72,8 @@ void usage(){
        << "\t--normalize=<class1>,class2>,... " << endl
        << "\t                 - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
        << "\t--filterpunct    - remove all punctuation from the output" << endl
-       << "\t--detectlanguages=<lang1,lang2,..langn> - try to detect languages. Default = 'lang1'" << endl
+       << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
+       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
        << "\t-P               - Disable paragraph detection" << endl
        << "\t-S               - Disable sentence detection!" << endl
        << "\t-Q               - Enable quote detection (experimental)" << endl
@@ -94,6 +95,7 @@ int main( int argc, char *argv[] ){
   bool sentenceperlineinput = false;
   bool paragraphdetection = true;
   bool quotedetection = false;
+  bool do_language_detect = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
   bool splitsentences = true;
@@ -116,7 +118,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:");
+			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -199,23 +201,43 @@ int main( int argc, char *argv[] ){
 	cerr << "Error: -L and --detectlanguages options conflict. Use only one of them." << endl;
 	return EXIT_FAILURE;
       }
+      else if ( Opts.is_present( "uselanguages" ) ){
+	cerr << "Error: -L and --uselanguages options conflict. Use only one of them." << endl;
+	return EXIT_FAILURE;
+      }
     }
-    else if ( Opts.is_present( 'c' )
-	      && Opts.is_present( "detectlanguages" ) ){
-      cerr << "Error: -c and --detectlanguages options conflict. Use only one of them." << endl;
+    else if ( Opts.is_present( 'c' ) ){
+      if ( Opts.is_present( "detectlanguages" ) ){
+	cerr << "Error: -c and --detectlanguages options conflict. Use only one of them." << endl;
+	return EXIT_FAILURE;
+      }
+      else if ( Opts.is_present( "uselanguages" ) ){
+	cerr << "Error: -L and --uselanguages options conflict. Use only one of them." << endl;
+	return EXIT_FAILURE;
+      }
+    }
+    if ( Opts.is_present( "detectlanguages" ) &&
+	 Opts.is_present( "uselanguages" ) ){
+      cerr << "Error: --detectlanguages and --uselanguages options conflict. Use only one of them." << endl;
       return EXIT_FAILURE;
     }
-
     Opts.extract( 'c', c_file );
+
     string languages;
     Opts.extract( "detectlanguages", languages );
-    bool do_language_detect = !languages.empty();
-    if ( do_language_detect ){
+    if ( languages.empty() ){
+      Opts.extract( "uselanguages", languages );
+    }
+    else {
+      do_language_detect = true;
+    }
+    if ( !languages.empty() ){
       if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
 	throw TiCC::OptionError( "invalid language list: " + languages );
       }
     }
     else {
+      // so nu --detectlanguages ot --uselanguages
       string language;
       if ( Opts.extract('L', language ) ){
 	// support some backward compatability to old ISO 639-1 codes
@@ -281,7 +303,7 @@ int main( int argc, char *argv[] ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
-      cerr << "missing a language specification (-L or --detectlanguages option)" << endl;
+      cerr << "missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
       if ( available_languages.size() == 1
 	   && *available_languages.begin() == "generic" ){
 	cerr << "The uctodata package seems not to be installed." << endl;
@@ -406,6 +428,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setNormalization( normalization );
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
+    tokenizer.setLangDetection(do_language_detect);
     tokenizer.setPunctFilter(dopunctfilter);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
