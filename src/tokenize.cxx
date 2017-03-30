@@ -689,7 +689,7 @@ namespace Tokenizer {
 	  }
 	  else {
 	    if ( tokDebug >= 2 ){
-	      LOG << "[tokenizeElement] textcat found a supported language! " << lan << endl;
+	      LOG << "[tokenizeElement] textcat found a supported language: " << lan << endl;
 	    }
 	  }
 	}
@@ -704,7 +704,7 @@ namespace Tokenizer {
       auto const it = settings.find(lan);
       if ( it != settings.end() ){
 	if ( tokDebug >= 2 ){
-	  LOG << "[tokenizeElement] Found a supported language! " << lan << endl;
+	  LOG << "[tokenizeElement] Found a supported language: " << lan << endl;
 	}
       }
       else if ( !default_language.empty() ){
@@ -803,7 +803,7 @@ namespace Tokenizer {
     string lan = doc.doc()->language();
     if ( lan.empty() ){
       if ( tokDebug >= 1 ){
-	LOG << "[outputTokensDoc] SET docuemnt language="
+	LOG << "[outputTokensDoc] SET document language="
 	    << default_language << endl;
       }
       doc.set_metadata( "language", default_language );
@@ -2242,7 +2242,7 @@ namespace Tokenizer {
 	  break;
 	}
       }
-      if ( ! a_rule_matched ){
+      if ( !a_rule_matched ){
 	// no rule matched
 	if ( tokDebug >=4 ){
 	  LOG << "\tthere's no match at all" << endl;
