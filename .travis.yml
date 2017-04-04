@@ -13,10 +13,11 @@ matrix:
       cache: ccache
       compiler: gcc
       addons:
-        apt:
-          sources: ['ubuntu-toolchain-r-test']
-          packages: ['g++-4.9']
-      env: COMPILER=g++-4.9
+#        apt:
+#          sources: ['ubuntu-toolchain-r-test']
+#          packages: ['g++-4.9']
+#      env: COMPILER=g++-4.9
+      env: COMPILER=g++
            SCAN=echo
 
 #    - os: linux
