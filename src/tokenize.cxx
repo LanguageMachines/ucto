@@ -622,7 +622,8 @@ namespace Tokenizer {
       // shortcut
       return;
     if ( tokDebug >= 2 ){
-      LOG << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
+      LOG << "[tokenizeElement] Processing FoLiA element " << element->xmltag()
+	  << "(" << element->id() << ")" << endl;
       LOG << "[tokenizeElement] inputclass=" << inputclass << " outputclass=" << outputclass << endl;
     }
     if ( element->hastext( inputclass ) ) {
