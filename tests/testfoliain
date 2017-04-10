@@ -1,6 +1,4 @@
 #/bin/sh
-# $Id$
-# $URL$
 
 exe=../src/ucto
 
@@ -12,3 +10,4 @@ $exe -L nl -F empty.xml
 $exe -L nl --inputclass OCR -F folia5.xml
 $exe -L nl --inputclass OCR --outputclass=AHA -F folia5.xml
 $exe -L nl --inputclass OCR -F folia6.xml
+$exe -L nl -F folia7.xml
