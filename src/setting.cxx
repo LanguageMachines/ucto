@@ -230,7 +230,6 @@ namespace Tokenizer {
       delete rule;
     }
     rulesmap.clear();
-    delete theErrLog;
   }
 
   set<string> Setting::installed_languages() {

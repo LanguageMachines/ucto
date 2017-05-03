@@ -174,8 +174,14 @@ namespace Tokenizer {
   }
 
   TokenizerClass::~TokenizerClass(){
-    //    delete setting;
+    for ( const auto& s : settings ){
+      if ( s.first == "default" ){
+	continue;
+      }
+      delete s.second;
+    }
     delete theErrLog;
+    delete tc;
   }
 
   bool TokenizerClass::reset( const string& lang ){
