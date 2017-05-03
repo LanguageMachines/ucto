@@ -174,11 +174,18 @@ namespace Tokenizer {
   }
 
   TokenizerClass::~TokenizerClass(){
+    Setting *d = 0;
     for ( const auto& s : settings ){
       if ( s.first == "default" ){
-	continue;
+	// the 'default' may also return as a real 'language'
+	// avoud delettng it twice
+	d = s.second;
+	delete d;
       }
-      delete s.second;
+      if ( s.second != d ){
+	delete s.second;
+      }
+
     }
     delete theErrLog;
     delete tc;
