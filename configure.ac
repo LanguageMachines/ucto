@@ -50,12 +50,6 @@ AC_TYPE_INT32_T
 
 AX_LIB_READLINE
 
-# ugly hack when PKG_CONFIG_PATH isn't defined.
-# couldn't get it to work otherwise
-if test "x$PKG_CONFIG_PATH" = x; then
-    export PKG_CONFIG_PATH=""
-fi
-#AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
 AC_CHECK_HEADERS([libexttextcat/textcat.h],
 	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
 	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
@@ -67,26 +61,36 @@ AC_CHECK_HEADERS([libexttextcat/textcat.h],
 AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
   [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
-useICU=1;
-# inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
-AC_ARG_WITH(icu,
-       [  --with-icu=DIR       use ICU installed in <DIR>],
-       [if test "$with_icu" = "no"; then
-           useICU=0
-	else
-	   CXXFLAGS="$CXXFLAGS -I$withval/include"
-           LIBS="-L$withval/lib $LIBS"
-	fi] )
-
-if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [5.2],
-		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
-		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
-		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
-  AC_DEFINE(HAVE_ICU, 1, we want to use ICU )
-else
-  AC_MSG_ERROR("ICU support is required")
+# ugly hack when PKG_CONFIG_PATH isn't defined.
+# couldn't get it to work otherwise
+if test "x$PKG_CONFIG_PATH" = x; then
+    export PKG_CONFIG_PATH=""
 fi
+#AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
+PKG_CHECK_MODULES([ICU], [icu-uc >= 52 icu-io] )
+CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
+LIBS="$ICU_LIBS $LIBS"
+
+#useICU=1;
+## inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
+#AC_ARG_WITH(icu,
+#       [  --with-icu=DIR       use ICU installed in <DIR>],
+#       [if test "$with_icu" = "no"; then
+#           useICU=0
+#	else
+#	   CXXFLAGS="$CXXFLAGS -I$withval/include"
+#           LIBS="-L$withval/lib $LIBS"
+#	fi] )
+#
+#if test "$useICU" = "1"; then
+#  AX_ICU_CHECK( [5.2],
+#		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
+#		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
+#		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
+#  AC_DEFINE(HAVE_ICU, 1, we want to use ICU )
+#else
+#  AC_MSG_ERROR("ICU support is required")
+#fi
 
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
