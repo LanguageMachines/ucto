@@ -139,7 +139,6 @@ PKG_CHECK_MODULES(
 AC_OUTPUT([
   Makefile
   ucto.pc
-  ucto-icu.pc
   m4/Makefile
   config/Makefile
   docs/Makefile
