@@ -66,54 +66,22 @@ AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAV
 if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH=""
 fi
+
+PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
+
 #AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
 PKG_CHECK_MODULES([ICU], [icu-uc >= 52 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
 
-#useICU=1;
-## inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
-#AC_ARG_WITH(icu,
-#       [  --with-icu=DIR       use ICU installed in <DIR>],
-#       [if test "$with_icu" = "no"; then
-#           useICU=0
-#	else
-#	   CXXFLAGS="$CXXFLAGS -I$withval/include"
-#           LIBS="-L$withval/lib $LIBS"
-#	fi] )
-#
-#if test "$useICU" = "1"; then
-#  AX_ICU_CHECK( [5.2],
-#		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
-#		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
-#		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
-#  AC_DEFINE(HAVE_ICU, 1, we want to use ICU )
-#else
-#  AC_MSG_ERROR("ICU support is required")
-#fi
-
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-AC_ARG_WITH(folia,
-       [  --with-folia=DIR       use libfolia installed in <DIR>;
-               note that you can install folia in a non-default directory with
-               ./configure --prefix=<DIR> in the folia installation directory],
-       [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH"],
-       [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
-#AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
-PKG_CHECK_MODULES([folia], [folia >= 1.0] )
+PKG_CHECK_MODULES([folia], [folia >= 1.8] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
-AC_ARG_WITH(ticcutils,
-       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>;
-               note that you can install ticcutils in a non-default directory with
-               ./configure --prefix=<DIR> in the ticcutils installation directory],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
-#  AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
