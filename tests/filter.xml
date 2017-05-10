@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="id" generator="libfolia-v1.8" version="1.4.0">
+  <metadata type="native">
+    <annotations>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <p xml:id="doc">
+      <t class="OCR">Schießen ist erlaubt..</t>
+    </p>
+  </text>
+</FoLiA>

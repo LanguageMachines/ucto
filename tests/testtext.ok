@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="id" generator="libfolia-v1.8" version="1.4.0">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-10T17:21:09" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+    <p xml:id="doc">
+      <t class="OCR">Schiessen ist erlaubt..</t>
+      <s xml:id="doc.s.1">
+        <t class="OCR">Schiessen ist erlaubt..</t>
+        <w xml:id="doc.s.1.w.1" class="WORD">
+          <t class="OCR">Schiessen</t>
+        </w>
+        <w xml:id="doc.s.1.w.2" class="WORD">
+          <t class="OCR">ist</t>
+        </w>
+        <w xml:id="doc.s.1.w.3" class="WORD" space="no">
+          <t class="OCR">erlaubt</t>
+        </w>
+        <w xml:id="doc.s.1.w.4" class="PUNCTUATION-MULTI">
+          <t class="OCR">..</t>
+        </w>
+      </s>
+    </p>
+  </text>
+</FoLiA>
+
+
