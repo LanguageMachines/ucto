@@ -83,7 +83,8 @@ void usage(){
        << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
        << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
-       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl       << "\t--textclass <class> - use the specified class for noth input and output of text in the FoLia doc. (default is 'current')" << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
+       << "\t--textclass <class> - OBSOLETE. use the specified class for both input and output of text in the FoLia doc. (default is 'current')" << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
