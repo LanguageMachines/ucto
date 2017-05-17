@@ -594,14 +594,12 @@ namespace Tokenizer {
   void appendText( folia::FoliaElement *root,
 		   const string& outputclass  ){
     // set the textcontent of root to that of it's children
-    // if ( root->hastext( outputclass ) ){
-    //   // there is alredy text, bail out.
-    //   return;
-    // }
-
-    // OVERIDE what was there!
+    if ( root->hastext( outputclass ) ){
+      // there is already text, bail out.
+      return;
+    }
     UnicodeString utxt = root->text( outputclass, false, false );
-    // so get Untokenized text from the children, and set i
+    // so get Untokenized text from the children, and set it
     root->settext( folia::UnicodeToUTF8(utxt), outputclass, true );
   }
 

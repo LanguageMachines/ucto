@@ -176,7 +176,14 @@ int main( int argc, char *argv[] ){
       inputclass = textclass;
       outputclass = textclass;
     }
+    if ( xmlin && outputclass == inputclass ){
+      // we cannot mangle the original inputclass, so silently disable filtering
+      dofiltering = false;
+    }
     if ( xmlin && outputclass.empty() ){
+      if ( dofiltering ){
+	throw TiCC::OptionError( "--outputclass or -f (nofiltering) required on FoLiA input ");
+      }
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
       }
