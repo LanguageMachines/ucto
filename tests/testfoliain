@@ -3,6 +3,7 @@
 exe=../src/ucto
 
 $exe -L nl -F folia1.xml
+$exe -L nl --outputclass=ligafilter -F folia1.xml
 $exe -L nl --filterpunct --outputclass=FILTER -F folia2.xml
 $exe -L nl -u --outputclass=UPP -F folia3.xml
 $exe -L nl -F folia4.xml
