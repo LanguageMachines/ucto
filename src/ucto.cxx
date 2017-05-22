@@ -136,19 +136,6 @@ int main( int argc, char *argv[] ){
       return EXIT_SUCCESS;
     }
     Opts.extract('e', inputEncoding );
-    if ( Opts.extract( 'f' ) ){
-      cerr << "The -f option is used.  Please consider using --filter=NO" << endl;
-      dofiltering = false;
-    }
-    string value;
-    if ( Opts.extract( "filter", value ) ){
-      bool result;
-      if ( !TiCC::stringTo( value, result ) ){
-	cerr << "illegal value for '--filter' option. (boolean expected)" << endl;
-	return EXIT_FAILURE;
-      }
-      dofiltering = result;
-    }
     dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
     splitsentences = !Opts.extract( 'S' );
@@ -189,14 +176,25 @@ int main( int argc, char *argv[] ){
       inputclass = textclass;
       outputclass = textclass;
     }
-    if ( xmlin && outputclass == inputclass ){
-      // we cannot mangle the original inputclass, so silently disable filtering
+    if ( Opts.extract( 'f' ) ){
+      cerr << "The -f option is used.  Please consider using --filter=NO" << endl;
+      dofiltering = false;
+    }
+    string value;
+    if ( Opts.extract( "filter", value ) ){
+      bool result;
+      if ( !TiCC::stringTo( value, result ) ){
+	throw TiCC::OptionError( "illegal value for '--filter' option. (boolean expected)" );
+      }
+      dofiltering = result;
+    }
+    if ( dofiltering && xmlin && outputclass == inputclass ){
+      // we cannot mangle the original inputclass, so disable filtering
+      cout << "--filter=NO is automaticly set. inputclass equals outputclass!"
+	   << endl;
       dofiltering = false;
     }
     if ( xmlin && outputclass.empty() ){
-      if ( dofiltering ){
-	throw TiCC::OptionError( "--outputclass or --filter=FALSE required on FoLiA input ");
-      }
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
       }
