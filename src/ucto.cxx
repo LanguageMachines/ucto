@@ -49,42 +49,43 @@ void usage(){
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
-       << "\t-c <configfile>  - Explicitly specify a configuration file" << endl
-       << "\t-d <value>       - set debug level" << endl
-       << "\t-e <string>      - set input encoding (default UTF8)" << endl
-       << "\t-N <string>      - set output normalization (default NFC)" << endl
-       << "\t-f               - Disable filtering of special characters" << endl
-       << "\t-h or --help     - this message" << endl
-       << "\t-L <language>    - Automatically selects a configuration file by language code." << endl
-       << "\t                 - Available Languages:" << endl
-       << "\t                   ";
+       << "\t-c <configfile>   - Explicitly specify a configuration file" << endl
+       << "\t-d <value>        - set debug level" << endl
+       << "\t-e <string>       - set input encoding (default UTF8)" << endl
+       << "\t-N <string>       - set output normalization (default NFC)" << endl
+       << "\t--filter=[YES|NO] - Disable filtering of special characters" << endl
+       << "\t-f                - OBSOLETE. use --filter=NO" << endl
+       << "\t-h or --help      - this message" << endl
+       << "\t-L <language>     - Automatically selects a configuration file by language code." << endl
+       << "\t                  - Available Languages:" << endl
+       << "\t                    ";
   for( const auto l : languages ){
     cerr << l << ",";
   }
   cerr << endl;
-  cerr << "\t-l               - Convert to all lowercase" << endl
-       << "\t-u               - Convert to all uppercase" << endl
-       << "\t-n               - One sentence per line (output)" << endl
-       << "\t-m               - One sentence per line (input)" << endl
-       << "\t-v               - Verbose mode" << endl
-       << "\t-s <string>      - End-of-Sentence marker (default: <utt>)" << endl
-       << "\t--passthru       - Don't tokenize, but perform input decoding and simple token role detection" << endl
+  cerr << "\t-l                - Convert to all lowercase" << endl
+       << "\t-u                - Convert to all uppercase" << endl
+       << "\t-n                - One sentence per line (output)" << endl
+       << "\t-m                - One sentence per line (input)" << endl
+       << "\t-v                - Verbose mode" << endl
+       << "\t-s <string>       - End-of-Sentence marker (default: <utt>)" << endl
+       << "\t--passthru        - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
-       << "\t                 - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
-       << "\t--filterpunct    - remove all punctuation from the output" << endl
+       << "\t                  - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
+       << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
-       << "\t-P               - Disable paragraph detection" << endl
-       << "\t-S               - Disable sentence detection!" << endl
-       << "\t-Q               - Enable quote detection (experimental)" << endl
-       << "\t-V or --version  - Show version information" << endl
-       << "\t-x <DocID>       - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
-       << "\t-F               - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
-       << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
-       << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
+       << "\t-P                - Disable paragraph detection" << endl
+       << "\t-S                - Disable sentence detection!" << endl
+       << "\t-Q                - Enable quote detection (experimental)" << endl
+       << "\t-V or --version   - Show version information" << endl
+       << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
+       << "\t-F                - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
+       << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
-       << "\t--textclass <class> - OBSOLETE. use the specified class for both input and output of text in the FoLia doc. (default is 'current')" << endl
+       << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
@@ -119,7 +120,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -135,7 +136,19 @@ int main( int argc, char *argv[] ){
       return EXIT_SUCCESS;
     }
     Opts.extract('e', inputEncoding );
-    dofiltering = !Opts.extract( 'f' );
+    if ( Opts.extract( 'f' ) ){
+      cerr << "The -f option is used.  Please consider using --filter=NO" << endl;
+      dofiltering = false;
+    }
+    string value;
+    if ( Opts.extract( "filter", value ) ){
+      bool result;
+      if ( !TiCC::stringTo( value, result ) ){
+	cerr << "illegal value for '--filter' option. (boolean expected)" << endl;
+	return EXIT_FAILURE;
+      }
+      dofiltering = result;
+    }
     dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
     splitsentences = !Opts.extract( 'S' );
@@ -182,7 +195,7 @@ int main( int argc, char *argv[] ){
     }
     if ( xmlin && outputclass.empty() ){
       if ( dofiltering ){
-	throw TiCC::OptionError( "--outputclass or -f (nofiltering) required on FoLiA input ");
+	throw TiCC::OptionError( "--outputclass or --filter=FALSE required on FoLiA input ");
       }
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
@@ -194,7 +207,6 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
       }
     }
-    string value;
     if ( Opts.extract('d', value ) ){
       if ( !TiCC::stringTo(value,debug) ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );

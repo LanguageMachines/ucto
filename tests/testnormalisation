@@ -13,8 +13,8 @@ $exe -L nl -N NFC -f normalisation.nl.txt
 $exe -L nl -N NFD normalisation.nl.txt
 $exe -L nl -N NFD -f normalisation.nl.txt
 
-$exe -L nl -N NFKC normalisation.nl.txt
-$exe -L nl -N NFKC -f normalisation.nl.txt
+$exe -L nl -N NFKC --filter=YES normalisation.nl.txt
+$exe -L nl -N NFKC --filter=NO normalisation.nl.txt
 
 $exe -L nl -N NFKD normalisation.nl.txt
 $exe -L nl -N NFKD -f normalisation.nl.txt
