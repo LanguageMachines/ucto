@@ -177,7 +177,7 @@ int main( int argc, char *argv[] ){
       outputclass = textclass;
     }
     if ( Opts.extract( 'f' ) ){
-      cerr << "The -f option is used.  Please consider using --filter=NO" << endl;
+      cerr << "ucto: The -f option is used.  Please consider using --filter=NO" << endl;
       dofiltering = false;
     }
     string value;
@@ -190,7 +190,7 @@ int main( int argc, char *argv[] ){
     }
     if ( dofiltering && xmlin && outputclass == inputclass ){
       // we cannot mangle the original inputclass, so disable filtering
-      cout << "--filter=NO is automaticly set. inputclass equals outputclass!"
+      cerr << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
 	   << endl;
       dofiltering = false;
     }
@@ -212,32 +212,26 @@ int main( int argc, char *argv[] ){
     }
     if ( Opts.is_present('L') ) {
       if ( Opts.is_present('c') ){
-	cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
       }
       else if ( Opts.is_present( "detectlanguages" ) ){
-	cerr << "Error: -L and --detectlanguages options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and --detectlanguages options conflict. Use only one of these." );
       }
       else if ( Opts.is_present( "uselanguages" ) ){
-	cerr << "Error: -L and --uselanguages options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
       }
     }
     else if ( Opts.is_present( 'c' ) ){
       if ( Opts.is_present( "detectlanguages" ) ){
-	cerr << "Error: -c and --detectlanguages options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-c and --detectlanguages options conflict. Use only one of these" );
       }
       else if ( Opts.is_present( "uselanguages" ) ){
-	cerr << "Error: -L and --uselanguages options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
       }
     }
     if ( Opts.is_present( "detectlanguages" ) &&
 	 Opts.is_present( "uselanguages" ) ){
-      cerr << "Error: --detectlanguages and --uselanguages options conflict. Use only one of them." << endl;
-      return EXIT_FAILURE;
+      throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
     }
     Opts.extract( 'c', c_file );
 
@@ -321,16 +315,16 @@ int main( int argc, char *argv[] ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
-      cerr << "missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
+      cerr << "ucto: missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
       if ( available_languages.size() == 1
 	   && *available_languages.begin() == "generic" ){
-	cerr << "The uctodata package seems not to be installed." << endl;
-	cerr << "You can use '-L generic' to run a simple default tokenizer."
+	cerr << "ucto: The uctodata package seems not to be installed." << endl;
+	cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
 	     << endl;
-	cerr << "Installing uctodata is highly recommended." << endl;
+	cerr << "ucto: Installing uctodata is highly recommended." << endl;
       }
       else {
-	cerr << "Available Languages: ";
+	cerr << "ucto: Available Languages: ";
 	for( const auto& l : available_languages ){
 	  cerr << l << ",";
 	}
@@ -341,16 +335,16 @@ int main( int argc, char *argv[] ){
     else {
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
-	  cerr << "unsupported language '" << l << "'" << endl;
+	  cerr << "ucto: unsupported language '" << l << "'" << endl;
 	  if ( available_languages.size() == 1
 	       && *available_languages.begin() == "generic" ){
-	    cerr << "The uctodata package seems not to be installed." << endl;
-	    cerr << "You can use '-L generic' to run a simple default tokenizer."
+	    cerr << "ucto: The uctodata package seems not to be installed." << endl;
+	    cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
 		 << endl;
-	    cerr << "Installing uctodata is highly recommended." << endl;
+	    cerr << "ucto: Installing uctodata is highly recommended." << endl;
 	  }
 	  else {
-	    cerr << "Available Languages: ";
+	    cerr << "ucto: Available Languages: ";
 	    for( const auto& l : available_languages ){
 	      cerr << l << ",";
 	    }
@@ -363,12 +357,12 @@ int main( int argc, char *argv[] ){
   }
 
   if ((!ifile.empty()) && (ifile == ofile)) {
-    cerr << "Error: Output file equals input file! Courageously refusing to start..."  << endl;
+    cerr << "ucto: Output file equals input file! Courageously refusing to start..."  << endl;
     return EXIT_FAILURE;
   }
 
-  cerr << "inputfile = "  << ifile << endl;
-  cerr << "outputfile = " << ofile << endl;
+  cerr << "ucto: inputfile = "  << ifile << endl;
+  cerr << "ucto: outputfile = " << ofile << endl;
 
   istream *IN = 0;
   if (!xmlin) {
@@ -378,8 +372,8 @@ int main( int argc, char *argv[] ){
     else {
       IN = new ifstream( ifile );
       if ( !IN || !IN->good() ){
-	cerr << "Error: problems opening inputfile " << ifile << endl;
-	cerr << "Courageously refusing to start..."  << endl;
+	cerr << "ucto: problems opening inputfile " << ifile << endl;
+	cerr << "ucto: Courageously refusing to start..."  << endl;
 	delete IN;
 	return EXIT_FAILURE;
       }
@@ -393,8 +387,8 @@ int main( int argc, char *argv[] ){
   else {
     OUT = new ofstream( ofile );
     if ( !OUT || !OUT->good() ){
-      cerr << "Error: problems opening outputfile " << ofile << endl;
-      cerr << "Courageously refusing to start..."  << endl;
+      cerr << "ucto: problems opening outputfile " << ofile << endl;
+      cerr << "ucto: Courageously refusing to start..."  << endl;
       delete OUT;
       if ( IN != &cin ){
 	delete IN;
@@ -467,7 +461,7 @@ int main( int argc, char *argv[] ){
     }
   }
   catch ( exception &e ){
-    cerr << e.what() << endl;
+    cerr << "ucto: " << e.what() << endl;
     return EXIT_FAILURE;
   }
 

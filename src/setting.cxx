@@ -250,7 +250,7 @@ namespace Tokenizer {
 
   bool Setting::readrules( const string& fname ){
     if ( tokDebug > 0 ){
-      *theErrLog << "%include " << fname << endl;
+      LOG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -263,7 +263,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    *theErrLog << "include line = " << rawline << endl;
+	    LOG << "include line = " << rawline << endl;
 	  }
 	  const int splitpoint = line.indexOf("=");
 	  if ( splitpoint < 0 ){
@@ -281,14 +281,14 @@ namespace Tokenizer {
 
   bool Setting::readfilters( const string& fname ){
     if ( tokDebug > 0 ){
-      *theErrLog << "%include " << fname << endl;
+      LOG << "%include " << fname << endl;
     }
     return filter.fill( fname );
   }
 
   bool Setting::readquotes( const string& fname ){
     if ( tokDebug > 0 ){
-      *theErrLog << "%include " << fname << endl;
+      LOG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -301,7 +301,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    *theErrLog << "include line = " << rawline << endl;
+	    LOG << "include line = " << rawline << endl;
 	  }
 	  int splitpoint = line.indexOf(" ");
 	  if ( splitpoint == -1 )
@@ -329,7 +329,7 @@ namespace Tokenizer {
 
   bool Setting::readeosmarkers( const string& fname ){
     if ( tokDebug > 0 ){
-      *theErrLog << "%include " << fname << endl;
+      LOG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -342,7 +342,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    *theErrLog << "include line = " << rawline << endl;
+	    LOG << "include line = " << rawline << endl;
 	  }
 	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
 	       ( line.startsWith("\\U") && line.length() == 10 ) ){
@@ -361,7 +361,7 @@ namespace Tokenizer {
   bool Setting::readabbreviations( const string& fname,
 				   UnicodeString& abbreviations ){
     if ( tokDebug > 0 ){
-      *theErrLog << "%include " << fname << endl;
+      LOG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -374,7 +374,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    *theErrLog << "include line = " << rawline << endl;
+	    LOG << "include line = " << rawline << endl;
 	  }
 	  if ( !abbreviations.isEmpty())
 	    abbreviations += '|';

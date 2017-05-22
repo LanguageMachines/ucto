@@ -165,8 +165,8 @@ namespace Tokenizer {
     outputclass("current"),
     tc( 0 )
   {
-    theErrLog = new TiCC::LogStream(cerr);
-    theErrLog->setstamp( NoStamp );
+    theErrLog = new TiCC::LogStream(cerr, "ucto" );
+    theErrLog->setstamp( StampMessage );
 #ifdef ENABLE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg );
@@ -491,8 +491,8 @@ namespace Tokenizer {
       else {
 	IN = new ifstream( ifile );
 	if ( !IN || !IN->good() ){
-	  cerr << "Error: problems opening inputfile " << ifile << endl;
-	  cerr << "Courageously refusing to start..."  << endl;
+	  cerr << "ucto: problems opening inputfile " << ifile << endl;
+	  cerr << "ucto: Courageously refusing to start..."  << endl;
 	  throw runtime_error( "unable to find or read file: '" + ifile + "'" );
 	}
       }
@@ -768,7 +768,7 @@ namespace Tokenizer {
 		    "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     if  ( tokDebug > 0 ){
-      cerr << "tokenize sentence element: " << element->id() << endl;
+      LOG << "[tokenizeSentenceElement] " << element->id() << endl;
     }
     UnicodeString line = element->stricttext( inputclass );
     if ( line.isEmpty() ){
@@ -2315,7 +2315,7 @@ namespace Tokenizer {
       }
     }
     if ( settings.empty() ){
-      cerr << "No useful settingsfile(s) could be found." << endl;
+      cerr << "ucto: No useful settingsfile(s) could be found." << endl;
       return false;
     }
     return true;
