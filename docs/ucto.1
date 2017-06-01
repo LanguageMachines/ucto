@@ -1,4 +1,4 @@
-.TH ucto 1 "2014 december 2"
+.TH ucto 1 "2017 may 10"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -40,9 +40,15 @@ disable filtering of special characters
 
 .BR \-L " language"
 .RS
- Automatically selects a configuration file by language code. 
+ Automatically selects a configuration file by language code.
  The language code is generally a three-letter iso-639-3 code.
 For example, 'fra' will select the file tokconfig\(hyfra from the installation directory
+.RE
+
+.BR \-\-detectlanguages =<lang1,lang2,..langn>
+.RS
+try to detect all the specified languages. The default language will be 'lang1'.
+(only useful for FoLiA output)
 .RE
 
 .BR \-l
@@ -60,6 +66,11 @@ Convert to all uppercase
 Emit one sentence per line on output
 .RE
 
+.BR \-\-normalize=class1,class2,..,classn
+.RS
+map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
+.RE
+
 .BR \-m
 .RS
 Assume one sentence per line on input
@@ -72,7 +83,7 @@ Don't tokenize, but perform input decoding and simple token role detection
 
 .BR \-\-filterpunct
 .RS
-remove most of the punctuation from the output. (not from abreviations!)
+remove most of the punctuation from the output. (not from abreviations and embeddded punctuation like John's )
 .RE
 
 .B \-P
@@ -111,9 +122,21 @@ set Verbose mode
 Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: \-nulPQvsS)
 .RE
 
-.BR \-\-textclass "cls"
+.B \-\-inputclass "cls"
 .RS
 When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
+.RE
+
+.B \-\-outputclass "cls"
+.RS
+When tokenizing a FoLiA XML document, output the tokenized text in text nodes of class 'cls'
+.RE
+
+.B \-\-textclass "cls" (obsolete)
+.RS
+use 'cls' for input and output of text from FoLiA. Equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
+
+This option is obsolete and NOT recommended. Please use the separate \-\-inputclass= and \-\-outputclass options.
 .RE
 
 .B \-X

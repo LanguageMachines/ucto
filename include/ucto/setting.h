@@ -94,6 +94,7 @@ namespace Tokenizer {
     void add_rule( const UnicodeString&, const std::vector<UnicodeString>& );
     void sortRules( std::map<UnicodeString, Rule *>&,
 		    const std::vector<UnicodeString>& );
+    static std::set<std::string> installed_languages();
     UnicodeString eosmarkers;
     std::vector<Rule *> rules;
     std::map<UnicodeString, Rule *> rulesmap;

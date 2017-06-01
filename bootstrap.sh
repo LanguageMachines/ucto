@@ -1,6 +1,3 @@
-# $Id$
-# $URL$
-
 # bootstrap - script to bootstrap the distribution rolling engine
 
 # usage:

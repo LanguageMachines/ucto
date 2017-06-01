@@ -71,11 +71,11 @@ string TextCat::get_language( const string& in ) const {
 #else
 TextCat::~TextCat() {}
 
-TextCat::TextCat( const std::string& cf ) {
+TextCat::TextCat( const std::string& cf ): TC(0) {
   throw runtime_error( "TextCat::TextCat(" + cf + "): TextCat Support not available" );
 }
 
-TextCat::TextCat( const TextCat& in ) {
+TextCat::TextCat( const TextCat& in ): TC(0) {
   throw runtime_error( "TextCat::TextCat(): TextCat Support not available" );
 }
 

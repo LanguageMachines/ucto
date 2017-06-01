@@ -1,33 +1,71 @@
 sudo: required
 dist: trusty
+
 # whitelist
 branches:
   only:
     - master
 
+notifications:
+  irc:
+    channels:
+      - "irc.uvt.nl#gitlama"
+    template:
+      - "%{repository_slug}#%{build_number} %{message} --> %{build_url}"
+    skip_join: true
+
 language: cpp
-compiler:
-    - gcc
-    - clang
+matrix:
+  include:
+    - os: linux
+      cache: ccache
+      compiler: gcc
+      addons:
+#        apt:
+#          sources: ['ubuntu-toolchain-r-test']
+#          packages: ['g++-4.9']
+#      env: COMPILER=g++-4.9
+      env: COMPILER=g++
+           SCAN=echo
+
+#    - os: linux
+#      compiler: gcc
+#      addons:
+#        apt:
+#          sources: ['ubuntu-toolchain-r-test']
+#          packages: ['g++-5']
+#      env: COMPILER=g++-5
+
+    - os: linux
+      cache: ccache
+      compiler: clang
+      addons:
+        apt:
+          sources: ['ubuntu-toolchain-r-test', 'llvm-toolchain-precise-3.7']
+          packages: ['clang-3.7']
+      env: COMPILER=clang++-3.7
+           SCAN=scan-build-3.7
+
 before_install:
     - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev cppcheck clang libicu-dev libxml2-dev libbz2-dev zlib1g-dev libexttextcat-dev
+    - sudo apt-get install pkg-config autoconf-archive autotools-dev ccache cppcheck  libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev
+    - export PATH="/usr/lib/ccache/bin/:$PATH"
     - cppcheck --enable=all --quiet --error-exitcode=2 .
-    - git clone https://github.com/proycon/ticcutils
+    - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
     - ./configure
-    - make
-    - sudo make install
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
     - cd ..
-    - git clone https://github.com/proycon/libfolia
+    - git clone --depth=1 --single-branch https://github.com/proycon/libfolia
     - cd libfolia
     - bash bootstrap.sh
     - ./configure
-    - make
-    - sudo make install
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
     - cd ..
-    - git clone https://github.com/LanguageMachines/uctodata
+    - git clone --depth=1 --single-branch https://github.com/LanguageMachines/uctodata
     - cd uctodata
     - bash bootstrap.sh
     - ./configure
@@ -36,9 +74,11 @@ before_install:
     - cd ..
 install:
     - bash bootstrap.sh
-    - scan-build --status-bugs ./configure
-    - scan-build --status-bugs make
-    - sudo make install
+    - ./configure
+    - $SCAN --status-bugs ./configure
+    - $SCAN --status-bugs make CXX=$COMPILER
+    - make CXX=$COMPILER
+    - sudo make CXX=$COMPILER install
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 after_failure:

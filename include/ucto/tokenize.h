@@ -149,6 +149,7 @@ namespace Tokenizer {
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
+    void extractSentencesAndFlush( int, std::vector<Token>&, const std::string& );
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
@@ -184,6 +185,10 @@ namespace Tokenizer {
     //Enable quote detection
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
     bool getQuoteDetection() const { return detectQuotes; }
+
+    //Enable language detection
+    bool setLangDetection( bool b=true ) { bool t = doDetectLang; doDetectLang = b; return t; }
+    bool getLangDetection() const { return doDetectLang; }
 
     //Enable filtering
     bool setFiltering( bool b=true ) {
@@ -227,6 +232,7 @@ namespace Tokenizer {
     const std::string setTextClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
+      outputclass = cls;
       return res;
     }
     const std::string getInputClass( ) const { return inputclass; }
@@ -261,6 +267,9 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
+    int tokenizeLine( const UnicodeString&,
+		      const std::string&,
+		      const std::string& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
@@ -320,6 +329,9 @@ namespace Tokenizer {
 
     //has a paragraph been signaled?
     bool paragraphsignal;
+
+    //has do we attempt to assign languages?
+    bool doDetectLang;
 
     //one sentence per line output
     bool sentenceperlineoutput;

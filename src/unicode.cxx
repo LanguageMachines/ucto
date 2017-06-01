@@ -172,10 +172,10 @@ namespace Tokenizer {
     return true;
   }
 
-  class uConfigError: public std::invalid_argument {
+  class uRegexError: public std::invalid_argument {
   public:
-    uConfigError( const string& s ): invalid_argument( "ucto: config file:" + s ){};
-    uConfigError( const UnicodeString& us ): invalid_argument( "ucto: config file:" + folia::UnicodeToUTF8(us) ){};
+    explicit uRegexError( const string& s ): invalid_argument( "Invalid regular expression: " + s ){};
+    explicit uRegexError( const UnicodeString& us ): invalid_argument( "Invalid regular expression: " + folia::UnicodeToUTF8(us) ){};
   };
 
 
@@ -196,21 +196,20 @@ namespace Tokenizer {
       string spat = folia::UnicodeToUTF8(pat);
       failString = folia::UnicodeToUTF8(_name);
       if ( errorInfo.offset >0 ){
-	failString += " Invalid regular expression at position " + TiCC::toString( errorInfo.offset ) + "\n";
+	failString += " at position " + TiCC::toString( errorInfo.offset ) + "\n";
 	UnicodeString pat1 = UnicodeString( pat, 0, errorInfo.offset -1 );
 	failString += folia::UnicodeToUTF8(pat1) + " <== HERE\n";
       }
       else {
-	failString += " Invalid regular expression '" + spat + "' ";
+	failString += "'" + spat + "' ";
       }
-      throw uConfigError(failString);
+      throw uRegexError(failString);
     }
     else {
       matcher = pattern->matcher( u_stat );
       if (U_FAILURE(u_stat)){
-	failString = "unable to create PatterMatcher with pattern '" +
-	  folia::UnicodeToUTF8(pat) + "'";
-	throw uConfigError(failString);
+	failString = "'" + folia::UnicodeToUTF8(pat) + "'";
+	throw uRegexError(failString);
       }
     }
   }

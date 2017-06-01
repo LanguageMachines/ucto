@@ -74,17 +74,17 @@ namespace Tokenizer {
 
   class uRangeError: public std::out_of_range {
   public:
-    uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
+    explicit uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
   };
 
   class uLogicError: public std::logic_error {
   public:
-    uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
+    explicit uLogicError( const string& s ): logic_error( "ucto: logic error:" + s ){};
   };
 
   class uCodingError: public std::runtime_error {
   public:
-    uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
+    explicit uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
   };
 
 
@@ -153,18 +153,20 @@ namespace Tokenizer {
     doPunctFilter(false),
     detectPar(true),
     paragraphsignal(true),
+    doDetectLang(false),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
     lowercase(false),
     uppercase(false),
     xmlout(false),
+    xmlin(false),
     passthru(false),
     inputclass("current"),
     outputclass("current"),
     tc( 0 )
   {
-    theErrLog = new TiCC::LogStream(cerr);
-    theErrLog->setstamp( NoStamp );
+    theErrLog = new TiCC::LogStream(cerr, "ucto" );
+    theErrLog->setstamp( StampMessage );
 #ifdef ENABLE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg );
@@ -172,8 +174,21 @@ namespace Tokenizer {
   }
 
   TokenizerClass::~TokenizerClass(){
-    //    delete setting;
+    Setting *d = 0;
+    for ( const auto& s : settings ){
+      if ( s.first == "default" ){
+	// the 'default' may also return as a real 'language'
+	// avoud delettng it twice
+	d = s.second;
+	delete d;
+      }
+      if ( s.second != d ){
+	delete s.second;
+      }
+
+    }
     delete theErrLog;
+    delete tc;
   }
 
   bool TokenizerClass::reset( const string& lang ){
@@ -208,6 +223,63 @@ namespace Tokenizer {
     string::size_type pos = s.rfind( '\r' );
     if ( pos != string::npos ){
       s.erase( pos );
+    }
+  }
+
+  void TokenizerClass::extractSentencesAndFlush( int numS,
+						 vector<Token>& outputTokens,
+						 const string& lang ){
+    int count = 0;
+    const int size = tokens.size();
+    short quotelevel = 0;
+    size_t begin = 0;
+    size_t end = 0;
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
+	begin = i;
+      }
+      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
+      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	end = i+1;
+	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
+	if (tokDebug >= 1){
+	  LOG << "[tokenize] extracted sentence " << count << ", begin="<<begin << ",end="<< end << endl;
+	}
+	for ( size_t i=begin; i < end; ++i ){
+	  outputTokens.push_back( tokens[i] );
+	}
+	if ( ++count == numS ){
+	  if (tokDebug >= 1){
+	    LOG << "[tokenize] erase " << end  << " tokens from " << tokens.size() << endl;
+	  }
+	  tokens.erase( tokens.begin(),tokens.begin()+end );
+	  if ( !passthru ){
+	    if ( !settings[lang]->quotes.emptyStack() ) {
+	      settings[lang]->quotes.flushStack( end );
+	    }
+	  }
+	  //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
+	  if (!tokens.empty()) {
+	    tokens[0].role |= BEGINOFSENTENCE;
+	  }
+	  return;
+	}
+      }
+    }
+    if ( count < numS ){
+      throw uRangeError( "Not enough sentences exists in the buffer: ("
+			 + toString( count ) + " found. " + toString( numS)
+			 + " wanted)" );
     }
   }
 
@@ -289,7 +361,7 @@ namespace Tokenizer {
 	    }
 	    language = lan;
 	  }
-	  tokenizeLine( input_line, language );
+	  tokenizeLine( input_line, language, "" );
 	}
 	numS = countSentences(); //count full sentences in token buffer
       }
@@ -297,15 +369,7 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ){
 	  LOG << "[tokenize] " << numS << " sentence(s) in buffer, processing..." << endl;
 	}
-	for (int i = 0; i < numS; i++) {
-	  vector<Token> v = getSentence( i );
-	  outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-	}
-	// clear processed sentences from buffer
-	if ( tokDebug > 0 ){
-	  LOG << "[tokenize] flushing " << numS << " sentence(s) from buffer..." << endl;
-	}
-	flushSentences(numS, lang );
+	extractSentencesAndFlush( numS, outputTokens, lang );
 	return outputTokens;
       }
       else {
@@ -355,7 +419,7 @@ namespace Tokenizer {
 	if ( passthru )
 	  passthruLine( line, bos );
 	else
-	  tokenizeLine( line );
+	  tokenizeLine( line, lang );
 	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) {
@@ -385,7 +449,7 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = new folia::Document( "id='" + docid + "'" );
-    if ( default_language != "none" ){
+    if ( /*doDetectLang &&*/ default_language != "none" ){
       if ( tokDebug > 0 ){
 	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
       }
@@ -427,8 +491,8 @@ namespace Tokenizer {
       else {
 	IN = new ifstream( ifile );
 	if ( !IN || !IN->good() ){
-	  cerr << "Error: problems opening inputfile " << ifile << endl;
-	  cerr << "Courageously refusing to start..."  << endl;
+	  cerr << "ucto: problems opening inputfile " << ifile << endl;
+	  cerr << "ucto: Courageously refusing to start..."  << endl;
 	  throw runtime_error( "unable to find or read file: '" + ifile + "'" );
 	}
       }
@@ -504,16 +568,18 @@ namespace Tokenizer {
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
     }
-    string lan = doc.doc()->language();
-    if ( lan.empty() && default_language != "none" ){
-      if ( tokDebug > 1 ){
-	LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
+    if ( true /*doDetectLang*/ ){
+      string lan = doc.doc()->language();
+      if ( lan.empty() && default_language != "none" ){
+	if ( tokDebug > 1 ){
+	  LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
+	}
+	doc.set_metadata( "language", default_language );
       }
-      doc.set_metadata( "language", default_language );
-    }
-    else {
-      if ( tokDebug >= 2 ){
-	LOG << "[tokenize](FoLiA) Document has language " << lan << endl;
+      else {
+	if ( tokDebug >= 2 ){
+	  LOG << "[tokenize](FoLiA) Document has language " << lan << endl;
+	}
       }
     }
     for ( size_t i = 0; i < doc.doc()->size(); i++) {
@@ -527,25 +593,49 @@ namespace Tokenizer {
 
   void appendText( folia::FoliaElement *root,
 		   const string& outputclass  ){
-    //    cerr << endl << "appendText:" << root->id() << endl;
+    // set the textcontent of root to that of it's children
     if ( root->hastext( outputclass ) ){
+      // there is already text, bail out.
       return;
     }
     UnicodeString utxt = root->text( outputclass, false, false );
-    // cerr << "untok: '" << utxt << "'" << endl;
-    // UnicodeString txt = root->text( outputclass, true );
-    // cerr << "  tok: '" << txt << "'" << endl;
-    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
+    // so get Untokenized text from the children, and set it
+    root->settext( folia::UnicodeToUTF8(utxt), outputclass, true );
   }
 
+  const string get_language( folia::FoliaElement *f ) {
+    // get the language of this element, if any, don't look up.
+    // we search in ALL possible sets!
+    string st = "";
+    std::set<folia::ElementType> exclude;
+    vector<folia::LangAnnotation*> v
+      = f->select<folia::LangAnnotation>( st, exclude, false );
+    string result;
+    if ( v.size() > 0 ){
+      result = v[0]->cls();
+    }
+    return result;
+  }
 
-  void TokenizerClass::tokenizeElement(folia::FoliaElement * element) {
+  void set_language( folia::FoliaElement* e, const string& lan ){
+    // set or reset the language: append a LangAnnotation child of class 'lan'
+    folia::KWargs args;
+    args["class"] = lan;
+    args["set"] = ISO_SET;
+    folia::LangAnnotation *node = new folia::LangAnnotation( e->doc() );
+    node->setAttributes( args );
+    e->replace( node );
+  }
+
+  void TokenizerClass::tokenizeElement( folia::FoliaElement * element) {
     if ( element->isinstance(folia::Word_t)
 	 || element->isinstance(folia::TextContent_t))
       // shortcut
       return;
     if ( tokDebug >= 2 ){
-      LOG << "[tokenizeElement] Processing FoLiA element " << element->id() << endl;
+      LOG << "[tokenizeElement] Processing FoLiA element " << element->xmltag()
+	  << "(" << element->id() << ")" << endl;
+      LOG << "[tokenizeElement] inputclass=" << inputclass << " outputclass=" << outputclass << endl;
     }
     if ( element->hastext( inputclass ) ) {
       // We have an element which contains text. That's nice
@@ -597,15 +687,36 @@ namespace Tokenizer {
 	}
       }
       // now let's check our language
-      string lan = element->language(); // remember thus recurses upward
-      // to get a language from the node, it's parents OR the doc
-      if ( lan.empty() || default_language == "none" ){
-	lan = "default";
+      string lan;
+      if ( doDetectLang ){
+	lan = get_language( element ); // is there a local element language?
+	if ( lan.empty() ){
+	  // no, so try to detect it!
+	  UnicodeString temp = element->text( inputclass );
+	  temp.toLower();
+	  lan = tc->get_language( folia::UnicodeToUTF8(temp) );
+	  if ( lan.empty() ){
+	    // too bad
+	    lan = "default";
+	  }
+	  else {
+	    if ( tokDebug >= 2 ){
+	      LOG << "[tokenizeElement] textcat found a supported language: " << lan << endl;
+	    }
+	  }
+	}
+      }
+      else {
+	lan = element->language(); // remember thus recurses upward
+	// to get a language from the node, it's parents OR the doc
+	if ( lan.empty() || default_language == "none" ){
+	  lan = "default";
+	}
       }
       auto const it = settings.find(lan);
       if ( it != settings.end() ){
 	if ( tokDebug >= 2 ){
-	  LOG << "[tokenizeElement] Found a supported language! " << lan << endl;
+	  LOG << "[tokenizeElement] Found a supported language: " << lan << endl;
 	}
       }
       else if ( !default_language.empty() ){
@@ -630,12 +741,7 @@ namespace Tokenizer {
 	if ( tokDebug >= 2 ){
 	  LOG << "[tokenizeElement] set language to " << lan << endl;
 	}
-	folia::KWargs args;
-	args["class"] = lan;
-	args["set"] = ISO_SET;
-	folia::LangAnnotation *node = new folia::LangAnnotation( element->doc() );
-	node->setAttributes( args );
-	element->append( node );
+	set_language( element, lan );
       }
       tokenizeSentenceElement( element, lan );
       return;
@@ -662,7 +768,7 @@ namespace Tokenizer {
 		    "annotator='ucto', annotatortype='auto', datetime='now()'" );
     }
     if  ( tokDebug > 0 ){
-      cerr << "tokenize sentence element: " << element->id() << endl;
+      LOG << "[tokenizeSentenceElement] " << element->id() << endl;
     }
     UnicodeString line = element->stricttext( inputclass );
     if ( line.isEmpty() ){
@@ -679,17 +785,13 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      tokenizeLine( line, lang );
+      tokenizeLine( line, lang, element->id() );
     }
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
     vector<Token> outputTokens;
-    for (int i = 0; i < numS; i++) {
-      vector<Token> v = getSentence( i );
-      outputTokens.insert( outputTokens.end(), v.begin(), v.end() );
-    }
+    extractSentencesAndFlush( numS, outputTokens, lang );
     outputTokensXML( element, outputTokens, 0 );
-    flushSentences( numS, lang );
   }
 
   void TokenizerClass::outputTokensDoc_init( folia::Document& doc ) const {
@@ -713,7 +815,7 @@ namespace Tokenizer {
     string lan = doc.doc()->language();
     if ( lan.empty() ){
       if ( tokDebug >= 1 ){
-	LOG << "[outputTokensDoc] SET docuemnt language="
+	LOG << "[outputTokensDoc] SET document language="
 	    << default_language << endl;
       }
       doc.set_metadata( "language", default_language );
@@ -756,12 +858,12 @@ namespace Tokenizer {
       if ( ( !root_is_structure_element && !root_is_sentence )
 	   &&
 	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Creating paragraph" << endl;
+	}
 	if ( in_paragraph ){
 	  appendText( root, outputclass );
 	  root = root->parent();
-	}
-	if ( tokDebug > 0 ) {
-	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
 	folia::KWargs args;
 	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
@@ -807,12 +909,7 @@ namespace Tokenizer {
 	  }
 	  s->doc()->declare( folia::AnnotationType::LANG,
 			     ISO_SET, "annotator='ucto'" );
-	  folia::KWargs args;
-	  args["class"] = tok_lan;
-	  args["set"] = ISO_SET;
-	  folia::LangAnnotation *node = new folia::LangAnnotation( s->doc() );
-	  node->setAttributes( args );
-	  s->append( node );
+	  set_language( s, tok_lan );
 	}
 	root = s;
 	lastS = root;
@@ -845,7 +942,9 @@ namespace Tokenizer {
 	out.toUpper();
       }
       w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      //      LOG << "created " << w << " text= " <<  token.us << endl;
+      if ( tokDebug > 1 ) {
+	LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
+      }
       root->append( w );
       if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {
@@ -872,6 +971,9 @@ namespace Tokenizer {
       in_paragraph = true;
     }
     if ( tv.size() > 0 ){
+      if ( tokDebug > 0 ) {
+	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+      }
       appendText( root, outputclass );
     }
     return parCount;
@@ -1053,14 +1155,21 @@ namespace Tokenizer {
     short quotelevel = 0;
     size_t begin = 0;
     size_t end = 0;
-    for ( int i = 0; i < size; i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & BEGINOFSENTENCE) && (quotelevel == 0)) {
+    for ( int i = 0; i < size; ++i ) {
+      if (tokens[i].role & NEWPARAGRAPH) {
+	quotelevel = 0;
+      }
+      else if (tokens[i].role & ENDQUOTE) {
+	--quotelevel;
+      }
+      if ( (tokens[i].role & BEGINOFSENTENCE)
+	   && (quotelevel == 0)) {
 	begin = i;
       }
       //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
+      if (tokens[i].role & BEGINQUOTE) {
+	++quotelevel;
+      }
 
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	if (count == index) {
@@ -1074,7 +1183,7 @@ namespace Tokenizer {
 	  }
 	  return outToks;
 	}
-	count++;
+	++count;
       }
     }
     throw uRangeError( "No sentence exists with the specified index: "
@@ -1654,7 +1763,13 @@ namespace Tokenizer {
   int TokenizerClass::tokenizeLine( const string& s,
 				    const string& lang ){
     UnicodeString uinputstring = convert( s, inputEncoding );
-    return tokenizeLine( uinputstring, lang );
+    return tokenizeLine( uinputstring, lang, "" );
+  }
+
+  // UnicodeString wrapper
+  int TokenizerClass::tokenizeLine( const UnicodeString& u,
+				    const string& lang ){
+    return tokenizeLine( u, lang, "" );
   }
 
   bool u_isemo( UChar32 c ){
@@ -1769,7 +1884,8 @@ namespace Tokenizer {
   }
 
   int TokenizerClass::tokenizeLine( const UnicodeString& originput,
-				    const string& _lang ){
+				    const string& _lang,
+				    const string& id ){
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";
@@ -1791,7 +1907,14 @@ namespace Tokenizer {
       input = settings[lang]->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
-      *theErrLog << "ERROR: Invalid UTF-8 in line!:" << input << endl;
+      if ( id.empty() ){
+	LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
+	    << "   '" << input << "'" << endl;
+      }
+      else {
+	LOG << "ERROR: Invalid UTF-8 in element:" << id << endl
+	    << "   '" << input << "'" << endl;
+      }
       return 0;
     }
     int32_t len = input.countChar32();
@@ -1811,16 +1934,18 @@ namespace Tokenizer {
     UnicodeString word;
     StringCharacterIterator sit(input);
     long int i = 0;
+    long int tok_size = 0;
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( tokDebug > 8 ){
 	UnicodeString s = c;
 	int8_t charT = u_charType( c );
 	LOG << "examine character: " << s << " type= "
-			<< toString( charT  ) << endl;
+	    << toString( charT  ) << endl;
       }
       if (reset) { //reset values for new word
 	reset = false;
+	tok_size = 0;
 	if (!u_isspace(c))
 	  word = c;
 	else
@@ -1912,6 +2037,22 @@ namespace Tokenizer {
       }
       sit.next32();
       ++i;
+      ++tok_size;
+      if ( tok_size > 2500 ){
+	if ( id.empty() ){
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in line: " << linenum << ". Skipped ..." << endl;
+	  LOG << "The line starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
+	else {
+	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	      << "in element: " << id << ". Skipped ..." << endl;
+	  LOG << "The text starts with " << UnicodeString( word, 0, 75 )
+	      << "..." << endl;
+	}
+	return 0;
+      }
     }
     int numNewTokens = tokens.size() - begintokencount;
     if ( numNewTokens > 0 ){
@@ -2113,7 +2254,7 @@ namespace Tokenizer {
 	  break;
 	}
       }
-      if ( ! a_rule_matched ){
+      if ( !a_rule_matched ){
 	// no rule matched
 	if ( tokDebug >=4 ){
 	  LOG << "\tthere's no match at all" << endl;
@@ -2174,7 +2315,7 @@ namespace Tokenizer {
       }
     }
     if ( settings.empty() ){
-      cerr << "No useful settingsfile(s) could be found." << endl;
+      cerr << "ucto: No useful settingsfile(s) could be found." << endl;
       return false;
     }
     return true;
