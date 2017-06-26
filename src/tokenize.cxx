@@ -600,7 +600,7 @@ namespace Tokenizer {
     }
     UnicodeString utxt = root->text( outputclass, false, false );
     // so get Untokenized text from the children, and set it
-    root->settext( folia::UnicodeToUTF8(utxt), outputclass, true );
+    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
   const string get_language( folia::FoliaElement *f ) {
