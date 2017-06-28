@@ -3,7 +3,7 @@
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -34,6 +34,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION">
             <t>.</t>
           </w>
+          <br/>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
             <t>Gaat</t>
           </w>
@@ -67,7 +68,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -77,7 +78,8 @@ Gaat deze datum: 28-11-2011 goed?</t>
         <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
           <t>Dit is een ligatuur: æ.
 Gaat deze datum: 28-11-2011 goed?</t>
-          <t class="ligafilter">Dit is een ligatuur: ae. Gaat deze datum: 28-11-2011 goed?</t>
+          <t class="ligafilter">Dit is een ligatuur: ae.
+Gaat deze datum: 28-11-2011 goed?</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD">
             <t class="ligafilter">Dit</t>
           </w>
@@ -99,6 +101,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION">
             <t class="ligafilter">.</t>
           </w>
+          <br/>
           <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
             <t class="ligafilter">Gaat</t>
           </w>
@@ -132,7 +135,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -141,9 +144,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <p xml:id="WR-P-E-J-0000000001.div0.1.p.1">
         <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
-        <t class="FILTER">Dit is een test Gaat deze datum 28-11-2011 goed</t>
+        <t class="FILTER">Dit is een test
+Gaat deze datum 28-11-2011 goed</t>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1">
-          <t class="FILTER">Dit is een test Gaat deze datum 28-11-2011 goed</t>
+          <t class="FILTER">Dit is een test
+Gaat deze datum 28-11-2011 goed</t>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD">
             <t class="FILTER">Dit</t>
           </w>
@@ -156,6 +161,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.4" class="WORD">
             <t class="FILTER">test</t>
           </w>
+          <br/>
           <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="WORD">
             <t class="FILTER">Gaat</t>
           </w>
@@ -183,7 +189,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -192,7 +198,8 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
       <p xml:id="WR-P-E-J-0000000001.p.1">
-        <t class="UPP">DIT IS EEN TEST. GAAT DEZE DATUM: 28-11-2011 GOED?</t>
+        <t class="UPP">DIT IS EEN TEST.
+GAAT DEZE DATUM: 28-11-2011 GOED?</t>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <t class="UPP">DIT IS EEN TEST.</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD">
@@ -211,6 +218,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
             <t class="UPP">.</t>
           </w>
         </s>
+        <br/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
           <t class="UPP">GAAT DEZE DATUM: 28-11-2011 GOED?</t>
           <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD">
@@ -246,7 +254,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -272,7 +280,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -307,7 +315,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -342,7 +350,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -376,7 +384,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.8" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:54:56" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-06-28T12:21:19" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
