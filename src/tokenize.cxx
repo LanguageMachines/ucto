@@ -756,6 +756,12 @@ namespace Tokenizer {
     return;
   }
 
+  int split_nl( const UnicodeString& line,
+		   vector<UnicodeString>& parts ){
+    static UnicodeRegexMatcher nl_split( "\\n", "newline_splitter" );
+    return nl_split.split( line, parts );
+  }
+
   void TokenizerClass::tokenizeSentenceElement( folia::FoliaElement *element,
 						const string& lang ){
     folia::Document *doc = element->doc();
@@ -785,7 +791,23 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      tokenizeLine( line, lang, element->id() );
+      // folia may incode newlines. These must be converted to <br/> nodes
+      vector<UnicodeString> parts;
+      split_nl( line, parts );
+      for ( auto const& l : parts ){
+	if ( tokDebug >= 1 ){
+	  LOG << "[tokenizeSentenceElement] tokenize part: " << l << endl;
+	}
+	tokenizeLine( l, lang, element->id() );
+	if ( &l != &parts.back() ){
+	  // append '<br'>
+	  Token T( "type_linebreak", "\n", LINEBREAK, "" );
+	  if ( tokDebug >= 1 ){
+	    LOG << "[tokenizeSentenceElement] added LINEBREAK token " << endl;
+	  }
+	  tokens.push_back( T );
+	}
+      }
     }
     //ignore EOL data, we have by definition only one sentence:
     int numS = countSentences(true); //force buffer to empty
@@ -884,6 +906,16 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] back to " << root->classname() << endl;
 	}
       }
+      if ( ( token.role & LINEBREAK) ){
+	if  (tokDebug > 0) {
+	  LOG << "[outputTokensXML] LINEBREAK!" << endl;
+	}
+	folia::FoliaElement *lb = new folia::Linebreak();
+	root->append( lb );
+	if  (tokDebug > 0){
+	  LOG << "[outputTokensXML] back to " << root->classname() << endl;
+	}
+      }
       if (( token.role & BEGINOFSENTENCE) && (!root_is_sentence)) {
 	folia::KWargs args;
 	if ( root->id().empty() )
@@ -914,38 +946,40 @@ namespace Tokenizer {
 	root = s;
 	lastS = root;
       }
-      if  (tokDebug > 0) {
-	LOG << "[outputTokensXML] Creating word element for " << token.us << endl;
-      }
-      folia::KWargs args;
-      args["generate_id"] = lastS->id();
-      args["class"] = folia::UnicodeToUTF8( token.type );
-      if ( passthru ){
-	args["set"] = "passthru";
-      }
-      else {
-	auto it = settings.find(token.lc);
-	if ( it == settings.end() ){
-	  it = settings.find("default");
+      if ( !(token.role & LINEBREAK) ){
+	if  (tokDebug > 0) {
+	  LOG << "[outputTokensXML] Creating word element for " << token.us << endl;
 	}
-	args["set"] = it->second->set_file;
+	folia::KWargs args;
+	args["generate_id"] = lastS->id();
+	args["class"] = folia::UnicodeToUTF8( token.type );
+	if ( passthru ){
+	  args["set"] = "passthru";
+	}
+	else {
+	  auto it = settings.find(token.lc);
+	  if ( it == settings.end() ){
+	    it = settings.find("default");
+	  }
+	  args["set"] = it->second->set_file;
+	}
+	if ( token.role & NOSPACE) {
+	  args["space"]= "no";
+	}
+	folia::FoliaElement *w = new folia::Word( args, root->doc() );
+	root->append( w );
+	UnicodeString out = token.us;
+	if (lowercase) {
+	  out.toLower();
+	}
+	else if (uppercase) {
+	  out.toUpper();
+	}
+	w->settext( folia::UnicodeToUTF8( out ), outputclass );
+	if ( tokDebug > 1 ) {
+	  LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
+	}
       }
-      if ( token.role & NOSPACE) {
-	args["space"]= "no";
-      }
-      folia::FoliaElement *w = new folia::Word( args, root->doc() );
-      UnicodeString out = token.us;
-      if (lowercase) {
-	out.toLower();
-      }
-      else if (uppercase) {
-	out.toUpper();
-      }
-      w->settext( folia::UnicodeToUTF8( out ), outputclass );
-      if ( tokDebug > 1 ) {
-	LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
-      }
-      root->append( w );
       if ( token.role & BEGINQUOTE) {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] Creating quote element" << endl;
@@ -957,11 +991,15 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }
-      if ( ( token.role & ENDOFSENTENCE) && (!root_is_sentence) ) {
+      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) ) {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
 	appendText( root, outputclass );
+	if ( token.role & LINEBREAK ){
+	  folia::FoliaElement *lb = new folia::Linebreak();
+	  root->append( lb );
+	}
 	root = root->parent();
 	lastS = root;
 	if  (tokDebug > 0){
@@ -1051,7 +1089,7 @@ namespace Tokenizer {
     }
   }
 
-  int TokenizerClass::countSentences(bool forceentirebuffer) {
+  int TokenizerClass::countSentences( bool forceentirebuffer ) {
     //Return the number of *completed* sentences in the token buffer
 
     //Performs  extra sanity checks at the same time! Making sure

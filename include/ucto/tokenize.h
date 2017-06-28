@@ -51,8 +51,7 @@ namespace Tokenizer {
     BEGINQUOTE                  = 16,
     ENDQUOTE                    = 32,
     TEMPENDOFSENTENCE           = 64,
-    LISTITEM                    = 128, //reserved for future use
-    TITLE                       = 256 //reserved for future use
+    LINEBREAK                   = 128
   };
 
   std::ostream& operator<<( std::ostream&, const TokenRole& );
