@@ -501,6 +501,11 @@ namespace Tokenizer {
     else {
       folia::Document doc;
       doc.readFromFile(ifile);
+      if ( xmlin && inputclass == outputclass ){
+	LOG << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
+	    << endl;
+	setFiltering(false);
+      }
       this->tokenize(doc);
       *OUT << doc << endl;
     }
@@ -567,6 +572,11 @@ namespace Tokenizer {
   bool TokenizerClass::tokenize( folia::Document& doc ) {
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
+    }
+    if ( xmlin && inputclass == outputclass ){
+      LOG << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
+	  << endl;
+      setFiltering(false);
     }
     if ( true /*doDetectLang*/ ){
       string lan = doc.doc()->language();
