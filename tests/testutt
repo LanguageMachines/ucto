@@ -1,0 +1,5 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -L nl -F utt.xml
