@@ -17,7 +17,7 @@ do
    fi
 done
 
-python test.py
+python2 test.py
 if [ $? -ne 0 ]; then
    RETURN=1
 fi
