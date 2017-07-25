@@ -1,0 +1,18 @@
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
+  <metadata>
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+    </annotations>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <event class="poem" xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.1620">
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614"> <t>Galenus wezen leeft op 't velt van dit papier</t></utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615"> <t>Zyn tong alleen is stom; kon die de banden breken,</t></utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616"> <t>Zy zou hier hemeltaal en boetorakels spreken,</t></utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617"> <t>En berten blaken met een toorts van heilig vier.</t></utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618"> <t>In andren vindt men minst welsprekenheid en zeden;</t></utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619"> <t>Maar hier zijn bei volmaekt, de deugt en kracht van reden.</t></utt>
+    </event>
+  </text>
+</FoLiA>

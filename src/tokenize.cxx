@@ -880,6 +880,7 @@ namespace Tokenizer {
 	      || root->isinstance( folia::Note_t )
 	      || root->isinstance( folia::ListItem_t )
 	      || root->isinstance( folia::Part_t )
+	      || root->isinstance( folia::Utterance_t )
 	      || root->isinstance( folia::Caption_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
@@ -926,7 +927,9 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] back to " << root->classname() << endl;
 	}
       }
-      if (( token.role & BEGINOFSENTENCE) && (!root_is_sentence)) {
+      if ( ( token.role & BEGINOFSENTENCE)
+	   && !root_is_sentence
+	   && !root->isinstance( folia::Utterance_t ) ) {
 	folia::KWargs args;
 	if ( root->id().empty() )
 	  args["generate_id"] = root->parent()->id();
