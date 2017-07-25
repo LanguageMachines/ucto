@@ -801,7 +801,7 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      // folia may incode newlines. These must be converted to <br/> nodes
+      // folia may encode newlines. These must be converted to <br/> nodes
       vector<UnicodeString> parts;
       split_nl( line, parts );
       for ( auto const& l : parts ){
