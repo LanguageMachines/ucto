@@ -931,10 +931,13 @@ namespace Tokenizer {
 	   && !root_is_sentence
 	   && !root->isinstance( folia::Utterance_t ) ) {
 	folia::KWargs args;
-	if ( root->id().empty() )
-	  args["generate_id"] = root->parent()->id();
-	else
-	  args["generate_id"] = root->id();
+	string id = root->id();
+	if ( id.empty() ){
+	  id = root->parent()->id();
+	}
+	if ( !id.empty() ){
+	  args["generate_id"] = id;
+	}
 	if ( tokDebug > 0 ) {
 	  LOG << "[outputTokensXML] Creating sentence in '"
 			  << args["generate_id"] << "'" << endl;
@@ -964,7 +967,13 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] Creating word element for " << token.us << endl;
 	}
 	folia::KWargs args;
-	args["generate_id"] = lastS->id();
+	string id = lastS->id();
+	if ( id.empty() ){
+	  id = lastS->parent()->id();
+	}
+	if ( !id.empty() ){
+	  args["generate_id"] = id;
+	}
 	args["class"] = folia::UnicodeToUTF8( token.type );
 	if ( passthru ){
 	  args["set"] = "passthru";
@@ -997,8 +1006,15 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] Creating quote element" << endl;
 	}
-	folia::FoliaElement *q = new folia::Quote( folia::getArgs( "generate_id='" + root->id() + "'"),
-						    root->doc() );
+	folia::KWargs args;
+	string id = root->id();
+	if ( id.empty() ){
+	  id = root->parent()->id();
+	}
+	if ( !id.empty() ){
+	  args["generate_id"] = id;
+	}
+	folia::FoliaElement *q = new folia::Quote( args, root->doc() );
 	//	LOG << "created " << q << endl;
 	root->append( q );
 	root = q;
