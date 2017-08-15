@@ -460,16 +460,23 @@ namespace Tokenizer {
     int parCount = 0;
     vector<Token> buffer;
     do {
-	vector<Token> v = tokenizeStream( IN );
-	for ( auto const& token : v ) {
-	  if ( token.role & NEWPARAGRAPH) {
-	    //process the buffer
-	    parCount = outputTokensXML( root, buffer, parCount );
-	    buffer.clear();
-	  }
-	  buffer.push_back( token );
+      if ( tokDebug > 0 ){
+	LOG << "[tokenize] looping on stream" << endl;
+      }
+      vector<Token> v = tokenizeStream( IN );
+      for ( auto const& token : v ) {
+	if ( token.role & NEWPARAGRAPH) {
+	  //process the buffer
+	  parCount = outputTokensXML( root, buffer, parCount );
+	  buffer.clear();
 	}
-    } while ( IN );
+	buffer.push_back( token );
+      }
+    }
+    while ( IN );
+    if ( tokDebug > 0 ){
+      LOG << "[tokenize] end of stream reached" << endl;
+    }
     if (!buffer.empty()){
       outputTokensXML( root, buffer, parCount);
     }
@@ -559,12 +566,18 @@ namespace Tokenizer {
       int i = 0;
       inputEncoding = checkBOM( IN );
       do {
+	if ( tokDebug > 0 ){
+	  LOG << "[tokenize] looping on stream" << endl;
+	}
 	vector<Token> v = tokenizeStream( IN );
 	if ( !v.empty() ) {
 	  outputTokens( OUT, v , (i>0) );
 	}
 	++i;
       } while ( IN );
+      if ( tokDebug > 0 ){
+	LOG << "[tokenize] end_of_stream" << endl;
+      }
       OUT << endl;
     }
   }
@@ -1042,6 +1055,9 @@ namespace Tokenizer {
 	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
       }
       appendText( root, outputclass );
+    }
+    if ( tokDebug > 0 ) {
+      LOG << "[outputTokensXML] Done. parCount= " << parCount << endl;
     }
     return parCount;
   }
