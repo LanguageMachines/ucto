@@ -509,7 +509,7 @@ namespace Tokenizer {
       folia::Document doc;
       doc.readFromFile(ifile);
       if ( xmlin && inputclass == outputclass ){
-	LOG << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
+	LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	    << endl;
 	setFiltering(false);
       }
@@ -587,7 +587,7 @@ namespace Tokenizer {
       LOG << "tokenize doc " << doc << endl;
     }
     if ( xmlin && inputclass == outputclass ){
-      LOG << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
+      LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	  << endl;
       setFiltering(false);
     }

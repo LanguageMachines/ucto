@@ -190,7 +190,7 @@ int main( int argc, char *argv[] ){
     }
     if ( dofiltering && xmlin && outputclass == inputclass ){
       // we cannot mangle the original inputclass, so disable filtering
-      cerr << "ucto: --filter=NO is automaticly set. inputclass equals outputclass!"
+      cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	   << endl;
       dofiltering = false;
     }
