@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="doc" version="1.5" generator="libfolia-v0.4">
+  <text xml:id="text">
+    <div>
+      <head id="h.1">
+	<t>Dit is een tekst met tabs 	,	en multiple    spaces  .  </t>
+      </head>
+      <note id="n.1">
+	<t>Dit is een tekst met tabs, een newline
+	en tabs 		 en zo 	!</t>
+      </note>
+    </div>
+  </text>
+</FoLiA>

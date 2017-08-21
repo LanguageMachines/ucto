@@ -3,7 +3,7 @@
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:38" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -68,7 +68,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -135,7 +135,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -189,7 +189,7 @@ Gaat deze datum 28-11-2011 goed</t>
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -254,7 +254,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -280,7 +280,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
     <annotations>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -315,7 +315,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:14" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -350,7 +350,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:15" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -384,7 +384,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:15" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -453,7 +453,7 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-18T16:53:15" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -511,6 +511,216 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
           </w>
           <w xml:id="n.1.s.1.w.7" class="WORD">
             <t>note</t>
+          </w>
+        </s>
+      </note>
+    </div>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+    <div>
+      <head xml:id="h.1">
+        <t>Dit is een tekst met tabs 	,	en multiple    spaces  .  </t>
+        <s xml:id="h.1.s.1">
+          <t>Dit is een tekst met tabs , en multiple spaces .</t>
+          <w xml:id="h.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="h.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="h.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="h.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="h.1.s.1.w.5" class="WORD">
+            <t>met</t>
+          </w>
+          <w xml:id="h.1.s.1.w.6" class="WORD">
+            <t>tabs</t>
+          </w>
+          <w xml:id="h.1.s.1.w.7" class="PUNCTUATION">
+            <t>,</t>
+          </w>
+          <w xml:id="h.1.s.1.w.8" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="h.1.s.1.w.9" class="WORD">
+            <t>multiple</t>
+          </w>
+          <w xml:id="h.1.s.1.w.10" class="WORD">
+            <t>spaces</t>
+          </w>
+          <w xml:id="h.1.s.1.w.11" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </head>
+      <note xml:id="n.1">
+        <t>Dit is een tekst met tabs, een newline
+	en tabs 		 en zo 	!</t>
+        <s xml:id="n.1.s.1">
+          <t>Dit is een tekst met tabs, een newline
+en tabs en zo !</t>
+          <w xml:id="n.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="n.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="n.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="n.1.s.1.w.5" class="WORD">
+            <t>met</t>
+          </w>
+          <w xml:id="n.1.s.1.w.6" class="WORD" space="no">
+            <t>tabs</t>
+          </w>
+          <w xml:id="n.1.s.1.w.7" class="PUNCTUATION">
+            <t>,</t>
+          </w>
+          <w xml:id="n.1.s.1.w.8" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.9" class="WORD">
+            <t>newline</t>
+          </w>
+          <br/>
+          <w xml:id="n.1.s.1.w.10" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="n.1.s.1.w.11" class="WORD">
+            <t>tabs</t>
+          </w>
+          <w xml:id="n.1.s.1.w.12" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="n.1.s.1.w.13" class="WORD">
+            <t>zo</t>
+          </w>
+          <w xml:id="n.1.s.1.w.14" class="PUNCTUATION">
+            <t>!</t>
+          </w>
+        </s>
+      </note>
+    </div>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+    <div>
+      <head xml:id="h.1">
+        <t>Dit is een tekst met tabs 	,	en multiple    spaces  .  </t>
+        <s xml:id="h.1.s.1">
+          <t>Dit is een tekst met tabs , en multiple spaces .</t>
+          <w xml:id="h.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="h.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="h.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="h.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="h.1.s.1.w.5" class="WORD">
+            <t>met</t>
+          </w>
+          <w xml:id="h.1.s.1.w.6" class="WORD">
+            <t>tabs</t>
+          </w>
+          <w xml:id="h.1.s.1.w.7" class="PUNCTUATION">
+            <t>,</t>
+          </w>
+          <w xml:id="h.1.s.1.w.8" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="h.1.s.1.w.9" class="WORD">
+            <t>multiple</t>
+          </w>
+          <w xml:id="h.1.s.1.w.10" class="WORD">
+            <t>spaces</t>
+          </w>
+          <w xml:id="h.1.s.1.w.11" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </head>
+      <note xml:id="n.1">
+        <t>Dit is een tekst met tabs, een newline
+	en tabs 		 en zo 	!</t>
+        <s xml:id="n.1.s.1">
+          <t>Dit is een tekst met tabs, een newline
+en tabs en zo !</t>
+          <w xml:id="n.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="n.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="n.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="n.1.s.1.w.5" class="WORD">
+            <t>met</t>
+          </w>
+          <w xml:id="n.1.s.1.w.6" class="WORD" space="no">
+            <t>tabs</t>
+          </w>
+          <w xml:id="n.1.s.1.w.7" class="PUNCTUATION">
+            <t>,</t>
+          </w>
+          <w xml:id="n.1.s.1.w.8" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.9" class="WORD">
+            <t>newline</t>
+          </w>
+          <br/>
+          <w xml:id="n.1.s.1.w.10" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="n.1.s.1.w.11" class="WORD">
+            <t>tabs</t>
+          </w>
+          <w xml:id="n.1.s.1.w.12" class="WORD">
+            <t>en</t>
+          </w>
+          <w xml:id="n.1.s.1.w.13" class="WORD">
+            <t>zo</t>
+          </w>
+          <w xml:id="n.1.s.1.w.14" class="PUNCTUATION">
+            <t>!</t>
           </w>
         </s>
       </note>
