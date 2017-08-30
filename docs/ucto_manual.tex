@@ -6,14 +6,14 @@
 \usepackage{url}
 \usepackage{listings}
 \usepackage{xcolor}
-\lstset{ 
+\lstset{
     language=xml, % choose the language of the code
     basicstyle=\footnotesize\color{black},
     keywordstyle=\color{black}\bfseries, % style for keywords
     commentstyle=\color{blue},
 	stringstyle=\color{magenta},
     numbers=none, % where to put the line-numbers
-    numberstyle=\tiny, % the size of the fonts that are used for the line-numbers     
+    numberstyle=\tiny, % the size of the fonts that are used for the line-numbers
     backgroundcolor=\color{white},
     showspaces=false, % show spaces adding particular underscores
     showstringspaces=false, % underline spaces within strings
@@ -24,12 +24,12 @@
     rulecolor=\color{black},
     captionpos=b, % sets the caption-position to bottom
     breaklines=true, % sets automatic line breaking
-    breakatwhitespace=false, 
+    breakatwhitespace=false,
 }
 
 \author{Maarten van Gompel \and Ko van der Sloot \and Antal van den Bosch \\
         Centre for Language Studies \\
-        Radboud University Nijmegen \\ \\  
+        Radboud University Nijmegen \\ \\
         URL: https://languagemachines.github.io/ucto/}
 
 
@@ -43,7 +43,7 @@
 
 \begin{document}
 
-\pagenumbering{roman} 
+\pagenumbering{roman}
 
 \maketitle
 
@@ -51,17 +51,17 @@
 
 \chapter*{Introduction}
 
-Tokenisation is a process in which text is segmented into the various sentence and word tokens that constitute the text. Most notably, words are separated from any punctuation attached and sentence boundaries are detected. Tokenisation is a common and necessary pre-processing step for almost any Natural Language Processing task, and preceeds further processing such as Part-of-Speech tagging, lemmatisation or syntactic parsing. 
+Tokenisation is a process in which text is segmented into the various sentence and word tokens that constitute the text. Most notably, words are separated from any punctuation attached and sentence boundaries are detected. Tokenisation is a common and necessary pre-processing step for almost any Natural Language Processing task, and preceeds further processing such as Part-of-Speech tagging, lemmatisation or syntactic parsing.
 
 Whilst tokenisation may at first seem a trivial problem, it does pose various challenges. For instance, the detection of sentence boundaries is complicated by the usage of periods abbreviations and the usage of capital letters in proper names. Furthermore, tokens may be contracted in constructions such as ``I'm'', ``you're'', ``father's''. A tokeniser will generally split those.
 
-Ucto is an advanced rule-based tokeniser. The tokenisation rules used by ucto are implemented as regular expressions and read from external configuration files, making ucto flexible and extensible. Configuration files can be further customised for specific needs and for languages not yet supported. Tokenisation rules have first been developed for Dutch, but configurations for English, German, French, Italian, and Swedish are also provided. Ucto features full unicode support. Ucto is not just a standalone program, but is also a C++ library that you can use in your own software. 
+Ucto is an advanced rule-based tokeniser. The tokenisation rules used by ucto are implemented as regular expressions and read from external configuration files, making ucto flexible and extensible. Configuration files can be further customised for specific needs and for languages not yet supported. Tokenisation rules have first been developed for Dutch, but configurations for English, German, French, Italian, and Swedish are also provided. Ucto features full unicode support. Ucto is not just a standalone program, but is also a C++ library that you can use in your own software.
 
-This reference guide is structured as follows. In Chapter~\ref{license} you can find the terms of the license according to which you are allowed to use, copy, and modify Ucto. The subsequent chapter gives instructions on how to install the software on your computer.  Next, Chapter~\ref{implementation} descibres the underlying implementation of the software. Chapter~\ref{usage} explains the usage.  
+This reference guide is structured as follows. In Chapter~\ref{license} you can find the terms of the license according to which you are allowed to use, copy, and modify Ucto. The subsequent chapter gives instructions on how to install the software on your computer.  Next, Chapter~\ref{implementation} descibres the underlying implementation of the software. Chapter~\ref{usage} explains the usage.
 
 \chapter{GNU General Public License}
 \label{license}
-\pagenumbering{arabic} 
+\pagenumbering{arabic}
 
 Ucto is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 3 of the License, or (at your option) any later version.
@@ -78,10 +78,10 @@ lamasoftware@science.ru.nl}, or send your request to:
 {\footnotesize
 Prof. dr.~Antal van den Bosch\\
 Radboud University Nijmegen \\
-P.O. Box 9103  -- 6500 HD Nijmegen \\ 
+P.O. Box 9103  -- 6500 HD Nijmegen \\
 The Netherlands \\
 Email: a.vandenbosch@let.ru.nl}
- 
+
 \pagestyle{headings}
 
 \chapter{Installation}
@@ -95,7 +95,7 @@ These sources need to be compiled for the software to run.
 
 However, on most recent Debian and Ubuntu systems, Ucto can be found in the respective software repositories and can be installed with a simple:
 
-{\tt \$ apt-get install ucto}    
+{\tt \$ apt-get install ucto}
 
 On Arch Linux, ucto is available from the Arch User Repository. If you have a
 package for your distribution, you can skip the remainder of this section.
@@ -105,7 +105,7 @@ LaMachine software distribution, which includes ucto and all dependencies:
 
 {\tt http://proycon.github.io/LaMachine/}
 
-If you however install from the source archive, the compilation and installation should also be relatively straightforward on most UNIX systems, and will be explained in the remainder of this section. 
+If you however install from the source archive, the compilation and installation should also be relatively straightforward on most UNIX systems, and will be explained in the remainder of this section.
 
 Ucto depends on the \texttt{libicu} library. This library can be obtained from \\
 {\tt http://site.icu-project.org/} but is also present in the package manager of all major Linux distributions.
@@ -122,8 +122,8 @@ following from the ucto source directory:
 
 {\tt \$ ./configure}
 
-Note: It is possible to install Ucto in a different location than the global default using the \texttt{--prefix=<dir>} option, but this tends to make further operations (such as compiling higher-level packages like Frog\footnote{\url{http://ilk.uvt.nl/frog}}) more complicated. Use the {\tt --with-ucto=} option in configure. 
- 
+Note: It is possible to install Ucto in a different location than the global default using the \texttt{--prefix=<dir>} option, but this tends to make further operations (such as compiling higher-level packages like Frog\footnote{\url{http://ilk.uvt.nl/frog}}) more complicated. Use the {\tt --with-ucto=} option in configure.
+
 After {\tt configure} you can compile Ucto:
 
 {\tt \$ make}
@@ -137,7 +137,7 @@ executable file named {\tt ucto} in the installation directory
 ({\tt /usr/local/bin} by default, we will assume this in the reminder of this section), and a dynamic library {\tt libucto.so} in
 the library directory ({\tt /usr/local/lib/}). The configuration files for the tokeniser can be found in {\tt /usr/local/etc/ucto/}.
 
-Ucto should now be ready for use. Reopen your terminal and issue the {\tt ucto} command to verify this. If not found, you may need to add the installation directory ({\tt /usr/local/bin} to your \$PATH. 
+Ucto should now be ready for use. Reopen your terminal and issue the {\tt ucto} command to verify this. If not found, you may need to add the installation directory ({\tt /usr/local/bin} to your \$PATH.
 
 That's all!
 
@@ -164,7 +164,7 @@ comments and questions is {\tt lamasoftware@science.ru.nl}.
 
 Ucto is a regular-expression-based tokeniser. Regular expressions are read from an external configuration file and processed in an order explicitly specified in this same configuration file. Each regular expression has a named label. These labels are propagated to the tokeniser output as tokens processed by a certain regular expression are assigned its identifier.
 
-The tokeniser will first split on the spaces already present in the input, resulting in various \emph{fragments}. Each fragment is then matched against the ordered set of regular expressions, until a match is found. If a match is found, the matching part is a token and is assigned the label of the matching regular expression. The matching part may be a only a substring of the fragment, in which case there are one or two remaining parts on the left and/or right side of the match. These will be treated as any other fragments and all regular expressions are again tested in the specified order, from the start, and in exactly the same way. This process continues until all fragments are processed. 
+The tokeniser will first split on the spaces already present in the input, resulting in various \emph{fragments}. Each fragment is then matched against the ordered set of regular expressions, until a match is found. If a match is found, the matching part is a token and is assigned the label of the matching regular expression. The matching part may be a only a substring of the fragment, in which case there are one or two remaining parts on the left and/or right side of the match. These will be treated as any other fragments and all regular expressions are again tested in the specified order, from the start, and in exactly the same way. This process continues until all fragments are processed.
 
 If a regular expression contains subgroups (marked by parentheses), then not the whole match, but rather the subgroups themselves will become \emph{separate} tokens. Parts within the whole match but not in subgroups are discarded, whilst parts completely outside the match are treated as usual.
 
@@ -172,11 +172,11 @@ Ucto performs sentence segmentation by looking at a specified list of end-of-sen
 
 Simple paragraph detection is available in Ucto: a double newline triggers a paragraph break.
 
-Quote detection is also available, but still experimental and by default disabled as it quickly fails on input that is not well prepared.If your input can be trusted on quotes being paired, you can try to enable it.  Note that quotes spanning over paragraphs are not supported.   
+Quote detection is also available, but still experimental and by default disabled as it quickly fails on input that is not well prepared.If your input can be trusted on quotes being paired, you can try to enable it.  Note that quotes spanning over paragraphs are not supported.
 
 \section{Configuration}
 
-The regular expressions on which ucto relies are read from external configuration files. A configuration file is passed to ucto using the \texttt{-c} or \texttt{-L} flags. Configuration files are included for several languages, but it has to be noted that at this time only the Dutch one has been stress-tested to sufficient extent.   
+The regular expressions on which ucto relies are read from external configuration files. A configuration file is passed to ucto using the \texttt{-c} or \texttt{-L} flags. Configuration files are included for several languages, but it has to be noted that at this time only the Dutch one has been stress-tested to sufficient extent.
 
 The configuration file consists of the following sections:
 
@@ -194,7 +194,7 @@ The configuration file consists of the following sections:
 \item \texttt{CURRENCY} -- This category is reserved for currency symbols, one per line, but is currently disabled due to problems.
 \item \texttt{EOSMARKERS} -- Contains a list of end-of-sentence markers, one per line and in \texttt{{\textbackslash}uXXXX} format, where \texttt{XXXX} is a hexadecimal number indicating a unicode code-point. The period is generally not included in this list as ucto treats it specially considering its role in abbreviations.
 \item \texttt{QUOTES} -- Contains a list of quote-pairs in the format \texttt{beginquotes {\textbackslash}s endquotes {\textbackslash}n}. Multiple begin quotes and endquotes are assumed to be ambiguous.
-\item \texttt{FILTER} -- Contains a list of transformations. In the format \texttt{pattern {\textbackslash}s replacement {\textbackslash}n}. Each occurrence of \texttt{pattern} will be replaced. This is useful for deconstructing ligatures for example. 
+\item \texttt{FILTER} -- Contains a list of transformations. In the format \texttt{pattern {\textbackslash}s replacement {\textbackslash}n}. Each occurrence of \texttt{pattern} will be replaced. This is useful for deconstructing ligatures for example.
 \end{itemize}
 
 Lines starting with a hash sign are treated as comments. Lines starting with \texttt{\%include } will include the contents of another file. This may be useful if for example multiple configurations share many of the same rules, as is often the case.  This directive is for the moment only supported within \texttt{RULES}, \texttt{FILTER}, \texttt{QUOTES} and \texttt{EOSMARKERS}.
@@ -209,7 +209,7 @@ When creating your own configuration, it is recommended to start by copying an e
 Ucto is a command-line tool. The following options are available:
 
 \begin{verbatim}
-Usage: 
+Usage:
 	ucto [[options]] [input-file] [[output-file]]
 Options:
 	-c <configfile> - Explicitly specify a configuration file
@@ -217,7 +217,7 @@ Options:
 	-e <string>     - set input encoding (default UTF8)
 	-N <string>     - set output normalization (default NFC)
 	-f              - Disable filtering of special characters
-	-L <language>   - Automatically selects a configuration file 
+	-L <language>   - Automatically selects a configuration file
 	                  by language code
 	-l              - Convert to all lowercase
 	-u              - Convert to all uppercase
@@ -225,38 +225,39 @@ Options:
 	-m              - One sentence per line (input)
 	-v              - Verbose mode
 	-s <string>     - End-of-Sentence marker (default: <utt>)
-	--passthru      - Don't tokenize, but perform input decoding 
+	--passthru      - Don't tokenize, but perform input decoding
 	                  and simple token role detection
 	-P              - Disable paragraph detection
 	-S              - Disable sentence detection!
 	-Q              - Enable quote detection (experimental)
 	-V              - Show version information
-	-F              - Input file is in FoLiA XML. All untokenised 
+	-F              - Input file is in FoLiA XML. All untokenised
 	                  sentences will be tokenised.
-	-X              - Output FoLiA XML, use the Document ID 
+	-X              - Output FoLiA XML, use the Document ID
 	                  specified with --id=
 	--id <DocID>    - use the specified Document ID to label
 	                  the FoLia doc.
-	                  (-x and -F disable usage of 
+	                  (-x and -F disable usage of
 	                  most other options: -nulPQVsS)
 \end{verbatim}
 
 
-Ucto has two input formats and three output formats. It can take either an untokenised plain text UTF-8 as input, or a FoLiA XML document with untokenised sentences. If the latter is the case, the \texttt{-F} flag should be added. 
+Ucto has two input formats and three output formats. It can take either an untokenised plain text UTF-8 as input, or a FoLiA XML document with untokenised sentences. If the latter is the case, the \texttt{-F} flag should be added.
 
 Output by default is to standard error output in a simplistic format which will simply show all of the tokens and places a \texttt{<utt>} symbol where sentence boundaries are detected. Consider the following untokenised input text: \emph{Mr. John Doe goes to the pet store. He sees a cute rabbit, falls in love, and buys it. They lived happily ever after.}, and observe the output in the example below.
 
 We save the file to \texttt{/tmp/input.txt} and we run ucto on it. The
-\texttt{-L eng} option sets the language to English and loads the English configuration for ucto. Instead of \texttt{-L}, which is nothign more than a convenient shortcut, we could also use \texttt{-c} and point to the full path of the configuration file.
+\texttt{-L eng} option sets the language to English and loads the English configuration for ucto. Instead of
+\texttt{-L}, which is nothing more than a convenient shortcut, we could also use \texttt{-c} and point to the full path of the configuration file.
 
 \begin{verbatim}
 $ ucto -L eng /tmp/input.txt
 configfile = tokconfig-eng
 inputfile = /tmp/input.txt
-outputfile = 
+outputfile =
 Initiating tokeniser...
-Mr. John Doe goes to the pet store . <utt> He sees a cute rabbit , falls 
-in love , and buys it . <utt> They lived happily ever after . <utt> 
+Mr. John Doe goes to the pet store . <utt> He sees a cute rabbit , falls
+in love , and buys it . <utt> They lived happily ever after . <utt>
 \end{verbatim}
 
 Alternatively, you can use the \texttt{-n} option to output each sentence on a separate line, instead of using the \texttt{<utt>} symbol:
@@ -265,7 +266,7 @@ Alternatively, you can use the \texttt{-n} option to output each sentence on a s
 $ ucto -L eng -n /tmp/input.txt
 configfile = tokconfig-eng
 inputfile = /tmp/input.txt
-outputfile = 
+outputfile =
 Initiating tokeniser...
 Mr. John Doe goes to the pet store .
 He sees a cute rabbit , falls in love , and buys it .
@@ -275,7 +276,7 @@ They lived happily ever after .
 To output to an output file instead of standard output, we would invoke ucto as follows:
 
 \begin{verbatim}
-$ ucto -L eng /tmp/input.txt /tmp/output.txt 
+$ ucto -L eng /tmp/input.txt /tmp/output.txt
 \end{verbatim}
 
 This simplest form of output does not show all of the information ucto has on the tokens. For a more verbose view, add the \texttt{-v} option:
@@ -284,39 +285,39 @@ This simplest form of output does not show all of the information ucto has on th
 $ ucto -L eng -v /tmp/input.txt
 configfile = tokconfig-eng
 inputfile = /tmp/input.txt
-outputfile = 
+outputfile =
 Initiating tokeniser...
-Mr.	ABBREVIATION-KNOWN	BEGINOFSENTENCE NEWPARAGRAPH 
-John	WORD	
-Doe	WORD	
-goes	WORD	
-to	WORD	
-the	WORD	
-pet	WORD	
-store	WORD	NOSPACE 
-.	PUNCTUATION	ENDOFSENTENCE 
+Mr.	ABBREVIATION-KNOWN	BEGINOFSENTENCE NEWPARAGRAPH
+John	WORD
+Doe	WORD
+goes	WORD
+to	WORD
+the	WORD
+pet	WORD
+store	WORD	NOSPACE
+.	PUNCTUATION	ENDOFSENTENCE
 
-He	WORD	BEGINOFSENTENCE 
-sees	WORD	
-a	WORD	
-cute	WORD	
-rabbit	WORD	NOSPACE 
-,	PUNCTUATION	
-falls	WORD	
-in	WORD	
-love	WORD	NOSPACE 
-,	PUNCTUATION	
-and	WORD	
-buys	WORD	
-it	WORD	NOSPACE 
-.	PUNCTUATION	ENDOFSENTENCE 
+He	WORD	BEGINOFSENTENCE
+sees	WORD
+a	WORD
+cute	WORD
+rabbit	WORD	NOSPACE
+,	PUNCTUATION
+falls	WORD
+in	WORD
+love	WORD	NOSPACE
+,	PUNCTUATION
+and	WORD
+buys	WORD
+it	WORD	NOSPACE
+.	PUNCTUATION	ENDOFSENTENCE
 
-They	WORD	BEGINOFSENTENCE 
-lived	WORD	
-happily	WORD	
-ever	WORD	
-after	WORD	NOSPACE 
-.	PUNCTUATION	ENDOFSENTENCE 
+They	WORD	BEGINOFSENTENCE
+lived	WORD
+happily	WORD
+ever	WORD
+after	WORD	NOSPACE
+.	PUNCTUATION	ENDOFSENTENCE
 \end{verbatim}
 
 As you see, this outputs the token types (the matching regular expressions) and roles such as \texttt{BEGINOFSENTENCE}, \texttt{ENDOFSENTENCE}, \texttt{NEWPARAGRAPH}, \texttt{BEGINQUOTE}, \texttt{ENDQUOTE}, \texttt{NOSPACE}.
@@ -327,11 +328,11 @@ For further processing of your file in a natural language processing pipeline, o
 $ ucto -L eng -v -X --id=example /tmp/input.txt
 configfile = tokconfig-eng
 inputfile = /tmp/input.txt
-outputfile = 
+outputfile =
 Initiating tokeniser...
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" 
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink"
   xmlns="http://ilk.uvt.nl/folia" xml:id="example" generator="libfolia-v0.10">
   <metadata type="native">
     <annotations>
@@ -436,7 +437,7 @@ Initiating tokeniser...
     </p>
   </text>
 </FoLiA>
-\end{lstlisting}    
+\end{lstlisting}
 
 Ucto can also take FoLiA XML documents with untokenised sentences as input, using the \texttt{-F} option.
 
