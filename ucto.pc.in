@@ -6,7 +6,6 @@ includedir=@includedir@
 Name: ucto
 Version: @VERSION@
 Description: Unicode Tokenizer
-Requires.private: icu-uc >= 52 folia >= 1.0
 Libs: -L${libdir} -lucto
 Libs.private: @LIBS@
 Cflags: -I${includedir}
