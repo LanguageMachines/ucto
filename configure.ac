@@ -61,16 +61,19 @@ AC_CHECK_HEADERS([libexttextcat/textcat.h],
 AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
   [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
-# ugly hack when PKG_CONFIG_PATH isn't defined.
-# couldn't get it to work otherwise
-if test "x$PKG_CONFIG_PATH" = x; then
-    export PKG_CONFIG_PATH=""
+if test $prefix = "NONE"; then
+   prefix="$ac_default_prefix"
 fi
 
-PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
+PKG_PROG_PKG_CONFIG
 
-#AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
-PKG_CHECK_MODULES([ICU], [icu-uc >= 52 icu-io] )
+if test "x$PKG_CONFIG_PATH" = x; then
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
+else
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
+fi
+
+PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
 
