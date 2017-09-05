@@ -5,7 +5,7 @@ SUBDIRS = src include m4 config docs tests
 EXTRA_DIST = bootstrap.sh AUTHORS TODO NEWS ucto.pc.in ucto-icu.pc.in
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = ucto.pc ucto-icu.pc
+pkgconfig_DATA = ucto.pc
 
 ChangeLog: NEWS
 	git pull; git2cl > ChangeLog

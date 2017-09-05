@@ -19,7 +19,7 @@ else
 fi
 
 # Checks for programs.
-AC_PROG_CXX( [g++ c++] )
+AC_PROG_CXX( [clang++] ) #g++ c++] )
 
 if $cxx_flags_were_set; then
   CXXFLAGS=$CXXFLAGS
@@ -50,12 +50,6 @@ AC_TYPE_INT32_T
 
 AX_LIB_READLINE
 
-# ugly hack when PKG_CONFIG_PATH isn't defined.
-# couldn't get it to work otherwise
-if test "x$PKG_CONFIG_PATH" = x; then
-    export PKG_CONFIG_PATH=""
-fi
-#AC_MSG_NOTICE( [pkg-config search path:$PKG_CONFIG_PATH dus] )
 AC_CHECK_HEADERS([libexttextcat/textcat.h],
 	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
 	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
@@ -67,49 +61,30 @@ AC_CHECK_HEADERS([libexttextcat/textcat.h],
 AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
   [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
-useICU=1;
-# inspired by feh-1.3.4/configure.ac.  Tnx Tom Gilbert and feh hackers.
-AC_ARG_WITH(icu,
-       [  --with-icu=DIR       use ICU installed in <DIR>],
-       [if test "$with_icu" = "no"; then
-           useICU=0
-	else
-	   CXXFLAGS="$CXXFLAGS -I$withval/include"
-           LIBS="-L$withval/lib $LIBS"
-	fi] )
-
-if test "$useICU" = "1"; then
-  AX_ICU_CHECK( [5.2],
-		[CXXFLAGS="$CXXFLAGS $ICU_CPPSEARCHPATH"
-		LIBS="$ICU_LIBPATH $ICU_LIBS $ICU_IOLIBS $LIBS"],
-		[AC_MSG_FAILURE( "No ICU development environment found. Please check if libicu-dev or the like is installed" )] )
-  AC_DEFINE(HAVE_ICU, 1, we want to use ICU )
-else
-  AC_MSG_ERROR("ICU support is required")
+if test $prefix = "NONE"; then
+   prefix="$ac_default_prefix"
 fi
+
+PKG_PROG_PKG_CONFIG
+
+if test "x$PKG_CONFIG_PATH" = x; then
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
+else
+    export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
+fi
+
+PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
+CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
+LIBS="$ICU_LIBS $LIBS"
 
 PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-AC_ARG_WITH(folia,
-       [  --with-folia=DIR       use libfolia installed in <DIR>;
-               note that you can install folia in a non-default directory with
-               ./configure --prefix=<DIR> in the folia installation directory],
-       [PKG_CONFIG_PATH="$withval/lib/pkgconfig:$PKG_CONFIG_PATH"],
-       [PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"])
-#AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
-PKG_CHECK_MODULES([folia], [folia >= 1.0] )
+PKG_CHECK_MODULES([folia], [folia >= 1.8] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
-AC_ARG_WITH(ticcutils,
-       [  --with-ticcutils=DIR       use ticcutils installed in <DIR>;
-               note that you can install ticcutils in a non-default directory with
-               ./configure --prefix=<DIR> in the ticcutils installation directory],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$prefix/lib/pkgconfig"])
-#  AC_MSG_NOTICE( [pkg-config search path: $PKG_CONFIG_PATH] )
 PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
@@ -135,7 +110,6 @@ PKG_CHECK_MODULES(
 AC_OUTPUT([
   Makefile
   ucto.pc
-  ucto-icu.pc
   m4/Makefile
   config/Makefile
   docs/Makefile

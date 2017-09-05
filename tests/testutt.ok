@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.8" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-07-20T14:44:37" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <event xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.1620" class="poem">
+      <t>Galenus wezen leeft op 't velt van dit papier Zyn tong alleen is stom; kon die de banden breken, Zy zou hier hemeltaal en boetorakels spreken, En berten blaken met een toorts van heilig vier. In andren vindt men minst welsprekenheid en zeden; Maar hier zijn bei volmaekt, de deugt en kracht van reden.</t>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614">
+        <t>Galenus wezen leeft op 't velt van dit papier</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.1" class="WORD">
+          <t>Galenus</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.2" class="WORD">
+          <t>wezen</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.3" class="WORD">
+          <t>leeft</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.4" class="WORD">
+          <t>op</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.5" class="WORD-TOKEN">
+          <t>'t</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.6" class="WORD">
+          <t>velt</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.7" class="WORD">
+          <t>van</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.8" class="WORD">
+          <t>dit</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1614.w.9" class="WORD">
+          <t>papier</t>
+        </w>
+      </utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615">
+        <t>Zyn tong alleen is stom; kon die de banden breken,</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.1" class="WORD">
+          <t>Zyn</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.2" class="WORD">
+          <t>tong</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.3" class="WORD">
+          <t>alleen</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.4" class="WORD">
+          <t>is</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.5" class="WORD" space="no">
+          <t>stom</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.6" class="PUNCTUATION">
+          <t>;</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.7" class="WORD">
+          <t>kon</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.8" class="WORD">
+          <t>die</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.9" class="WORD">
+          <t>de</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.10" class="WORD">
+          <t>banden</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.11" class="WORD" space="no">
+          <t>breken</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1615.w.12" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+      </utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616">
+        <t>Zy zou hier hemeltaal en boetorakels spreken,</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.1" class="WORD">
+          <t>Zy</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.2" class="WORD">
+          <t>zou</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.3" class="WORD">
+          <t>hier</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.4" class="WORD">
+          <t>hemeltaal</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.5" class="WORD">
+          <t>en</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.6" class="WORD">
+          <t>boetorakels</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.7" class="WORD" space="no">
+          <t>spreken</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1616.w.8" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+      </utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617">
+        <t>En berten blaken met een toorts van heilig vier.</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.1" class="WORD">
+          <t>En</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.2" class="WORD">
+          <t>berten</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.3" class="WORD">
+          <t>blaken</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.4" class="WORD">
+          <t>met</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.5" class="WORD">
+          <t>een</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.6" class="WORD">
+          <t>toorts</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.7" class="WORD">
+          <t>van</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.8" class="WORD">
+          <t>heilig</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.9" class="WORD" space="no">
+          <t>vier</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1617.w.10" class="PUNCTUATION">
+          <t>.</t>
+        </w>
+      </utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618">
+        <t>In andren vindt men minst welsprekenheid en zeden;</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.1" class="WORD">
+          <t>In</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.2" class="WORD">
+          <t>andren</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.3" class="WORD">
+          <t>vindt</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.4" class="WORD">
+          <t>men</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.5" class="WORD">
+          <t>minst</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.6" class="WORD">
+          <t>welsprekenheid</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.7" class="WORD">
+          <t>en</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.8" class="WORD" space="no">
+          <t>zeden</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1618.w.9" class="PUNCTUATION">
+          <t>;</t>
+        </w>
+      </utt>
+      <utt xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619">
+        <t>Maar hier zijn bei volmaekt, de deugt en kracht van reden.</t>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.1" class="WORD">
+          <t>Maar</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.2" class="WORD">
+          <t>hier</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.3" class="WORD">
+          <t>zijn</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.4" class="WORD">
+          <t>bei</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.5" class="WORD" space="no">
+          <t>volmaekt</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.6" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.7" class="WORD">
+          <t>de</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.8" class="WORD">
+          <t>deugt</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.9" class="WORD">
+          <t>en</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.10" class="WORD">
+          <t>kracht</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.11" class="WORD">
+          <t>van</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.12" class="WORD" space="no">
+          <t>reden</t>
+        </w>
+        <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.13" class="PUNCTUATION">
+          <t>.</t>
+        </w>
+      </utt>
+    </event>
+  </text>
+</FoLiA>
+
+

@@ -49,40 +49,43 @@ void usage(){
   cerr << "Usage: " << endl;
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
-       << "\t-c <configfile>  - Explicitly specify a configuration file" << endl
-       << "\t-d <value>       - set debug level" << endl
-       << "\t-e <string>      - set input encoding (default UTF8)" << endl
-       << "\t-N <string>      - set output normalization (default NFC)" << endl
-       << "\t-f               - Disable filtering of special characters" << endl
-       << "\t-h or --help     - this message" << endl
-       << "\t-L <language>    - Automatically selects a configuration file by language code." << endl
-       << "\t                 - Available Languages:" << endl
-       << "\t                   ";
+       << "\t-c <configfile>   - Explicitly specify a configuration file" << endl
+       << "\t-d <value>        - set debug level" << endl
+       << "\t-e <string>       - set input encoding (default UTF8)" << endl
+       << "\t-N <string>       - set output normalization (default NFC)" << endl
+       << "\t--filter=[YES|NO] - Disable filtering of special characters" << endl
+       << "\t-f                - OBSOLETE. use --filter=NO" << endl
+       << "\t-h or --help      - this message" << endl
+       << "\t-L <language>     - Automatically selects a configuration file by language code." << endl
+       << "\t                  - Available Languages:" << endl
+       << "\t                    ";
   for( const auto l : languages ){
     cerr << l << ",";
   }
   cerr << endl;
-  cerr << "\t-l               - Convert to all lowercase" << endl
-       << "\t-u               - Convert to all uppercase" << endl
-       << "\t-n               - One sentence per line (output)" << endl
-       << "\t-m               - One sentence per line (input)" << endl
-       << "\t-v               - Verbose mode" << endl
-       << "\t-s <string>      - End-of-Sentence marker (default: <utt>)" << endl
-       << "\t--passthru       - Don't tokenize, but perform input decoding and simple token role detection" << endl
+  cerr << "\t-l                - Convert to all lowercase" << endl
+       << "\t-u                - Convert to all uppercase" << endl
+       << "\t-n                - One sentence per line (output)" << endl
+       << "\t-m                - One sentence per line (input)" << endl
+       << "\t-v                - Verbose mode" << endl
+       << "\t-s <string>       - End-of-Sentence marker (default: <utt>)" << endl
+       << "\t--passthru        - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
-       << "\t                 - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
-       << "\t--filterpunct    - remove all punctuation from the output" << endl
-       << "\t--detectlanguages=<lang1,lang2,..langn> - try to detect languages. Default = 'lang1'" << endl
-       << "\t-P               - Disable paragraph detection" << endl
-       << "\t-S               - Disable sentence detection!" << endl
-       << "\t-Q               - Enable quote detection (experimental)" << endl
-       << "\t-V or --version  - Show version information" << endl
-       << "\t-x <DocID>       - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
-       << "\t-F               - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
-       << "\t-X               - Output FoLiA XML, use the Document ID specified with --id=" << endl
-       << "\t--id <DocID>     - use the specified Document ID to label the FoLia doc." << endl
+       << "\t                  - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
+       << "\t--filterpunct     - remove all punctuation from the output" << endl
+       << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
+       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
+       << "\t-P                - Disable paragraph detection" << endl
+       << "\t-S                - Disable sentence detection!" << endl
+       << "\t-Q                - Enable quote detection (experimental)" << endl
+       << "\t-V or --version   - Show version information" << endl
+       << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
+       << "\t-F                - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
+       << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
-       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl       << "\t--textclass <class> - use the specified class for noth input and output of text in the FoLia doc. (default is 'current')" << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
+       << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
@@ -94,6 +97,7 @@ int main( int argc, char *argv[] ){
   bool sentenceperlineinput = false;
   bool paragraphdetection = true;
   bool quotedetection = false;
+  bool do_language_detect = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
   bool splitsentences = true;
@@ -116,7 +120,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -132,7 +136,6 @@ int main( int argc, char *argv[] ){
       return EXIT_SUCCESS;
     }
     Opts.extract('e', inputEncoding );
-    dofiltering = !Opts.extract( 'f' );
     dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
     splitsentences = !Opts.extract( 'S' );
@@ -173,6 +176,24 @@ int main( int argc, char *argv[] ){
       inputclass = textclass;
       outputclass = textclass;
     }
+    if ( Opts.extract( 'f' ) ){
+      cerr << "ucto: The -f option is used.  Please consider using --filter=NO" << endl;
+      dofiltering = false;
+    }
+    string value;
+    if ( Opts.extract( "filter", value ) ){
+      bool result;
+      if ( !TiCC::stringTo( value, result ) ){
+	throw TiCC::OptionError( "illegal value for '--filter' option. (boolean expected)" );
+      }
+      dofiltering = result;
+    }
+    if ( dofiltering && xmlin && outputclass == inputclass ){
+      // we cannot mangle the original inputclass, so disable filtering
+      cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
+	   << endl;
+      dofiltering = false;
+    }
     if ( xmlin && outputclass.empty() ){
       if ( dopunctfilter ){
 	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
@@ -184,7 +205,6 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
       }
     }
-    string value;
     if ( Opts.extract('d', value ) ){
       if ( !TiCC::stringTo(value,debug) ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
@@ -192,30 +212,44 @@ int main( int argc, char *argv[] ){
     }
     if ( Opts.is_present('L') ) {
       if ( Opts.is_present('c') ){
-	cerr << "Error: -L and -c options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
       }
       else if ( Opts.is_present( "detectlanguages" ) ){
-	cerr << "Error: -L and --detectlanguages options conflict. Use only one of them." << endl;
-	return EXIT_FAILURE;
+	throw TiCC::OptionError( "-L and --detectlanguages options conflict. Use only one of these." );
+      }
+      else if ( Opts.is_present( "uselanguages" ) ){
+	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
       }
     }
-    else if ( Opts.is_present( 'c' )
-	      && Opts.is_present( "detectlanguages" ) ){
-      cerr << "Error: -c and --detectlanguages options conflict. Use only one of them." << endl;
-      return EXIT_FAILURE;
+    else if ( Opts.is_present( 'c' ) ){
+      if ( Opts.is_present( "detectlanguages" ) ){
+	throw TiCC::OptionError( "-c and --detectlanguages options conflict. Use only one of these" );
+      }
+      else if ( Opts.is_present( "uselanguages" ) ){
+	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
+      }
     }
-
+    if ( Opts.is_present( "detectlanguages" ) &&
+	 Opts.is_present( "uselanguages" ) ){
+      throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
+    }
     Opts.extract( 'c', c_file );
+
     string languages;
     Opts.extract( "detectlanguages", languages );
-    bool do_language_detect = !languages.empty();
-    if ( do_language_detect ){
+    if ( languages.empty() ){
+      Opts.extract( "uselanguages", languages );
+    }
+    else {
+      do_language_detect = true;
+    }
+    if ( !languages.empty() ){
       if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
 	throw TiCC::OptionError( "invalid language list: " + languages );
       }
     }
     else {
+      // so nu --detectlanguages ot --uselanguages
       string language;
       if ( Opts.extract('L', language ) ){
 	// support some backward compatability to old ISO 639-1 codes
@@ -281,16 +315,16 @@ int main( int argc, char *argv[] ){
       cfile = c_file;
     }
     else if ( language_list.empty() ){
-      cerr << "missing a language specification (-L or --detectlanguages option)" << endl;
+      cerr << "ucto: missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
       if ( available_languages.size() == 1
 	   && *available_languages.begin() == "generic" ){
-	cerr << "The uctodata package seems not to be installed." << endl;
-	cerr << "You can use '-L generic' to run a simple default tokenizer."
+	cerr << "ucto: The uctodata package seems not to be installed." << endl;
+	cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
 	     << endl;
-	cerr << "Installing uctodata is highly recommended." << endl;
+	cerr << "ucto: Installing uctodata is highly recommended." << endl;
       }
       else {
-	cerr << "Available Languages: ";
+	cerr << "ucto: Available Languages: ";
 	for( const auto& l : available_languages ){
 	  cerr << l << ",";
 	}
@@ -301,16 +335,16 @@ int main( int argc, char *argv[] ){
     else {
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
-	  cerr << "unsupported language '" << l << "'" << endl;
+	  cerr << "ucto: unsupported language '" << l << "'" << endl;
 	  if ( available_languages.size() == 1
 	       && *available_languages.begin() == "generic" ){
-	    cerr << "The uctodata package seems not to be installed." << endl;
-	    cerr << "You can use '-L generic' to run a simple default tokenizer."
+	    cerr << "ucto: The uctodata package seems not to be installed." << endl;
+	    cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
 		 << endl;
-	    cerr << "Installing uctodata is highly recommended." << endl;
+	    cerr << "ucto: Installing uctodata is highly recommended." << endl;
 	  }
 	  else {
-	    cerr << "Available Languages: ";
+	    cerr << "ucto: Available Languages: ";
 	    for( const auto& l : available_languages ){
 	      cerr << l << ",";
 	    }
@@ -323,15 +357,12 @@ int main( int argc, char *argv[] ){
   }
 
   if ((!ifile.empty()) && (ifile == ofile)) {
-    cerr << "Error: Output file equals input file! Courageously refusing to start..."  << endl;
+    cerr << "ucto: Output file equals input file! Courageously refusing to start..."  << endl;
     return EXIT_FAILURE;
   }
 
-  if ( !passThru ){
-    cerr << "configfile = " << cfile << endl;
-  }
-  cerr << "inputfile = "  << ifile << endl;
-  cerr << "outputfile = " << ofile << endl;
+  cerr << "ucto: inputfile = "  << ifile << endl;
+  cerr << "ucto: outputfile = " << ofile << endl;
 
   istream *IN = 0;
   if (!xmlin) {
@@ -341,8 +372,8 @@ int main( int argc, char *argv[] ){
     else {
       IN = new ifstream( ifile );
       if ( !IN || !IN->good() ){
-	cerr << "Error: problems opening inputfile " << ifile << endl;
-	cerr << "Courageously refusing to start..."  << endl;
+	cerr << "ucto: problems opening inputfile " << ifile << endl;
+	cerr << "ucto: Courageously refusing to start..."  << endl;
 	delete IN;
 	return EXIT_FAILURE;
       }
@@ -356,8 +387,8 @@ int main( int argc, char *argv[] ){
   else {
     OUT = new ofstream( ofile );
     if ( !OUT || !OUT->good() ){
-      cerr << "Error: problems opening outputfile " << ofile << endl;
-      cerr << "Courageously refusing to start..."  << endl;
+      cerr << "ucto: problems opening outputfile " << ofile << endl;
+      cerr << "ucto: Courageously refusing to start..."  << endl;
       delete OUT;
       if ( IN != &cin ){
 	delete IN;
@@ -409,6 +440,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setNormalization( normalization );
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
+    tokenizer.setLangDetection(do_language_detect);
     tokenizer.setPunctFilter(dopunctfilter);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
@@ -429,7 +461,7 @@ int main( int argc, char *argv[] ){
     }
   }
   catch ( exception &e ){
-    cerr << e.what() << endl;
+    cerr << "ucto: " << e.what() << endl;
     return EXIT_FAILURE;
   }
 

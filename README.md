@@ -1,6 +1,5 @@
-[![Build Status](https://travis-ci.org/LanguageMachines/ucto.svg?branch=master)](https://travis-ci.org/LanguageMachines/ucto) [![Language Machines Badge](http://applejack.science.ru.nl/lamabadge.php/ucto)](http://applejack.science.ru.nl/languagemachines/) 
+[![Build Status](https://travis-ci.org/LanguageMachines/ucto.svg?branch=master)](https://travis-ci.org/LanguageMachines/ucto) [![Language Machines Badge](http://applejack.science.ru.nl/lamabadge.php/ucto)](http://applejack.science.ru.nl/languagemachines/)
 
-================================
 Ucto - A rule-based tokeniser
 ================================
 
@@ -46,7 +45,6 @@ Implicit Linguistics project, the CLARIN-NL program, and the CLARIAH project.
 This software is available under the GNU Public License v3 (see the file
 COPYING).
 
-------------------------------------------------------------
 Installation
 ------------------------------------------------------------
 
@@ -74,14 +72,13 @@ As well as the following 3rd party dependencies:
 * ``libxml2`` - An XML library. On Debian/Ubuntu systems install the package libxml2-dev.
 * A sane build environment with a C++ compiler (e.g. gcc or clang), autotools, libtool, pkg-config
 
-------------------------------------------------------------
 Usage
 ------------------------------------------------------------
 
 Tokenize an english text file to standard output, tokens will be
 space-seperated, sentences delimiter by ``<utt>``:
 
-    $ ucto -L eng yourfile.txt 
+    $ ucto -L eng yourfile.txt
 
 The -L flag specifies the language (as a three letter iso-639-3 code), provided
 a configuration file exists for that language. The configurations are provided

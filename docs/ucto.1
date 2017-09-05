@@ -1,4 +1,4 @@
-.TH ucto 1 "2017 februari 20"
+.TH ucto 1 "2017 may 10"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -66,7 +66,7 @@ Convert to all uppercase
 Emit one sentence per line on output
 .RE
 
-.BR \-\- normalize=class1,class2,..,classn
+.BR \-\-normalize=class1,class2,..,classn
 .RS
 map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
 .RE
@@ -132,9 +132,11 @@ When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
 When tokenizing a FoLiA XML document, output the tokenized text in text nodes of class 'cls'
 .RE
 
-.B \-\-textclass "cls"
+.B \-\-textclass "cls" (obsolete)
 .RS
-use 'cls' for bouth input and output of FoLiA. (equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
+use 'cls' for input and output of text from FoLiA. Equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
+
+This option is obsolete and NOT recommended. Please use the separate \-\-inputclass= and \-\-outputclass options.
 .RE
 
 .B \-X

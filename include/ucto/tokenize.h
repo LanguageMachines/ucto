@@ -51,8 +51,7 @@ namespace Tokenizer {
     BEGINQUOTE                  = 16,
     ENDQUOTE                    = 32,
     TEMPENDOFSENTENCE           = 64,
-    LISTITEM                    = 128, //reserved for future use
-    TITLE                       = 256 //reserved for future use
+    LINEBREAK                   = 128
   };
 
   std::ostream& operator<<( std::ostream&, const TokenRole& );
@@ -186,6 +185,10 @@ namespace Tokenizer {
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
     bool getQuoteDetection() const { return detectQuotes; }
 
+    //Enable language detection
+    bool setLangDetection( bool b=true ) { bool t = doDetectLang; doDetectLang = b; return t; }
+    bool getLangDetection() const { return doDetectLang; }
+
     //Enable filtering
     bool setFiltering( bool b=true ) {
       bool t = doFilter; doFilter = b; return t;
@@ -263,6 +266,9 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
+    int tokenizeLine( const UnicodeString&,
+		      const std::string&,
+		      const std::string& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
@@ -322,6 +328,9 @@ namespace Tokenizer {
 
     //has a paragraph been signaled?
     bool paragraphsignal;
+
+    //has do we attempt to assign languages?
+    bool doDetectLang;
 
     //one sentence per line output
     bool sentenceperlineoutput;
