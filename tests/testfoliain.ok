@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:38" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -64,11 +64,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -80,47 +80,47 @@ Gaat deze datum: 28-11-2011 goed?</t>
 Gaat deze datum: 28-11-2011 goed?</t>
           <t class="ligafilter">Dit is een ligatuur: ae.
 Gaat deze datum: 28-11-2011 goed?</t>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD" textclass="ligafilter">
             <t class="ligafilter">Dit</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2" class="WORD" textclass="ligafilter">
             <t class="ligafilter">is</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.3" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.3" class="WORD" textclass="ligafilter">
             <t class="ligafilter">een</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD" space="no" textclass="ligafilter">
             <t class="ligafilter">ligatuur</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION" textclass="ligafilter">
             <t class="ligafilter">:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="WORD" space="no" textclass="ligafilter">
             <t class="ligafilter">ae</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION" textclass="ligafilter">
             <t class="ligafilter">.</t>
           </w>
           <br/>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD" textclass="ligafilter">
             <t class="ligafilter">Gaat</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD" textclass="ligafilter">
             <t class="ligafilter">deze</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD" space="no" textclass="ligafilter">
             <t class="ligafilter">datum</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION" textclass="ligafilter">
             <t class="ligafilter">:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="DATE" textclass="ligafilter">
             <t class="ligafilter">28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="WORD" space="no" textclass="ligafilter">
             <t class="ligafilter">goed</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="PUNCTUATION" textclass="ligafilter">
             <t class="ligafilter">?</t>
           </w>
         </s>
@@ -131,11 +131,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -149,32 +149,32 @@ Gaat deze datum 28-11-2011 goed</t>
         <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1">
           <t class="FILTER">Dit is een test
 Gaat deze datum 28-11-2011 goed</t>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD" textclass="FILTER">
             <t class="FILTER">Dit</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.2" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.2" class="WORD" textclass="FILTER">
             <t class="FILTER">is</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.3" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.3" class="WORD" textclass="FILTER">
             <t class="FILTER">een</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.4" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.4" class="WORD" textclass="FILTER">
             <t class="FILTER">test</t>
           </w>
           <br/>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="WORD" textclass="FILTER">
             <t class="FILTER">Gaat</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.6" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.6" class="WORD" textclass="FILTER">
             <t class="FILTER">deze</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.7" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.7" class="WORD" textclass="FILTER">
             <t class="FILTER">datum</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.8" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.8" class="DATE" textclass="FILTER">
             <t class="FILTER">28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.9" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.9" class="WORD" textclass="FILTER">
             <t class="FILTER">goed</t>
           </w>
         </s>
@@ -185,11 +185,11 @@ Gaat deze datum 28-11-2011 goed</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -202,44 +202,44 @@ Gaat deze datum: 28-11-2011 goed?</t>
 GAAT DEZE DATUM: 28-11-2011 GOED?</t>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
           <t class="UPP">DIT IS EEN TEST.</t>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD" textclass="UPP">
             <t class="UPP">DIT</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2" class="WORD" textclass="UPP">
             <t class="UPP">IS</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3" class="WORD" textclass="UPP">
             <t class="UPP">EEN</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4" class="WORD" space="no" textclass="UPP">
             <t class="UPP">TEST</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">.</t>
           </w>
         </s>
         <br/>
         <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
           <t class="UPP">GAAT DEZE DATUM: 28-11-2011 GOED?</t>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD" textclass="UPP">
             <t class="UPP">GAAT</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2" class="WORD">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2" class="WORD" textclass="UPP">
             <t class="UPP">DEZE</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3" class="WORD" space="no" textclass="UPP">
             <t class="UPP">DATUM</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5" class="DATE">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5" class="DATE" textclass="UPP">
             <t class="UPP">28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6" class="WORD" space="no">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6" class="WORD" space="no" textclass="UPP">
             <t class="UPP">GOED</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7" class="PUNCTUATION">
+          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">?</t>
           </w>
         </s>
@@ -250,11 +250,11 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -275,12 +275,12 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.10">
   <metadata type="native">
     <annotations>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -311,11 +311,11 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -346,11 +346,11 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:34" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -359,19 +359,19 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
       <t class="AHA">Dit is een OCR text</t>
       <s xml:id="p.1.s.1">
         <t class="AHA">Dit is een OCR text</t>
-        <w xml:id="p.1.s.1.w.1" class="WORD">
+        <w xml:id="p.1.s.1.w.1" class="WORD" textclass="AHA">
           <t class="AHA">Dit</t>
         </w>
-        <w xml:id="p.1.s.1.w.2" class="WORD">
+        <w xml:id="p.1.s.1.w.2" class="WORD" textclass="AHA">
           <t class="AHA">is</t>
         </w>
-        <w xml:id="p.1.s.1.w.3" class="WORD">
+        <w xml:id="p.1.s.1.w.3" class="WORD" textclass="AHA">
           <t class="AHA">een</t>
         </w>
-        <w xml:id="p.1.s.1.w.4" class="WORD">
+        <w xml:id="p.1.s.1.w.4" class="WORD" textclass="AHA">
           <t class="AHA">OCR</t>
         </w>
-        <w xml:id="p.1.s.1.w.5" class="WORD">
+        <w xml:id="p.1.s.1.w.5" class="WORD" textclass="AHA">
           <t class="AHA">text</t>
         </w>
       </s>
@@ -381,10 +381,10 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:35" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -450,10 +450,10 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:35" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -520,10 +520,10 @@ GAAT DEZE DATUM: 28-11-2011 GOED?</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.10" version="1.3">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:35" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -625,10 +625,10 @@ en tabs en zo !</t>
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.9" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.10" version="1.5">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-08-21T14:51:39" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-12T09:52:35" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>

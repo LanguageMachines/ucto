@@ -1001,6 +1001,9 @@ namespace Tokenizer {
 	if ( token.role & NOSPACE) {
 	  args["space"]= "no";
 	}
+	if ( outputclass != inputclass ){
+	  args["textclass"] = outputclass;
+	}
 	folia::FoliaElement *w = new folia::Word( args, root->doc() );
 	root->append( w );
 	UnicodeString out = token.us;
