@@ -72,6 +72,8 @@ void usage(){
        << "\t--passthru        - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
        << "\t                  - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
+       << "\t--noredundanttext - don't add <t> (text) nodes to <p> and <s> " << endl
+       << "\t                    (but leave already present <t>). FoLiA only!" << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
@@ -104,6 +106,7 @@ int main( int argc, char *argv[] ){
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
+  bool redundanttext = true;
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
   string normalization = "NFC";
@@ -120,7 +123,7 @@ int main( int argc, char *argv[] ){
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,noredundanttext");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -146,6 +149,7 @@ int main( int argc, char *argv[] ){
     tolowercase = Opts.extract( 'l' );
     sentenceperlineoutput = Opts.extract( 'n' );
     sentenceperlineinput = Opts.extract( 'm' );
+    redundanttext = !Opts.extract( "noredundanttext" );
     Opts.extract( 'N', normalization );
     verbose = Opts.extract( 'v' );
     if ( Opts.extract( 'x', docid ) ){
@@ -446,6 +450,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
+    tokenizer.setTextRedundancy(redundanttext);
 
     if (xmlin) {
       folia::Document doc;

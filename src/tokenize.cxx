@@ -907,7 +907,7 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ) {
 	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
-	if ( in_paragraph ){
+	if ( in_paragraph && doRedundantText ){
 	  appendText( root, outputclass );
 	  root = root->parent();
 	}
@@ -1040,7 +1040,9 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
-	appendText( root, outputclass );
+	if ( doRedundantText ){
+	  appendText( root, outputclass );
+	}
 	if ( token.role & LINEBREAK ){
 	  folia::FoliaElement *lb = new folia::Linebreak();
 	  root->append( lb );
@@ -1057,7 +1059,9 @@ namespace Tokenizer {
       if ( tokDebug > 0 ) {
 	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
       }
-      appendText( root, outputclass );
+      if ( doRedundantText ){
+	appendText( root, outputclass );
+      }
     }
     if ( tokDebug > 0 ) {
       LOG << "[outputTokensXML] Done. parCount= " << parCount << endl;
