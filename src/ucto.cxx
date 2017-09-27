@@ -83,8 +83,10 @@ void usage(){
        << "\t-V or --version   - Show version information" << endl
        << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
        << "\t-F                - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t                    -F is automatically set when inputfile has extension '.xml'" << endl
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
+       << "                      -X is automatically set when inputfile has extension '.xml'" << endl
        << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
        << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
@@ -304,10 +306,21 @@ int main( int argc, char *argv[] ){
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
       ifile = files[0];
+      if ( TiCC::match_back( ifile, ".xml" ) ){
+	xmlin = true;
+      }
     }
-    if ( files.size() > 1 ){
+    if ( files.size() == 2 ){
       ofile = files[1];
+      if ( TiCC::match_back( ofile, ".xml" ) ){
+	xmlout = true;
+      }
     }
+    if ( files.size() > 2 ){
+      cerr << "found additional arguments on the commandline: " << files[2]
+	   << "...." << endl;
+    }
+
   }
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
