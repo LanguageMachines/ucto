@@ -454,7 +454,11 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
       }
-      doc->set_metadata( "language", default_language );
+      try {
+	doc->set_metadata( "language", default_language );
+      }
+      catch(...){
+      }
     }
     outputTokensDoc_init( *doc );
     folia::FoliaElement *root = doc->doc()->index(0);
@@ -598,7 +602,11 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
 	}
-	doc.set_metadata( "language", default_language );
+	try {
+	  doc.set_metadata( "language", default_language );
+	}
+	catch (...){
+	}
       }
       else {
 	if ( tokDebug >= 2 ){
@@ -864,7 +872,11 @@ namespace Tokenizer {
 	LOG << "[outputTokensDoc] SET document language="
 	    << default_language << endl;
       }
-      doc.set_metadata( "language", default_language );
+      try {
+	doc.set_metadata( "language", default_language );
+      }
+      catch (...){
+      }
     }
     else {
       if ( tokDebug >= 2 ){
