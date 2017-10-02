@@ -454,11 +454,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
       }
-      try {
-	doc->set_metadata( "language", default_language );
-      }
-      catch(...){
-      }
+      doc->set_metadata( "language", default_language );
     }
     outputTokensDoc_init( *doc );
     folia::FoliaElement *root = doc->doc()->index(0);
@@ -602,10 +598,12 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
 	}
-	try {
+	if ( doc.metadatatype() == "native" ){
 	  doc.set_metadata( "language", default_language );
 	}
-	catch (...){
+	else {
+	  LOG << "[WARNING] cannot set the language on FoLiA documents of type "
+	      << doc.metadatatype() << endl;
 	}
       }
       else {
@@ -861,29 +859,6 @@ namespace Tokenizer {
     }
     folia::Text *text = new folia::Text( folia::getArgs("id='" + docid + ".text'") );
     doc.append( text );
-  }
-
-  void TokenizerClass::outputTokensDoc( folia::Document& doc,
-					const vector<Token>& tv ) const {
-    folia::FoliaElement *root = doc.doc()->index(0);
-    string lan = doc.doc()->language();
-    if ( lan.empty() ){
-      if ( tokDebug >= 1 ){
-	LOG << "[outputTokensDoc] SET document language="
-	    << default_language << endl;
-      }
-      try {
-	doc.set_metadata( "language", default_language );
-      }
-      catch (...){
-      }
-    }
-    else {
-      if ( tokDebug >= 2 ){
-	LOG << "[outputTokensDoc] Document has language " << lan << endl;
-      }
-    }
-    outputTokensXML(root, tv );
   }
 
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,

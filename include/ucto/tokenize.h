@@ -288,7 +288,6 @@ namespace Tokenizer {
     bool u_isquote( UChar32,
 		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
-    void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
     int outputTokensXML( folia::FoliaElement *,
