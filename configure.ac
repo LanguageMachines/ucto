@@ -73,6 +73,11 @@ else
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
+AC_ARG_WITH(icu,
+       [  --with-icu=DIR       use icu installed in <DIR>],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
+       [])
+
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
