@@ -200,8 +200,8 @@ namespace Tokenizer {
     }
     bool getPunctFilter() const { return doPunctFilter; };
 
-    bool setTextRedundancy( bool b = true ){
-      bool t = doRedundantText; doRedundantText = b; return t;
+    std::string setTextRedundancy( const std::string& tr ){
+      std::string s = text_redundancy; text_redundancy = tr; return s;
     }
 
     // set normalization mode
@@ -336,7 +336,8 @@ namespace Tokenizer {
     bool doDetectLang;
 
     //has do we percolate text up from <w> to <s> and <p> nodes? (FoLiA)
-    bool doRedundantText;
+    // values should be: 'full', 'minimal' or 'none'
+    std::string text_redundancy;
 
     //one sentence per line output
     bool sentenceperlineoutput;

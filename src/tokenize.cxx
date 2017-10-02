@@ -154,7 +154,7 @@ namespace Tokenizer {
     detectPar(true),
     paragraphsignal(true),
     doDetectLang(false),
-    doRedundantText(true),
+    text_redundancy("full"),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
     lowercase(false),
@@ -633,6 +633,12 @@ namespace Tokenizer {
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
   }
 
+  void removeText( folia::FoliaElement *root,
+		   const string& outputclass  ){
+    // remove the textcontent in outputclass of root
+    root->cleartextcontent( outputclass );
+  }
+
   const string get_language( folia::FoliaElement *f ) {
     // get the language of this element, if any, don't look up.
     // we search in ALL possible sets!
@@ -895,8 +901,13 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ) {
 	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
-	if ( in_paragraph && doRedundantText ){
-	  appendText( root, outputclass );
+	if ( in_paragraph ){
+	  if ( text_redundancy == "full" ){
+	    appendText( root, outputclass );
+	  }
+	  else if ( text_redundancy == "none" ){
+	    removeText( root, outputclass );
+	  }
 	  root = root->parent();
 	}
 	folia::KWargs args;
@@ -1028,8 +1039,11 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
-	if ( doRedundantText ){
+	if ( text_redundancy == "full" ){
 	  appendText( root, outputclass );
+	}
+	else if ( text_redundancy == "none" ){
+	  removeText( root, outputclass );
 	}
 	if ( token.role & LINEBREAK ){
 	  folia::FoliaElement *lb = new folia::Linebreak();
@@ -1047,8 +1061,11 @@ namespace Tokenizer {
       if ( tokDebug > 0 ) {
 	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
       }
-      if ( doRedundantText ){
+      if ( text_redundancy == "full" ){
 	appendText( root, outputclass );
+      }
+      else if ( text_redundancy == "none" ){
+	removeText( root, outputclass );
       }
     }
     if ( tokDebug > 0 ) {

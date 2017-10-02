@@ -12,7 +12,9 @@ $exe -L nl --inputclass OCR -F folia5.xml
 $exe -L nl --inputclass OCR --outputclass=AHA -F folia5.xml
 $exe -L nl --inputclass OCR -F folia6.xml
 $exe -L nl -F folia7.xml
-$exe -L nl --noredundanttext folia7.xml
+$exe -L nl --textredundancy none folia7.xml
+$exe -L nl --textredundancy minimal folia7.xml
+$exe -L nl --textredundancy full folia7.xml
 $exe -L nl -F folia8.xml
 $exe -L nl -F folia9a.xml
 $exe -L nl -F folia9b.xml foliatmp.xml

@@ -72,8 +72,10 @@ void usage(){
        << "\t--passthru        - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
        << "\t                  - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
-       << "\t-T or --noredundanttext  - Do not add redundant text nodes in FoLiA output; " << endl
-       << "\t                          (does not remove text nodes already present in input)" << endl
+       << "\t-T or --textredundancy=[full|minimal|none]  - set text redundancy level for text nodes in FoLiA output: " << endl
+       << "\t                    'full' - add text to all levels: <p> <s> <w> etc." << endl
+       << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
+       << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
@@ -108,7 +110,7 @@ int main( int argc, char *argv[] ){
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
-  bool redundanttext = true;
+  string redundancy = "full";
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
   string normalization = "NFC";
@@ -124,8 +126,8 @@ int main( int argc, char *argv[] ){
   string norm_set_string;
 
   try {
-    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,noredundanttext");
+    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -152,7 +154,13 @@ int main( int argc, char *argv[] ){
     tolowercase = Opts.extract( 'l' );
     sentenceperlineoutput = Opts.extract( 'n' );
     sentenceperlineinput = Opts.extract( 'm' );
-    redundanttext = !(Opts.extract( "noredundanttext" ) || Opts.extract('T'));
+    Opts.extract( 'T', redundancy );
+    Opts.extract( "textredundancy", redundancy );
+    if ( redundancy != "full"
+	 && redundancy != "minimal"
+	 && redundancy != "none" ){
+      throw TiCC::OptionError( "unknown textredundancy level: " + redundancy );
+    }
     Opts.extract( 'N', normalization );
     verbose = Opts.extract( 'v' );
     if ( Opts.extract( 'x', docid ) ){
@@ -464,7 +472,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
-    tokenizer.setTextRedundancy(redundanttext);
+    tokenizer.setTextRedundancy(redundancy);
 
     if (xmlin) {
       folia::Document doc;
