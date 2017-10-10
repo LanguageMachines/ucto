@@ -827,9 +827,12 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      // folia may encode newlines. These must be converted to <br/> nodes
+      // folia may encode newlines. These should be converted to <br/> nodes
+      // but Linebreak and newline handling is very dangerous and complicated
+      // so for now is is disabled!
       vector<UnicodeString> parts;
-      split_nl( line, parts );
+      parts.push_back( line ); // just one part
+      //split_nl( line, parts ); // disabled multipart
       for ( auto const& l : parts ){
 	if ( tokDebug >= 1 ){
 	  LOG << "[tokenizeSentenceElement] tokenize part: " << l << endl;
