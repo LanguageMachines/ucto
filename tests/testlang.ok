@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.8" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:08" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -66,12 +66,12 @@
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.8" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:08" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">eng</meta>
   </metadata>
@@ -133,13 +133,13 @@
 
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.8" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:08" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:08" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -217,23 +217,21 @@
 
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.8" version="1.4.1">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.10" version="1.5.0">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:09" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:09" set="tokconfig-deu"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:09" set="tokconfig-eng"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:09" set="tokconfig-fra"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-05-22T10:56:09" set="tokconfig-spa"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-deu"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-fra"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:02:01" set="tokconfig-spa"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="ml.text">
     <p xml:id="ml.p.1">
-      <t>BILTHOVEN - In de Mariapolder vlakbij Moerdijk is op de dag van de brand bij Chemie-Pack veel meer lood gemeten in neergedaalde roetdeeltjes dan is toegestaan. Het betreft vermoedelijk een eenmalige uitschieter, aldus een woordvoerder van het RIVM woensdag.</t>
       <s xml:id="ml.p.1.s.1">
-        <t>BILTHOVEN - In de Mariapolder vlakbij Moerdijk is op de dag van de brand bij Chemie-Pack veel meer lood gemeten in neergedaalde roetdeeltjes dan is toegestaan.</t>
         <w xml:id="ml.p.1.s.1.w.1" class="WORD" set="tokconfig-nld">
           <t>BILTHOVEN</t>
         </w>
@@ -317,7 +315,6 @@
         </w>
       </s>
       <s xml:id="ml.p.1.s.2">
-        <t>Het betreft vermoedelijk een eenmalige uitschieter, aldus een woordvoerder van het RIVM woensdag.</t>
         <w xml:id="ml.p.1.s.2.w.1" class="WORD" set="tokconfig-nld">
           <t>Het</t>
         </w>
@@ -366,9 +363,7 @@
       </s>
     </p>
     <p xml:id="ml.p.2">
-      <t>I'm sure that I won't have any tokenisation errors here, you'll see if only you'd pay attention! We're sure we've already seen such examples before. My father's house is nice.</t>
       <s xml:id="ml.p.2.s.1">
-        <t>I'm sure that I won't have any tokenisation errors here, you'll see if only you'd pay attention!</t>
         <lang class="eng"/>
         <w xml:id="ml.p.2.s.1.w.1" class="WORD" set="tokconfig-eng" space="no">
           <t>I</t>
@@ -441,7 +436,6 @@
         </w>
       </s>
       <s xml:id="ml.p.2.s.2">
-        <t>We're sure we've already seen such examples before.</t>
         <lang class="eng"/>
         <w xml:id="ml.p.2.s.2.w.1" class="WORD" set="tokconfig-eng" space="no">
           <t>We</t>
@@ -478,7 +472,6 @@
         </w>
       </s>
       <s xml:id="ml.p.2.s.3">
-        <t>My father's house is nice.</t>
         <lang class="eng"/>
         <w xml:id="ml.p.2.s.3.w.1" class="WORD" set="tokconfig-eng">
           <t>My</t>
@@ -504,9 +497,7 @@
       </s>
     </p>
     <p xml:id="ml.p.3">
-      <t>Ich fahre von Kleve Hbf. nach Neuburg a.d. Donau. Das ist ziemlich langweilig, d.h. das es eine lange Reise ist. Mein Brüder und meine Schwester fahren auch mit, sie sind 23 bzw. 19 Jahre alt.</t>
       <s xml:id="ml.p.3.s.1">
-        <t>Ich fahre von Kleve Hbf. nach Neuburg a.d. Donau.</t>
         <lang class="deu"/>
         <w xml:id="ml.p.3.s.1.w.1" class="WORD" set="tokconfig-deu">
           <t>Ich</t>
@@ -540,7 +531,6 @@
         </w>
       </s>
       <s xml:id="ml.p.3.s.2">
-        <t>Das ist ziemlich langweilig, d.h. das es eine lange Reise ist.</t>
         <lang class="deu"/>
         <w xml:id="ml.p.3.s.2.w.1" class="WORD" set="tokconfig-deu">
           <t>Das</t>
@@ -583,7 +573,6 @@
         </w>
       </s>
       <s xml:id="ml.p.3.s.3">
-        <t>Mein Brüder und meine Schwester fahren auch mit, sie sind 23 bzw. 19 Jahre alt.</t>
         <lang class="deu"/>
         <w xml:id="ml.p.3.s.3.w.1" class="WORD" set="tokconfig-deu">
           <t>Mein</t>
@@ -639,9 +628,7 @@
       </s>
     </p>
     <p xml:id="ml.p.4">
-      <t>Qu'est-ce que c'est? Ce n'est pas une avion , j'en suis sur , mais peut-être c'est superman? Sais-tu voler aussi? Les derniers mots de Ceasar sont: "Et tu? Brute?", avant qu'il était trahi.</t>
       <s xml:id="ml.p.4.s.1">
-        <t>Qu'est-ce que c'est?</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.1.w.1" class="PREFIX" set="tokconfig-fra" space="no">
           <t>Qu'</t>
@@ -666,7 +653,6 @@
         </w>
       </s>
       <s xml:id="ml.p.4.s.2">
-        <t>Ce n'est pas une avion , j'en suis sur , mais peut-être c'est superman?</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.2.w.1" class="WORD" set="tokconfig-fra">
           <t>Ce</t>
@@ -724,7 +710,6 @@
         </w>
       </s>
       <s xml:id="ml.p.4.s.3">
-        <t>Sais-tu voler aussi?</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.3.w.1" class="WORD" set="tokconfig-fra" space="no">
           <t>Sais</t>
@@ -743,7 +728,6 @@
         </w>
       </s>
       <s xml:id="ml.p.4.s.4">
-        <t>Les derniers mots de Ceasar sont: "Et tu?</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.4.w.1" class="WORD" set="tokconfig-fra">
           <t>Les</t>
@@ -780,7 +764,6 @@
         </w>
       </s>
       <s xml:id="ml.p.4.s.5">
-        <t>Brute?</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.5.w.1" class="WORD" set="tokconfig-fra" space="no">
           <t>Brute</t>
@@ -790,7 +773,6 @@
         </w>
       </s>
       <s xml:id="ml.p.4.s.6">
-        <t>", avant qu'il était trahi.</t>
         <lang class="fra"/>
         <w xml:id="ml.p.4.s.6.w.1" class="PUNCTUATION" set="tokconfig-fra" space="no">
           <t>"</t>
@@ -819,9 +801,7 @@
       </s>
     </p>
     <p xml:id="ml.p.5">
-      <t>He llamado a Sr. Mendoza y a Sra. María, pero no sabían la respuesta. ¿Quizás Uds. me pueden contestar?</t>
       <s xml:id="ml.p.5.s.1">
-        <t>He llamado a Sr. Mendoza y a Sra. María, pero no sabían la respuesta.</t>
         <lang class="spa"/>
         <w xml:id="ml.p.5.s.1.w.1" class="WORD" set="tokconfig-spa">
           <t>He</t>
@@ -873,7 +853,6 @@
         </w>
       </s>
       <s xml:id="ml.p.5.s.2">
-        <t>¿Quizás Uds. me pueden contestar?</t>
         <lang class="spa"/>
         <w xml:id="ml.p.5.s.2.w.1" class="PUNCTUATION" set="tokconfig-spa" space="no">
           <t>¿</t>
@@ -899,9 +878,7 @@
       </s>
     </p>
     <p xml:id="ml.p.6">
-      <t>No hé podido contarte eso, porque no quiero dañarte.</t>
       <s xml:id="ml.p.6.s.1">
-        <t>No hé podido contarte eso, porque no quiero dañarte.</t>
         <w xml:id="ml.p.6.s.1.w.1" class="WORD" set="tokconfig-nld">
           <t>No</t>
         </w>
