@@ -110,7 +110,7 @@ int main( int argc, char *argv[] ){
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
-  string redundancy = "full";
+  string redundancy = "minimal";
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
   string normalization = "NFC";

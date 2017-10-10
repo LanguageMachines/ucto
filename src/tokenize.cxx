@@ -154,7 +154,7 @@ namespace Tokenizer {
     detectPar(true),
     paragraphsignal(true),
     doDetectLang(false),
-    text_redundancy("full"),
+    text_redundancy("minimal"),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
     lowercase(false),
