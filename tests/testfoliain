@@ -19,3 +19,5 @@ $exe -L nl -F folia8.xml
 $exe -L nl -F folia9a.xml
 $exe -L nl -F folia9b.xml foliatmp.xml
 cat < foliatmp.xml
+$exe -L nl -Tfull textproblem.xml foliatmp2.xml
+cat < foliatmp2.xml
