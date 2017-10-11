@@ -220,6 +220,18 @@ namespace Tokenizer {
     return old;
   }
 
+  string TokenizerClass::setTextRedundancy( const std::string& tr ){
+    if ( tr == "none" || tr == "minimal" || tr == "full" ){
+      string s = text_redundancy;
+      text_redundancy = tr;
+      return s;
+    }
+    else {
+      throw runtime_error( "illegal value '" + tr + "' for textredundancy. "
+			   "expected 'full', 'minimal' or 'none'." );
+    }
+  }
+
   void stripCR( string& s ){
     string::size_type pos = s.rfind( '\r' );
     if ( pos != string::npos ){

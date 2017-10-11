@@ -200,9 +200,7 @@ namespace Tokenizer {
     }
     bool getPunctFilter() const { return doPunctFilter; };
 
-    std::string setTextRedundancy( const std::string& tr ){
-      std::string s = text_redundancy; text_redundancy = tr; return s;
-    }
+    std::string setTextRedundancy( const std::string& );
 
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
