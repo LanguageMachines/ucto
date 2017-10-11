@@ -801,6 +801,18 @@ namespace Tokenizer {
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
     }
+    if ( text_redundancy == "full" ){
+      if ( tokDebug > 0 ) {
+	LOG << "[tokenizeElement] Creating text on " << element->id() << endl;
+      }
+      appendText( element, outputclass );
+    }
+    else if ( text_redundancy == "none" ){
+      if ( tokDebug > 0 ) {
+	LOG << "[tokenizeElement] Removing text from: " << element->id() << endl;
+      }
+      removeText( element, outputclass );
+    }
     return;
   }
 
@@ -918,9 +930,15 @@ namespace Tokenizer {
 	}
 	if ( in_paragraph ){
 	  if ( text_redundancy == "full" ){
+	    if ( tokDebug > 0 ) {
+	      LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+	    }
 	    appendText( root, outputclass );
 	  }
 	  else if ( text_redundancy == "none" ){
+	    if ( tokDebug > 0 ) {
+	      LOG << "[outputTokensXML] Removing text from root: " << root->id() << endl;
+	    }
 	    removeText( root, outputclass );
 	  }
 	  root = root->parent();
@@ -1073,13 +1091,16 @@ namespace Tokenizer {
       in_paragraph = true;
     }
     if ( tv.size() > 0 ){
-      if ( tokDebug > 0 ) {
-	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
-      }
       if ( text_redundancy == "full" ){
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+	}
 	appendText( root, outputclass );
       }
       else if ( text_redundancy == "none" ){
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Removing text from root: " << root->id() << endl;
+	}
 	removeText( root, outputclass );
       }
     }
