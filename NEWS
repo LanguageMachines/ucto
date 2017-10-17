@@ -1,3 +1,19 @@
+0.9.6 2017-10-17
+ * added textredundancy option, default is 'minimal'
+ * small adaptations to work with folia 1.5 specs
+   - set textclass on words when outputclass != inputclass
+   - DON'T filter special characters when inputclass == outputclass
+ * -F (folia input) is automaticaly set for .xml files
+ * more robust against texts with embedded tabs, etc.
+ * more and better tests added
+ * better logging and error messaging
+ * improved language handling. TODO: Language detection in FoLiA
+ * bug fixes:
+   - correctly handle xml-comment inside a <t>
+   - better id generation when paren has no id
+   - beter reaction on overly long 'words'
+
+
 0.9.5 2017-01-06
 [Ko van der Sloot]
 Bug fix release:
