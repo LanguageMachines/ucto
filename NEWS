@@ -1,4 +1,5 @@
-0.9.6 2017-10-17
+0.9.7 2017-10-17
+[Ko van der Sloot]
  * added textredundancy option, default is 'minimal'
  * small adaptations to work with folia 1.5 specs
    - set textclass on words when outputclass != inputclass
@@ -10,9 +11,18 @@
  * improved language handling. TODO: Language detection in FoLiA
  * bug fixes:
    - correctly handle xml-comment inside a <t>
-   - better id generation when paren has no id
+   - better id generation when parent has no id
    - beter reaction on overly long 'words'
 
+0.9.6 2017-01-23
+[Maarten van Gompel]
+* Moving data files from etc/ to share/, as they are more data files than
+  configuration files that should be edited.
+* Requires uctodata >= 0.4.
+* Should solve debian packaging issues (#18)
+* Minor updates to the manual (#2)
+* Some refactoring/code cleanup, temper expectations regarding ucto's
+  date-tagging abilities (#16, thanks also to @sanmai-NL)
 
 0.9.5 2017-01-06
 [Ko van der Sloot]
