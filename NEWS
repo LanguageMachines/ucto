@@ -1,7 +1,7 @@
 0.9.7 2017-10-17
 [Ko van der Sloot]
  * added textredundancy option, default is 'minimal'
- * small adaptations to work with folia 1.5 specs
+ * small adaptations to work with FoLiA 1.5 specs
    - set textclass on words when outputclass != inputclass
    - DON'T filter special characters when inputclass == outputclass
  * -F (folia input) is automatically set for .xml files
