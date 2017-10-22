@@ -1068,7 +1068,7 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }
-      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) ) {
+      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) && (!root->isinstance(folia::Utterance_t))) {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
