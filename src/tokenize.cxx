@@ -909,7 +909,7 @@ namespace Tokenizer {
     if ( root->isinstance( folia::Sentence_t ) ){
       root_is_sentence = true;
     }
-    else if ( root->isinstance( folia::Paragraph_t )
+    else if ( root->isinstance( folia::Paragraph_t ) //TODO: can't we do this smarter?
 	      || root->isinstance( folia::Head_t )
 	      || root->isinstance( folia::Note_t )
 	      || root->isinstance( folia::ListItem_t )
