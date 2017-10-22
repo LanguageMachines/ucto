@@ -922,7 +922,7 @@ namespace Tokenizer {
 
     bool in_paragraph = false;
     for ( const auto& token : tv ) {
-      if ( ( !root_is_structure_element && !root_is_sentence )
+      if ( ( !root_is_structure_element && !root_is_sentence ) //TODO: instead of !root_is_structurel check if is_structure and accepts paragraphs?
 	   &&
 	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
 	if ( tokDebug > 0 ) {
