@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.10" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T11:48:55" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-23T09:48:17" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -209,6 +209,74 @@
         </w>
         <w xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.l.1619.w.13" class="PUNCTUATION">
           <t>.</t>
+        </w>
+      </utt>
+    </event>
+  </text>
+</FoLiA>
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
+      <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-23T09:48:17" set="tokconfig-nld"/>
+    </annotations>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <event xml:id="aa__001biog01_01.TEI.2.text.body.div.lg.1620" class="poem">
+      <utt xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609">
+        <t>O! Philemon naar gaat,</t>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.1" class="WORD" space="no">
+          <t>O</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.2" class="PUNCTUATION">
+          <t>!</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.3" class="WORD">
+          <t>Philemon</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.4" class="WORD">
+          <t>naar</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.5" class="WORD" space="no">
+          <t>gaat</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2609.w.6" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+      </utt>
+      <utt xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610">
+        <t>In 't wout, seer droevigh, dwaalen,</t>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.1" class="WORD">
+          <t>In</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.2" class="WORD-TOKEN">
+          <t>'t</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.3" class="WORD" space="no">
+          <t>wout</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.4" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.5" class="WORD">
+          <t>seer</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.6" class="WORD" space="no">
+          <t>droevigh</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.7" class="PUNCTUATION">
+          <t>,</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.8" class="WORD" space="no">
+          <t>dwaalen</t>
+        </w>
+        <w xml:id="west049zeed01_01.TEI.2.text.body.div.lg.l.2610.w.9" class="PUNCTUATION">
+          <t>,</t>
         </w>
       </utt>
     </event>
