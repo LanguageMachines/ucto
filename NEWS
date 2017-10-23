@@ -1,3 +1,8 @@
+0.9.8 2017-10-23
+[Ko vd Sloot]
+Bugfix release.
+ * fixed utterance handling in FoLiA input. Don't try sentence detection!
+
 0.9.7 2017-10-17
 [Ko van der Sloot]
  * added textredundancy option, default is 'minimal'
