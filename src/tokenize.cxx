@@ -640,6 +640,10 @@ namespace Tokenizer {
       // there is already text, bail out.
       return;
     }
+    if ( root->isSubClass( folia::Linebreak_t ) ){
+      // exception
+      return;
+    }
     UnicodeString utxt = root->text( outputclass, false, false );
     // so get Untokenized text from the children, and set it
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
