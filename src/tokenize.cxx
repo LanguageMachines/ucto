@@ -111,6 +111,7 @@ namespace Tokenizer {
   const UnicodeString type_space = "SPACE";
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
+  const UnicodeString type_picto = "PICTOGRAM";
   const UnicodeString type_word = "WORD";
   const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
@@ -1773,7 +1774,7 @@ namespace Tokenizer {
 	  }
 	  if ( doPunctFilter
 	       && ( type == type_punctuation || type == type_currency ||
-		    type == type_emoticon ) ) {
+		    type == type_emoticon || type == type_picto ) ) {
 	    if (tokDebug >= 2 ){
 	      LOG << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
@@ -1836,7 +1837,7 @@ namespace Tokenizer {
 	}
 	if ( doPunctFilter
 	     && ( type == type_punctuation || type == type_currency ||
-		  type == type_emoticon ) ) {
+		  type == type_emoticon || type == type_picto ) ) {
 	  if (tokDebug >= 2 ){
 	    LOG << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
@@ -1912,6 +1913,11 @@ namespace Tokenizer {
     return s == UBLOCK_EMOTICONS;
   }
 
+  bool u_ispicto( UChar32 c ){
+    UBlockCode s = ublock_getCode(c);
+    return s == UBLOCK_MISCELLANEOUS_SYMBOLS_AND_PICTOGRAPHS ;
+  }
+
   bool u_iscurrency( UChar32 c ){
     return u_charType( c ) == U_CURRENCY_SYMBOL;
   }
@@ -1935,6 +1941,9 @@ namespace Tokenizer {
     }
     else if ( u_isemo( c ) ) {
       return type_emoticon;
+    }
+    else if ( u_ispicto( c ) ) {
+      return type_picto;
     }
     else if ( u_isalpha(c)) {
       return type_word;
@@ -2259,7 +2268,7 @@ namespace Tokenizer {
       }
       if ( doPunctFilter
 	   && ( type == type_punctuation || type == type_currency ||
-		type == type_emoticon ) ) {
+		type == type_emoticon || type == type_picto ) ) {
 	if (tokDebug >= 2 ){
 	  LOG << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
