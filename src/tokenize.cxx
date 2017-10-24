@@ -121,7 +121,9 @@ namespace Tokenizer {
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
 		TokenRole _role, const string& _lc ):
-    type(_type), us(_s), role(_role), lc(_lc) {}
+    type(_type), us(_s), role(_role), lc(_lc) {
+    //    cerr << "Created " << *this << endl;
+  }
 
 
   std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
@@ -2236,12 +2238,13 @@ namespace Tokenizer {
     if ( tokDebug > 2 ){
       if ( recurse ){
 	LOG << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
-			<< "word=[" << input << "], type=" << assigned_type << endl;
+	    << "word=[" << input << "], type=" << assigned_type
+	    << " Space=" << (space?"TRUE":"FALSE") << endl;
       }
       else {
 	LOG << "   [tokenizeWord] Input: (" << inpLen << ") "
-			<< "word=[" << input << "]" << endl;
-      }
+	    << "word=[" << input << "]"
+	    << " Space=" << (space?"TRUE":"FALSE") << endl;      }
     }
     if ( input == eosmark ) {
       if (tokDebug >= 2){
@@ -2349,8 +2352,8 @@ namespace Tokenizer {
 	    }
 	    for ( int m=0; m < max; ++m ){
 	      if ( tokDebug >= 4 ){
-		LOG << "\tTOKEN match[" << m << "] = "
-				<< matches[m] << endl;
+		LOG << "\tTOKEN match[" << m << "] = " << matches[m]
+		    << " Space=" << (space?"TRUE":"FALSE") << endl;
 	      }
 	      if ( doPunctFilter
 		   && (&rule->id)->startsWith("PUNCTUATION") ){
@@ -2366,6 +2369,9 @@ namespace Tokenizer {
 	      else {
 		bool internal_space = space;
 		if ( post.length() > 0 ) {
+		  internal_space = false;
+		}
+		else if ( m < max-1 ){
 		  internal_space = false;
 		}
 		UnicodeString word = matches[m];
