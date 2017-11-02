@@ -25,6 +25,8 @@
 
 */
 
+#include "ucto/tokenize.h"
+
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
@@ -33,11 +35,9 @@
 #include "unicode/schriter.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
-#include "libfolia/folia.h"
+#include "ticcutils/Unicode.h"
 #include "ucto/unicode.h"
 #include "ucto/textcat.h"
-#include "ucto/setting.h"
-#include "ucto/tokenize.h"
 
 #define DO_READLINE
 #ifdef HAVE_LIBREADLINE

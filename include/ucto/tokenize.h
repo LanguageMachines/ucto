@@ -28,12 +28,15 @@
 #define UCTO_TOKENIZE_H
 
 #include <vector>
+#include <set>
 #include <map>
 #include <sstream>
 #include <stdexcept>
+#include "libfolia/folia.h"
 #include "ucto/unicode.h"
 #include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
+#include "ticcutils/Unicode.h"
 
 class TextCat;
 
@@ -215,7 +218,7 @@ namespace Tokenizer {
     void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
-    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
+    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setNormSet( const std::string& );
