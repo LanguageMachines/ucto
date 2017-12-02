@@ -21,3 +21,5 @@ $exe -L nl -F folia9b.xml foliatmp.xml
 cat < foliatmp.xml
 $exe -L nl -Tfull textproblem.xml foliatmp2.xml
 cat < foliatmp2.xml
+$exe -L nl cell.xml cellout.xml
+cat < cellout.xml
