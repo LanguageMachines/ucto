@@ -923,6 +923,7 @@ namespace Tokenizer {
 	      || root->isinstance( folia::Part_t )
 	      || root->isinstance( folia::Utterance_t )
 	      || root->isinstance( folia::Caption_t )
+	      || root->isinstance( folia::Cell_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
     }
