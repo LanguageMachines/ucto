@@ -1,3 +1,8 @@
+0.11 2017-12-04
+[Ko van der Sloot]
+Bug fix release:
+* problems with text inside Cell elements
+
 0.10 2017-11-07
 [Ko van der Sloot]
 New release due to outdated files in the previous release.
