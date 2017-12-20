@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="BLA" generator="libfolia-v1.10" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <style-annotation annotatortype="auto" set="unknown"/>
+    </annotations>
+  </metadata>
+  <text xml:id="T.1">
+    <p xml:id="T.1.p.1">
+      <t>
+        <t-style class="italic">egieringh in Indiën,</t-style>
+        <t-style class="italic">en hoedanigh hebben toegedragen</t-style>
+        <t-style class="italic">en dat alles is gereguleert.</t-style>
+      </t>
+    </p>
+  </text>
+</FoLiA>

@@ -8,7 +8,7 @@ LDADD = libucto.la
 ucto_SOURCES = ucto.cxx
 
 lib_LTLIBRARIES = libucto.la
-libucto_la_LDFLAGS = -version-info 2:0:0
+libucto_la_LDFLAGS = -version-info 3:0:0
 
 libucto_la_SOURCES = textcat.cxx unicode.cxx setting.cxx tokenize.cxx
 

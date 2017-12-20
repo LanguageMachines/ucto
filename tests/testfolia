@@ -4,3 +4,4 @@
 exe=../src/ucto
 
 $exe -Q -x foliatest -L nl folia.txt
+$exe -Q -T none -x foliatest -L nl folia.txt

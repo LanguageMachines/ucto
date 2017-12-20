@@ -72,6 +72,10 @@ void usage(){
        << "\t--passthru        - Don't tokenize, but perform input decoding and simple token role detection" << endl
        << "\t--normalize=<class1>,class2>,... " << endl
        << "\t                  - For class1, class2, etc. output the class tokens instead of the tokens itself." << endl
+       << "\t-T or --textredundancy=[full|minimal|none]  - set text redundancy level for text nodes in FoLiA output: " << endl
+       << "\t                    'full' - add text to all levels: <p> <s> <w> etc." << endl
+       << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
+       << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
@@ -81,8 +85,10 @@ void usage(){
        << "\t-V or --version   - Show version information" << endl
        << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
        << "\t-F                - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t                    -F is automatically set when inputfile has extension '.xml'" << endl
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
+       << "                      -X is automatically set when inputfile has extension '.xml'" << endl
        << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
        << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
@@ -104,6 +110,7 @@ int main( int argc, char *argv[] ){
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
+  string redundancy = "minimal";
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
   string normalization = "NFC";
@@ -119,8 +126,8 @@ int main( int argc, char *argv[] ){
   string norm_set_string;
 
   try {
-    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FX",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:");
+    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -130,7 +137,8 @@ int main( int argc, char *argv[] ){
     if ( Opts.extract( 'V' ) ||
 	 Opts.extract( "version" ) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
-	   << "(c) ILK 2009 - 2014, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
+	   << "(c) CLST 2015 - 2017, Centre for Language and Speech Technology, Radboud University Nijmegen" << endl
+	   << "(c) ILK 2009 - 2015, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
       cout << "based on [" << folia::VersionName() << "]" << endl;
       return EXIT_SUCCESS;
@@ -146,6 +154,13 @@ int main( int argc, char *argv[] ){
     tolowercase = Opts.extract( 'l' );
     sentenceperlineoutput = Opts.extract( 'n' );
     sentenceperlineinput = Opts.extract( 'm' );
+    Opts.extract( 'T', redundancy );
+    Opts.extract( "textredundancy", redundancy );
+    if ( redundancy != "full"
+	 && redundancy != "minimal"
+	 && redundancy != "none" ){
+      throw TiCC::OptionError( "unknown textredundancy level: " + redundancy );
+    }
     Opts.extract( 'N', normalization );
     verbose = Opts.extract( 'v' );
     if ( Opts.extract( 'x', docid ) ){
@@ -299,10 +314,21 @@ int main( int argc, char *argv[] ){
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
       ifile = files[0];
+      if ( TiCC::match_back( ifile, ".xml" ) ){
+	xmlin = true;
+      }
     }
-    if ( files.size() > 1 ){
+    if ( files.size() == 2 ){
       ofile = files[1];
+      if ( TiCC::match_back( ofile, ".xml" ) ){
+	xmlout = true;
+      }
     }
+    if ( files.size() > 2 ){
+      cerr << "found additional arguments on the commandline: " << files[2]
+	   << "...." << endl;
+    }
+
   }
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
@@ -446,6 +472,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setOutputClass(outputclass);
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
+    tokenizer.setTextRedundancy(redundancy);
 
     if (xmlin) {
       folia::Document doc;

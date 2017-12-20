@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.9.7], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.12], [lamasoftware@science.ru.nl])
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -19,7 +19,7 @@ else
 fi
 
 # Checks for programs.
-AC_PROG_CXX( [clang++] ) #g++ c++] )
+AC_PROG_CXX( [c++] )
 
 if $cxx_flags_were_set; then
   CXXFLAGS=$CXXFLAGS
@@ -73,6 +73,11 @@ else
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
+AC_ARG_WITH(icu,
+       [  --with-icu=DIR       use icu installed in <DIR>],
+       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
+       [])
+
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
@@ -81,11 +86,11 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-PKG_CHECK_MODULES([folia], [folia >= 1.8] )
+PKG_CHECK_MODULES([folia], [folia >= 1.10] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
-PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.6] )
+PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.17] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 

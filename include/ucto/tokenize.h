@@ -28,12 +28,15 @@
 #define UCTO_TOKENIZE_H
 
 #include <vector>
+#include <set>
 #include <map>
 #include <sstream>
 #include <stdexcept>
+#include "libfolia/folia.h"
 #include "ucto/unicode.h"
 #include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
+#include "ticcutils/Unicode.h"
 
 class TextCat;
 
@@ -200,6 +203,8 @@ namespace Tokenizer {
     }
     bool getPunctFilter() const { return doPunctFilter; };
 
+    std::string setTextRedundancy( const std::string& );
+
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
       return normalizer.setMode( s );
@@ -213,7 +218,7 @@ namespace Tokenizer {
     void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
-    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
+    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setNormSet( const std::string& );
@@ -284,7 +289,6 @@ namespace Tokenizer {
     bool u_isquote( UChar32,
 		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
-    void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
     int outputTokensXML( folia::FoliaElement *,
@@ -331,6 +335,10 @@ namespace Tokenizer {
 
     //has do we attempt to assign languages?
     bool doDetectLang;
+
+    //has do we percolate text up from <w> to <s> and <p> nodes? (FoLiA)
+    // values should be: 'full', 'minimal' or 'none'
+    std::string text_redundancy;
 
     //one sentence per line output
     bool sentenceperlineoutput;

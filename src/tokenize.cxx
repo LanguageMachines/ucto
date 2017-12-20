@@ -25,6 +25,8 @@
 
 */
 
+#include "ucto/tokenize.h"
+
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
@@ -33,11 +35,9 @@
 #include "unicode/schriter.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
-#include "libfolia/folia.h"
+#include "ticcutils/Unicode.h"
 #include "ucto/unicode.h"
 #include "ucto/textcat.h"
-#include "ucto/setting.h"
-#include "ucto/tokenize.h"
 
 #define DO_READLINE
 #ifdef HAVE_LIBREADLINE
@@ -111,6 +111,7 @@ namespace Tokenizer {
   const UnicodeString type_space = "SPACE";
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
+  const UnicodeString type_picto = "PICTOGRAM";
   const UnicodeString type_word = "WORD";
   const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
@@ -120,7 +121,9 @@ namespace Tokenizer {
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
 		TokenRole _role, const string& _lc ):
-    type(_type), us(_s), role(_role), lc(_lc) {}
+    type(_type), us(_s), role(_role), lc(_lc) {
+    //    cerr << "Created " << *this << endl;
+  }
 
 
   std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
@@ -154,6 +157,7 @@ namespace Tokenizer {
     detectPar(true),
     paragraphsignal(true),
     doDetectLang(false),
+    text_redundancy("minimal"),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
     lowercase(false),
@@ -217,6 +221,18 @@ namespace Tokenizer {
     string old = inputEncoding;
     inputEncoding = enc;
     return old;
+  }
+
+  string TokenizerClass::setTextRedundancy( const std::string& tr ){
+    if ( tr == "none" || tr == "minimal" || tr == "full" ){
+      string s = text_redundancy;
+      text_redundancy = tr;
+      return s;
+    }
+    else {
+      throw runtime_error( "illegal value '" + tr + "' for textredundancy. "
+			   "expected 'full', 'minimal' or 'none'." );
+    }
   }
 
   void stripCR( string& s ){
@@ -597,7 +613,13 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "[tokenize](FoLiA) SET document language=" << default_language << endl;
 	}
-	doc.set_metadata( "language", default_language );
+	if ( doc.metadatatype() == "native" ){
+	  doc.set_metadata( "language", default_language );
+	}
+	else {
+	  LOG << "[WARNING] cannot set the language on FoLiA documents of type "
+	      << doc.metadatatype() << endl;
+	}
       }
       else {
 	if ( tokDebug >= 2 ){
@@ -621,9 +643,19 @@ namespace Tokenizer {
       // there is already text, bail out.
       return;
     }
+    if ( root->isSubClass( folia::Linebreak_t ) ){
+      // exception
+      return;
+    }
     UnicodeString utxt = root->text( outputclass, false, false );
     // so get Untokenized text from the children, and set it
     root->settext( folia::UnicodeToUTF8(utxt), outputclass );
+  }
+
+  void removeText( folia::FoliaElement *root,
+		   const string& outputclass  ){
+    // remove the textcontent in outputclass of root
+    root->cleartextcontent( outputclass );
   }
 
   const string get_language( folia::FoliaElement *f ) {
@@ -776,6 +808,18 @@ namespace Tokenizer {
     for ( size_t i = 0; i < element->size(); i++) {
       tokenizeElement( element->index(i));
     }
+    if ( text_redundancy == "full" ){
+      if ( tokDebug > 0 ) {
+	LOG << "[tokenizeElement] Creating text on " << element->id() << endl;
+      }
+      appendText( element, outputclass );
+    }
+    else if ( text_redundancy == "none" ){
+      if ( tokDebug > 0 ) {
+	LOG << "[tokenizeElement] Removing text from: " << element->id() << endl;
+      }
+      removeText( element, outputclass );
+    }
     return;
   }
 
@@ -814,9 +858,12 @@ namespace Tokenizer {
       passthruLine( line, bos );
     }
     else {
-      // folia may encode newlines. These must be converted to <br/> nodes
+      // folia may encode newlines. These should be converted to <br/> nodes
+      // but Linebreak and newline handling is very dangerous and complicated
+      // so for now is is disabled!
       vector<UnicodeString> parts;
-      split_nl( line, parts );
+      parts.push_back( line ); // just one part
+      //split_nl( line, parts ); // disabled multipart
       for ( auto const& l : parts ){
 	if ( tokDebug >= 1 ){
 	  LOG << "[tokenizeSentenceElement] tokenize part: " << l << endl;
@@ -854,25 +901,6 @@ namespace Tokenizer {
     doc.append( text );
   }
 
-  void TokenizerClass::outputTokensDoc( folia::Document& doc,
-					const vector<Token>& tv ) const {
-    folia::FoliaElement *root = doc.doc()->index(0);
-    string lan = doc.doc()->language();
-    if ( lan.empty() ){
-      if ( tokDebug >= 1 ){
-	LOG << "[outputTokensDoc] SET document language="
-	    << default_language << endl;
-      }
-      doc.set_metadata( "language", default_language );
-    }
-    else {
-      if ( tokDebug >= 2 ){
-	LOG << "[outputTokensDoc] Document has language " << lan << endl;
-      }
-    }
-    outputTokensXML(root, tv );
-  }
-
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 				       const vector<Token>& tv,
 				       int parCount ) const {
@@ -888,27 +916,39 @@ namespace Tokenizer {
     if ( root->isinstance( folia::Sentence_t ) ){
       root_is_sentence = true;
     }
-    else if ( root->isinstance( folia::Paragraph_t )
+    else if ( root->isinstance( folia::Paragraph_t ) //TODO: can't we do this smarter?
 	      || root->isinstance( folia::Head_t )
 	      || root->isinstance( folia::Note_t )
 	      || root->isinstance( folia::ListItem_t )
 	      || root->isinstance( folia::Part_t )
 	      || root->isinstance( folia::Utterance_t )
 	      || root->isinstance( folia::Caption_t )
+	      || root->isinstance( folia::Cell_t )
 	      || root->isinstance( folia::Event_t ) ){
       root_is_structure_element = true;
     }
 
     bool in_paragraph = false;
     for ( const auto& token : tv ) {
-      if ( ( !root_is_structure_element && !root_is_sentence )
+      if ( ( !root_is_structure_element && !root_is_sentence ) //TODO: instead of !root_is_structurel check if is_structure and accepts paragraphs?
 	   &&
 	   ( (token.role & NEWPARAGRAPH) || !in_paragraph ) ) {
 	if ( tokDebug > 0 ) {
 	  LOG << "[outputTokensXML] Creating paragraph" << endl;
 	}
 	if ( in_paragraph ){
-	  appendText( root, outputclass );
+	  if ( text_redundancy == "full" ){
+	    if ( tokDebug > 0 ) {
+	      LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+	    }
+	    appendText( root, outputclass );
+	  }
+	  else if ( text_redundancy == "none" ){
+	    if ( tokDebug > 0 ) {
+	      LOG << "[outputTokensXML] Removing text from root: " << root->id() << endl;
+	    }
+	    removeText( root, outputclass );
+	  }
 	  root = root->parent();
 	}
 	folia::KWargs args;
@@ -1001,6 +1041,9 @@ namespace Tokenizer {
 	if ( token.role & NOSPACE) {
 	  args["space"]= "no";
 	}
+	if ( outputclass != inputclass ){
+	  args["textclass"] = outputclass;
+	}
 	folia::FoliaElement *w = new folia::Word( args, root->doc() );
 	root->append( w );
 	UnicodeString out = token.us;
@@ -1033,11 +1076,16 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }
-      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) ) {
+      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) && (!root->isinstance(folia::Utterance_t))) {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
-	appendText( root, outputclass );
+	if ( text_redundancy == "full" ){
+	  appendText( root, outputclass );
+	}
+	else if ( text_redundancy == "none" ){
+	  removeText( root, outputclass );
+	}
 	if ( token.role & LINEBREAK ){
 	  folia::FoliaElement *lb = new folia::Linebreak();
 	  root->append( lb );
@@ -1051,10 +1099,18 @@ namespace Tokenizer {
       in_paragraph = true;
     }
     if ( tv.size() > 0 ){
-      if ( tokDebug > 0 ) {
-	LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+      if ( text_redundancy == "full" ){
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Creating text on root: " << root->id() << endl;
+	}
+	appendText( root, outputclass );
       }
-      appendText( root, outputclass );
+      else if ( text_redundancy == "none" ){
+	if ( tokDebug > 0 ) {
+	  LOG << "[outputTokensXML] Removing text from root: " << root->id() << endl;
+	}
+	removeText( root, outputclass );
+      }
     }
     if ( tokDebug > 0 ) {
       LOG << "[outputTokensXML] Done. parCount= " << parCount << endl;
@@ -1721,7 +1777,7 @@ namespace Tokenizer {
 	  }
 	  if ( doPunctFilter
 	       && ( type == type_punctuation || type == type_currency ||
-		    type == type_emoticon ) ) {
+		    type == type_emoticon || type == type_picto ) ) {
 	    if (tokDebug >= 2 ){
 	      LOG << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
@@ -1784,7 +1840,7 @@ namespace Tokenizer {
 	}
 	if ( doPunctFilter
 	     && ( type == type_punctuation || type == type_currency ||
-		  type == type_emoticon ) ) {
+		  type == type_emoticon || type == type_picto ) ) {
 	  if (tokDebug >= 2 ){
 	    LOG << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
@@ -1860,6 +1916,11 @@ namespace Tokenizer {
     return s == UBLOCK_EMOTICONS;
   }
 
+  bool u_ispicto( UChar32 c ){
+    UBlockCode s = ublock_getCode(c);
+    return s == UBLOCK_MISCELLANEOUS_SYMBOLS_AND_PICTOGRAPHS ;
+  }
+
   bool u_iscurrency( UChar32 c ){
     return u_charType( c ) == U_CURRENCY_SYMBOL;
   }
@@ -1883,6 +1944,9 @@ namespace Tokenizer {
     }
     else if ( u_isemo( c ) ) {
       return type_emoticon;
+    }
+    else if ( u_ispicto( c ) ) {
+      return type_picto;
     }
     else if ( u_isalpha(c)) {
       return type_word;
@@ -2175,12 +2239,13 @@ namespace Tokenizer {
     if ( tokDebug > 2 ){
       if ( recurse ){
 	LOG << "   [tokenizeWord] Recurse Input: (" << inpLen << ") "
-			<< "word=[" << input << "], type=" << assigned_type << endl;
+	    << "word=[" << input << "], type=" << assigned_type
+	    << " Space=" << (space?"TRUE":"FALSE") << endl;
       }
       else {
 	LOG << "   [tokenizeWord] Input: (" << inpLen << ") "
-			<< "word=[" << input << "]" << endl;
-      }
+	    << "word=[" << input << "]"
+	    << " Space=" << (space?"TRUE":"FALSE") << endl;      }
     }
     if ( input == eosmark ) {
       if (tokDebug >= 2){
@@ -2207,7 +2272,7 @@ namespace Tokenizer {
       }
       if ( doPunctFilter
 	   && ( type == type_punctuation || type == type_currency ||
-		type == type_emoticon ) ) {
+		type == type_emoticon || type == type_picto ) ) {
 	if (tokDebug >= 2 ){
 	  LOG << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
@@ -2288,8 +2353,8 @@ namespace Tokenizer {
 	    }
 	    for ( int m=0; m < max; ++m ){
 	      if ( tokDebug >= 4 ){
-		LOG << "\tTOKEN match[" << m << "] = "
-				<< matches[m] << endl;
+		LOG << "\tTOKEN match[" << m << "] = " << matches[m]
+		    << " Space=" << (space?"TRUE":"FALSE") << endl;
 	      }
 	      if ( doPunctFilter
 		   && (&rule->id)->startsWith("PUNCTUATION") ){
@@ -2305,6 +2370,9 @@ namespace Tokenizer {
 	      else {
 		bool internal_space = space;
 		if ( post.length() > 0 ) {
+		  internal_space = false;
+		}
+		else if ( m < max-1 ){
 		  internal_space = false;
 		}
 		UnicodeString word = matches[m];
