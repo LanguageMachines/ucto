@@ -97,5 +97,6 @@ install:
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 after_failure:
+    - tail config.log
     - tail -n 100 testoutput/*.diff
     - tail -n 100 testoutput/*.err
