@@ -60,6 +60,7 @@ before_install:
         brew install libtar;
         brew install cppcheck;
         brew install ccache;
+        brew install libtextcat;
         brew outdated boost || brew upgrade boost;
       fi
 
