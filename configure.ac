@@ -106,9 +106,9 @@ if test $TEXTCAT_FOUND = 1; then
 else
 # final resort... for OSX at least
    AC_CHECK_HEADERS([libtextcat/textcat.h],
-	[CXXFLAGS="$CXXFLAGS $prefix/include/libtextcat"
+	[CXXFLAGS="$CXXFLAGS -I $prefix/include/libtextcat"
 	 AC_SEARCH_LIBS([textcat_Init],
-	  [libtextcat],
+	  [textcat],
 	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])],
           [AC_MSG_NOTICE([textcat library not available])])],
         [AC_MSG_NOTICE([textcat include file not available])])
