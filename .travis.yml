@@ -45,23 +45,24 @@ matrix:
 #        - SCAN=echo
 
 before_install:
-   - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
-       sudo apt-get update;
-       sudo apt-get install pkg-config autoconf-archive ccache cppcheck libicu-dev libxml2-dev libbz2-dev zlib1g-dev libtar-dev libboost-dev libboost-regex-dev libexttextcat-dev;
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        sudo apt-get update;
+        sudo apt-get install pkg-config autoconf-archive ccache cppcheck libicu-dev libxml2-dev libbz2-dev zlib1g-dev libtar-dev libboost-dev libboost-regex-dev libexttextcat-dev;
       fi
-   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-       brew update;
-       brew install pkg-config;
-       brew install autoconf-archive;
-       brew outdated || brew upgrade icu4c;
-       brew outdated || brew upgrade libxml2;
-       brew outdated || brew install bzip2;
-       brew outdated || brew install zlib;
-       brew install libtar;
-       brew install cppcheck;
-       brew install ccache;
-       brew outdated boost || brew upgrade boost;
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        brew update;
+        brew install pkg-config;
+        brew install autoconf-archive;
+        brew outdated || brew upgrade icu4c;
+        brew outdated || brew upgrade libxml2;
+        brew outdated || brew install bzip2;
+        brew outdated || brew install zlib;
+        brew install libtar;
+        brew install cppcheck;
+        brew install ccache;
+        brew outdated boost || brew upgrade boost;
       fi
+
     - export PATH="/usr/lib/ccache/bin/:$PATH"
     - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
     - cd ticcutils
