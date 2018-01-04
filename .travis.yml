@@ -32,17 +32,18 @@ matrix:
       addons:
         apt:
           packages:
-            - libiomp-dev
+            - libomp-dev
       env:
         - COMPILER=clang++
         - SCAN=scan-build
-        - CXXFLAGS="-fopenmp=libiomp5"
+#        - CXXFLAGS="-fopenmp=libiomp5"
+        - CXXFLAGS="-fopenmp=libomp"
 
-    - os: osx
-      compiler: gcc
-      env:
-        - COMPILER=g++
-        - SCAN=echo
+#    - os: osx
+#      compiler: gcc
+#      env:
+#        - COMPILER=g++
+#        - SCAN=echo
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
@@ -97,6 +98,6 @@ install:
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 after_failure:
-    - tail ../config.log
+    - tail -n 500 ../config.log
     - tail -n 100 testoutput/*.diff
     - tail -n 100 testoutput/*.err
