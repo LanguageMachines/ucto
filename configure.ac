@@ -50,16 +50,17 @@ AC_TYPE_INT32_T
 
 AX_LIB_READLINE
 
-AC_CHECK_HEADERS([libexttextcat/textcat.h],
-	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
-                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-		                   [AC_CHECK_HEADERS([textcat.h],
-						     [],
-		                                     [AC_MSG_NOTICE([textcat support not available])])])])
+#AC_CHECK_HEADERS([libexttextcat/textcat.h],
+#	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+#	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
+#                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
+#		                   [AC_CHECK_HEADERS([textcat.h],
+#						     [],
+#		                                     [AC_MSG_NOTICE([textcat support not available])])])])
+#
+#AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
+#  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
-AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
-  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
 
 if test $prefix = "NONE"; then
    prefix="$ac_default_prefix"
@@ -77,13 +78,27 @@ else
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
-AC_OSX_PKG( [icu4c] )
+AC_OSX_PKG( [icu4c libtextcat] )
 AC_MSG_NOTICE([pkg-config: PATH=$PKG_CONFIG_PATH])
 
 AC_ARG_WITH(icu,
        [  --with-icu=DIR       use icu installed in <DIR>],
        [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
        [])
+
+PKG_CHECK_MODULES( [TEXTCAT],
+  [libexttextcat],
+  [AC_DEFINE(HAVE_TEXTCAT, 1, textcat)
+   CXXFLAGS="$CXXFLAGS $TEXTCAT_CFLAGS"
+   LIBS="$TEXTCAT_LIBS $LIBS"],
+  [PKG_CHECK_MODULES( [TEXTCAT],
+   [libtextcat],
+   [AC_DEFINE(HAVE_TEXTCAT, 1, textcat_lib)
+    CXXFLAGS="$CXXFLAGS $TEXTCAT_CFLAGS"
+    LIBS="$TEXTCAT_LIBS $LIBS"],
+   [AC_MSG_NOTICE([textcat support not available])] )]
+   )
+
 
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"

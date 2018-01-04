@@ -29,34 +29,14 @@
 
 #include <cstring>
 
-#ifdef HAVE_TEXTCAT_H
-#define ENABLE_TEXTCAT
-#ifdef __cplusplus
-extern "C" {
-#endif
-
+#ifdef HAVE_TEXTCAT
 #include "textcat.h"
-
-#ifdef __cplusplus
-}
-#endif
-
-#else
-#ifdef HAVE_LIBTEXTCAT_TEXTCAT_H
-#include "libtextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#else
-#ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
-#include "libexttextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#endif
-#endif
 #endif
 
 class TextCat {
  public:
-  explicit TextCat( const std::string& cf );
-  TextCat( const TextCat& in );
+  explicit TextCat( const std::string& );
+  TextCat( const TextCat& );
   ~TextCat();
   bool isInit() const { return TC != 0; };
   std::string get_language( const std::string& ) const;

@@ -171,7 +171,7 @@ namespace Tokenizer {
   {
     theErrLog = new TiCC::LogStream(cerr, "ucto" );
     theErrLog->setstamp( StampMessage );
-#ifdef ENABLE_TEXTCAT
+#ifdef HAVE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg );
 #endif
