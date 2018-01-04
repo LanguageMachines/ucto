@@ -78,7 +78,7 @@ else
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$PKG_CONFIG_PATH"
 fi
 
-AC_OSX_PKG( [icu4c libtextcat] )
+AC_OSX_PKG( [icu4c] )
 AC_MSG_NOTICE([pkg-config: PATH=$PKG_CONFIG_PATH])
 
 AC_ARG_WITH(icu,
@@ -86,19 +86,32 @@ AC_ARG_WITH(icu,
        [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
        [])
 
+
 PKG_CHECK_MODULES( [TEXTCAT],
   [libexttextcat],
-  [AC_DEFINE(HAVE_TEXTCAT, 1, textcat)
+  [TEXTCAT_FOUND=1
    CXXFLAGS="$CXXFLAGS $TEXTCAT_CFLAGS"
    LIBS="$TEXTCAT_LIBS $LIBS"],
   [PKG_CHECK_MODULES( [TEXTCAT],
    [libtextcat],
-   [AC_DEFINE(HAVE_TEXTCAT, 1, textcat_lib)
+   [TEXTCAT_FOUND=1
     CXXFLAGS="$CXXFLAGS $TEXTCAT_CFLAGS"
     LIBS="$TEXTCAT_LIBS $LIBS"],
-   [AC_MSG_NOTICE([textcat support not available])] )]
-   )
+   [TEXTCAT_FOUND=0]
+   )]
+ )
 
+if test $TEXTCAT_FOUND = 1; then
+   AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
+else
+# final resort... for OSX at least
+   AC_CHECK_HEADERS([textcat.h],
+	[AC_SEARCH_LIBS([textcat_Init],
+	  [libtextcat],
+	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])],
+          [AC_MSG_NOTICE([textcat support not available])])],
+        [AC_MSG_NOTICE([textcat support not available])])
+fi
 
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
