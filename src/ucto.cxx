@@ -36,7 +36,7 @@
 #include "ticcutils/CommandLine.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ucto/unicode.h"
-#include "ucto/textcat.h"
+#include "ucto/my_textcat.h"
 #include "ucto/setting.h"
 #include "ucto/tokenize.h"
 #include <unistd.h>
