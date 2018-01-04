@@ -37,7 +37,7 @@
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/Unicode.h"
 #include "ucto/unicode.h"
-#include "ucto/textcat.h"
+#include "ucto/my_textcat.h"
 
 #define DO_READLINE
 #ifdef HAVE_LIBREADLINE
