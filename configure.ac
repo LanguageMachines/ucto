@@ -109,9 +109,7 @@ else
 	[CXXFLAGS="$CXXFLAGS -I $prefix/include/libtextcat"
 	 AC_SEARCH_LIBS([textcat_Init],
 	  [textcat],
-	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
-	   AC_MSG_NOTICE([Found textcat lib: $ac_cv_search_textcat_Init])
-	   AC_MSG_NOTICE([Found textcat lib: $LIBS])],
+	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])],
           [AC_MSG_NOTICE([textcat library not available])])],
         [AC_MSG_NOTICE([textcat include file not available])])
 fi
