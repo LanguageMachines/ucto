@@ -32,12 +32,12 @@ matrix:
       addons:
         apt:
           packages:
-            - libomp-dev
+#            - libomp-dev
       env:
         - COMPILER=clang++
         - SCAN=scan-build
 #        - CXXFLAGS="-fopenmp=libiomp5"
-        - CXXFLAGS="-fopenmp=libomp"
+        - CXXFLAGS="-fopenmp"
 
 #    - os: osx
 #      compiler: gcc
