@@ -29,14 +29,14 @@ matrix:
     - os: linux
       cache: ccache
       compiler: clang
-      addons:
-        apt:
-          packages:
-            - libiomp-dev
+#      addons:
+#        apt:
+#          packages:
+#            - libiomp-dev
       env:
         - COMPILER=clang++
         - SCAN=scan-build
-        - CXXFLAGS="-fopenmp=libiomp5"
+#        - CXXFLAGS="-fopenmp=libiomp5"
 
 #    - os: osx
 #      compiler: gcc
