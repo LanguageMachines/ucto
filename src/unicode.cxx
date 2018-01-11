@@ -40,60 +40,6 @@ using namespace std;
 
 namespace Tokenizer {
 
-  UNormalizationMode toNorm( const string& enc ){
-    UNormalizationMode mode = UNORM_NFC;
-    if ( enc == "NONE" )
-      mode = UNORM_NONE;
-    else if ( enc == "NFD" )
-      mode = UNORM_NFD;
-    else if ( enc == "NFC" )
-      mode = UNORM_NFC;
-    else if ( enc == "NFKC" )
-      mode = UNORM_NFKC;
-    else if ( enc == "NFKD" )
-      mode = UNORM_NFKD;
-    else
-      throw std::logic_error( "invalid normalization mode: " + enc );
-    return mode;
-  }
-
-  inline string toString( UNormalizationMode mode ){
-    switch ( mode ){
-    case UNORM_NONE:
-      return "NONE";
-    case UNORM_NFD:
-      return "NFD";
-    case UNORM_NFC:
-      return "NFC";
-    case UNORM_NFKC:
-      return "NFKC";
-    case UNORM_NFKD:
-      return "NFKD";
-    default:
-      throw std::logic_error( "invalid normalization mode in switch" );
-    }
-  }
-
-  std::string UnicodeNormalizer::getMode( ) const {
-    return toString( mode );
-  }
-
-  std::string UnicodeNormalizer::setMode( const std::string& s ) {
-    string res = getMode();
-    mode = toNorm( s );
-    return res;
-  }
-
-  UnicodeString UnicodeNormalizer::normalize( const UnicodeString& us ){
-    UnicodeString r;
-    UErrorCode status=U_ZERO_ERROR;
-    Normalizer::normalize( us, mode, 0, r, status );
-    if (U_FAILURE(status)){
-      throw std::invalid_argument("Normalizer");
-    }
-    return r;
-  }
-
   ostream& operator<<( ostream& os, const UnicodeFilter& q ){
     if ( q.empty() ){
       os << "none" << endl;

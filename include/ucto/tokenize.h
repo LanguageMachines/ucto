@@ -298,7 +298,7 @@ namespace Tokenizer {
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );
 
-    UnicodeNormalizer normalizer;
+    TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     UnicodeString eosmark;

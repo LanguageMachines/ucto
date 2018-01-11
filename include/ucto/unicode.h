@@ -34,20 +34,9 @@
 #include "unicode/ustream.h"
 #include "unicode/uchar.h"
 #include "unicode/unistr.h"
-#include "unicode/normlzr.h"
 #include "unicode/regex.h"
 
 namespace Tokenizer {
-
-  class UnicodeNormalizer {
-  public:
-  UnicodeNormalizer(): mode(UNORM_NFC){};
-    UnicodeString normalize( const UnicodeString& );
-    std::string getMode( ) const;
-    std::string setMode( const std::string& );
-  private:
-    UNormalizationMode mode;
-  };
 
   class UnicodeFilter {
     friend std::ostream& operator<<( std::ostream&, const UnicodeFilter& );
