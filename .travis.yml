@@ -33,11 +33,11 @@ matrix:
         - COMPILER=clang++
         - SCAN=scan-build
 
-#    - os: osx
-#      compiler: gcc
-#      env:
-#        - COMPILER=g++
-#        - SCAN=echo
+    - os: osx
+      compiler: gcc
+      env:
+        - COMPILER=g++
+        - SCAN=echo
 
 before_install:
     - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
