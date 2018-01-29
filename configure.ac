@@ -50,18 +50,6 @@ AC_TYPE_INT32_T
 
 AX_LIB_READLINE
 
-#AC_CHECK_HEADERS([libexttextcat/textcat.h],
-#	         [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-#	         [AC_CHECK_HEADERS([libtextcat/textcat.h],
-#                                   [CXXFLAGS="$CXXFLAGS -I$prefix/include"],
-#		                   [AC_CHECK_HEADERS([textcat.h],
-#						     [],
-#		                                     [AC_MSG_NOTICE([textcat support not available])])])])
-#
-#AC_SEARCH_LIBS([textcat_Init],[exttextcat-2.0 exttextcat textcat],[AC_DEFINE(HAVE_TEXTCAT_LIB, 1, textcat_lib)],
-#  [AC_MSG_NOTICE([Unable to find textcat library. textcat support not available])])
-
-
 if test $prefix = "NONE"; then
    prefix="$ac_default_prefix"
 fi
@@ -106,10 +94,11 @@ if test $TEXTCAT_FOUND = 1; then
 else
 # final resort... for OSX at least
    AC_CHECK_HEADERS([libtextcat/textcat.h],
-	[CXXFLAGS="$CXXFLAGS -I $prefix/include/libtextcat"
+	[CXXFLAGS="$CXXFLAGS -I$prefix/include/libtextcat"
 	 AC_SEARCH_LIBS([textcat_Init],
 	  [textcat],
-	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])],
+	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
+	   AC_DEFINE([HAVE_CLINK_TEXTCAT], [1], [textcat needs C linkage])],
           [AC_MSG_NOTICE([textcat library not available])])],
         [AC_MSG_NOTICE([textcat include file not available])])
 fi

@@ -30,7 +30,17 @@
 #include <cstring>
 
 #ifdef HAVE_TEXTCAT
+  #ifdef HAVE_CLINK_TEXTCAT
+    #ifdef __cplusplus
+extern "C" {
+    #endif
+  #endif
 #include "textcat.h"
+  #ifdef HAVE_CLINK_TEXTCAT
+    #ifdef __cplusplus
+}
+   #endif
+  #endif
 #endif
 
 class TextCat {
