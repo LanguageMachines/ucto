@@ -10,13 +10,13 @@
 # likely candidates more quickly.
 #
 #
-/usr/share/libexttextcat/nl.lm	nld
-/usr/share/libexttextcat/en.lm	eng
-/usr/share/libexttextcat/de.lm	deu
-/usr/share/libexttextcat/fr.lm	fra
-/usr/share/libexttextcat/it.lm	ita
-/usr/share/libexttextcat/es.lm	spa
-/usr/share/libexttextcat/ru.lm	rus
-/usr/share/libexttextcat/pt.lm	por
-/usr/share/libexttextcat/sv.lm	swe
-/usr/share/libexttextcat/tr.lm	tur
+@MODULE_PREFIX@/dutch.lm	nld
+@MODULE_PREFIX@/english.lm	eng
+@MODULE_PREFIX@/german.lm	deu
+@MODULE_PREFIX@/french.lm	fra
+@MODULE_PREFIX@/italian.lm	ita
+@MODULE_PREFIX@/spanish.lm	spa
+@MODULE_PREFIX@/russian-iso8859_5.lm	rus
+@MODULE_PREFIX@/portuguese.lm	por
+@MODULE_PREFIX@/swedish.lm	swe
+@MODULE_PREFIX@/turkish.lm	tur
