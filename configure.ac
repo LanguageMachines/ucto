@@ -11,23 +11,13 @@ AC_CONFIG_HEADER([config.h])
 SYSCONFDIR=$sysconfdir
 AC_SUBST([SYSCONFDIR])
 
-if test x"${CXXFLAGS+set}" = xset; then
-  # the user set CXXFLAGS; don't override it.
-  cxx_flags_were_set=true
-else
-  cxx_flags_were_set=false
-fi
-
 # Checks for programs.
 AC_PROG_CXX( [c++] )
-
-if $cxx_flags_were_set; then
-  CXXFLAGS=$CXXFLAGS
-fi
 
 # use libtool
 AC_PROG_LIBTOOL
 LT_INIT
+AC_PROG_LN_S
 
 # when running tests, use CXX
 AC_LANG([C++])
@@ -56,10 +46,6 @@ fi
 
 PKG_PROG_PKG_CONFIG
 
-if test "x$prefix" = "xNONE"; then
-   prefix="/usr/local"
-fi
-
 if test "x$PKG_CONFIG_PATH" = x; then
     export PKG_CONFIG_PATH="$prefix/lib/pkgconfig"
 else
@@ -68,12 +54,6 @@ fi
 
 AC_OSX_PKG( [icu4c] )
 AC_MSG_NOTICE([pkg-config: PATH=$PKG_CONFIG_PATH])
-
-AC_ARG_WITH(icu,
-       [  --with-icu=DIR       use icu installed in <DIR>],
-       [PKG_CONFIG_PATH="$PKG_CONFIG_PATH:$withval/lib/pkgconfig"],
-       [])
-
 
 PKG_CHECK_MODULES( [TEXTCAT],
   [libexttextcat],
@@ -92,15 +72,13 @@ PKG_CHECK_MODULES( [TEXTCAT],
 if test $TEXTCAT_FOUND = 1; then
    AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
 else
-# final resort... for OSX at least
-   AC_CHECK_HEADERS([libtextcat/textcat.h],
-	[CXXFLAGS="$CXXFLAGS -I$prefix/include/libtextcat"
-	 AC_SEARCH_LIBS([textcat_Init],
-	  [textcat],
-	  [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
-	   AC_DEFINE([HAVE_CLINK_TEXTCAT], [1], [textcat needs C linkage])],
-          [AC_MSG_NOTICE([textcat library not available])])],
-        [AC_MSG_NOTICE([textcat include file not available])])
+# So, no pkg-config for textcat found.
+#     Hopefully an old style version can be found???
+  AC_CHECK_OLD_TEXTCAT
+fi
+
+if test $TEXTCAT_FOUND = 1; then
+  AC_SEARCH_LM
 fi
 
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
@@ -142,6 +120,8 @@ AC_OUTPUT([
   ucto.pc
   m4/Makefile
   config/Makefile
+  config/textcat_normal.cfg
+  config/textcat_alt.cfg
   docs/Makefile
   src/Makefile
   tests/Makefile
