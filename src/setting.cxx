@@ -37,6 +37,7 @@
 #include "ticcutils/FileUtils.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/LogStream.h"
+#include "ticcutils/Unicode.h"
 #include "libfolia/folia.h"
 #include "ucto/unicode.h"
 #include "ucto/setting.h"
@@ -188,7 +189,7 @@ namespace Tokenizer {
 
   Rule::Rule( const UnicodeString& _id, const UnicodeString& _pattern):
     id(_id), pattern(_pattern) {
-    regexp = new UnicodeRegexMatcher( pattern, id );
+    regexp = new TiCC::UnicodeRegexMatcher( pattern, id );
   }
 
   ostream& operator<< (std::ostream& os, const Rule& r ){
@@ -453,7 +454,7 @@ namespace Tokenizer {
 		 UnicodeString &line,
 		 const string& fn ){
     try {
-      UnicodeRegexMatcher m( "\\s+" );
+      TiCC::UnicodeRegexMatcher m( "\\s+" );
       vector<UnicodeString> usv;
       m.split( line, usv );
       for ( const auto& us : usv  ){

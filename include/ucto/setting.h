@@ -29,6 +29,7 @@
 
 namespace TiCC {
   class LogStream;
+  class UnicodeRegexMatcher;
 }
 
 namespace Tokenizer {
@@ -42,7 +43,7 @@ namespace Tokenizer {
     ~Rule();
     UnicodeString id;
     UnicodeString pattern;
-    UnicodeRegexMatcher *regexp;
+    TiCC::UnicodeRegexMatcher *regexp;
     bool matchAll( const UnicodeString&,
 		   UnicodeString&,
 		   UnicodeString&,
