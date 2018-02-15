@@ -33,6 +33,7 @@
 #include <vector>
 #include "config.h"
 #include "unicode/schriter.h"
+#include "unicode/ucnv.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/Unicode.h"
