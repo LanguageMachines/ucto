@@ -29,8 +29,6 @@
 #include <fstream>
 #include <map>
 #include "unicode/ustream.h"
-#include "unicode/regex.h"
-#include "unicode/ucnv.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "libfolia/folia.h"
