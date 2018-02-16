@@ -39,7 +39,6 @@
 #include "ticcutils/LogStream.h"
 #include "ticcutils/Unicode.h"
 #include "libfolia/folia.h"
-#include "ucto/unicode.h"
 #include "ucto/setting.h"
 
 using namespace std;

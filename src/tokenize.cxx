@@ -37,7 +37,6 @@
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/Unicode.h"
-#include "ucto/unicode.h"
 #include "ucto/my_textcat.h"
 
 #define DO_READLINE

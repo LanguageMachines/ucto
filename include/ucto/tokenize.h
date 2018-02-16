@@ -35,7 +35,6 @@
 #include "libfolia/folia.h"
 #include "ticcutils/LogStream.h"
 #include "ticcutils/Unicode.h"
-#include "ucto/unicode.h"
 #include "ucto/setting.h"
 
 class TextCat;
