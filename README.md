@@ -70,6 +70,7 @@ As well as the following 3rd party dependencies:
 
 * ``icu`` - A C++ library for Unicode and Globalization support. On Debian/Ubuntu systems, install the package libicu-dev.
 * ``libxml2`` - An XML library. On Debian/Ubuntu systems install the package libxml2-dev.
+* ``libtextcat`` - A language detection package. On Debian/Ubuntu systems it is called libexttextcat-dev.
 * A sane build environment with a C++ compiler (e.g. gcc or clang), autotools, libtool, pkg-config
 
 Usage
@@ -105,6 +106,3 @@ on the rule that matched.
 For further documentation consult the [ucto
 manual](https://github.com/LanguageMachines/ucto/blob/master/docs/ucto_manual.pdf)
 for further documentation.
-
-
-
