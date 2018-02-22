@@ -47,7 +47,9 @@ using namespace TiCC;
 #define LOG *Log(theErrLog)
 
 namespace Tokenizer {
-  string defaultConfigDir = string(SYSCONF_PATH) + "/ucto/";
+  vector<string> defaultConfigPath = { string(SYSCONF_PATH) + "/ucto/",
+				       string(SYSCONF_PATH) + "/uctodata/" };
+  string defaultConfigDir;
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
 		    ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS,
@@ -233,6 +235,15 @@ namespace Tokenizer {
   }
 
   set<string> Setting::installed_languages() {
+    if ( defaultConfigDir.empty() ){
+      for ( const auto& name: defaultConfigPath ){
+	if ( TiCC::isDir( name ) &&
+	     TiCC::isFile( name + "tokconfig-nld" ) ){
+	  defaultConfigDir = name;
+	  break;
+	}
+      }
+    }
     // we only return 'languages' which are installed as 'tokconfig-*'
     //
     vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
@@ -513,6 +524,15 @@ namespace Tokenizer {
 
   bool Setting::read( const string& settings_name,
 		      int dbg, LogStream* ls ) {
+    if ( defaultConfigDir.empty() ){
+      for ( const auto& name: defaultConfigPath ){
+	if ( TiCC::isDir( name ) &&
+	     TiCC::isFile( name + "tokconfig-nld" ) ){
+	  defaultConfigDir = name;
+	  break;
+	}
+      }
+    }
     tokDebug = dbg;
     theErrLog = ls;
     map<ConfigMode, UnicodeString> pattern = { { ABBREVIATIONS, "" },
