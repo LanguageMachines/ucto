@@ -81,6 +81,10 @@ if test $TEXTCAT_FOUND = 1; then
   AC_SEARCH_LM
 fi
 
+if test $HAVE_TEXTCAT = 0; then
+   AC_MSG_ERROR( [no working libtextcat or libexttextcat found!] )
+fi
+
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )
 CXXFLAGS="$CXXFLAGS $ICU_CFLAGS"
 LIBS="$ICU_LIBS $LIBS"
