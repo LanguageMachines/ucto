@@ -29,12 +29,8 @@ AC_DEFUN([AC_CHECK_OLD_TEXTCAT],
     [CXXFLAGS="$CXXFLAGS -I$prefix/include/libtextcat"
      AC_SEARCH_LIBS( [textcat_Init],
       [textcat],
-      [AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
-       AC_DEFINE([HAVE_OLD_TEXTCAT], [1], [textcat needs C linkage])
-       TEXTCAT_FOUND=1],
-      [AC_DEFINE([HAVE_TEXTCAT], [0], [textcat])
-       AC_MSG_NOTICE([textcat library not available])])],
-    [AC_DEFINE([HAVE_TEXTCAT], [0], [textcat])
-     AC_MSG_NOTICE([textcat include file not available])])
+      [TEXTCAT_FOUND=1],
+      [AC_MSG_NOTICE([textcat library not available])])],
+    [AC_MSG_NOTICE([textcat include file not available])])
   ]
 )

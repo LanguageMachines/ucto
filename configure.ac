@@ -69,12 +69,13 @@ PKG_CHECK_MODULES( [TEXTCAT],
    )]
  )
 
-if test $TEXTCAT_FOUND = 1; then
-   AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
-else
+if test $TEXTCAT_FOUND = 0; then
 # So, no pkg-config for textcat found.
 #     Hopefully an old style version can be found???
   AC_CHECK_OLD_TEXTCAT
+  if test $TEXTCAT_FOUND = 1; then
+    AC_DEFINE([HAVE_OLD_TEXTCAT], [1], [textcat needs C linkage])
+  fi
 fi
 
 if test $TEXTCAT_FOUND = 1; then
@@ -83,6 +84,8 @@ fi
 
 if test $TEXTCAT_FOUND = 0; then
    AC_MSG_ERROR( [no working libtextcat or libexttextcat found!] )
+else
+   AC_DEFINE([HAVE_TEXTCAT], [1], [textcat])
 fi
 
 PKG_CHECK_MODULES([ICU], [icu-uc >= 50 icu-io] )

@@ -53,7 +53,6 @@ AC_DEFUN([AC_SEARCH_LM],
    fi
    if test "x$MODULE_PREFIX" = "x"
    then
-     AC_DEFINE([HAVE_TEXTCAT], [0], [textcat])
      AC_MSG_NOTICE([textcat Language Model files not found. Textcat disabled.])
    else
      TEXTCAT_FOUND=1
