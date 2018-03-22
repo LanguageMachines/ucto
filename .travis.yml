@@ -60,6 +60,7 @@ before_install:
       fi
 
     - export PATH="/usr/lib/ccache/bin/:$PATH"
+
     - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
@@ -81,6 +82,7 @@ before_install:
     - make
     - sudo make install
     - cd ..
+
 install:
     - bash bootstrap.sh
     - ./configure
@@ -89,8 +91,10 @@ install:
     - $SCAN --status-bugs make CXX=$COMPILER
     - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
+
 script:
-    - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib DYLD_LIBRARY_PATH=$DYLD_LIBRARY_PATH:/usr/local/lib ./testall >&2
+    - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
+
 after_failure:
     - tail -n 500 ../config.log
     - tail -n 100 testoutput/*.diff
