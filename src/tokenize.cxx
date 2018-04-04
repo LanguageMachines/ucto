@@ -125,8 +125,8 @@ namespace Tokenizer {
   }
 
 
-  std::string Token::texttostring() { return folia::UnicodeToUTF8(us); }
-  std::string Token::typetostring() { return folia::UnicodeToUTF8(type); }
+  std::string Token::texttostring() { return TiCC::UnicodeToUTF8(us); }
+  std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << t.type << " : " << t.role  << ":" << t.us;
@@ -204,7 +204,7 @@ namespace Tokenizer {
     vector<string> parts;
     TiCC::split_at( values, parts, "," );
     for ( const auto& val : parts ){
-      norm_set.insert( folia::UTF8ToUnicode( val ) );
+      norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
     }
     return true;
   }
@@ -362,7 +362,7 @@ namespace Tokenizer {
 	    }
 	    icu::UnicodeString temp = input_line;
 	    temp.toLower();
-	    string lan = tc->get_language( folia::UnicodeToUTF8(temp) );
+	    string lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	    if ( settings.find( lan ) != settings.end() ){
 	      if ( tokDebug > 3 ){
 		LOG << "found a supported language: " << lan << endl;
@@ -425,7 +425,7 @@ namespace Tokenizer {
       }
       stripCR( line );
       if ( sentenceperlineinput )
-	line += string(" ") + folia::UnicodeToUTF8(eosmark);
+	line += string(" ") + TiCC::UnicodeToUTF8(eosmark);
       if ( (done) || (line.empty()) ){
 	signalParagraph();
 	numS = countSentences(true); //count full sentences in token buffer, force buffer to empty!
@@ -648,7 +648,7 @@ namespace Tokenizer {
     }
     icu::UnicodeString utxt = root->text( outputclass, false, false );
     // so get Untokenized text from the children, and set it
-    root->settext( folia::UnicodeToUTF8(utxt), outputclass );
+    root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
   }
 
   void removeText( folia::FoliaElement *root,
@@ -748,7 +748,7 @@ namespace Tokenizer {
 	  // no, so try to detect it!
 	  icu::UnicodeString temp = element->text( inputclass );
 	  temp.toLower();
-	  lan = tc->get_language( folia::UnicodeToUTF8(temp) );
+	  lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	  if ( lan.empty() ){
 	    // too bad
 	    lan = "default";
@@ -1026,7 +1026,7 @@ namespace Tokenizer {
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
 	}
-	args["class"] = folia::UnicodeToUTF8( token.type );
+	args["class"] = TiCC::UnicodeToUTF8( token.type );
 	if ( passthru ){
 	  args["set"] = "passthru";
 	}
@@ -1052,7 +1052,7 @@ namespace Tokenizer {
 	else if (uppercase) {
 	  out.toUpper();
 	}
-	w->settext( folia::UnicodeToUTF8( out ), outputclass );
+	w->settext( TiCC::UnicodeToUTF8( out ), outputclass );
 	if ( tokDebug > 1 ) {
 	  LOG << "created " << w << " text= " <<  token.us  << "(" << outputclass << ")" << endl;
 	}

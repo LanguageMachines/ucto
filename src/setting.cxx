@@ -113,7 +113,7 @@ namespace Tokenizer {
     uConfigError( const string& s, const string& f ):
       invalid_argument( "ucto: " + s + " (" + f + ")"  ){};
     uConfigError( const icu::UnicodeString& us, const string& f ):
-      uConfigError( folia::UnicodeToUTF8(us), f ){};
+      uConfigError( TiCC::UnicodeToUTF8(us), f ){};
   };
 
   class uLogicError: public std::logic_error {
@@ -269,7 +269,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline(f,rawline) ){
-	icu::UnicodeString line = folia::UTF8ToUnicode(rawline);
+	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -307,7 +307,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline(f,rawline) ){
-	icu::UnicodeString line = folia::UTF8ToUnicode(rawline);
+	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -348,7 +348,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline(f,rawline) ){
-	icu::UnicodeString line = folia::UTF8ToUnicode(rawline);
+	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -380,7 +380,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline(f,rawline) ){
-	icu::UnicodeString line = folia::UTF8ToUnicode(rawline);
+	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -606,7 +606,7 @@ namespace Tokenizer {
 	  continue;
 	}
 
-	icu::UnicodeString line = folia::UTF8ToUnicode(rawline);
+	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if (line[0] == '[') {
@@ -633,7 +633,7 @@ namespace Tokenizer {
 			rule_count, line, set_file );
 	      break;
 	    case METARULES:
-	      meta_rules.push_back( folia::UnicodeToUTF8(line) );
+	      meta_rules.push_back( TiCC::UnicodeToUTF8(line) );
 	      break;
 	    case ABBREVIATIONS:
 	    case ATTACHEDPREFIXES:
@@ -736,7 +736,7 @@ namespace Tokenizer {
 	  }
 	  continue;
 	}
-	icu::UnicodeString name = folia::UTF8ToUnicode( nam );
+	icu::UnicodeString name = TiCC::UnicodeFromUTF8( nam );
 	string rule = mr.substr( pos+1 );
 	if ( tokDebug > 5 ){
 	  LOG << "SPLIT using: '" << split << "'" << endl;
@@ -750,7 +750,7 @@ namespace Tokenizer {
 	vector<icu::UnicodeString> undef_parts;
 	bool skip_rule = false;
 	for ( const auto& part : parts ){
-	  icu::UnicodeString meta = folia::UTF8ToUnicode( part );
+	  icu::UnicodeString meta = TiCC::UnicodeFromUTF8( part );
 	  ConfigMode mode = getMode( "[" + meta + "]" );
 	  switch ( mode ){
 	  case ORDINALS:
@@ -772,7 +772,7 @@ namespace Tokenizer {
 	    break;
 	  case NONE:
 	  default:
-	    new_parts.push_back( folia::UTF8ToUnicode(part) );
+	    new_parts.push_back( TiCC::UnicodeFromUTF8(part) );
 	    break;
 	  }
 	}
