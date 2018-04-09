@@ -268,7 +268,7 @@ namespace Tokenizer {
     }
     else {
       string rawline;
-      while ( getline(f,rawline) ){
+      while ( getline( f, rawline ) ){
 	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
@@ -306,7 +306,7 @@ namespace Tokenizer {
     }
     else {
       string rawline;
-      while ( getline(f,rawline) ){
+      while ( getline( f, rawline ) ){
 	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
@@ -347,7 +347,7 @@ namespace Tokenizer {
     }
     else {
       string rawline;
-      while ( getline(f,rawline) ){
+      while ( getline( f, rawline ) ){
 	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
@@ -368,6 +368,36 @@ namespace Tokenizer {
     return true;
   }
 
+  icu::UnicodeString escape_regex( const icu::UnicodeString& entry ){
+    icu::UnicodeString result;
+    for ( int i=0; i < entry.length(); ++i ){
+      switch ( entry[i] ){
+      case '?':
+      case '^':
+      case '$':
+      case '[':
+      case ']':
+      case '(':
+      case ')':
+      case '{':
+      case '}':
+      case '*':
+      case '.':
+      case '+':
+      case '|':
+      case '-':
+	if ( i == 0 || entry[i-1] != '\\' ){
+	  // not escaped
+	  result += "\\";
+	}
+	// fallthrough
+      default:
+	result += entry[i];
+      }
+    }
+    return result;
+  }
+
   bool Setting::readabbreviations( const string& fname,
 				   icu::UnicodeString& abbreviations ){
     if ( tokDebug > 0 ){
@@ -379,15 +409,17 @@ namespace Tokenizer {
     }
     else {
       string rawline;
-      while ( getline(f,rawline) ){
+      while ( getline( f, rawline ) ){
 	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
 	    LOG << "include line = " << rawline << endl;
 	  }
-	  if ( !abbreviations.isEmpty())
+	  line = escape_regex( line );
+	  if ( !abbreviations.isEmpty()){
 	    abbreviations += '|';
+	  }
 	  abbreviations += line;
 	}
       }
@@ -522,6 +554,7 @@ namespace Tokenizer {
   }
 
   bool Setting::read( const string& settings_name,
+		      const string& add_tokens,
 		      int dbg, TiCC::LogStream* ls ) {
     if ( defaultConfigDir.empty() ){
       for ( const auto& name: defaultConfigPath ){
@@ -546,6 +579,14 @@ namespace Tokenizer {
     vector<string> meta_rules;
     string conffile = get_filename( settings_name );
 
+    if ( !TiCC::isFile( conffile ) ){
+      LOG << "Unable to open configfile: " << conffile << endl;
+      return false;
+    }
+    if ( !add_tokens.empty() && !TiCC::isFile( add_tokens ) ){
+      LOG << "Unable to open additional tokens file: " << add_tokens << endl;
+      return false;
+    }
     ifstream f( conffile );
     if ( f ){
       ConfigMode mode = NONE;
@@ -555,7 +596,7 @@ namespace Tokenizer {
       }
       int rule_count = 0;
       string rawline;
-      while ( getline(f,rawline) ){
+      while ( getline( f, rawline ) ){
 	if ( rawline.find( "%include" ) != string::npos ){
 	  string file = rawline.substr( 9 );
 	  switch ( mode ){
@@ -712,7 +753,20 @@ namespace Tokenizer {
 	quotes.add( "“„‟", "”" );
       }
 
-      string split = "%";
+      if ( !add_tokens.empty() ){
+	ifstream adt( add_tokens );
+	string line;
+	while ( getline( adt, line ) ){
+	  icu::UnicodeString entry = TiCC::UnicodeFromUTF8(line);
+	  entry = escape_regex( entry );
+	  if ( !entry.isEmpty() ){
+	    if ( !pattern[TOKENS].isEmpty() ){
+	      pattern[TOKENS] += '|';
+	    }
+	    pattern[TOKENS] += entry;
+	  }
+	}
+      }
       // Create Rules for every pattern that is set
       // first the meta rules...
       for ( const auto& mr : meta_rules ){
@@ -722,6 +776,7 @@ namespace Tokenizer {
 			      set_file );
 	}
 	string nam = TiCC::trim( mr.substr( 0, pos ) );
+	string split = "%";
 	if ( nam == "SPLITTER" ){
 	  split = mr.substr( pos+1 );
 	  if ( split.empty() ) {

@@ -2414,10 +2414,10 @@ namespace Tokenizer {
     }
   }
 
-  bool TokenizerClass::init( const string& fname ){
+  bool TokenizerClass::init( const string& fname, const string& tname ){
     LOG << "Initiating tokeniser..." << endl;
     Setting *set = new Setting();
-    if ( !set->read( fname, tokDebug, theErrLog ) ){
+    if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
       LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
       LOG << "Unsupported language? (Did you install the uctodata package?)"
 	  << endl;
@@ -2439,25 +2439,30 @@ namespace Tokenizer {
     return true;
   }
 
-  bool TokenizerClass::init( const vector<string>& languages ){
+  bool TokenizerClass::init( const vector<string>& languages,
+			     const string& tname ){
     if ( tokDebug > 0 ){
       LOG << "Initiating tokeniser from language list..." << endl;
     }
-    Setting *defalt = 0;
+    Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( tokDebug > 0 ){
 	LOG << "init language=" << lang << endl;
       }
       string fname = "tokconfig-" + lang;
       Setting *set = new Setting();
-      if ( !set->read( fname, tokDebug, theErrLog ) ){
+      string add;
+      if ( default_set == 0 ){
+	add = tname;
+      }
+      if ( !set->read( fname, add, tokDebug, theErrLog ) ){
 	LOG << "problem reading datafile for language: " << lang << endl;
 	LOG << "Unsupported language (Did you install the uctodata package?)"
 	    << endl;
       }
       else {
-	if ( defalt == 0 ){
-	  defalt = set;
+	if ( default_set == 0 ){
+	  default_set = set;
 	  settings["default"] = set;
 	  default_language = lang;
 	}

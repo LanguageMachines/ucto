@@ -79,6 +79,8 @@ void usage(){
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
+       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the"
+       << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
        << "\t-S                - Disable sentence detection!" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
@@ -124,10 +126,11 @@ int main( int argc, char *argv[] ){
   string c_file;
   bool passThru = false;
   string norm_set_string;
+  string add_tokens;
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -195,6 +198,7 @@ int main( int argc, char *argv[] ){
       cerr << "ucto: The -f option is used.  Please consider using --filter=NO" << endl;
       dofiltering = false;
     }
+    Opts.extract( "add-tokens", add_tokens );
     string value;
     if ( Opts.extract( "filter", value ) ){
       bool result;
@@ -433,7 +437,7 @@ int main( int argc, char *argv[] ){
     else {
       // init exept for passthru mode
       if ( !cfile.empty()
-	   && !tokenizer.init( cfile ) ){
+	   && !tokenizer.init( cfile, add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -442,7 +446,7 @@ int main( int argc, char *argv[] ){
 	}
 	return EXIT_FAILURE;
       }
-      else if ( !tokenizer.init( language_list ) ){
+      else if ( !tokenizer.init( language_list, add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
