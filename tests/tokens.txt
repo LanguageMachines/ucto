@@ -1,0 +1,4 @@
+Een test voor speciale tokens:
+Dit is AR#$.3. Bijzonder!
+We willen dit Bij.Elkaar...Houden!, lukt dat?
+Okk Yahoo! is speciaal.
