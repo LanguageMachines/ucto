@@ -87,7 +87,7 @@ namespace Tokenizer {
   class Setting {
   public:
     ~Setting();
-    bool read( const std::string&, int, TiCC::LogStream* );
+    bool read( const std::string&, const std::string&, int, TiCC::LogStream* );
     bool readrules( const std::string& );
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );

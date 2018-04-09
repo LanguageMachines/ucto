@@ -97,8 +97,10 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string& ); // init from a configfile
-    bool init( const std::vector<std::string>& ); // init 1 or more languages
+    bool init( const std::string&,
+	       const std::string& ="" ); // init from a configfile
+    bool init( const std::vector<std::string>&,
+	       const std::string& ="" ); // init 1 or more languages
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
