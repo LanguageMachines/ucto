@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2017
+  Copyright (c) 2006 - 2018
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -33,10 +33,9 @@
 #include <sstream>
 #include <stdexcept>
 #include "libfolia/folia.h"
-#include "ucto/unicode.h"
-#include "ucto/setting.h"
 #include "ticcutils/LogStream.h"
 #include "ticcutils/Unicode.h"
+#include "ucto/setting.h"
 
 class TextCat;
 
@@ -98,8 +97,10 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string& ); // init from a configfile
-    bool init( const std::vector<std::string>& ); // init 1 or more languages
+    bool init( const std::string&,
+	       const std::string& ="" ); // init from a configfile
+    bool init( const std::vector<std::string>&,
+	       const std::string& ="" ); // init 1 or more languages
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
@@ -298,7 +299,7 @@ namespace Tokenizer {
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );
 
-    UnicodeNormalizer normalizer;
+    TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     UnicodeString eosmark;

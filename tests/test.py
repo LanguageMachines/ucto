@@ -99,9 +99,9 @@ for f in glob.glob(mask):
             for f2 in (reffile, outputfile):
             #strip the FoLiA version number and the token-annotation declaration (different timestamp)
                 os.system("sed -e 's/generator=\".*\"//g' -e 's/version=\"[0.12\.]*\"//g' -e '/token-annotation/d' "  + f2 + " > " + f2 + ".tmp")
-            retcode = os.system('diff -Z ' + reffile + '.tmp ' + outputfile  + '.tmp > testoutput/'  + id + '.' + lang + '.diff')
+            retcode = os.system('diff -w ' + reffile + '.tmp ' + outputfile  + '.tmp > testoutput/'  + id + '.' + lang + '.diff')
         else:
-            retcode = os.system('diff -Z ' + outputfile + ' ' + reffile  + ' > testoutput/' + id + '.' + lang + '.diff')
+            retcode = os.system('diff -w ' + outputfile + ' ' + reffile  + ' > testoutput/' + id + '.' + lang + '.diff')
         if retcode == 0:
             if VG:
                 checkVGsummary( id, lang )
