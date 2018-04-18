@@ -31,7 +31,7 @@ is	WORD	NOSPACE
 e	WORD	BEGINOFSENTENCE 
 wordt	WORD	
 nochtans	WORD	
-tel-	WORD	
+tel-	WORD-COMPOUND	
 ¡	PUNCTUATION	
 kens	WORD	
 weer	WORD	
@@ -164,7 +164,7 @@ te	WORD
 toonen	WORD	NOSPACE 
 ,	PUNCTUATION	
 hoe	WORD	
-ge-	WORD	
+ge-	WORD-COMPOUND	
 j	WORD	
 heel	WORD	
 ongegrond	WORD	NOSPACE 
@@ -234,7 +234,7 @@ niet	WORD
 eens	WORD	
 tot	WORD	
 de	WORD	
-eigen-	WORD	
+eigen-	WORD-COMPOUND	
 j	WORD	
 lijke	WORD	
 bevolking	WORD	

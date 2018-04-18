@@ -1,3 +1,54 @@
+0.12 2018-02-19
+[Ko van der Sloot]
+* now use the UniFilter Unicode Filter from ticcutils
+* now use the UnicodeNormalizer from ticcutils
+* improved configuration. Support vor Mac OSX added
+
+0.11 2017-12-04
+[Ko van der Sloot]
+Bug fix release:
+* problems with text inside Cell elements
+
+0.10 2017-11-07
+[Ko van der Sloot]
+New release due to outdated files in the previous release.
+
+0.9.9 2017-11-06
+[Ko van der Sloot]
+Minor fix:
+* bumped the .so version to 3.0.0
+
+0.9.8 2017-10-23
+[Ko van der Sloot]
+Bug-fix release
+* fixed utterance handling in FoLiA input. Don't try sentence detection!
+
+0.9.7 2017-10-17
+[Ko van der Sloot]
+ * added textredundancy option, default is 'minimal'
+ * small adaptations to work with FoLiA 1.5 specs
+   - set textclass on words when outputclass != inputclass
+   - DON'T filter special characters when inputclass == outputclass
+ * -F (folia input) is automatically set for .xml files
+ * more robust against texts with embedded tabs, etc.
+ * more and better tests added
+ * better logging and error messaging
+ * improved language handling. TODO: Language detection in FoLiA
+ * bug fixes:
+   - correctly handle xml-comment inside a <t>
+   - better id generation when parent has no id
+   - better reaction on overly long 'words'
+
+0.9.6 2017-01-23
+[Maarten van Gompel]
+* Moving data files from etc/ to share/, as they are more data files than
+  configuration files that should be edited.
+* Requires uctodata >= 0.4.
+* Should solve debian packaging issues (#18)
+* Minor updates to the manual (#2)
+* Some refactoring/code cleanup, temper expectations regarding ucto's
+  date-tagging abilities (#16, thanks also to @sanmai-NL)
+
 0.9.5 2017-01-06
 [Ko van der Sloot]
 Bug fix release:

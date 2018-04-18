@@ -3,15 +3,13 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.10" version="1.5.0">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-26T17:52:58" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T11:50:40" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
-      <t>Die is een testje voor het FoLiA formaat. We zijn "errug" benieuwd.</t>
       <s xml:id="foliatest.p.1.s.1">
-        <t>Die is een testje voor het FoLiA formaat.</t>
         <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
           <t>Die</t>
         </w>
@@ -41,7 +39,6 @@
         </w>
       </s>
       <s xml:id="foliatest.p.1.s.2">
-        <t>We zijn "errug" benieuwd.</t>
         <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
           <t>We</t>
         </w>
@@ -68,9 +65,7 @@
       </s>
     </p>
     <p xml:id="foliatest.p.2">
-      <t>De vraag is ook of V&amp;D goed gaan, of &lt;dit&gt;.</t>
       <s xml:id="foliatest.p.2.s.1">
-        <t>De vraag is ook of V&amp;D goed gaan, of &lt;dit&gt;.</t>
         <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
           <t>De</t>
         </w>
@@ -130,7 +125,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.10" version="1.5.0">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-09-26T17:52:58" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T11:50:40" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>

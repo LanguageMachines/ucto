@@ -412,7 +412,7 @@ is	WORD
 verantwoordelijk	WORD	
 voor	WORD	
 het	WORD	
-rekruterings-	WORD	
+rekruterings-	WORD-COMPOUND	
 en	WORD	
 retentiebeleid	WORD	NOSPACE 
 ?	PUNCTUATION	ENDOFSENTENCE 

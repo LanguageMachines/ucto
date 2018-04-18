@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2017
+  Copyright (c) 2006 - 2018
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -29,6 +29,8 @@
 
 namespace TiCC {
   class LogStream;
+  class UnicodeRegexMatcher;
+  class UniFilter;
 }
 
 namespace Tokenizer {
@@ -42,7 +44,7 @@ namespace Tokenizer {
     ~Rule();
     UnicodeString id;
     UnicodeString pattern;
-    UnicodeRegexMatcher *regexp;
+    TiCC::UnicodeRegexMatcher *regexp;
     bool matchAll( const UnicodeString&,
 		   UnicodeString&,
 		   UnicodeString&,
@@ -85,7 +87,7 @@ namespace Tokenizer {
   class Setting {
   public:
     ~Setting();
-    bool read( const std::string&, int, TiCC::LogStream* );
+    bool read( const std::string&, const std::string&, int, TiCC::LogStream* );
     bool readrules( const std::string& );
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );
@@ -100,7 +102,7 @@ namespace Tokenizer {
     std::map<UnicodeString, Rule *> rulesmap;
     std::map<UnicodeString, int> rules_index;
     Quoting quotes;
-    UnicodeFilter filter;
+    TiCC::UniFilter filter;
     std::string set_file; // the name of the settingsfile
     std::string version;  // the version of the datafile
     int tokDebug;

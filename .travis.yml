@@ -22,39 +22,45 @@ matrix:
     - os: linux
       cache: ccache
       compiler: gcc
-      addons:
-#        apt:
-#          sources: ['ubuntu-toolchain-r-test']
-#          packages: ['g++-4.9']
-#      env: COMPILER=g++-4.9
-      env: COMPILER=g++
-           SCAN=echo
-
-#    - os: linux
-#      compiler: gcc
-#      addons:
-#        apt:
-#          sources: ['ubuntu-toolchain-r-test']
-#          packages: ['g++-5']
-#      env: COMPILER=g++-5
+      env:
+        - COMPILER=g++
+        - SCAN=echo
 
     - os: linux
       cache: ccache
       compiler: clang
-      addons:
-        apt:
-          packages:
-            - libiomp-dev
       env:
         - COMPILER=clang++
         - SCAN=scan-build
-        - CXXFLAGS="-fopenmp=libiomp5"
+
+    - os: osx
+      compiler: gcc
+      env:
+        - COMPILER=g++
+        - SCAN=echo
 
 before_install:
-    - sudo apt-get update
-    - sudo apt-get install pkg-config autoconf-archive autotools-dev ccache cppcheck  libicu-dev libxml2-dev libbz2-dev zlib1g-dev libboost-dev libboost-regex-dev libexttextcat-dev libtar-dev
+    - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        sudo apt-get update;
+        sudo apt-get install pkg-config autoconf-archive ccache cppcheck libicu-dev libxml2-dev libbz2-dev zlib1g-dev libtar-dev libboost-dev libboost-regex-dev libexttextcat-dev;
+      fi
+    - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        brew update;
+        brew install pkg-config;
+        brew install autoconf-archive;
+        brew outdated || brew upgrade icu4c;
+        brew outdated || brew upgrade libxml2;
+        brew outdated || brew install bzip2;
+        brew outdated || brew install zlib;
+        brew install libtar;
+        brew install cppcheck;
+        brew install ccache;
+        brew install libtextcat;
+        brew outdated boost || brew upgrade boost;
+      fi
+
     - export PATH="/usr/lib/ccache/bin/:$PATH"
-    - cppcheck --enable=all --quiet --error-exitcode=2 .
+
     - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
@@ -76,15 +82,20 @@ before_install:
     - make
     - sudo make install
     - cd ..
+
 install:
     - bash bootstrap.sh
     - ./configure
+    - cppcheck --enable=all --quiet --error-exitcode=0 .
     - $SCAN --status-bugs ./configure
     - $SCAN --status-bugs make CXX=$COMPILER
     - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
+
 script:
     - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
+
 after_failure:
+    - tail -n 500 ../config.log
     - tail -n 100 testoutput/*.diff
     - tail -n 100 testoutput/*.err

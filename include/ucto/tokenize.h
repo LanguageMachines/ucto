@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2017
+  Copyright (c) 2006 - 2018
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -28,12 +28,14 @@
 #define UCTO_TOKENIZE_H
 
 #include <vector>
+#include <set>
 #include <map>
 #include <sstream>
 #include <stdexcept>
-#include "ucto/unicode.h"
-#include "ucto/setting.h"
+#include "libfolia/folia.h"
 #include "ticcutils/LogStream.h"
+#include "ticcutils/Unicode.h"
+#include "ucto/setting.h"
 
 class TextCat;
 
@@ -95,8 +97,10 @@ namespace Tokenizer {
   public:
     TokenizerClass();
     ~TokenizerClass();
-    bool init( const std::string& ); // init from a configfile
-    bool init( const std::vector<std::string>& ); // init 1 or more languages
+    bool init( const std::string&,
+	       const std::string& ="" ); // init from a configfile
+    bool init( const std::vector<std::string>&,
+	       const std::string& ="" ); // init 1 or more languages
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
@@ -200,9 +204,7 @@ namespace Tokenizer {
     }
     bool getPunctFilter() const { return doPunctFilter; };
 
-    bool setTextRedundancy( bool b = true ){
-      bool t = doRedundantText; doRedundantText = b; return t;
-    }
+    std::string setTextRedundancy( const std::string& );
 
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
@@ -217,7 +219,7 @@ namespace Tokenizer {
     void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
-    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark =  folia::UTF8ToUnicode(s); return t; };
+    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
     UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setNormSet( const std::string& );
@@ -288,7 +290,6 @@ namespace Tokenizer {
     bool u_isquote( UChar32,
 		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
-    void outputTokensDoc( folia::Document&, const std::vector<Token>& ) const;
     void outputTokensDoc_init( folia::Document& ) const;
 
     int outputTokensXML( folia::FoliaElement *,
@@ -298,7 +299,7 @@ namespace Tokenizer {
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );
 
-    UnicodeNormalizer normalizer;
+    TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     UnicodeString eosmark;
@@ -337,7 +338,8 @@ namespace Tokenizer {
     bool doDetectLang;
 
     //has do we percolate text up from <w> to <s> and <p> nodes? (FoLiA)
-    bool doRedundantText;
+    // values should be: 'full', 'minimal' or 'none'
+    std::string text_redundancy;
 
     //one sentence per line output
     bool sentenceperlineoutput;

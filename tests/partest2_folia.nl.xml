@@ -1,16 +1,15 @@
-<?xml  encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" >
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.10" version="1.5.0">
   <metadata type="native">
     <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-10T12:04:42" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="test.text">
     <p xml:id="test.p.1">
-      <t>Dit is de eerste zin van de paragraaf. Dit is de laatste zin van de paragraaf.</t>
       <s xml:id="test.p.1.s.1">
-        <t>Dit is de eerste zin van de paragraaf.</t>
         <w xml:id="test.p.1.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -40,7 +39,6 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.2">
-        <t>Dit is de laatste zin van de paragraaf.</t>
         <w xml:id="test.p.1.s.2.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -71,9 +69,7 @@
       </s>
     </p>
     <p xml:id="test.p.2">
-      <t>Dit is de tweede paragraaf met maar één zin.</t>
       <s xml:id="test.p.2.s.1">
-        <t>Dit is de tweede paragraaf met maar één zin.</t>
         <w xml:id="test.p.2.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>

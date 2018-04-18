@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2017
+  Copyright (c) 2018
   CLST - Radboud University
 
   This file is part of Ucto
@@ -27,11 +27,11 @@
 #include <vector>
 #include "ticcutils/StringOps.h"
 #include "config.h"
-#include "ucto/textcat.h"
+#include "ucto/my_textcat.h"
 
 using namespace std;
 
-#ifdef ENABLE_TEXTCAT
+#ifdef HAVE_TEXTCAT
 TextCat::~TextCat() { textcat_Done( TC ); }
 
 TextCat::TextCat( const std::string& cf ) {

@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2017
+  Copyright (c) 2018
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -29,34 +29,24 @@
 
 #include <cstring>
 
-#ifdef HAVE_TEXTCAT_H
-#define ENABLE_TEXTCAT
-#ifdef __cplusplus
+#ifdef HAVE_TEXTCAT
+  #ifdef HAVE_OLD_TEXTCAT
+    #ifdef __cplusplus
 extern "C" {
-#endif
-
+    #endif
+  #endif
 #include "textcat.h"
-
-#ifdef __cplusplus
+  #ifdef HAVE_OLD_TEXTCAT
+    #ifdef __cplusplus
 }
-#endif
-
-#else
-#ifdef HAVE_LIBTEXTCAT_TEXTCAT_H
-#include "libtextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#else
-#ifdef HAVE_LIBEXTTEXTCAT_TEXTCAT_H
-#include "libexttextcat/textcat.h"
-#define ENABLE_TEXTCAT
-#endif
-#endif
+   #endif
+  #endif
 #endif
 
 class TextCat {
  public:
-  explicit TextCat( const std::string& cf );
-  TextCat( const TextCat& in );
+  explicit TextCat( const std::string& );
+  TextCat( const TextCat& );
   ~TextCat();
   bool isInit() const { return TC != 0; };
   std::string get_language( const std::string& ) const;
