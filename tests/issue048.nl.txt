@@ -1,0 +1,3 @@
+dit gaat vlot: 1234567890
+dit gaat langzamer: 1234567890123456
+dit is onaanvaarbaar: 1234567890123456789012345
