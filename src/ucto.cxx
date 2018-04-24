@@ -82,7 +82,6 @@ void usage(){
        << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the"
        << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
-       << "\t-S                - Disable sentence detection!" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
        << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
@@ -108,7 +107,6 @@ int main( int argc, char *argv[] ){
   bool do_language_detect = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
-  bool splitsentences = true;
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
@@ -149,7 +147,6 @@ int main( int argc, char *argv[] ){
     Opts.extract('e', inputEncoding );
     dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
-    splitsentences = !Opts.extract( 'S' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
     Opts.extract( 's', eosmarker );
@@ -459,7 +456,6 @@ int main( int argc, char *argv[] ){
 
     tokenizer.setEosMarker( eosmarker );
     tokenizer.setVerbose( verbose );
-    tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
     tokenizer.setLowercase(tolowercase);

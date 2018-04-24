@@ -149,7 +149,6 @@ namespace Tokenizer {
     eosmark("<utt>"),
     tokDebug(0),
     verbose(false),
-    detectBounds(true),
     detectQuotes(false),
     doFilter(true),
     doPunctFilter(false),
@@ -2206,22 +2205,20 @@ namespace Tokenizer {
 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
 	paragraphsignal = false;
       }
-      if ( detectBounds ){
-	//find sentence boundaries
-	if (sentenceperlineinput) {
-	  tokens[begintokencount].role |= BEGINOFSENTENCE;
-	  tokens.back().role |= ENDOFSENTENCE;
-	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount );
-	  }
+      //find sentence boundaries
+      if (sentenceperlineinput) {
+	tokens[begintokencount].role |= BEGINOFSENTENCE;
+	tokens.back().role |= ENDOFSENTENCE;
+	if ( detectQuotes ){
+	  detectQuotedSentenceBounds( begintokencount );
+	}
+      }
+      else {
+	if ( detectQuotes ){
+	  detectQuotedSentenceBounds( begintokencount );
 	}
 	else {
-	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount );
-	  }
-	  else {
-	    detectSentenceBounds( begintokencount );
-	  }
+	  detectSentenceBounds( begintokencount );
 	}
       }
     }
