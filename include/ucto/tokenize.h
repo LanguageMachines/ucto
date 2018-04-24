@@ -177,10 +177,6 @@ namespace Tokenizer {
     bool setUppercase( bool b=true ) { bool t = uppercase; uppercase = b; if (b) lowercase = false; return t; };
     bool getUppercase() const { return uppercase; }
 
-    //Enable sentence-bound detection
-    bool setSentenceDetection( bool b=true ) { bool t = detectBounds; detectBounds = b; return t; }
-    bool getSentenceDetection() const { return detectBounds; }
-
     //Enable paragraph detection
     bool setParagraphDetection( bool b=true ) { bool t = detectPar; detectPar = b; return t; }
     bool getParagraphDetection() const { return detectPar; }
@@ -315,9 +311,6 @@ namespace Tokenizer {
 
     //verbose tokenisation mode
     bool verbose;
-
-    //detect sentence bounds?
-    bool detectBounds;
 
     //detect quotes?
     bool detectQuotes;
