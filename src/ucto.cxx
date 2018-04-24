@@ -123,12 +123,13 @@ int main( int argc, char *argv[] ){
   string ofile;
   string c_file;
   bool passThru = false;
+  bool sentencesplit = false;
   string norm_set_string;
   string add_tokens;
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -152,6 +153,7 @@ int main( int argc, char *argv[] ){
     Opts.extract( 's', eosmarker );
     touppercase = Opts.extract( 'u' );
     tolowercase = Opts.extract( 'l' );
+    sentencesplit = Opts.extract( "split" );
     sentenceperlineoutput = Opts.extract( 'n' );
     sentenceperlineinput = Opts.extract( 'm' );
     Opts.extract( 'T', redundancy );
@@ -175,6 +177,12 @@ int main( int argc, char *argv[] ){
     else {
       xmlout = Opts.extract( 'X' );
       Opts.extract( "id", docid );
+    }
+    if ( sentencesplit ){
+      if ( xmlout ){
+	throw TiCC::OptionError( "conflicting options --split and -x or -X" );
+      }
+      //      sentenceperlineoutput = true;
     }
     passThru = Opts.extract( "passthru" );
     string textclass;
@@ -456,6 +464,7 @@ int main( int argc, char *argv[] ){
 
     tokenizer.setEosMarker( eosmarker );
     tokenizer.setVerbose( verbose );
+    tokenizer.setSentenceSplit(sentencesplit);
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
     tokenizer.setLowercase(tolowercase);

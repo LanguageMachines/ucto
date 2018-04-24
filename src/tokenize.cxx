@@ -1169,20 +1169,31 @@ namespace Tokenizer {
 	    OUT << endl;
 	  }
 	  else {
-	    OUT << " " + eosmark;
+	    OUT << " " + eosmark + " ";
+	  }
+	  if ( splitOnly ){
+	    OUT << endl;
 	  }
 	}
       }
       if ( ( &token != &(*tokens.rbegin()) )
 	   && !verbose ) {
 	if ( !( (token.role & ENDOFSENTENCE)
-		&& sentenceperlineoutput ) ) {
-	  OUT << " ";
-	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
+		&& sentenceperlineoutput
+		&& !splitOnly ) ){
+	  if ( !(token.role & ENDOFSENTENCE) ){
+	    if ( splitOnly
+		 && token.role & NOSPACE ){
+	    }
+	    else {
+	      OUT << " ";
+	    }
+	  }
 	}
 	else if ( (quotelevel > 0)
 		  && sentenceperlineoutput ) {
-	  OUT << " ";
+	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
+	  OUT << "2";
 	}
       }
     }
