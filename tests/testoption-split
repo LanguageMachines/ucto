@@ -1,0 +1,11 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -Lnld quotetest_folgert2.nl.txt
+
+$exe -Lnld --split quotetest_folgert2.nl.txt
+
+$exe -Lnld -Q quotetest_folgert2.nl.txt
+
+$exe -Lnld -Q --split quotetest_folgert2.nl.txt
