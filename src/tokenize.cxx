@@ -152,6 +152,7 @@ namespace Tokenizer {
     detectQuotes(false),
     doFilter(true),
     doPunctFilter(false),
+    splitOnly( false ),
     detectPar(true),
     paragraphsignal(true),
     doDetectLang(false),
@@ -1125,6 +1126,9 @@ namespace Tokenizer {
     short quotelevel = 0;
     bool first = true;
     for ( const auto token : tokens ) {
+      if (tokDebug >= 5){
+	LOG << "outputTokens: token=" << token << endl;
+      }
       if ( detectPar
 	   && (token.role & NEWPARAGRAPH)
 	   && !verbose
@@ -1164,21 +1168,23 @@ namespace Tokenizer {
 	    OUT << endl;
 	  }
 	}
-	else if ( quotelevel == 0 ) {
-	  if (sentenceperlineoutput) {
-	    OUT << endl;
+	else {
+	  if ( quotelevel == 0 ) {
+	    if (sentenceperlineoutput) {
+	      OUT << endl;
+	    }
+	    else {
+	      OUT << " " + eosmark + " ";
+	    }
+	    if ( splitOnly ){
+	      OUT << endl;
+	    }
 	  }
-	  else {
-	    OUT << " " + eosmark + " ";
-	  }
-	  if ( splitOnly ){
-	    OUT << endl;
-	  }
-	}
-	else { //inside quotation
-	  if ( splitOnly
-	       && !(token.role & NOSPACE ) ){
-	    OUT << " ";
+	  else { //inside quotation
+	    if ( splitOnly
+		 && !(token.role & NOSPACE ) ){
+	      OUT << " ";
+	    }
 	  }
 	}
       }
@@ -1199,7 +1205,7 @@ namespace Tokenizer {
 	else if ( (quotelevel > 0)
 		  && sentenceperlineoutput ) {
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
-	  OUT << "2";
+	  OUT << " ";
 	}
       }
     }
