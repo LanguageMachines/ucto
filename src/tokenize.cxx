@@ -1175,6 +1175,12 @@ namespace Tokenizer {
 	    OUT << endl;
 	  }
 	}
+	else { //inside quotation
+	  if ( splitOnly
+	       && !(token.role & NOSPACE ) ){
+	    OUT << " ";
+	  }
+	}
       }
       if ( ( &token != &(*tokens.rbegin()) )
 	   && !verbose ) {
@@ -1183,7 +1189,7 @@ namespace Tokenizer {
 		&& !splitOnly ) ){
 	  if ( !(token.role & ENDOFSENTENCE) ){
 	    if ( splitOnly
-		 && token.role & NOSPACE ){
+		 && (token.role & NOSPACE) ){
 	    }
 	    else {
 	      OUT << " ";
