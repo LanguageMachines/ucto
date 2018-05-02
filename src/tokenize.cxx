@@ -2248,19 +2248,6 @@ namespace Tokenizer {
     return numNewTokens;
   }
 
-  bool is_matching_pair( UChar bb, UChar eb ){
-    return false;
-    if ( bb == '(' )
-      return eb == ')';
-    if ( bb == '{' )
-      return eb == '}';
-    if ( bb == '[' )
-      return eb == ']';
-    if ( bb == '<' )
-      return eb == '>';
-    return false;
-  }
-
   void TokenizerClass::tokenizeWord( const icu::UnicodeString& input,
 				     bool space,
 				     const string& lang,
@@ -2326,20 +2313,6 @@ namespace Tokenizer {
       }
     }
     else {
-      UnicodeString new_input;
-      UChar32 bb = input.char32At(0);
-      UChar32 eb = input.char32At(inpLen-1);
-      bool is_bracketed = false;
-      if ( is_matching_pair( bb, eb ) ){
-	new_input = icu::UnicodeString( input, 1, inpLen-2 );
-	cerr << "NEW: " << new_input << endl;
-	is_bracketed = true;
-	space = false;
-	tokenizeWord( UnicodeString(bb), false, lang );
-      }
-      else {
-	new_input = input;
-      }
       bool a_rule_matched = false;
       for ( const auto& rule : settings[lang]->rules ) {
 	if ( tokDebug >= 4){
@@ -2349,7 +2322,7 @@ namespace Tokenizer {
 	//Find first matching rule
 	icu::UnicodeString pre, post;
 	vector<icu::UnicodeString> matches;
-	if ( rule->matchAll( new_input, pre, post, matches ) ){
+	if ( rule->matchAll( input, pre, post, matches ) ){
 	  a_rule_matched = true;
 	  if ( tokDebug >= 4 ){
 	    LOG << "\tMATCH: " << type << endl;
@@ -2371,12 +2344,9 @@ namespace Tokenizer {
 	      // don't change the type when:
 	      //   it was already non-WORD
 	      if ( tokDebug >= 4 ){
-		LOG << "\trecurse, match didn't do anything new for " << new_input << endl;
+		LOG << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
-	      tokens.push_back( Token( assigned_type, new_input, space ? NOROLE : NOSPACE, lang ) );
-	      if ( is_bracketed ){
-		tokenizeWord( UnicodeString(eb), false, lang );
-	      }
+	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE, lang ) );
 	      return;
 	    }
 	    else {
@@ -2384,10 +2354,7 @@ namespace Tokenizer {
 		LOG << "\trecurse, match changes the type:"
 				<< assigned_type << " to " << type << endl;
 	      }
-	      tokens.push_back( Token( type, new_input, space ? NOROLE : NOSPACE, lang ) );
-	      if ( is_bracketed ){
-		tokenizeWord( UnicodeString(eb), false, lang );
-	      }
+	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE, lang ) );
 	      return;
 	    }
 	  }
@@ -2462,10 +2429,7 @@ namespace Tokenizer {
 	if ( tokDebug >=4 ){
 	  LOG << "\tthere's no match at all" << endl;
 	}
-	tokens.push_back( Token( assigned_type, new_input, space ? NOROLE : NOSPACE , lang ) );
-      }
-      if ( is_bracketed ){
-	tokenizeWord( UnicodeString(eb), true, lang );
+	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE , lang ) );
       }
     }
   }
