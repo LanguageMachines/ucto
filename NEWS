@@ -1,3 +1,9 @@
+0.13.1 2018-05-17
+[Ko van der Sloot]
+Bug fix release:
+* configure now finds out the location of the uctodata files.
+  should make it work on Mac systems too
+
 0.13 2018-05-16
 [Ko van der Sloot]
 * improved configure/build/test
