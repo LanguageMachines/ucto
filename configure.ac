@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.13.2], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
+AC_INIT([ucto], [0.14], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
