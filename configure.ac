@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.14], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
+AC_INIT([ucto], [0.13.1], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -121,6 +121,8 @@ PKG_CHECK_MODULES(
 	ucto will work with only a minimal default configuration.
 	You should consider installing the uctodata package!] )] )
 
+UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
+UCTODATA_DIR=$UCTODATA_PRE/share/ucto
 AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
 
 # Checks for library functions.
