@@ -1,3 +1,8 @@
+0.13.2 2018-05-17
+[Ko van der Sloot]
+Bug fix release:
+* uctodata is mandatory. So don't install default rules anymore
+
 0.13.1 2018-05-17
 [Ko van der Sloot]
 Bug fix release:
