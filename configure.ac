@@ -121,8 +121,6 @@ PKG_CHECK_MODULES(
 	ucto will work with only a minimal default configuration.
 	You should consider installing the uctodata package!] )] )
 
-UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
-UCTODATA_DIR=$UCTODATA_PRE/share/ucto
 AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
 
 # Checks for library functions.
