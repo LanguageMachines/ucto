@@ -201,8 +201,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
-    vector<string> parts;
-    TiCC::split_at( values, parts, "," );
+    vector<string> parts = TiCC::split_at( values, "," );
     for ( const auto& val : parts ){
       norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
     }
