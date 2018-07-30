@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.13], [lamasoftware@science.ru.nl])
+AC_INIT([ucto], [0.14], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -109,17 +109,20 @@ PKG_CHECK_MODULES(
 	[uctodata],
 	[PKG_CHECK_MODULES(
 		[uctodata],
-		[uctodata >= 0.4],
+		[uctodata >= 0.8],
 		[],
 		[AC_MSG_NOTICE([ATTENTION:
 	Your ucto datafiles are are outdated
 	You should consider installing a newer version of the uctodata package!])])
 
 	],
-	[AC_MSG_NOTICE([ATTENTION:
-	ucto datafiles are not installed!
-	ucto will work with only a minimal default configuration.
-	You should consider installing the uctodata package!] )] )
+	[AC_MSG_ERROR([ATTENTION:
+	ucto datafiles are not installed!. Please install uctodata package.] )] )
+
+UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
+UCTODATA_DIR=$UCTODATA_PRE/share/ucto
+AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
+
 # Checks for library functions.
 
 AC_OUTPUT([

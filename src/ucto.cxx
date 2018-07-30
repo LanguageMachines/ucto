@@ -82,7 +82,6 @@ void usage(){
        << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the"
        << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
-       << "\t-S                - Disable sentence detection!" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
        << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
@@ -108,7 +107,6 @@ int main( int argc, char *argv[] ){
   bool do_language_detect = false;
   bool dofiltering = true;
   bool dopunctfilter = false;
-  bool splitsentences = true;
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
@@ -125,12 +123,13 @@ int main( int argc, char *argv[] ){
   string ofile;
   string c_file;
   bool passThru = false;
+  bool sentencesplit = false;
   string norm_set_string;
   string add_tokens;
 
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -149,12 +148,12 @@ int main( int argc, char *argv[] ){
     Opts.extract('e', inputEncoding );
     dopunctfilter = Opts.extract( "filterpunct" );
     paragraphdetection = !Opts.extract( 'P' );
-    splitsentences = !Opts.extract( 'S' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
     Opts.extract( 's', eosmarker );
     touppercase = Opts.extract( 'u' );
     tolowercase = Opts.extract( 'l' );
+    sentencesplit = Opts.extract( "split" );
     sentenceperlineoutput = Opts.extract( 'n' );
     sentenceperlineinput = Opts.extract( 'm' );
     Opts.extract( 'T', redundancy );
@@ -178,6 +177,12 @@ int main( int argc, char *argv[] ){
     else {
       xmlout = Opts.extract( 'X' );
       Opts.extract( "id", docid );
+    }
+    if ( sentencesplit ){
+      if ( xmlout ){
+	throw TiCC::OptionError( "conflicting options --split and -x or -X" );
+      }
+      //      sentenceperlineoutput = true;
     }
     passThru = Opts.extract( "passthru" );
     string textclass;
@@ -459,7 +464,7 @@ int main( int argc, char *argv[] ){
 
     tokenizer.setEosMarker( eosmarker );
     tokenizer.setVerbose( verbose );
-    tokenizer.setSentenceDetection( splitsentences ); //detection of sentences
+    tokenizer.setSentenceSplit(sentencesplit);
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
     tokenizer.setSentencePerLineInput(sentenceperlineinput);
     tokenizer.setLowercase(tolowercase);

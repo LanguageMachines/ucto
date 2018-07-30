@@ -149,10 +149,10 @@ namespace Tokenizer {
     eosmark("<utt>"),
     tokDebug(0),
     verbose(false),
-    detectBounds(true),
     detectQuotes(false),
     doFilter(true),
     doPunctFilter(false),
+    splitOnly( false ),
     detectPar(true),
     paragraphsignal(true),
     doDetectLang(false),
@@ -201,8 +201,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
-    vector<string> parts;
-    TiCC::split_at( values, parts, "," );
+    vector<string> parts = TiCC::split_at( values, "," );
     for ( const auto& val : parts ){
       norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
     }
@@ -1126,6 +1125,9 @@ namespace Tokenizer {
     short quotelevel = 0;
     bool first = true;
     for ( const auto token : tokens ) {
+      if (tokDebug >= 5){
+	LOG << "outputTokens: token=" << token << endl;
+      }
       if ( detectPar
 	   && (token.role & NEWPARAGRAPH)
 	   && !verbose
@@ -1165,24 +1167,43 @@ namespace Tokenizer {
 	    OUT << endl;
 	  }
 	}
-	else if ( quotelevel == 0 ) {
-	  if (sentenceperlineoutput) {
-	    OUT << endl;
+	else {
+	  if ( quotelevel == 0 ) {
+	    if (sentenceperlineoutput) {
+	      OUT << endl;
+	    }
+	    else {
+	      OUT << " " + eosmark + " ";
+	    }
+	    if ( splitOnly ){
+	      OUT << endl;
+	    }
 	  }
-	  else {
-	    OUT << " " + eosmark;
+	  else { //inside quotation
+	    if ( splitOnly
+		 && !(token.role & NOSPACE ) ){
+	      OUT << " ";
+	    }
 	  }
 	}
       }
       if ( ( &token != &(*tokens.rbegin()) )
 	   && !verbose ) {
 	if ( !( (token.role & ENDOFSENTENCE)
-		&& sentenceperlineoutput ) ) {
-	  OUT << " ";
-	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
+		&& sentenceperlineoutput
+		&& !splitOnly ) ){
+	  if ( !(token.role & ENDOFSENTENCE) ){
+	    if ( splitOnly
+		 && (token.role & NOSPACE) ){
+	    }
+	    else {
+	      OUT << " ";
+	    }
+	  }
 	}
 	else if ( (quotelevel > 0)
 		  && sentenceperlineoutput ) {
+	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
 	  OUT << " ";
 	}
       }
@@ -2206,22 +2227,20 @@ namespace Tokenizer {
 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
 	paragraphsignal = false;
       }
-      if ( detectBounds ){
-	//find sentence boundaries
-	if (sentenceperlineinput) {
-	  tokens[begintokencount].role |= BEGINOFSENTENCE;
-	  tokens.back().role |= ENDOFSENTENCE;
-	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount );
-	  }
+      //find sentence boundaries
+      if (sentenceperlineinput) {
+	tokens[begintokencount].role |= BEGINOFSENTENCE;
+	tokens.back().role |= ENDOFSENTENCE;
+	if ( detectQuotes ){
+	  detectQuotedSentenceBounds( begintokencount );
+	}
+      }
+      else {
+	if ( detectQuotes ){
+	  detectQuotedSentenceBounds( begintokencount );
 	}
 	else {
-	  if ( detectQuotes ){
-	    detectQuotedSentenceBounds( begintokencount );
-	  }
-	  else {
-	    detectSentenceBounds( begintokencount );
-	  }
+	  detectSentenceBounds( begintokencount );
 	}
       }
     }

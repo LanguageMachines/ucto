@@ -1,3 +1,29 @@
+0.13.2 2018-05-17
+[Ko van der Sloot]
+Bug fix release:
+* uctodata is mandatory. So don't install default rules anymore
+
+0.13.1 2018-05-17
+[Ko van der Sloot]
+Bug fix release:
+* configure now finds out the location of the uctodata files.
+  should make it work on Mac systems too
+
+0.13 2018-05-16
+[Ko van der Sloot]
+* improved configure/build/test
+* added a --split option
+* fixed -P option
+* removed -S option (never used, and only half implemented)
+* added a --add-tokens option, to add special tokens for the default language
+* generally use the icu:: namespace
+* added more tests
+* fixed uninitialized variable.
+* added code to use an alternative search-path for uctodata
+
+[Maarten van Gompel]
+* added codemeta.json
+
 0.12 2018-02-19
 [Ko van der Sloot]
 * now use the UniFilter Unicode Filter from ticcutils
