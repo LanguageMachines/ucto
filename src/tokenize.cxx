@@ -1762,7 +1762,7 @@ namespace Tokenizer {
     }
     bool alpha = false, num = false, punct = false;
     icu::UnicodeString word;
-    StringCharacterIterator sit(input);
+    icu::StringCharacterIterator sit(input);
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( u_isspace(c)) {
@@ -2099,7 +2099,7 @@ namespace Tokenizer {
     bool reset = false;
     //iterate over all characters
     icu::UnicodeString word;
-    StringCharacterIterator sit(input);
+    icu::StringCharacterIterator sit(input);
     long int i = 0;
     long int tok_size = 0;
     while ( sit.hasNext() ){
