@@ -79,11 +79,11 @@ namespace Tokenizer {
   class Token {
     friend std::ostream& operator<< (std::ostream&, const Token& );
   public:
-    UnicodeString type;
-    UnicodeString us;
+    icu::UnicodeString type;
+    icu::UnicodeString us;
     TokenRole role;
-    Token( const UnicodeString&,
-	   const UnicodeString&,
+    Token( const icu::UnicodeString&,
+	   const icu::UnicodeString&,
 	   TokenRole role = NOROLE,
 	   const std::string& = "" );
     std::string lc;                // ISO 639-3 language code
@@ -137,12 +137,12 @@ namespace Tokenizer {
 
     // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
-    int tokenizeLine( const UnicodeString&,
+    int tokenizeLine( const icu::UnicodeString&,
 		      const std::string& = "default" ); // Unicode chars
     int tokenizeLine( const std::string&,
 		      const std::string& = "default" ); // UTF8 chars
 
-    void passthruLine( const UnicodeString&, bool& );
+    void passthruLine( const icu::UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
@@ -223,8 +223,8 @@ namespace Tokenizer {
     void setLanguage( const std::string& l ){ default_language = l; };
 
     // set eos marker
-    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
-    UnicodeString getEosMarker( ) const { return eosmark; }
+    icu::UnicodeString setEosMarker( const std::string& s = "<utt>") { icu::UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
+    icu::UnicodeString getEosMarker( ) const { return eosmark; }
 
     bool setNormSet( const std::string& );
 
@@ -270,17 +270,17 @@ namespace Tokenizer {
   private:
     TokenizerClass( const TokenizerClass& ); // inhibit copies
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
-    void add_rule( const UnicodeString&,
-		   const std::vector<UnicodeString>& );
-    void tokenizeWord( const UnicodeString&,
+    void add_rule( const icu::UnicodeString&,
+		   const std::vector<icu::UnicodeString>& );
+    void tokenizeWord( const icu::UnicodeString&,
 		       bool,
 		       const std::string&,
-		       const UnicodeString& ="" );
-    int tokenizeLine( const UnicodeString&,
+		       const icu::UnicodeString& ="" );
+    int tokenizeLine( const icu::UnicodeString&,
 		      const std::string&,
 		      const std::string& );
 
-    bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
+    bool detectEos( size_t, const icu::UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
 			       const std::string& = "default" );
     void detectQuotedSentenceBounds( const int offset,
@@ -290,7 +290,7 @@ namespace Tokenizer {
     //Signal the tokeniser that a paragraph is detected
     void signalParagraph( bool b=true ) { paragraphsignal = b; };
 
-    bool resolveQuote( int, const UnicodeString&, Quoting& );
+    bool resolveQuote( int, const icu::UnicodeString&, Quoting& );
     bool u_isquote( UChar32,
 		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
@@ -306,9 +306,9 @@ namespace Tokenizer {
     TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
-    UnicodeString eosmark;
+    icu::UnicodeString eosmark;
     std::vector<Token> tokens;
-    std::set<UnicodeString> norm_set;
+    std::set<icu::UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
     std::string default_language;
