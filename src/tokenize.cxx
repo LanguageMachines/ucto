@@ -1039,7 +1039,7 @@ namespace Tokenizer {
 	if ( token.role & NOSPACE) {
 	  args["space"]= "no";
 	}
-	if ( outputclass != inputclass ){
+	if ( outputclass != inputclass || outputclass != "current" ){
 	  args["textclass"] = outputclass;
 	}
 	folia::FoliaElement *w = new folia::Word( args, root->doc() );
