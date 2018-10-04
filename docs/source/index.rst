@@ -89,7 +89,7 @@ space-seperated, sentences delimiter by ``<utt>``::
 The -L flag specifies the language (as a three letter iso-639-3 code), provided
 a configuration file exists for that language. The configurations are provided
 separately, for various languages, in the
-[uctodata](https://github.com/LanguageMachines/uctodata) package. Note that
+`uctodata <https://github.com/LanguageMachines/uctodata>`_ package. Note that
 older versions of ucto used different two-letter codes, so you may need to
 update the way you invoke ucto.
 
@@ -100,7 +100,7 @@ If you want each sentence on a separate line (i.e. newline delimited rather than
 ``<utt>``), then pass the ``-n`` flag. If each sentence is already on one line
 in the input and you want to leave it at that, pass the ``-m`` flag.
 
-Tokenize plaintext to [FoLiA XML](https://proycon.github.io/folia) using the ``-X`` flag, you can specify an ID
+Tokenize plaintext to `FoLiA XML <https://proycon.github.io/folia>`_ using the ``-X`` flag, you can specify an ID
 for the FoLiA document using the ``--id=`` flag::
 
     $ ucto -L eng -X --id=hamlet hamlet.txt hamlet.folia.xml
@@ -113,5 +113,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
