@@ -201,8 +201,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
-    vector<string> parts;
-    TiCC::split_at( values, parts, "," );
+    vector<string> parts = TiCC::split_at( values, "," );
     for ( const auto& val : parts ){
       norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
     }
@@ -1040,7 +1039,7 @@ namespace Tokenizer {
 	if ( token.role & NOSPACE) {
 	  args["space"]= "no";
 	}
-	if ( outputclass != inputclass ){
+	if ( outputclass != inputclass || outputclass != "current" ){
 	  args["textclass"] = outputclass;
 	}
 	folia::FoliaElement *w = new folia::Word( args, root->doc() );
@@ -1763,7 +1762,7 @@ namespace Tokenizer {
     }
     bool alpha = false, num = false, punct = false;
     icu::UnicodeString word;
-    StringCharacterIterator sit(input);
+    icu::StringCharacterIterator sit(input);
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( u_isspace(c)) {
@@ -2100,7 +2099,7 @@ namespace Tokenizer {
     bool reset = false;
     //iterate over all characters
     icu::UnicodeString word;
-    StringCharacterIterator sit(input);
+    icu::StringCharacterIterator sit(input);
     long int i = 0;
     long int tok_size = 0;
     while ( sit.hasNext() ){

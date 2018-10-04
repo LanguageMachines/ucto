@@ -45,10 +45,12 @@ using namespace std;
 
 #define LOG *TiCC::Log(theErrLog)
 
+#ifndef UCTODATA_DIR
+#define UCTODATA_DIR string(SYSCONF_PATH) + "/ucto/"
+#endif
+
 namespace Tokenizer {
-  vector<string> defaultConfigPath = { string(SYSCONF_PATH) + "/ucto/",
-				       string(SYSCONF_PATH) + "/uctodata/" };
-  string defaultConfigDir;
+  string defaultConfigDir = UCTODATA_DIR;
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
 		    ATTACHEDSUFFIXES, PREFIXES, SUFFIXES, TOKENS, UNITS,
@@ -234,15 +236,6 @@ namespace Tokenizer {
   }
 
   set<string> Setting::installed_languages() {
-    if ( defaultConfigDir.empty() ){
-      for ( const auto& name: defaultConfigPath ){
-	if ( TiCC::isDir( name ) &&
-	     TiCC::isFile( name + "tokconfig-nld" ) ){
-	  defaultConfigDir = name;
-	  break;
-	}
-      }
-    }
     // we only return 'languages' which are installed as 'tokconfig-*'
     //
     vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
@@ -556,15 +549,6 @@ namespace Tokenizer {
   bool Setting::read( const string& settings_name,
 		      const string& add_tokens,
 		      int dbg, TiCC::LogStream* ls ) {
-    if ( defaultConfigDir.empty() ){
-      for ( const auto& name: defaultConfigPath ){
-	if ( TiCC::isDir( name ) &&
-	     TiCC::isFile( name + "tokconfig-nld" ) ){
-	  defaultConfigDir = name;
-	  break;
-	}
-      }
-    }
     tokDebug = dbg;
     theErrLog = ls;
     map<ConfigMode, icu::UnicodeString> pattern = { { ABBREVIATIONS, "" },
