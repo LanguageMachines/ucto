@@ -597,10 +597,11 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::tokenize( folia::Document& doc ) {
+    xmlin = true; // tautology
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
     }
-    if ( xmlin && inputclass == outputclass ){
+    if ( inputclass == outputclass ){
       LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	  << endl;
       setFiltering(false);

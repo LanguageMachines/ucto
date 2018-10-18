@@ -13,8 +13,8 @@ notifications:
     channels:
       - "irc.uvt.nl#gitlama"
     template:
-      - "%{repository_slug}#%{build_number} %{message} --> %{build_url}"
-    skip_join: true
+      - "%{repository_slug}#%{build_number}-{%branch} :  %{message} --> %{build_url}"
+      skip_join: true
 
 language: cpp
 matrix:
