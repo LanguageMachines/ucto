@@ -857,7 +857,11 @@ namespace Tokenizer {
       }
       LOG << "EOS markers: " << eosmarkers << endl;
       LOG << "Quotations: " << quotes << endl;
-      LOG << "Filter: " << filter << endl;
+      try {
+	LOG << "Filter: " << filter << endl;
+      }
+      catch (...){
+      }
     }
     return true;
   }
