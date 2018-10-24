@@ -64,11 +64,14 @@ In publication of research that makes use of the Software, a citation should be 
 
 For information about commercial licenses for the Software, contact lamasoftware@science.ru.nl, or send your request to:
 
+::
+
 Prof. dr. Antal van den Bosch
 Radboud University Nijmegen
 P.O. Box 9103 – 6500 HD Nijmegen
 The Netherlands
 Email: a.vandenbosch@let.ru.nl
+
 
 Installation
 ============
@@ -566,14 +569,12 @@ The configuration file consists of the following sections:
 
 -  ``QUOTES`` – Contains a list of quote-pairs in the format 'beginquotes \s endquotes \n'. Multiple begin quotes and endquotes are assumed to be ambiguous.
 
--  ``FILTER`` – Contains a list of transformations. In the format 'pattern \s replacement \n'. Each occurrence of 'pattern' will be replaced. This is useful for deconstructing ligatures for example.
+-  ``FILTER`` – Contains a list of transformations. In the format 'pattern replacement' one per line. Each occurrence of 'pattern' will be replaced. This is useful for deconstructing ligatures for example.
 
 
-Lines starting with a hash sign are treated as comments. Lines starting with '%include' will include the contents of another file. This may
-be useful if for example multiple configurations share many of the same rules, as is often the case.
+Lines starting with a hash sign are treated as comments. Lines starting with '%include' will include the contents of another file. This may be useful if for example multiple configurations share many of the same rules, as is often the case.
 
-You can see several sections specifying lists. These are implicit regular expressions as all are converted to regular expressions. They are checked prior to any of the explicit rules, in the following order of precedence:
-``SUFFIXES, PREFIXES, ATTACHEDSUFFIXES, ATTACHEDPREFIXES, TOKENS, ABBREVIATIONS, ORDINALS``.
+
 
 
 
