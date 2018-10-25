@@ -43,24 +43,19 @@ how to install the software on your computer. Next,
 Chapter [implementation] describes the underlying implementation of the
 software. Chapter [usage] explains the usage.
 
-GNU General Public License
-==========================
+
+ License and citation
+=======================
+
 
 Ucto is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free
 Software Foundation; either version 3 of the License, or (at your
 option) any later version.
 
-Ucto is distributed in the hope that it will be useful, but WITHOUT ANY
-WARRANTY; without even the implied warranty of MERCHANTABILITY or
-FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for
-more details.
+In publication of research that makes use of the Software, a citation should be given of:
 
-You should have received a copy of the GNU General Public License along
-with ucto. If not, see
-:math:`<`\ http://www.gnu.org/licenses/\ :math:`>`.
-
-In publication of research that makes use of the Software, a citation should be given of: *“Maarten van Gompel, Ko van der Sloot, Iris Hendrickx Antal van den Bosch. Ucto: Unicode Tokeniser. Reference Guide version 1.0,  Technical Report, Centre for Language and Speech Technology, Radboud University, October 30, 2018, Available from XXXX”*
+*Maarten van Gompel, Ko van der Sloot, Iris Hendrickx and Antal van den Bosch. Ucto: Unicode Tokeniser. Reference Guide, Language and Speech Technology Technical Report Series 18-01, Radboud University, Nijmegen, October 30, 2018, Available from https://ucto.readthedocs.io/.*
 
 For information about commercial licenses for the Software, contact lamasoftware@science.ru.nl, or send your request to:
 
@@ -302,8 +297,7 @@ Note that the  option '--uselanguages' is intended only for Folia XML documents 
 Example Usage
 ----------------
 
- Consider the following
-untokenised input text: *Mr. John Doe goes to the pet store. He sees a cute rabbit, falls in love, and buys it. They lived happily ever after.*, and observe the output in the example below.
+ Consider the following untokenised input text: *Mr. John Doe goes to the pet store. He sees a cute rabbit, falls in love, and buys it. They lived happily ever after.*, and observe the output in the example below.
 
 We save the file to '/tmp/input.txt' and we run ucto on it. The '-L eng' option sets the language to English and loads the English configuration for ucto. Instead of '-L', which is nothing more than a convenient shortcut, we could also use '-c' and point to the full path of the configuration file.
 
@@ -336,7 +330,7 @@ To output to an output file instead of standard output, we would invoke ucto as 
 
     $ ucto -L eng /tmp/input.txt /tmp/output.txt
 
-This simplest form of output does not show all of the information ucto has on the tokens. For a more verbose view, add the '-v' option:
+This simplest form of output does not show all of the information ucto has on the tokens. For a more verbose view, add the '-v' option. Now each token is labeled with information about the type of token, and optional functional roles like 'BEGINOFSENTENCE' or 'NEWPARAGRAPH'. This information can be useful for further NLP processing, and is already used with the frog NLP pipeline [#f1]_.
 
 ::
 
@@ -583,7 +577,7 @@ HOWTO configure ucto for a new language
 
 When creating your own configuration, it is recommended to start by copying an existing configuration and use it as example. We refer to the libicu syntax user guide [#f7]_ for the creation of language specific rules. For debugging purposes, run ucto in a debug mode using '-d <NUMBER>'. The higher the number, the more debug output is produced, showing the exact pattern matching.
 
-
+Note that the configuration files and abbreviation files are stored in the github repository 'https://github.com/LanguageMachines/uctodata'.
 
 Acknowledgments
 ================
