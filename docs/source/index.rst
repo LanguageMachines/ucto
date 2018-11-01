@@ -569,7 +569,7 @@ Acknowledgments
 We thank Ümit Mersinli for his help with the Turkish configuration file.
 
 .. [#f1]
-   http://ilk.uvt.nl/frog
+   https://languagemachines.github.io/frog
 
 .. [#f2]
    See also: http://proycon.github.com/folia
