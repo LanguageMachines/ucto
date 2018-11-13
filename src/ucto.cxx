@@ -93,7 +93,7 @@ void usage(){
        << "\t--inputclass <class>  - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
        << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
-       << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
+       << "\t                  (-x and -F disable usage of most other options: -nPQVs)" << endl;
 }
 
 int main( int argc, char *argv[] ){
@@ -128,7 +128,7 @@ int main( int argc, char *argv[] ){
   string add_tokens;
 
   try {
-    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
+    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
