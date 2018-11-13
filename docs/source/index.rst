@@ -98,14 +98,12 @@ If you however install from the source archive, the compilation and
 installation should also be relatively straightforward on most UNIX
 systems, and will be explained in the remainder of this section.
 
-| Ucto depends on the ``libicu`` library. This library can be obtained
-  from
-| http://site.icu-project.org/ but is also present in the package
-  manager of all major Linux distributions. Ucto also depends on
-  ``uctodata``, ``libfolia`` (available from
-  http://proycon.github.com/folia), which in turn depends on
-  ``libticcutils`` (available from
-| http://github.com/LanguageMachines/ticcutils). It will not compile
+Ucto depends on the ``libicu`` library. This library can be obtained
+from http://site.icu-project.org/ but is also present in the package
+  manager of all major Linux distributions. 
+Ucto also depends on ``uctodata`` (available from http://github.com/LanguageMachines/uctodata),
+``libfolia`` (available from http://github.com/LanguageMachines/libfolia), which in turn depends on
+``libticcutils`` (available from http://github.com/LanguageMachines/ticcutils). It will not compile
   without any of them.
 
 If all dependencies are satisfied, to compile ucto on your computer, run
