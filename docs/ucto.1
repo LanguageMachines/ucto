@@ -83,6 +83,12 @@ Assume one sentence per line on input
 map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
 .RE
 
+.BR \-\-add\-tokens ="file"
+.RS
+Add additional tokens to the [TOKENS] block of the default language.
+The file should contain one TOKEN per line.
+.RE
+
 .BR \-\-passthru
 .RS
 Don't tokenize, but perform input decoding and simple token role detection
