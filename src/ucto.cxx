@@ -79,8 +79,8 @@ void usage(){
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
-       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the"
-       << "\t                    default language. TOKENS are always kept intact." << endl
+       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the  default language." << endl
+       << "\t                    TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
@@ -90,9 +90,9 @@ void usage(){
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "                      -X is automatically set when inputfile has extension '.xml'" << endl
-       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
+       << "\t--inputclass <class>  - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
-       << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
+       << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
 }
 
