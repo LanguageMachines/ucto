@@ -50,6 +50,9 @@ using namespace std;
 #endif
 
 namespace Tokenizer {
+
+  using namespace icu;
+
   string defaultConfigDir = UCTODATA_DIR;
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
@@ -57,7 +60,7 @@ namespace Tokenizer {
 		    ORDINALS, EOSMARKERS, QUOTES, CURRENCY,
 		    FILTER, RULEORDER, METARULES };
 
-  ConfigMode getMode( const icu::UnicodeString& line ) {
+  ConfigMode getMode( const UnicodeString& line ) {
     ConfigMode mode = NONE;
     if (line == "[RULES]") {
       mode = RULES;
@@ -114,7 +117,7 @@ namespace Tokenizer {
   public:
     uConfigError( const string& s, const string& f ):
       invalid_argument( "ucto: " + s + " (" + f + ")"  ){};
-    uConfigError( const icu::UnicodeString& us, const string& f ):
+    uConfigError( const UnicodeString& us, const string& f ):
       uConfigError( TiCC::UnicodeToUTF8(us), f ){};
   };
 
@@ -146,14 +149,14 @@ namespace Tokenizer {
     }
   }
 
-  void Quoting::add( const icu::UnicodeString& o, const icu::UnicodeString& c ){
+  void Quoting::add( const UnicodeString& o, const UnicodeString& c ){
     QuotePair quote;
     quote.openQuote = o;
     quote.closeQuote = c;
     _quotes.push_back( quote );
   }
 
-  int Quoting::lookup( const icu::UnicodeString& open, int& stackindex ){
+  int Quoting::lookup( const UnicodeString& open, int& stackindex ){
     if (quotestack.empty() || (quotestack.size() != quoteindexstack.size())) return -1;
     auto it = quotestack.crbegin();
     size_t i = quotestack.size();
@@ -168,7 +171,7 @@ namespace Tokenizer {
     return -1;
   }
 
-  icu::UnicodeString Quoting::lookupOpen( const icu::UnicodeString &q ) const {
+  UnicodeString Quoting::lookupOpen( const UnicodeString &q ) const {
     for ( const auto& quote : _quotes ){
       if ( quote.openQuote.indexOf(q) >=0 )
 	return quote.closeQuote;
@@ -176,8 +179,8 @@ namespace Tokenizer {
     return "";
   }
 
-  icu::UnicodeString Quoting::lookupClose( const icu::UnicodeString &q ) const {
-    icu::UnicodeString res;
+  UnicodeString Quoting::lookupClose( const UnicodeString &q ) const {
+    UnicodeString res;
     for ( const auto& quote : _quotes ){
       if ( quote.closeQuote.indexOf(q) >= 0 )
 	return quote.openQuote;
@@ -189,7 +192,7 @@ namespace Tokenizer {
     delete regexp;
   }
 
-  Rule::Rule( const icu::UnicodeString& _id, const icu::UnicodeString& _pattern):
+  Rule::Rule( const UnicodeString& _id, const UnicodeString& _pattern):
     id(_id), pattern(_pattern) {
     regexp = new TiCC::UnicodeRegexMatcher( pattern, id );
   }
@@ -203,10 +206,10 @@ namespace Tokenizer {
     return os;
   }
 
-  bool Rule::matchAll( const icu::UnicodeString& line,
-		       icu::UnicodeString& pre,
-		       icu::UnicodeString& post,
-		       vector<icu::UnicodeString>& matches ){
+  bool Rule::matchAll( const UnicodeString& line,
+		       UnicodeString& pre,
+		       UnicodeString& post,
+		       vector<UnicodeString>& matches ){
     matches.clear();
     pre = "";
     post = "";
@@ -262,7 +265,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline( f, rawline ) ){
-	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -273,8 +276,8 @@ namespace Tokenizer {
 	    throw uConfigError( "invalid RULES entry: " + line,
 				fname );
 	  }
-	  icu::UnicodeString id = icu::UnicodeString( line, 0,splitpoint);
-	  icu::UnicodeString pattern = icu::UnicodeString( line, splitpoint+1);
+	  UnicodeString id = UnicodeString( line, 0,splitpoint);
+	  UnicodeString pattern = UnicodeString( line, splitpoint+1);
 	  rulesmap[id] = new Rule( id, pattern);
 	}
       }
@@ -300,7 +303,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline( f, rawline ) ){
-	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -314,8 +317,8 @@ namespace Tokenizer {
 				+ " (missing whitespace)",
 				fname );
 	  }
-	  icu::UnicodeString open = icu::UnicodeString( line, 0,splitpoint);
-	  icu::UnicodeString close = icu::UnicodeString( line, splitpoint+1);
+	  UnicodeString open = UnicodeString( line, 0,splitpoint);
+	  UnicodeString close = UnicodeString( line, splitpoint+1);
 	  open = open.trim().unescape();
 	  close = close.trim().unescape();
 	  if ( open.isEmpty() || close.isEmpty() ){
@@ -341,7 +344,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline( f, rawline ) ){
-	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -349,7 +352,7 @@ namespace Tokenizer {
 	  }
 	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
 	       ( line.startsWith("\\U") && line.length() == 10 ) ){
-	    icu::UnicodeString uit = line.unescape();
+	    UnicodeString uit = line.unescape();
 	    if ( uit.isEmpty() ){
 	      throw uConfigError( "Invalid EOSMARKERS entry: " + line, fname );
 	    }
@@ -361,8 +364,8 @@ namespace Tokenizer {
     return true;
   }
 
-  icu::UnicodeString escape_regex( const icu::UnicodeString& entry ){
-    icu::UnicodeString result;
+  UnicodeString escape_regex( const UnicodeString& entry ){
+    UnicodeString result;
     for ( int i=0; i < entry.length(); ++i ){
       switch ( entry[i] ){
       case '?':
@@ -392,7 +395,7 @@ namespace Tokenizer {
   }
 
   bool Setting::readabbreviations( const string& fname,
-				   icu::UnicodeString& abbreviations ){
+				   UnicodeString& abbreviations ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
@@ -403,7 +406,7 @@ namespace Tokenizer {
     else {
       string rawline;
       while ( getline( f, rawline ) ){
-	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -420,17 +423,17 @@ namespace Tokenizer {
     return true;
   }
 
-  void Setting::add_rule( const icu::UnicodeString& name,
-			  const vector<icu::UnicodeString>& parts ){
-    icu::UnicodeString pat;
+  void Setting::add_rule( const UnicodeString& name,
+			  const vector<UnicodeString>& parts ){
+    UnicodeString pat;
     for ( auto const& part : parts ){
       pat += part;
     }
     rulesmap[name] = new Rule( name, pat );
   }
 
-  void Setting::sortRules( map<icu::UnicodeString, Rule *>& rulesmap,
-			   const vector<icu::UnicodeString>& sort ){
+  void Setting::sortRules( map<UnicodeString, Rule *>& rulesmap,
+			   const vector<UnicodeString>& sort ){
     // LOG << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   LOG << "rule " << i << " " << *rules[i] << endl;
@@ -482,14 +485,14 @@ namespace Tokenizer {
     return result;
   }
 
-  void addOrder( vector<icu::UnicodeString>& order,
-		 map<icu::UnicodeString,int>& reverse_order,
+  void addOrder( vector<UnicodeString>& order,
+		 map<UnicodeString,int>& reverse_order,
 		 int& index,
-		 icu::UnicodeString &line,
+		 UnicodeString &line,
 		 const string& fn ){
     try {
       TiCC::UnicodeRegexMatcher m( "\\s+" );
-      vector<icu::UnicodeString> usv;
+      vector<UnicodeString> usv;
       m.split( line, usv );
       for ( const auto& us : usv  ){
 	if ( reverse_order.find( us ) != reverse_order.end() ){
@@ -551,7 +554,7 @@ namespace Tokenizer {
 		      int dbg, TiCC::LogStream* ls ) {
     tokDebug = dbg;
     theErrLog = ls;
-    map<ConfigMode, icu::UnicodeString> pattern = { { ABBREVIATIONS, "" },
+    map<ConfigMode, UnicodeString> pattern = { { ABBREVIATIONS, "" },
 					       { TOKENS, "" },
 					       { PREFIXES, "" },
 					       { SUFFIXES, "" },
@@ -559,7 +562,7 @@ namespace Tokenizer {
 					       { ATTACHEDSUFFIXES, "" },
 					       { UNITS, "" },
 					       { ORDINALS, "" } };
-    vector<icu::UnicodeString> rules_order;
+    vector<UnicodeString> rules_order;
     vector<string> meta_rules;
     string conffile = get_filename( settings_name );
 
@@ -631,7 +634,7 @@ namespace Tokenizer {
 	  continue;
 	}
 
-	icu::UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if (line[0] == '[') {
@@ -639,7 +642,7 @@ namespace Tokenizer {
 	  }
 	  else {
 	    if ( line[0] == '\\' && line.length() > 1 && line[1] == '[' ){
-	      line = icu::UnicodeString( line, 1 );
+	      line = UnicodeString( line, 1 );
 	    }
 	    switch( mode ){
 	    case RULES: {
@@ -648,8 +651,8 @@ namespace Tokenizer {
 		throw uConfigError( "invalid RULES entry: " + line,
 				    set_file );
 	      }
-	      icu::UnicodeString id = icu::UnicodeString( line, 0,splitpoint);
-	      icu::UnicodeString pattern = icu::UnicodeString( line, splitpoint+1);
+	      UnicodeString id = UnicodeString( line, 0,splitpoint);
+	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
 	      rulesmap[id] = new Rule( id, pattern);
 	    }
 	      break;
@@ -676,7 +679,7 @@ namespace Tokenizer {
 	    case EOSMARKERS:
 	      if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
 		   ( line.startsWith("\\U") && line.length() == 10 ) ){
-		icu::UnicodeString uit = line.unescape();
+		UnicodeString uit = line.unescape();
 		if ( uit.isEmpty() ){
 		  throw uConfigError( "Invalid EOSMARKERS entry: " + line,
 				      set_file );
@@ -693,8 +696,8 @@ namespace Tokenizer {
 				    + " (missing whitespace)",
 				    set_file );
 	      }
-	      icu::UnicodeString open = icu::UnicodeString( line, 0,splitpoint);
-	      icu::UnicodeString close = icu::UnicodeString( line, splitpoint+1);
+	      UnicodeString open = UnicodeString( line, 0,splitpoint);
+	      UnicodeString close = UnicodeString( line, splitpoint+1);
 	      open = open.trim().unescape();
 	      close = close.trim().unescape();
 	      if ( open.isEmpty() || close.isEmpty() ){
@@ -741,7 +744,7 @@ namespace Tokenizer {
 	ifstream adt( add_tokens );
 	string line;
 	while ( getline( adt, line ) ){
-	  icu::UnicodeString entry = TiCC::UnicodeFromUTF8(line);
+	  UnicodeString entry = TiCC::UnicodeFromUTF8(line);
 	  entry = escape_regex( entry );
 	  if ( !entry.isEmpty() ){
 	    if ( !pattern[TOKENS].isEmpty() ){
@@ -775,7 +778,7 @@ namespace Tokenizer {
 	  }
 	  continue;
 	}
-	icu::UnicodeString name = TiCC::UnicodeFromUTF8( nam );
+	UnicodeString name = TiCC::UnicodeFromUTF8( nam );
 	string rule = mr.substr( pos+1 );
 	if ( tokDebug > 5 ){
 	  LOG << "SPLIT using: '" << split << "'" << endl;
@@ -785,11 +788,11 @@ namespace Tokenizer {
 	for ( auto& str : parts ){
 	  str = TiCC::trim( str );
 	}
-	vector<icu::UnicodeString> new_parts;
-	vector<icu::UnicodeString> undef_parts;
+	vector<UnicodeString> new_parts;
+	vector<UnicodeString> undef_parts;
 	bool skip_rule = false;
 	for ( const auto& part : parts ){
-	  icu::UnicodeString meta = TiCC::UnicodeFromUTF8( part );
+	  UnicodeString meta = TiCC::UnicodeFromUTF8( part );
 	  ConfigMode mode = getMode( "[" + meta + "]" );
 	  switch ( mode ){
 	  case ORDINALS:

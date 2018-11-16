@@ -78,9 +78,9 @@ void usage(){
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
-       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
-       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the  default language." << endl
-       << "\t                    TOKENS are always kept intact." << endl
+       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
+       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the" << endl
+       << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
