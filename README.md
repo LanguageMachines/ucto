@@ -104,5 +104,4 @@ Note that in the FoLiA XML output, ucto encodes the class of the token (date, ur
 on the rule that matched.
 
 For further documentation consult the [ucto
-manual](https://github.com/LanguageMachines/ucto/blob/master/docs/ucto_manual.pdf)
-for further documentation.
+documentation](https://ucto.readthedocs.io/en/latest/).
