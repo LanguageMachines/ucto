@@ -98,15 +98,12 @@ If you however install from the source archive, the compilation and
 installation should also be relatively straightforward on most UNIX
 systems, and will be explained in the remainder of this section.
 
-| Ucto depends on the ``libicu`` library. This library can be obtained
-  from
-| http://site.icu-project.org/ but is also present in the package
-  manager of all major Linux distributions. Ucto also depends on
-  ``uctodata``, ``libfolia`` (available from
-  http://proycon.github.com/folia), which in turn depends on
-  ``libticcutils`` (available from
-| http://github.com/LanguageMachines/ticcutils). It will not compile
-  without any of them.
+Ucto depends on the ``libicu`` library. This library can be obtained from http://site.icu-project.org/ 
+but is also present in the package manager of all major Linux distributions. 
+Ucto also depends on ``uctodata`` (available from http://github.com/LanguageMachines/uctodata),
+``libfolia`` (available from http://github.com/LanguageMachines/libfolia), which in turn depends on
+``libticcutils`` (available from http://github.com/LanguageMachines/ticcutils). It will not compile
+without any of them.
 
 If all dependencies are satisfied, to compile ucto on your computer, run
 the following from the ucto source directory::
@@ -211,7 +208,7 @@ For Dutch we have made specific configuration files for certain domains:
 
 * nld: the default configuration file for Dutch and most up to date and detailed configuration file for Dutch
 * nld-historical: a configuration file for historical text, which is more inclined to keep certain punctuation attached
-  to workds. Developed in the Nederlab project [#f3]_
+  to words. Developed in the Nederlab project [#f3]_
 * nld-twitter: configuration for Dutch tweets, here the typical URL, email and smiley regular expressions are first in order of application
 * nld-sonarchat: similar to the nld-twitter configuration but has an additional rule ``NICKNAME`` to identify the nicknames of authors in a chatroom
 * nld-withplaceholder: a 'placeholder' regular expression is the first rule that is applied. The placeholder can be used to prevent certain strings that are marked between \% from being changed by the tokenizer.
@@ -254,7 +251,6 @@ Ucto is a command-line tool. The following options are available:
   	--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'
   	--detectlanguages=<lang1,lang2,..langn> - try to assign languages before using. Default = 'lang1'
   	-P                - Disable paragraph detection
-  	-S                - Disable sentence detection!
   	-Q                - Enable quote detection (experimental)
   	-V or --version   - Show version information
   	-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)
@@ -263,9 +259,9 @@ Ucto is a command-line tool. The following options are available:
   	-X                - Output FoLiA XML, use the Document ID specified with --id=
   	--id <DocID>      - use the specified Document ID to label the FoLia doc.
                         -X is automatically set when inputfile has extension '.xml'
-  	--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')
+  	--inputclass <class>  - use the specified class to search text in the FoLia doc.(default is 'current')
   	--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')
-  	--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO.
+  	--textclass <class>   - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO.
   	                  (-x and -F disable usage of most other options: -nPQVsS)
 
 Input/output

@@ -1,4 +1,4 @@
-.TH ucto 1 "2017 may 10"
+.TH ucto 1 "2018 nov 13"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -33,15 +33,22 @@ set input encoding. (default UTF8)
 set UTF8 output normalization. (default NFC)
 .RE
 
+.BR \-\-filter =[YES|NO]
+.RS
+disable filtering of special characters, (default YES)
+These special characters can be specified in the [FILTER] block of the
+configuration file.
+.RE
+
 .BR \-f
 .RS
-disable filtering of special characters
+OBSOLETE. use --filter=NO
 .RE
 
 .BR \-L " language"
 .RS
- Automatically selects a configuration file by language code.
- The language code is generally a three-letter iso-639-3 code.
+Automatically selects a configuration file by language code.
+The language code is generally a three-letter iso-639-3 code.
 For example, 'fra' will select the file tokconfig\(hyfra from the installation directory
 .RE
 
@@ -66,14 +73,20 @@ Convert to all uppercase
 Emit one sentence per line on output
 .RE
 
-.BR \-\-normalize=class1,class2,..,classn
+.BR \-m
+.RS
+Assume one sentence per line on input
+.RE
+
+.BR \-\-normalize =class1,class2,..,classn
 .RS
 map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
 .RE
 
-.BR \-m
+.BR \-\-add\-tokens ="file"
 .RS
-Assume one sentence per line on input
+Add additional tokens to the [TOKENS] block of the default language.
+The file should contain one TOKEN per line.
 .RE
 
 .BR \-\-passthru
@@ -83,7 +96,7 @@ Don't tokenize, but perform input decoding and simple token role detection
 
 .BR \-\-filterpunct
 .RS
-remove most of the punctuation from the output. (not from abreviations and embeddded punctuation like John's )
+remove most of the punctuation from the output. (not from abreviations and embeddded punctuation like John's)
 .RE
 
 .B \-P
@@ -94,11 +107,6 @@ Disable Paragraph Detection
 .B \-Q
 .RS
 Enable Quote Detection. (this is experimental and may lead to unexpected results)
-.RE
-
-.B \-S
-.RS
-Disable Sentence Detection
 .RE
 
 .B \-s
@@ -119,20 +127,24 @@ set Verbose mode
 
 .B \-F
 .RS
-Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: \-nulPQvsS)
+Read a FoLiA XML document, tokenize it, and output the modified doc. (this disables usage of most other options: \-nPQvs)
+For files with an '.xml' extension, \-F is the default.
 .RE
 
-.B \-\-inputclass "cls"
+.BR \-\-inputclass ="cls"
 .RS
-When tokenizing a FoLiA XML document, search for text nodes of class 'cls'
+When tokenizing a FoLiA XML document, search for text nodes of class 'cls'.
+The default is "current".
 .RE
 
-.B \-\-outputclass "cls"
+.BR \-\-outputclass ="cls"
 .RS
-When tokenizing a FoLiA XML document, output the tokenized text in text nodes of class 'cls'
+When tokenizing a FoLiA XML document, output the tokenized text in text nodes with 'cls'.
+The default is "current".
+It is recommended to have different classes for input and output.
 .RE
 
-.B \-\-textclass "cls" (obsolete)
+.BR \-\-textclass ="cls" (obsolete)
 .RS
 use 'cls' for input and output of text from FoLiA. Equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
 
@@ -141,7 +153,7 @@ This option is obsolete and NOT recommended. Please use the separate \-\-inputcl
 
 .B \-X
 .RS
-Output FoLiA XML. (this disables usage of most other options: \-nulPQvsS)
+Output FoLiA XML. (this disables usage of most other options: \-nPQvs)
 .RE
 
 .B \-\-id
@@ -154,7 +166,7 @@ Use the specified Document ID for the FoLiA XML
 <DocId>
 .B (obsolete)
 .RS
-Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: \-nulPQvsS)
+Output FoLiA XML, use the specified Document ID. (this disables usage of most other options: \-nPQvs).
 
 .B obsolete
 Use

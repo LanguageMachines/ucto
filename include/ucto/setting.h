@@ -35,20 +35,22 @@ namespace TiCC {
 
 namespace Tokenizer {
 
+  using namespace icu;
+
   class Rule {
     friend std::ostream& operator<< (std::ostream&, const Rule& );
   public:
   Rule(): regexp(0){
     };
-    Rule( const icu::UnicodeString& id, const icu::UnicodeString& pattern);
+    Rule( const UnicodeString& id, const UnicodeString& pattern);
     ~Rule();
-    icu::UnicodeString id;
-    icu::UnicodeString pattern;
+    UnicodeString id;
+    UnicodeString pattern;
     TiCC::UnicodeRegexMatcher *regexp;
-    bool matchAll( const icu::UnicodeString&,
-		   icu::UnicodeString&,
-		   icu::UnicodeString&,
-		   std::vector<icu::UnicodeString>& );
+    bool matchAll( const UnicodeString&,
+		   UnicodeString&,
+		   UnicodeString&,
+		   std::vector<UnicodeString>& );
   private:
     Rule( const Rule& ); // inhibit copies
     Rule& operator=( const Rule& ); // inhibit copies
@@ -58,17 +60,17 @@ namespace Tokenizer {
   class Quoting {
     friend std::ostream& operator<<( std::ostream&, const Quoting& );
     struct QuotePair {
-      icu::UnicodeString openQuote;
-      icu::UnicodeString closeQuote;
+      UnicodeString openQuote;
+      UnicodeString closeQuote;
     };
   public:
-    void add( const icu::UnicodeString&, const icu::UnicodeString& );
-    icu::UnicodeString lookupOpen( const icu::UnicodeString &) const;
-    icu::UnicodeString lookupClose( const icu::UnicodeString & ) const;
+    void add( const UnicodeString&, const UnicodeString& );
+    UnicodeString lookupOpen( const UnicodeString &) const;
+    UnicodeString lookupClose( const UnicodeString & ) const;
     bool empty() const { return _quotes.empty(); };
     bool emptyStack() const { return quotestack.empty(); };
     void clearStack() { quoteindexstack.clear(); quotestack.clear(); };
-    int lookup( const icu::UnicodeString&, int& );
+    int lookup( const UnicodeString&, int& );
     void eraseAtPos( int pos ) {
       quotestack.erase( quotestack.begin()+pos );
       quoteindexstack.erase( quoteindexstack.begin()+pos );
@@ -92,16 +94,16 @@ namespace Tokenizer {
     bool readfilters( const std::string& );
     bool readquotes( const std::string& );
     bool readeosmarkers( const std::string& );
-    bool readabbreviations( const std::string&,  icu::UnicodeString& );
-    void add_rule( const icu::UnicodeString&,
-		   const std::vector<icu::UnicodeString>& );
-    void sortRules( std::map<icu::UnicodeString, Rule *>&,
-		    const std::vector<icu::UnicodeString>& );
+    bool readabbreviations( const std::string&,  UnicodeString& );
+    void add_rule( const UnicodeString&,
+		   const std::vector<UnicodeString>& );
+    void sortRules( std::map<UnicodeString, Rule *>&,
+		    const std::vector<UnicodeString>& );
     static std::set<std::string> installed_languages();
-    icu::UnicodeString eosmarkers;
+    UnicodeString eosmarkers;
     std::vector<Rule *> rules;
-    std::map<icu::UnicodeString, Rule *> rulesmap;
-    std::map<icu::UnicodeString, int> rules_index;
+    std::map<UnicodeString, Rule *> rulesmap;
+    std::map<UnicodeString, int> rules_index;
     Quoting quotes;
     TiCC::UniFilter filter;
     std::string set_file; // the name of the settingsfile
