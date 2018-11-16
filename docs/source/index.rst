@@ -223,7 +223,7 @@ Usage
 
 UCTO is a command-line tool. The following options are available:
 
-%dit komt niet mooi in de pdf
+
 ::
 
     Usage:
@@ -517,7 +517,7 @@ Such problematic case cannot be solved by simple rules and would involve more co
 Implementation
 =======================
 
-The regular expressions on which UCTO relies are read from external configuration files. A configuration file is passed to UCTO using the ``-c`` or ``-L`` flags. Several languages have a language-specific configuration file. There are also some separate additional configuration files that contain certain rules that are useful for multiple languages like files for end-of-sentence markers and social media related rules. Configuration files are included for several languages, but it has to be noted that at this time only the Dutch one has been stress-tested to a sufficient extent.
+The regular expressions on which UCTO relies are read from external configuration files. These configuration files and abbreviation files are stored in the **UCTOdata** git repository at https://github.com/LanguageMachines/uctodata. A configuration file is passed to UCTO using the ``-c`` or ``-L`` flags. Several languages have a language-specific configuration file. There are also some separate additional configuration files that contain certain rules that are useful for multiple languages like files for end-of-sentence markers and social media related rules. Configuration files are included for several languages, but it has to be noted that at this time only the Dutch one has been stress-tested to a sufficient extent.
 
 
 UCTO includes the following separate additional configuration files:
@@ -576,7 +576,7 @@ If you created a configuration file for a language or genre that might be useful
 
 
 Acknowledgments
-================
+---------------
 
 We thank Ümit Mersinli for his help with the Turkish configuration file.
 
