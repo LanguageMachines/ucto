@@ -355,7 +355,7 @@ namespace Tokenizer {
 	  passthruLine( input_line, bos );
 	}
 	else {
-	  string language;
+	  string language = "default";
 	  if ( tc ){
 	    if ( tokDebug > 3 ){
 	      LOG << "use textCat to guess language from: "
