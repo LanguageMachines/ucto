@@ -1,5 +1,5 @@
 sudo: required
-dist: xenial
+dist: trusty
 
 group: edge
 
@@ -61,14 +61,14 @@ before_install:
 
     - export PATH="/usr/lib/ccache/bin/:$PATH"
 
-    - git clone --depth=1 --single-branch https://github.com/proycon/ticcutils
+    - git clone --depth=1 --single-branch https://github.com/LanguageMachines/ticcutils
     - cd ticcutils
     - bash bootstrap.sh
     - ./configure
     - make CXX=$COMPILER
     - sudo make CXX=$COMPILER install
     - cd ..
-    - git clone --depth=1 --single-branch https://github.com/proycon/libfolia
+    - git clone --depth=1 --single-branch https://github.com/LanguageMachines/libfolia
     - cd libfolia
     - bash bootstrap.sh
     - ./configure
