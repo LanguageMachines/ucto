@@ -3,6 +3,7 @@
 Bug fix release
 * fixed textcat installation problems om Debian and OpenBSD
   (https://github.com/LanguageMachines/ucto/issues/59)
+* typo in the man page fixed
 
 0.14 2018-11-29
 [Ko van der Sloot]
