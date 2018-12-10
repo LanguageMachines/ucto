@@ -1,3 +1,9 @@
+0.14.1 2018-12-10
+[Ko van der Sloot]
+Bug fix release
+* fixed textcat installation problems om Debian and OpenBSD
+  (https://github.com/LanguageMachines/ucto/issues/59)
+
 0.14 2018-11-29
 [Ko van der Sloot]
 * updated usage() and removed -S option (never used)
