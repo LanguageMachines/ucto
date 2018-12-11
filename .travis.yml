@@ -1,5 +1,4 @@
 sudo: required
-dist: trusty
 
 group: edge
 
@@ -20,6 +19,7 @@ language: cpp
 matrix:
   include:
     - os: linux
+      dist: xenial
       cache: ccache
       compiler: gcc
       env:
@@ -27,6 +27,7 @@ matrix:
         - SCAN=echo
 
     - os: linux
+      dist: trusty
       cache: ccache
       compiler: clang
       env:
