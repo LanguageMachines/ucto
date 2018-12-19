@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2018
+  Copyright (c) 2006 - 2019
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -34,6 +34,8 @@ namespace TiCC {
 }
 
 namespace Tokenizer {
+
+  using namespace icu;
 
   class Rule {
     friend std::ostream& operator<< (std::ostream&, const Rule& );
@@ -93,7 +95,8 @@ namespace Tokenizer {
     bool readquotes( const std::string& );
     bool readeosmarkers( const std::string& );
     bool readabbreviations( const std::string&,  UnicodeString& );
-    void add_rule( const UnicodeString&, const std::vector<UnicodeString>& );
+    void add_rule( const UnicodeString&,
+		   const std::vector<UnicodeString>& );
     void sortRules( std::map<UnicodeString, Rule *>&,
 		    const std::vector<UnicodeString>& );
     static std::set<std::string> installed_languages();

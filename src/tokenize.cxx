@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2018
+  Copyright (c) 2006 - 2019
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -66,6 +66,8 @@ using namespace std;
 
 namespace Tokenizer {
 
+  using namespace icu;
+
   const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset";
 
   std::string Version() { return VERSION; }
@@ -87,11 +89,11 @@ namespace Tokenizer {
   };
 
 
-  icu::UnicodeString convert( const string& line,
+  UnicodeString convert( const string& line,
 			 const string& inputEncoding ){
-    icu::UnicodeString result;
+    UnicodeString result;
     try {
-      result = icu::UnicodeString( line.c_str(),
+      result = UnicodeString( line.c_str(),
 			      line.length(),
 			      inputEncoding.c_str() );
     }
@@ -107,18 +109,18 @@ namespace Tokenizer {
     return result;
   }
 
-  const icu::UnicodeString type_space = "SPACE";
-  const icu::UnicodeString type_currency = "CURRENCY";
-  const icu::UnicodeString type_emoticon = "EMOTICON";
-  const icu::UnicodeString type_picto = "PICTOGRAM";
-  const icu::UnicodeString type_word = "WORD";
-  const icu::UnicodeString type_symbol = "SYMBOL";
-  const icu::UnicodeString type_punctuation = "PUNCTUATION";
-  const icu::UnicodeString type_number = "NUMBER";
-  const icu::UnicodeString type_unknown = "UNKNOWN";
+  const UnicodeString type_space = "SPACE";
+  const UnicodeString type_currency = "CURRENCY";
+  const UnicodeString type_emoticon = "EMOTICON";
+  const UnicodeString type_picto = "PICTOGRAM";
+  const UnicodeString type_word = "WORD";
+  const UnicodeString type_symbol = "SYMBOL";
+  const UnicodeString type_punctuation = "PUNCTUATION";
+  const UnicodeString type_number = "NUMBER";
+  const UnicodeString type_unknown = "UNKNOWN";
 
-  Token::Token( const icu::UnicodeString& _type,
-		const icu::UnicodeString& _s,
+  Token::Token( const UnicodeString& _type,
+		const UnicodeString& _s,
 		TokenRole _role, const string& _lc ):
     type(_type), us(_s), role(_role), lc(_lc) {
     //    cerr << "Created " << *this << endl;
@@ -312,7 +314,7 @@ namespace Tokenizer {
 			<< "'" << endl;
       }
       stripCR( line );
-      icu::UnicodeString input_line;
+      UnicodeString input_line;
       if ( line.size() > 0 && line[0] == 0 ){
 	// when processing UTF16LE, '0' bytes show up at pos 0
 	// we discard them, not for UTF16BE!
@@ -353,13 +355,13 @@ namespace Tokenizer {
 	  passthruLine( input_line, bos );
 	}
 	else {
-	  string language;
+	  string language = "default";
 	  if ( tc ){
 	    if ( tokDebug > 3 ){
 	      LOG << "use textCat to guess language from: "
 		  << input_line << endl;
 	    }
-	    icu::UnicodeString temp = input_line;
+	    UnicodeString temp = input_line;
 	    temp.toLower();
 	    string lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	    if ( settings.find( lan ) != settings.end() ){
@@ -597,10 +599,11 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::tokenize( folia::Document& doc ) {
+    xmlin = true; // tautology
     if ( tokDebug >= 2 ){
       LOG << "tokenize doc " << doc << endl;
     }
-    if ( xmlin && inputclass == outputclass ){
+    if ( inputclass == outputclass ){
       LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	  << endl;
       setFiltering(false);
@@ -645,7 +648,7 @@ namespace Tokenizer {
       // exception
       return;
     }
-    icu::UnicodeString utxt = root->text( outputclass, false, false );
+    UnicodeString utxt = root->text( outputclass, false, false );
     // so get Untokenized text from the children, and set it
     root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
   }
@@ -745,7 +748,7 @@ namespace Tokenizer {
 	lan = get_language( element ); // is there a local element language?
 	if ( lan.empty() ){
 	  // no, so try to detect it!
-	  icu::UnicodeString temp = element->text( inputclass );
+	  UnicodeString temp = element->text( inputclass );
 	  temp.toLower();
 	  lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	  if ( lan.empty() ){
@@ -821,8 +824,8 @@ namespace Tokenizer {
     return;
   }
 
-  int split_nl( const icu::UnicodeString& line,
-		   vector<icu::UnicodeString>& parts ){
+  int split_nl( const UnicodeString& line,
+		   vector<UnicodeString>& parts ){
     static TiCC::UnicodeRegexMatcher nl_split( "\\n", "newline_splitter" );
     return nl_split.split( line, parts );
   }
@@ -841,7 +844,7 @@ namespace Tokenizer {
     if  ( tokDebug > 0 ){
       LOG << "[tokenizeSentenceElement] " << element->id() << endl;
     }
-    icu::UnicodeString line = element->stricttext( inputclass );
+    UnicodeString line = element->stricttext( inputclass );
     if ( line.isEmpty() ){
       // so no usefull text in this element. skip it
       return;
@@ -859,7 +862,7 @@ namespace Tokenizer {
       // folia may encode newlines. These should be converted to <br/> nodes
       // but Linebreak and newline handling is very dangerous and complicated
       // so for now is is disabled!
-      vector<icu::UnicodeString> parts;
+      vector<UnicodeString> parts;
       parts.push_back( line ); // just one part
       //split_nl( line, parts ); // disabled multipart
       for ( auto const& l : parts ){
@@ -1039,12 +1042,12 @@ namespace Tokenizer {
 	if ( token.role & NOSPACE) {
 	  args["space"]= "no";
 	}
-	if ( outputclass != inputclass ){
+	if ( outputclass != inputclass || outputclass != "current" ){
 	  args["textclass"] = outputclass;
 	}
 	folia::FoliaElement *w = new folia::Word( args, root->doc() );
 	root->append( w );
-	icu::UnicodeString out = token.us;
+	UnicodeString out = token.us;
 	if (lowercase) {
 	  out.toLower();
 	}
@@ -1140,7 +1143,7 @@ namespace Tokenizer {
 	  OUT << endl << endl;
 	}
       }
-      icu::UnicodeString s = token.us;
+      UnicodeString s = token.us;
       if (lowercase) {
 	s = s.toLower();
       }
@@ -1386,12 +1389,12 @@ namespace Tokenizer {
       quote = true;
     }
     else {
-      icu::UnicodeString opening = quotes.lookupOpen( c );
+      UnicodeString opening = quotes.lookupOpen( c );
       if (!opening.isEmpty()) {
 	quote = true;
       }
       else {
-	icu::UnicodeString closing = quotes.lookupClose( c );
+	UnicodeString closing = quotes.lookupClose( c );
 	if (!closing.isEmpty()) {
 	  quote = true;
 	}
@@ -1419,7 +1422,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::resolveQuote( int endindex,
-				     const icu::UnicodeString& open,
+				     const UnicodeString& open,
 				     Quoting& quotes ) {
     //resolve a quote
     int stackindex = -1;
@@ -1518,7 +1521,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::detectEos( size_t i,
-				  const icu::UnicodeString& eosmarkers,
+				  const UnicodeString& eosmarkers,
 				  const Quoting& quotes ) const {
     bool is_eos = false;
     UChar32 c = tokens[i].us.char32At(0);
@@ -1556,7 +1559,7 @@ namespace Tokenizer {
 					  Quoting& quotes ) {
     UChar32 c = tokens[i].us.char32At(0);
     //Detect Quotation marks
-    if ((c == '"') || ( icu::UnicodeString(c) == "＂") ) {
+    if ((c == '"') || ( UnicodeString(c) == "＂") ) {
       if (tokDebug > 1 ){
 	LOG << "[detectQuoteBounds] Standard double-quote (ambiguous) found @i="<< i << endl;
       }
@@ -1579,7 +1582,7 @@ namespace Tokenizer {
       }
     }
     else {
-      icu::UnicodeString close = quotes.lookupOpen( c );
+      UnicodeString close = quotes.lookupOpen( c );
       if ( !close.isEmpty() ){ // we have a opening quote
 	if ( tokDebug > 1 ) {
 	  LOG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resolution later..." << endl;
@@ -1587,7 +1590,7 @@ namespace Tokenizer {
 	quotes.push( i, c ); // remember it
       }
       else {
-	icu::UnicodeString open = quotes.lookupClose( c );
+	UnicodeString open = quotes.lookupClose( c );
 	if ( !open.isEmpty() ) { // we have a closeing quote
 	  if (tokDebug > 1 ) {
 	    LOG << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
@@ -1752,16 +1755,16 @@ namespace Tokenizer {
 
   void TokenizerClass::passthruLine( const string& s, bool& bos ) {
     // string wrapper
-    icu::UnicodeString us = convert( s, inputEncoding );;
+    UnicodeString us = convert( s, inputEncoding );;
     passthruLine( us, bos );
   }
 
-  void TokenizerClass::passthruLine( const icu::UnicodeString& input, bool& bos ) {
+  void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
     if (tokDebug) {
       LOG << "[passthruLine] input: line=[" << input << "]" << endl;
     }
     bool alpha = false, num = false, punct = false;
-    icu::UnicodeString word;
+    UnicodeString word;
     StringCharacterIterator sit(input);
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
@@ -1782,7 +1785,7 @@ namespace Tokenizer {
 	  bos = true;
 	}
 	else {
-	  icu::UnicodeString type;
+	  UnicodeString type;
 	  if (alpha && !num && !punct) {
 	    type = type_word;
 	  }
@@ -1845,7 +1848,7 @@ namespace Tokenizer {
 	  tokens.back().role |= ENDOFSENTENCE;
       }
       else {
-	icu::UnicodeString type;
+	UnicodeString type;
 	if (alpha && !num && !punct) {
 	  type = type_word;
 	}
@@ -1921,12 +1924,12 @@ namespace Tokenizer {
   // string wrapper
   int TokenizerClass::tokenizeLine( const string& s,
 				    const string& lang ){
-    icu::UnicodeString uinputstring = convert( s, inputEncoding );
+    UnicodeString uinputstring = convert( s, inputEncoding );
     return tokenizeLine( uinputstring, lang, "" );
   }
 
-  // icu::UnicodeString wrapper
-  int TokenizerClass::tokenizeLine( const icu::UnicodeString& u,
+  // UnicodeString wrapper
+  int TokenizerClass::tokenizeLine( const UnicodeString& u,
 				    const string& lang ){
     return tokenizeLine( u, lang, "" );
   }
@@ -1952,7 +1955,7 @@ namespace Tokenizer {
       || u_charType( c ) == U_OTHER_SYMBOL;
   }
 
-  const icu::UnicodeString& detect_type( UChar32 c ){
+  const UnicodeString& detect_type( UChar32 c ){
     if ( u_isspace(c)) {
       return type_space;
     }
@@ -2050,7 +2053,7 @@ namespace Tokenizer {
     }
   }
 
-  int TokenizerClass::tokenizeLine( const icu::UnicodeString& originput,
+  int TokenizerClass::tokenizeLine( const UnicodeString& originput,
 				    const string& _lang,
 				    const string& id ){
     string lang = _lang;
@@ -2069,7 +2072,7 @@ namespace Tokenizer {
       LOG << "[tokenizeLine] input: line=["
 	  << originput << "] (" << lang << ")" << endl;
     }
-    icu::UnicodeString input = normalizer.normalize( originput );
+    UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
       input = settings[lang]->filter.filter( input );
     }
@@ -2098,14 +2101,14 @@ namespace Tokenizer {
     bool tokenizeword = false;
     bool reset = false;
     //iterate over all characters
-    icu::UnicodeString word;
+    UnicodeString word;
     StringCharacterIterator sit(input);
     long int i = 0;
     long int tok_size = 0;
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       if ( tokDebug > 8 ){
-	icu::UnicodeString s = c;
+	UnicodeString s = c;
 	int8_t charT = u_charType( c );
 	LOG << "examine character: " << s << " type= "
 	    << toString( charT  ) << endl;
@@ -2147,7 +2150,7 @@ namespace Tokenizer {
 	    }
 	    int eospos = tokens.size()-1;
 	    if (expliciteosfound > 0) {
-	      icu::UnicodeString realword;
+	      UnicodeString realword;
 	      word.extract(0,expliciteosfound,realword);
 	      if (tokDebug >= 2) {
 		LOG << "[tokenizeLine] Prefix before EOS: "
@@ -2157,7 +2160,7 @@ namespace Tokenizer {
 	      eospos++;
 	    }
 	    if ( expliciteosfound + eosmark.length() < word.length() ){
-	      icu::UnicodeString realword;
+	      UnicodeString realword;
 	      word.extract( expliciteosfound+eosmark.length(),
 			    word.length() - expliciteosfound - eosmark.length(),
 			    realword );
@@ -2209,13 +2212,13 @@ namespace Tokenizer {
 	if ( id.empty() ){
 	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
 	      << "in line: " << linenum << ". Skipped ..." << endl;
-	  LOG << "The line starts with " << icu::UnicodeString( word, 0, 75 )
+	  LOG << "The line starts with " << UnicodeString( word, 0, 75 )
 	      << "..." << endl;
 	}
 	else {
 	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
 	      << "in element: " << id << ". Skipped ..." << endl;
-	  LOG << "The text starts with " << icu::UnicodeString( word, 0, 75 )
+	  LOG << "The text starts with " << UnicodeString( word, 0, 75 )
 	      << "..." << endl;
 	}
 	return 0;
@@ -2247,10 +2250,10 @@ namespace Tokenizer {
     return numNewTokens;
   }
 
-  void TokenizerClass::tokenizeWord( const icu::UnicodeString& input,
+  void TokenizerClass::tokenizeWord( const UnicodeString& input,
 				     bool space,
 				     const string& lang,
-				     const icu::UnicodeString& assigned_type ) {
+				     const UnicodeString& assigned_type ) {
     bool recurse = !assigned_type.isEmpty();
 
     int32_t inpLen = input.countChar32();
@@ -2284,7 +2287,7 @@ namespace Tokenizer {
     if ( inpLen == 1) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
-      icu::UnicodeString type = detect_type( c );
+      UnicodeString type = detect_type( c );
       if ( type == type_space ){
 	return;
       }
@@ -2300,7 +2303,7 @@ namespace Tokenizer {
 	}
       }
       else {
-	icu::UnicodeString word = input;
+	UnicodeString word = input;
 	if ( norm_set.find( type ) != norm_set.end() ){
 	  word = "{{" + type + "}}";
 	}
@@ -2317,10 +2320,10 @@ namespace Tokenizer {
 	if ( tokDebug >= 4){
 	  LOG << "\tTESTING " << rule->id << endl;
 	}
-	icu::UnicodeString type = rule->id;
+	UnicodeString type = rule->id;
 	//Find first matching rule
-	icu::UnicodeString pre, post;
-	vector<icu::UnicodeString> matches;
+	UnicodeString pre, post;
+	vector<UnicodeString> matches;
 	if ( rule->matchAll( input, pre, post, matches ) ){
 	  a_rule_matched = true;
 	  if ( tokDebug >= 4 ){
@@ -2393,7 +2396,7 @@ namespace Tokenizer {
 		else if ( m < max-1 ){
 		  internal_space = false;
 		}
-		icu::UnicodeString word = matches[m];
+		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
 		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE, lang ) );
@@ -2453,7 +2456,11 @@ namespace Tokenizer {
       }
       LOG << "EOS markers: " << set->eosmarkers << endl;
       LOG << "Quotations: " << set->quotes << endl;
-      LOG << "Filter: " << set->filter << endl;
+      try {
+	LOG << "Filter: " << set->filter << endl;
+      }
+      catch (...){
+      }
     }
     return true;
   }

@@ -1,3 +1,0 @@
-URL=(?i:https?|ftps?|nfs|sshfs|gopher|smb)://[\p{L}\p{N}]+(?:[[:punct:]=]+[\p{L}\p{N}]+)+/?
-URL-WWW=www\.[\p{L}\p{N}]+(?:[[:punct:]]+[\p{L}\p{N}]+)*/?
-URL-DOMAIN=^[\p{L}\p{N}]+(?:\.[\p{L}\p{N}]+)*\.(?:com|org|net|edu|mil|int|nl|be|fr|de|uk|es|it|pt|dk|se|no|fi|ch|at|hr|bg|ro|br|ru|cn|in|id|eu|ly|to|tk|za|ko|jp)

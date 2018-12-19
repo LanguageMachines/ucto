@@ -1,3 +1,24 @@
+0.14.1 2018-12-10
+[Ko van der Sloot]
+Bug fix release
+* fixed textcat installation problems om Debian and OpenBSD
+  (https://github.com/LanguageMachines/ucto/issues/59)
+* typo in the man page fixed
+
+0.14 2018-11-29
+[Ko van der Sloot]
+* updated usage() and removed -S option (never used)
+* make sure the right textclass is assigned to <w> nodes in FoLiA
+* minor code fixes/refactorings
+* added more tests
+* updated man.1 page
+
+[Maarten van Gompel]
+* updated README.md
+
+[Iris Hendrickx]
+* Updated and extended the manual
+
 0.13.2 2018-05-17
 [Ko van der Sloot]
 Bug fix release:

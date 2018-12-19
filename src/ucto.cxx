@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2018
+  Copyright (c) 2006 - 2019
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -77,9 +77,9 @@ void usage(){
        << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
-       << "\t--uselanguages=<lang1,lang2,..langn> - only tokenize strings in these languages. Default = 'lang1'" << endl
-       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assignlanguages before using. Default = 'lang1'" << endl
-       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the"
+       << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
+       << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
+       << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the" << endl
        << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
@@ -90,10 +90,10 @@ void usage(){
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "                      -X is automatically set when inputfile has extension '.xml'" << endl
-       << "\t--inputclass <class> - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
+       << "\t--inputclass <class>  - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
-       << "\t--textclass <class> - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
-       << "\t                  (-x and -F disable usage of most other options: -nPQVsS)" << endl;
+       << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
+       << "\t                  (-x and -F disable usage of most other options: -nPQVs)" << endl;
 }
 
 int main( int argc, char *argv[] ){
@@ -128,7 +128,7 @@ int main( int argc, char *argv[] ){
   string add_tokens;
 
   try {
-    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVSL:c:s:x:FXT:",
+    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
@@ -139,7 +139,7 @@ int main( int argc, char *argv[] ){
     if ( Opts.extract( 'V' ) ||
 	 Opts.extract( "version" ) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
-	   << "(c) CLST 2015 - 2018, Centre for Language and Speech Technology, Radboud University Nijmegen" << endl
+	   << "(c) CLST 2015 - 2019, Centre for Language and Speech Technology, Radboud University Nijmegen" << endl
 	   << "(c) ILK 2009 - 2015, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
       cout << "based on [" << folia::VersionName() << "]" << endl;
@@ -234,27 +234,28 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
+    bool use_lang = Opts.is_present( "uselanguages" );
+    bool detect_lang = Opts.is_present( "detectlanguages" );
     if ( Opts.is_present('L') ) {
       if ( Opts.is_present('c') ){
 	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
       }
-      else if ( Opts.is_present( "detectlanguages" ) ){
+      else if ( detect_lang ){
 	throw TiCC::OptionError( "-L and --detectlanguages options conflict. Use only one of these." );
       }
-      else if ( Opts.is_present( "uselanguages" ) ){
+      else if ( use_lang ) {
 	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
       }
     }
     else if ( Opts.is_present( 'c' ) ){
-      if ( Opts.is_present( "detectlanguages" ) ){
+      if ( detect_lang ){
 	throw TiCC::OptionError( "-c and --detectlanguages options conflict. Use only one of these" );
       }
-      else if ( Opts.is_present( "uselanguages" ) ){
-	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
+      else if ( use_lang ){
+	throw TiCC::OptionError( "-c and --uselanguages options conflict. Use only one of these." );
       }
     }
-    if ( Opts.is_present( "detectlanguages" ) &&
-	 Opts.is_present( "uselanguages" ) ){
+    if ( detect_lang && use_lang ){
       throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
     }
     Opts.extract( 'c', c_file );
@@ -273,7 +274,7 @@ int main( int argc, char *argv[] ){
       }
     }
     else {
-      // so nu --detectlanguages ot --uselanguages
+      // so --detectlanguages or --uselanguages
       string language;
       if ( Opts.extract('L', language ) ){
 	// support some backward compatability to old ISO 639-1 codes
@@ -327,6 +328,9 @@ int main( int argc, char *argv[] ){
 	xmlin = true;
       }
     }
+    if ( use_lang && !xmlin ){
+      throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
+    }
     if ( files.size() == 2 ){
       ofile = files[1];
       if ( TiCC::match_back( ofile, ".xml" ) ){
@@ -337,7 +341,6 @@ int main( int argc, char *argv[] ){
       cerr << "found additional arguments on the commandline: " << files[2]
 	   << "...." << endl;
     }
-
   }
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
