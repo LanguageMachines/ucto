@@ -183,7 +183,7 @@ namespace Tokenizer {
     for ( const auto& s : settings ){
       if ( s.first == "default" ){
 	// the 'default' may also return as a real 'language'
-	// avoud delettng it twice
+	// avoid deleting it twice
 	d = s.second;
 	delete d;
       }
