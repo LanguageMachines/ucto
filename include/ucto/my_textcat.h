@@ -36,6 +36,7 @@ extern "C" {
     #endif
   #endif
 #include "textcat.h"
+#include "textcat_properties.h"
   #ifdef HAVE_OLD_TEXTCAT
     #ifdef __cplusplus
 }
