@@ -175,7 +175,24 @@ namespace Tokenizer {
 #ifdef HAVE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg, theErrLog );
+    //    tc->set_debug( true );
     LOG << "configured TEXTCAT( " << textcat_cfg << " )" << endl;
+    // ifstream is( textcat_cfg );
+    // string line;
+    // while ( getline( is, line ) ){
+    //   LOG << line << endl;
+    //   vector<string> v = TiCC::split( line );
+    //   if ( v.size()==2 && v[1] == "nld" ){
+    // 	LOG << "voor nederlands: " << endl;
+    //     ifstream is2( v[0] );
+    // 	string line2;
+    // 	while ( getline( is2, line2 ) ){
+    // 	  LOG << line2 << endl;
+    // 	  break;
+    // 	}
+    // 	LOG << "   done with nederlands" << endl;
+    //   }
+    // }
 #else
     LOG << "NO TEXTCAT SUPPORT!" << endl;
 #endif

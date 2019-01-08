@@ -44,6 +44,7 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
   debug = false;
   dbg = log;
   TC = textcat_Init( cf.c_str() );
+  textcat_SetProperty( TC, TCPROP_MINIMUM_DOCUMENT_SIZE, 2 );
   if ( TC == 0 ){
     throw runtime_error( "TextCat init failed: " + cf );
   }
