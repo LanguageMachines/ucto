@@ -26,15 +26,23 @@
 #include <string>
 #include <vector>
 #include "ticcutils/StringOps.h"
+#include "ticcutils/PrettyPrint.h"
+#include "ticcutils/LogStream.h"
 #include "config.h"
 #include "ucto/my_textcat.h"
 
 using namespace std;
 
+using TiCC::operator<<;
+
+#define DBG *TiCC::Log(dbg)
+
 #ifdef HAVE_TEXTCAT
 TextCat::~TextCat() { textcat_Done( TC ); }
 
-TextCat::TextCat( const std::string& cf ) {
+TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
+  debug = false;
+  dbg = log;
   TC = textcat_Init( cf.c_str() );
   if ( TC == 0 ){
     throw runtime_error( "TextCat init failed: " + cf );
@@ -44,16 +52,38 @@ TextCat::TextCat( const std::string& cf ) {
 }
 
 TextCat::TextCat( const TextCat& in ) {
+  debug = false;
+  dbg = in.dbg;
   TC = textcat_Init( in.cfName.c_str() );
   cfName = in.cfName;
 }
 
+bool TextCat::set_debug( bool b ){
+  bool result = debug;
+  debug = b;
+  return result;
+}
+
 vector<string> TextCat::get_languages( const string& in ) const {
+  if ( debug ){
+    DBG << "textcat.get_languages( " << in << " )" << endl;
+  }
   vector<string> vals;
   char *res = textcat_Classify( TC, in.c_str(), in.size() );
+  if ( debug ){
+    if ( res ){
+      DBG << "textcat.get_languages, res= '" << res << "'" << endl;
+    }
+    else {
+      DBG << "textcat.get_languages, res= NULL" << endl;
+    }
+  }
   if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
     string val = res;
     TiCC::split_at_first_of( val, vals, "[]" );
+  }
+  if ( debug ){
+    DBG << "textcat.get_languages found: " << vals << endl;
   }
   return vals;
 }

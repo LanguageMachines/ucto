@@ -45,15 +45,19 @@ extern "C" {
 
 class TextCat {
  public:
-  explicit TextCat( const std::string& );
+  explicit TextCat( const std::string&, TiCC::LogStream * );
   TextCat( const TextCat& );
   ~TextCat();
   bool isInit() const { return TC != 0; };
   std::string get_language( const std::string& ) const;
   std::vector<std::string> get_languages( const std::string& ) const;
+  bool set_debug( bool );
+  void set_debug_stream( TiCC::LogStream *s ){ dbg = s; };
  private:
   void *TC;
   std::string cfName;
+  bool debug;
+  TiCC::LogStream *dbg;
 };
 
 #endif // TEXTCAT_H

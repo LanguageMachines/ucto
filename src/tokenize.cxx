@@ -174,7 +174,7 @@ namespace Tokenizer {
     theErrLog->setstamp( StampMessage );
 #ifdef HAVE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-    tc = new TextCat( textcat_cfg );
+    tc = new TextCat( textcat_cfg, theErrLog );
     LOG << "configured TEXTCAT( " << textcat_cfg << " )" << endl;
 #else
     LOG << "NO TEXTCAT SUPPORT!" << endl;
@@ -215,6 +215,7 @@ namespace Tokenizer {
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
     if ( theErrLog != os ){
+      tc->set_debug_stream( os );
       delete theErrLog;
     }
     theErrLog = os;
