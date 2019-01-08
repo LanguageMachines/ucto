@@ -66,24 +66,21 @@ before_install:
 
   - export PATH="/usr/lib/ccache/bin/:$PATH"
 
-  - git clone --depth=1 \
-      --single-branch https://github.com/LanguageMachines/ticcutils
+  - git clone --depth=1 --single-branch https://github.com/LanguageMachines/ticcutils
   - cd ticcutils
   - bash bootstrap.sh
   - ./configure
   - make CXX=$COMPILER
   - sudo make CXX=$COMPILER install
   - cd ..
-  - git clone --depth=1 \
-      --single-branch https://github.com/LanguageMachines/libfolia
+  - git clone --depth=1 --single-branch https://github.com/LanguageMachines/libfolia
   - cd libfolia
   - bash bootstrap.sh
   - ./configure
   - make CXX=$COMPILER
   - sudo make CXX=$COMPILER install
   - cd ..
-  - git clone --depth=1 \
-      --single-branch https://github.com/LanguageMachines/uctodata
+  - git clone --depth=1 --single-branch https://github.com/LanguageMachines/uctodata
   - cd uctodata
   - bash bootstrap.sh
   - ./configure
