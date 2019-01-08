@@ -239,6 +239,15 @@ namespace Tokenizer {
     }
   }
 
+  bool TokenizerClass::set_tc_debug( bool b ){
+    if ( !tc ){
+      throw logic_error( "attempt to set debug on uninitialized TextClass object" );
+    }
+    else {
+      return tc->set_debug( b );
+    }
+  }
+
   void stripCR( string& s ){
     string::size_type pos = s.rfind( '\r' );
     if ( pos != string::npos ){
