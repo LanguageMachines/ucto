@@ -44,7 +44,14 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
   debug = false;
   dbg = log;
   TC = textcat_Init( cf.c_str() );
-  textcat_SetProperty( TC, TCPROP_MINIMUM_DOCUMENT_SIZE, 2 );
+  //
+  // we would like to do this, to get the same default everywhere
+  // but the SetProperty API is not always available
+  // MAYBE it is related to the HAVE_OLD_TEXTCAT property form config.h
+  // should be examined....
+  //
+  // textcat_SetProperty( TC, TCPROP_MINIMUM_DOCUMENT_SIZE, 25 );
+  //
   if ( TC == 0 ){
     throw runtime_error( "TextCat init failed: " + cf );
   }
