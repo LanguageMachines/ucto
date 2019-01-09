@@ -174,7 +174,27 @@ namespace Tokenizer {
     theErrLog->setstamp( StampMessage );
 #ifdef HAVE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-    tc = new TextCat( textcat_cfg );
+    tc = new TextCat( textcat_cfg, theErrLog );
+    //    tc->set_debug( true );
+    LOG << "configured TEXTCAT( " << textcat_cfg << " )" << endl;
+    // ifstream is( textcat_cfg );
+    // string line;
+    // while ( getline( is, line ) ){
+    //   LOG << line << endl;
+    //   vector<string> v = TiCC::split( line );
+    //   if ( v.size()==2 && v[1] == "nld" ){
+    // 	LOG << "voor nederlands: " << endl;
+    //     ifstream is2( v[0] );
+    // 	string line2;
+    // 	while ( getline( is2, line2 ) ){
+    // 	  LOG << line2 << endl;
+    // 	  break;
+    // 	}
+    // 	LOG << "   done with nederlands" << endl;
+    //   }
+    // }
+#else
+    LOG << "NO TEXTCAT SUPPORT!" << endl;
 #endif
   }
 
@@ -183,7 +203,7 @@ namespace Tokenizer {
     for ( const auto& s : settings ){
       if ( s.first == "default" ){
 	// the 'default' may also return as a real 'language'
-	// avoud delettng it twice
+	// avoid deleting it twice
 	d = s.second;
 	delete d;
       }
@@ -212,6 +232,7 @@ namespace Tokenizer {
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
     if ( theErrLog != os ){
+      tc->set_debug_stream( os );
       delete theErrLog;
     }
     theErrLog = os;
@@ -232,6 +253,15 @@ namespace Tokenizer {
     else {
       throw runtime_error( "illegal value '" + tr + "' for textredundancy. "
 			   "expected 'full', 'minimal' or 'none'." );
+    }
+  }
+
+  bool TokenizerClass::set_tc_debug( bool b ){
+    if ( !tc ){
+      throw logic_error( "attempt to set debug on uninitialized TextClass object" );
+    }
+    else {
+      return tc->set_debug( b );
     }
   }
 

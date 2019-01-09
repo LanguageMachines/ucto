@@ -168,8 +168,11 @@ namespace Tokenizer {
     bool getVerbose() const { return verbose; }
 
     //set debug value
-    int setDebug( int d ) { bool dd = tokDebug; tokDebug = d; return dd; };
+    int setDebug( int d ) { int dd = tokDebug; tokDebug = d; return dd; };
     int getDebug() const { return tokDebug; }
+
+    //set textcat debug value
+    bool set_tc_debug( bool b );
 
     //Enable conversion of all output to lowercase
     bool setLowercase( bool b=true ) { bool t = lowercase; lowercase = b; if (b) uppercase = false; return t; };
