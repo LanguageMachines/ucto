@@ -45,7 +45,7 @@ extern "C" {
 
 class TextCat {
  public:
-  explicit TextCat( const std::string&, TiCC::LogStream * );
+  explicit TextCat( const std::string&, TiCC::LogStream * =0 );
   TextCat( const TextCat& );
   ~TextCat();
   bool isInit() const { return TC != 0; };
