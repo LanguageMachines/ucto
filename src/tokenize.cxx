@@ -2467,7 +2467,9 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::init( const string& fname, const string& tname ){
-    LOG << "Initiating tokeniser..." << endl;
+    if ( tokDebug ){
+      LOG << "Initiating tokeniser..." << endl;
+    }
     Setting *set = new Setting();
     if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
       LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
