@@ -494,7 +494,7 @@ namespace Tokenizer {
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
-    folia::Document *doc = new folia::Document( "id='" + docid + "'" );
+    folia::Document *doc = new folia::Document( "_id='" + docid + "'" );
     if ( /*doDetectLang &&*/ default_language != "none" ){
       if ( tokDebug > 0 ){
 	LOG << "[tokenize](stream): SET document language=" << default_language << endl;
@@ -928,7 +928,7 @@ namespace Tokenizer {
 		     "annotator='ucto', annotatortype='auto', datetime='now()'");
       }
     }
-    folia::Text *text = new folia::Text( folia::getArgs("id='" + docid + ".text'") );
+    folia::Text *text = new folia::Text( folia::getArgs("_id='" + docid + ".text'") );
     doc.append( text );
   }
 
@@ -983,7 +983,7 @@ namespace Tokenizer {
 	  root = root->parent();
 	}
 	folia::KWargs args;
-	args["id"] = root->doc()->id() + ".p." +  toString(++parCount);
+	args["_id"] = root->doc()->id() + ".p." +  toString(++parCount);
 	folia::FoliaElement *p = new folia::Paragraph( args, root->doc() );
 	//	LOG << "created " << p << endl;
 	root->append( p );
