@@ -67,6 +67,9 @@ TextCat::TextCat( const TextCat& in ) {
 }
 
 bool TextCat::set_debug( bool b ){
+  if ( b && dbg == 0 ){
+    throw logic_error( "TexCat:cannot set debug to true, no debugstream available" );
+  }
   bool result = debug;
   debug = b;
   return result;
