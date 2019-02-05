@@ -1,0 +1,6 @@
+#/bin/sh
+
+
+exe=../src/ucto
+
+$exe issue064.xml -L nld
