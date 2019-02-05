@@ -1081,10 +1081,9 @@ namespace Tokenizer {
 	folia::KWargs args;
 
 	string id = get_parent_id( lastS );
-	if ( id.empty() ){
-	  id = lastS->doc()->id(); // last resort
+	if ( !id.empty() ){
+	  args["generate_id"] = id;
 	}
-	args["generate_id"] = id;
 	args["class"] = TiCC::UnicodeToUTF8( token.type );
 	if ( passthru ){
 	  args["set"] = "passthru";
