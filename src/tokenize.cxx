@@ -948,6 +948,18 @@ namespace Tokenizer {
     doc.append( text );
   }
 
+  string get_parent_id( folia::FoliaElement *el ){
+    if ( !el ){
+      return "";
+    }
+    else if ( !el->id().empty() ){
+      return el->id();
+    }
+    else {
+      return get_parent_id( el->parent() );
+    }
+  }
+
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 				       const vector<Token>& tv,
 				       int parCount ) const {
@@ -1067,13 +1079,12 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] Creating word element for " << token.us << endl;
 	}
 	folia::KWargs args;
-	string id = lastS->id();
+
+	string id = get_parent_id( lastS );
 	if ( id.empty() ){
-	  id = lastS->parent()->id();
+	  id = lastS->doc()->id(); // last resort
 	}
-	if ( !id.empty() ){
-	  args["generate_id"] = id;
-	}
+	args["generate_id"] = id;
 	args["class"] = TiCC::UnicodeToUTF8( token.type );
 	if ( passthru ){
 	  args["set"] = "passthru";

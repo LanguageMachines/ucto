@@ -3,7 +3,7 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.16" version="1.5">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-02-05T14:48:17" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-02-05T15:28:58" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -11,16 +11,18 @@
     <div>
       <s>
         <t>Dit niet!</t>
-        <w class="WORD" xml:id="1">
+        <w xml:id="test.text.w.1" class="WORD">
           <t>Dit</t>
         </w>
-        <w class="WORD" xml:id="2" space="no">
+        <w xml:id="test.text.w.2" class="WORD" space="no">
           <t>niet</t>
         </w>
-        <w class="PUNCTUATION" xml:id="3">
+        <w xml:id="test.text.w.3" class="PUNCTUATION">
           <t>!</t>
         </w>
       </s>
     </div>
   </text>
 </FoLiA>
+
+
