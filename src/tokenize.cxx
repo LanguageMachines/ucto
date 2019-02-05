@@ -713,7 +713,7 @@ namespace Tokenizer {
     e->replace( node );
   }
 
-  void TokenizerClass::tokenizeElement( folia::FoliaElement * element) {
+  void TokenizerClass::tokenizeElement( folia::FoliaElement *element ) {
     if ( element->isinstance(folia::Word_t)
 	 || element->isinstance(folia::TextContent_t))
       // shortcut
@@ -732,13 +732,29 @@ namespace Tokenizer {
 	//tokenize paragraph: check for absence of sentences
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() > 0) {
+	  for ( size_t i = 0; i < sentences.size(); i++) {
+	    tokenizeElement( sentences[i] );
+	  }
+	  return;
+	}
+      }
+      else if ( element->isinstance(folia::Sentence_t) ){
+	//tokenize sentence: check for absence of Word's
+	vector<folia::Word*> words = element->words();
+	if (words.size() > 0) {
 	  // bail out
 	  return;
 	}
       }
-      else if ( ( element->isinstance(folia::Sentence_t) )
-		|| ( element->isinstance(folia::Head_t) ) ) {
-	//tokenize sentence: check for absence of Word's
+      else if ( element->isinstance(folia::Head_t) )  {
+	//tokenize head: check for absence of Word's or Sentences
+	vector<folia::Sentence*> sentences = element->sentences();
+	if (sentences.size() > 0) {
+	  for ( size_t i = 0; i < sentences.size(); i++) {
+	    tokenizeElement( sentences[i] );
+	  }
+	  return;
+	}
 	vector<folia::Word*> words = element->words();
 	if (words.size() > 0) {
 	  // bail out
