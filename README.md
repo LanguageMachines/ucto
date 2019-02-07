@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/LanguageMachines/ucto.svg?branch=master)](https://travis-ci.org/LanguageMachines/ucto) [![Language Machines Badge](http://applejack.science.ru.nl/lamabadge.php/ucto)](http://applejack.science.ru.nl/languagemachines/)
+[![Build Status](https://travis-ci.org/LanguageMachines/ucto.svg?branch=master)](https://travis-ci.org/LanguageMachines/ucto) [![Language Machines Badge](http://applejack.science.ru.nl/lamabadge.php/ucto)](http://applejack.science.ru.nl/languagemachines/) [![DOI](https://zenodo.org/badge/9028617.svg)](https://zenodo.org/badge/latestdoi/9028617)
 
 Ucto - A rule-based tokeniser
 ================================
@@ -71,7 +71,7 @@ As well as the following 3rd party dependencies:
 * ``icu`` - A C++ library for Unicode and Globalization support. On Debian/Ubuntu systems, install the package libicu-dev.
 * ``libxml2`` - An XML library. On Debian/Ubuntu systems install the package libxml2-dev.
 * ``libtextcat`` - A language detection package. On Debian/Ubuntu systems it is called libexttextcat-dev.
-* A sane build environment with a C++ compiler (e.g. gcc or clang), autotools, libtool, pkg-config
+* A sane build environment with a C++ compiler (e.g. gcc 4.9 or above or clang), autotools, libtool, pkg-config
 
 Usage
 ------------------------------------------------------------

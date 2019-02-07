@@ -838,7 +838,9 @@ namespace Tokenizer {
     string sub;
     if ( !version.empty() ){
       split( version, major, minor, sub );
-      LOG << set_file << ": version=" << version << endl;
+      if ( tokDebug ){
+	LOG << set_file << ": version=" << version << endl;
+      }
     }
     if ( major < 0 || minor < 2 ){
       if ( version.empty() ){
