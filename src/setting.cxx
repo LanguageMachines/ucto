@@ -713,8 +713,7 @@ namespace Tokenizer {
 	      filter.add( line );
 	      break;
 	    case NONE: {
-	      vector<string> parts;
-	      TiCC::split_at( rawline, parts, "=" );
+	      vector<string> parts = TiCC::split_at( rawline, "=" );
 	      if ( parts.size() == 2 ) {
 		if ( parts[0] == "version" ){
 		  version = parts[1];
@@ -783,8 +782,7 @@ namespace Tokenizer {
 	if ( tokDebug > 5 ){
 	  LOG << "SPLIT using: '" << split << "'" << endl;
 	}
-	vector<string> parts;
-	TiCC::split_at( rule, parts, split );
+	vector<string> parts = TiCC::split_at( rule, split );
 	for ( auto& str : parts ){
 	  str = TiCC::trim( str );
 	}

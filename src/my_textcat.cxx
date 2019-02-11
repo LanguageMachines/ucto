@@ -91,7 +91,7 @@ vector<string> TextCat::get_languages( const string& in ) const {
   }
   if ( res && strlen(res) > 0 && strcmp( res, "SHORT" ) != 0 ){
     string val = res;
-    TiCC::split_at_first_of( val, vals, "[]" );
+    vals = TiCC::split_at_first_of( val, "[]" );
   }
   if ( debug ){
     DBG << "textcat.get_languages found: " << vals << endl;
