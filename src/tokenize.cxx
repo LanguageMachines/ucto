@@ -713,7 +713,7 @@ namespace Tokenizer {
     e->replace( node );
   }
 
-  void TokenizerClass::tokenizeElement( folia::FoliaElement * element) {
+  void TokenizerClass::tokenizeElement( folia::FoliaElement *element ) {
     if ( element->isinstance(folia::Word_t)
 	 || element->isinstance(folia::TextContent_t))
       // shortcut
@@ -732,13 +732,29 @@ namespace Tokenizer {
 	//tokenize paragraph: check for absence of sentences
 	vector<folia::Sentence*> sentences = element->sentences();
 	if (sentences.size() > 0) {
+	  for ( size_t i = 0; i < sentences.size(); i++) {
+	    tokenizeElement( sentences[i] );
+	  }
+	  return;
+	}
+      }
+      else if ( element->isinstance(folia::Sentence_t) ){
+	//tokenize sentence: check for absence of Word's
+	vector<folia::Word*> words = element->words();
+	if (words.size() > 0) {
 	  // bail out
 	  return;
 	}
       }
-      else if ( ( element->isinstance(folia::Sentence_t) )
-		|| ( element->isinstance(folia::Head_t) ) ) {
-	//tokenize sentence: check for absence of Word's
+      else if ( element->isinstance(folia::Head_t) )  {
+	//tokenize head: check for absence of Word's or Sentences
+	vector<folia::Sentence*> sentences = element->sentences();
+	if (sentences.size() > 0) {
+	  for ( size_t i = 0; i < sentences.size(); i++) {
+	    tokenizeElement( sentences[i] );
+	  }
+	  return;
+	}
 	vector<folia::Word*> words = element->words();
 	if (words.size() > 0) {
 	  // bail out
@@ -932,6 +948,18 @@ namespace Tokenizer {
     doc.append( text );
   }
 
+  string get_parent_id( folia::FoliaElement *el ){
+    if ( !el ){
+      return "";
+    }
+    else if ( !el->id().empty() ){
+      return el->id();
+    }
+    else {
+      return get_parent_id( el->parent() );
+    }
+  }
+
   int TokenizerClass::outputTokensXML( folia::FoliaElement *root,
 				       const vector<Token>& tv,
 				       int parCount ) const {
@@ -1051,10 +1079,8 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] Creating word element for " << token.us << endl;
 	}
 	folia::KWargs args;
-	string id = lastS->id();
-	if ( id.empty() ){
-	  id = lastS->parent()->id();
-	}
+
+	string id = get_parent_id( lastS );
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
 	}
@@ -2467,7 +2493,9 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::init( const string& fname, const string& tname ){
-    LOG << "Initiating tokeniser..." << endl;
+    if ( tokDebug ){
+      LOG << "Initiating tokeniser..." << endl;
+    }
     Setting *set = new Setting();
     if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
       LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
