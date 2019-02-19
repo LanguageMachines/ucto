@@ -67,6 +67,7 @@ using namespace std;
 namespace Tokenizer {
 
   using namespace icu;
+  using TiCC::operator<<;
 
   const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset";
 
@@ -131,7 +132,7 @@ namespace Tokenizer {
   std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
-    os << t.type << " : " << t.role  << ":" << t.us;
+    os << t.type << " : " << t.role  << ":" << t.us << " (" << t.lc << ")";
     return os;
   }
 
@@ -274,22 +275,13 @@ namespace Tokenizer {
 
   vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN,
 						     const string& lang ) {
-    vector<Token> result;
     int numS = countSentences(); //count full sentences in token buffer
     if ( numS > 0 ) { // still some sentences in the buffer
       if  (tokDebug > 0) {
 	LOG << "[tokenizeOneSentence] " << numS
 	    << " sentence(s) in buffer, processing..." << endl;
       }
-      result = popSentence( );
-      string language = get_language( result );
-      // clear processed sentence from buffer
-      if  (tokDebug > 0){
-	LOG << "[tokenizeOneSentence] flushing 1 " << language
-	    << " sentence from buffer..." << endl;
-      }
-      flushSentences( 1, language );
-      return result;
+      return popSentence( );
     }
     string language = lang;
     bool done = false;
@@ -376,14 +368,7 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  LOG << "[tokenizeOneSentence] " << numS << " sentence(s) in buffer, processing first one..." << endl;
 	}
-	result = popSentence();
-	//clear processed sentence from buffer
-	if  (tokDebug > 0){
-	  LOG << "[tokenizeOneSentence] flushing 1 " << language
-	      << " sentence(s) from buffer..." << endl;
-	}
-	flushSentences( 1, language );
-	return result;
+	return popSentence();
       }
       else {
 	if  (tokDebug > 0) {
@@ -391,6 +376,7 @@ namespace Tokenizer {
 	}
       }
     } while (!done);
+    vector<Token> result;
     return result;
   }
 
@@ -845,11 +831,6 @@ namespace Tokenizer {
     for ( int i=0; i < numS; ++i ){
       vector<Token> tokens = popSentence();
       outputTokens.insert( outputTokens.end(), tokens.begin(), tokens.end() );
-      // clear processed sentence from buffer
-      if  (tokDebug > 0){
-	LOG << "[tokenizeSentenceElement] flushing 1 sentence from buffer..." << endl;
-      }
-      flushSentences( 1, lang );
     }
     outputTokensXML( element, outputTokens, 0 );
   }
@@ -1247,49 +1228,12 @@ namespace Tokenizer {
     return count;
   }
 
-  int TokenizerClass::flushSentences( int sentences,
-				      const string& lang ) {
-    //Flush n sentences from the buffer, returns the number of tokens left
-    short quotelevel = 0;
-    const int size = tokens.size();
-    if (sentences == 0) return size;
-    int begin = 0;
-    for (int i = 0; (i < size ) && (sentences > 0); i++) {
-      if (tokens[i].role & NEWPARAGRAPH) quotelevel = 0;
-      if (tokens[i].role & BEGINQUOTE) quotelevel++;
-      if (tokens[i].role & ENDQUOTE) quotelevel--;
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	begin = i + 1;
-	--sentences;
-      }
-    }
-    if (begin == 0) {
-      throw uLogicError("Unable to flush, not so many sentences in buffer");
-    }
-    if (begin == size) {
-      tokens.clear();
-      if ( !passthru ){
-	settings[lang]->quotes.clearStack();
-      }
-    }
-    else {
-      tokens.erase (tokens.begin(),tokens.begin()+begin);
-      if ( !passthru ){
-	if ( !settings[lang]->quotes.emptyStack() ) {
-	  settings[lang]->quotes.flushStack( begin );
-	}
-      }
-    }
-    //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
-    if (!tokens.empty()) {
-      tokens[0].role |= BEGINOFSENTENCE;
-    }
-    return tokens.size();
-  }
-
   vector<Token> TokenizerClass::popSentence( ) {
     vector<Token> outToks;
     const int size = tokens.size();
+    if ( size == 0 ){
+      return outToks;
+    }
     short quotelevel = 0;
     size_t begin = 0;
     size_t end = 0;
@@ -1319,6 +1263,13 @@ namespace Tokenizer {
 	for ( size_t i=begin; i <= end; ++i ){
 	  outToks.push_back( tokens[i] );
 	}
+	tokens.erase( tokens.begin(), tokens.begin()+end+1 );
+	if ( !passthru ){
+	  string lang = get_language( outToks );
+	  if ( !settings[lang]->quotes.emptyStack() ) {
+	    settings[lang]->quotes.flushStack( end+1 );
+	  }
+	}
 	return outToks;
       }
     }
@@ -1344,13 +1295,6 @@ namespace Tokenizer {
     int numS = countSentences(true); // force buffer to end with END_OF_SENTENCE
     for (int i = 0; i < numS; i++) {
       vector<Token> v = popSentence( );
-      string language = get_language( v );
-      // clear processed sentence from buffer
-      if  (tokDebug > 0){
-	LOG << "[tokenizeOneSentence] flushing 1 " << language
-	    << " sentence from buffer..." << endl;
-      }
-      flushSentences( 1, language );
       string tmp = getString( v );
       sentences.push_back( tmp );
     }
@@ -1453,6 +1397,10 @@ namespace Tokenizer {
 	//ok, all good, mark the quote:
 	tokens[beginindex].role |= BEGINQUOTE;
 	tokens[endindex].role |= ENDQUOTE;
+	if ( tokDebug >= 2 ) {
+	  LOG << "marked BEGIN: " << tokens[beginindex] << endl;
+	  LOG << "marked   END: " << tokens[endindex] << endl;
+	}
       }
       else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
 	//missing one endofsentence, we can correct, last token in quote token is endofsentence:
@@ -2485,13 +2433,13 @@ namespace Tokenizer {
   }
 
   string get_language( const vector<Token>& tv ){
-    string result = "";
+    string result = "default";
     for ( const auto& t : tv ){
-      if ( !t.lc.empty() ){
-	if ( result.empty() ){
+      if ( !t.lc.empty() && t.lc != "default" ){
+	if ( result == "default" ){
 	  result = t.lc;
 	}
-	else if ( result != t.lc ){
+	if ( result != t.lc ){
 	  throw logic_error( "ucto: conflicting language(s) assigned" );
 	}
       }
