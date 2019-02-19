@@ -112,13 +112,11 @@ namespace Tokenizer {
     // Tokenize a folia document
     bool tokenize( folia::Document& );
 
-    //Tokenize from input stream to a vector of Tokens
-    // non greedy. Stops after the first full sentence is detected.
-    // NOTE: may return more then one sentence, when more sentences are present
-    // on 1 line!
-    // should be called multiple times until EOF
-    std::vector<Token> tokenizeStream( std::istream&,
-				       const std::string& = "default" );
+    // Tokenize from an input stream to a token vector (representing a sentence)
+    // non greedy. Stops after the first full sentence is returned.
+    // may be called multiple times until EOF
+    std::vector<Token> tokenizeSentence( std::istream& ,
+					 const std::string& ="default" );
 
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
@@ -153,8 +151,10 @@ namespace Tokenizer {
     int flushSentences( int, const std::string& = "default" );
     //Flush n sentences from buffer (does some extra validation as well)
 
-    //Get the sentence with the specified index as a string (UTF-8 encoded)
+    // Get the sentence with the specified index as a string (UTF-8 encoded)
     std::string getSentenceString( unsigned int );
+    // convert the sentence in the token vector to a string (UTF-8 encoded)
+    std::string getString( const std::vector<Token>& );
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
