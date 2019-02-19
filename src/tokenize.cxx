@@ -329,20 +329,20 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeSentence( istream& IN,
-						  const string& lang ) {
+  vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN,
+						     const string& lang ) {
     string language = "default";
     vector<Token> result;
     int numS = countSentences(); //count full sentences in token buffer
     if ( numS > 0 ) { // still some sentences in the buffer
       if  (tokDebug > 0) {
-	LOG << "[tokenizeStream] " << numS
+	LOG << "[tokenizeOneSentence] " << numS
 	    << " sentence(s) in buffer, processing..." << endl;
       }
       result = getSentence( 0 );
       // clear processed sentence from buffer
       if  (tokDebug > 0){
-	LOG << "[tokenizeStream] flushing 1 " << language
+	LOG << "[tokenizeOneSentence] flushing 1 " << language
 	    << " sentence from buffer..." << endl;
       }
       flushSentences( 1, language );
@@ -430,12 +430,12 @@ namespace Tokenizer {
 	// 1 or more sentences in the buffer.
 	// extract the first 1
 	if  (tokDebug > 0) {
-	  LOG << "[tokenizeStream] " << numS << " sentence(s) in buffer, processing first one..." << endl;
+	  LOG << "[tokenizeOneSentence] " << numS << " sentence(s) in buffer, processing first one..." << endl;
 	}
 	result = getSentence( 0 );
 	//clear processed sentence from buffer
 	if  (tokDebug > 0){
-	  LOG << "[tokenizeStream] flushing 1 " << language
+	  LOG << "[tokenizeOneSentence] flushing 1 " << language
 	      << " sentence(s) from buffer..." << endl;
 	}
 	flushSentences( 1, language );
@@ -443,7 +443,7 @@ namespace Tokenizer {
       }
       else {
 	if  (tokDebug > 0) {
-	  LOG << "[tokenizeStream] No sentence yet, reading on..." << endl;
+	  LOG << "[tokenizeOneSentence] No sentence yet, reading on..." << endl;
 	}
       }
     } while (!done);
@@ -452,7 +452,7 @@ namespace Tokenizer {
 
   string TokenizerClass::tokenizeSentenceStream( istream& IN,
 						 const string& lang ) {
-    vector<Token> tokens = tokenizeSentence( IN, lang );
+    vector<Token> tokens = tokenizeOneSentence( IN, lang );
     return getString( tokens );
   }
 
@@ -473,7 +473,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "[tokenize] looping on stream" << endl;
       }
-      vector<Token> v = tokenizeSentence( IN );
+      vector<Token> v = tokenizeOneSentence( IN );
       for ( auto const& token : v ) {
 	if ( token.role & NEWPARAGRAPH) {
 	  //process the buffer
@@ -562,11 +562,11 @@ namespace Tokenizer {
 	}
 	if ( !data.empty() ){
 	  istringstream inputstream(data,istringstream::in);
-	  vector<Token> v = tokenizeSentence( IN );
+	  vector<Token> v = tokenizeOneSentence( IN );
 	  while( !v.empty() ){
 	    outputTokens( OUT, v , (i>0) );
 	    ++i;
-	    v = tokenizeSentence( IN );
+	    v = tokenizeOneSentence( IN );
 	  }
 	  OUT << endl;
 	}
@@ -580,11 +580,11 @@ namespace Tokenizer {
 	if ( tokDebug > 0 ){
 	  LOG << "[tokenize] looping on stream" << endl;
 	}
-	vector<Token> v = tokenizeSentence( IN );
+	vector<Token> v = tokenizeOneSentence( IN );
 	while( !v.empty() ){
 	  outputTokens( OUT, v , (i>0) );
 	  ++i;
-	  v = tokenizeSentence( IN );
+	  v = tokenizeOneSentence( IN );
 	}
       } while ( IN );
       if ( tokDebug > 0 ){

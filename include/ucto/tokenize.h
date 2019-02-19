@@ -115,8 +115,8 @@ namespace Tokenizer {
     // Tokenize from an input stream to a token vector (representing a sentence)
     // non greedy. Stops after the first full sentence is returned.
     // may be called multiple times until EOF
-    std::vector<Token> tokenizeSentence( std::istream& ,
-					 const std::string& ="default" );
+    std::vector<Token> tokenizeOneSentence( std::istream& ,
+					    const std::string& ="default" );
 
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
