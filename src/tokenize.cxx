@@ -1343,16 +1343,19 @@ namespace Tokenizer {
     return "";
   }
 
-  string TokenizerClass::getSentenceString( unsigned int i ){
-    vector<Token> v = getSentence( i );
-    return getString( v );
-  }
-
   vector<string> TokenizerClass::getSentences() {
     vector<string> sentences;
-    int numS = countSentences(true); //force buffer to empty
+    int numS = countSentences(true); // force buffer to end with END_OF_SENTENCE
     for (int i = 0; i < numS; i++) {
-      string tmp = getSentenceString( i );
+      vector<Token> v = getSentence( 0 );
+      string language = get_language( v );
+      // clear processed sentence from buffer
+      if  (tokDebug > 0){
+	LOG << "[tokenizeOneSentence] flushing 1 " << language
+	    << " sentence from buffer..." << endl;
+      }
+      flushSentences( 1, language );
+      string tmp = getString( v );
       sentences.push_back( tmp );
     }
     return sentences;

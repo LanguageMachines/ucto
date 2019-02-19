@@ -158,8 +158,6 @@ namespace Tokenizer {
     int flushSentences( int, const std::string& = "default" );
     //Flush n sentences from buffer (does some extra validation as well)
 
-    // Get the sentence with the specified index as a string (UTF-8 encoded)
-    std::string getSentenceString( unsigned int );
     // convert the sentence in the token vector to a string (UTF-8 encoded)
     std::string getString( const std::vector<Token>& );
 
