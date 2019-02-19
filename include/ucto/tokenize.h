@@ -161,8 +161,8 @@ namespace Tokenizer {
     // convert the sentence in the token vector to a string (UTF-8 encoded)
     std::string getString( const std::vector<Token>& );
 
-    //return the sentence with the specified index in a Token vector;
-    std::vector<Token> getSentence( int );
+    // extract 1 sentence from Token vector;
+    std::vector<Token> popSentence();
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();

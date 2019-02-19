@@ -281,7 +281,7 @@ namespace Tokenizer {
 	LOG << "[tokenizeOneSentence] " << numS
 	    << " sentence(s) in buffer, processing..." << endl;
       }
-      result = getSentence( 0 );
+      result = popSentence( );
       string language = get_language( result );
       // clear processed sentence from buffer
       if  (tokDebug > 0){
@@ -376,7 +376,7 @@ namespace Tokenizer {
 	if  (tokDebug > 0) {
 	  LOG << "[tokenizeOneSentence] " << numS << " sentence(s) in buffer, processing first one..." << endl;
 	}
-	result = getSentence( 0 );
+	result = popSentence();
 	//clear processed sentence from buffer
 	if  (tokDebug > 0){
 	  LOG << "[tokenizeOneSentence] flushing 1 " << language
@@ -843,7 +843,7 @@ namespace Tokenizer {
     int numS = countSentences(true); //force last item to END_OF_SENTENCE
     vector<Token> outputTokens;
     for ( int i=0; i < numS; ++i ){
-      vector<Token> tokens = getSentence( 0 );
+      vector<Token> tokens = popSentence();
       outputTokens.insert( outputTokens.end(), tokens.begin(), tokens.end() );
       // clear processed sentence from buffer
       if  (tokDebug > 0){
@@ -1287,9 +1287,8 @@ namespace Tokenizer {
     return tokens.size();
   }
 
-  vector<Token> TokenizerClass::getSentence( int index ) {
+  vector<Token> TokenizerClass::popSentence( ) {
     vector<Token> outToks;
-    int count = 0;
     const int size = tokens.size();
     short quotelevel = 0;
     size_t begin = 0;
@@ -1311,22 +1310,19 @@ namespace Tokenizer {
       }
 
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	if (count == index) {
-	  end = i;
-	  tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
-	  if (tokDebug >= 1){
-	    LOG << "[tokenize] extracted sentence " << index << ", begin="<<begin << ",end="<< end << endl;
-	  }
-	  for ( size_t i=begin; i <= end; ++i ){
-	    outToks.push_back( tokens[i] );
-	  }
-	  return outToks;
+	end = i;
+	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
+	if (tokDebug >= 1){
+	  LOG << "[tokenize] extracted sentence, begin=" << begin
+	      << ",end="<< end << endl;
 	}
-	++count;
+	for ( size_t i=begin; i <= end; ++i ){
+	  outToks.push_back( tokens[i] );
+	}
+	return outToks;
       }
     }
-    throw uRangeError( "No sentence exists with the specified index: "
-		       + toString( index ) );
+    throw uRangeError( "No sentence could be popped " );
     return outToks;
   }
 
@@ -1347,7 +1343,7 @@ namespace Tokenizer {
     vector<string> sentences;
     int numS = countSentences(true); // force buffer to end with END_OF_SENTENCE
     for (int i = 0; i < numS; i++) {
-      vector<Token> v = getSentence( 0 );
+      vector<Token> v = popSentence( );
       string language = get_language( v );
       // clear processed sentence from buffer
       if  (tokDebug > 0){
