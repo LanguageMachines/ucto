@@ -272,66 +272,8 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::extractSentencesAndFlush( int numS,
-						 vector<Token>& outputTokens,
-						 const string& lang ){
-    int count = 0;
-    const int size = tokens.size();
-    short quotelevel = 0;
-    size_t begin = 0;
-    size_t end = 0;
-    for ( int i = 0; i < size; ++i ) {
-      if (tokens[i].role & NEWPARAGRAPH) {
-	quotelevel = 0;
-      }
-      else if (tokens[i].role & ENDQUOTE) {
-	--quotelevel;
-      }
-      if ( (tokens[i].role & BEGINOFSENTENCE)
-	   && (quotelevel == 0)) {
-	begin = i;
-      }
-      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-      if (tokens[i].role & BEGINQUOTE) {
-	++quotelevel;
-      }
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	end = i+1;
-	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
-	if (tokDebug >= 1){
-	  LOG << "[tokenize] extracted sentence " << count << ", begin="<<begin << ",end="<< end << endl;
-	}
-	for ( size_t i=begin; i < end; ++i ){
-	  outputTokens.push_back( tokens[i] );
-	}
-	if ( ++count == numS ){
-	  if (tokDebug >= 1){
-	    LOG << "[tokenize] erase " << end  << " tokens from " << tokens.size() << endl;
-	  }
-	  tokens.erase( tokens.begin(),tokens.begin()+end );
-	  if ( !passthru ){
-	    if ( !settings[lang]->quotes.emptyStack() ) {
-	      settings[lang]->quotes.flushStack( end );
-	    }
-	  }
-	  //After flushing, the first token still in buffer (if any) is always a BEGINOFSENTENCE:
-	  if (!tokens.empty()) {
-	    tokens[0].role |= BEGINOFSENTENCE;
-	  }
-	  return;
-	}
-      }
-    }
-    if ( count < numS ){
-      throw uRangeError( "Not enough sentences exists in the buffer: ("
-			 + toString( count ) + " found. " + toString( numS)
-			 + " wanted)" );
-    }
-  }
-
   vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN,
 						     const string& lang ) {
-    string language = "default";
     vector<Token> result;
     int numS = countSentences(); //count full sentences in token buffer
     if ( numS > 0 ) { // still some sentences in the buffer
@@ -340,6 +282,7 @@ namespace Tokenizer {
 	    << " sentence(s) in buffer, processing..." << endl;
       }
       result = getSentence( 0 );
+      string language = get_language( result );
       // clear processed sentence from buffer
       if  (tokDebug > 0){
 	LOG << "[tokenizeOneSentence] flushing 1 " << language
@@ -348,6 +291,7 @@ namespace Tokenizer {
       flushSentences( 1, language );
       return result;
     }
+    string language = lang;
     bool done = false;
     bool bos = true;
     string line;
@@ -892,10 +836,21 @@ namespace Tokenizer {
 	}
       }
     }
-    //ignore EOL data, we have by definition only one sentence:
-    int numS = countSentences(true); //force buffer to empty
+    // ignore EOL data, we have by definition only one sentence
+    // But it may have embedded punctuation. In fact is should be replaced
+    // by a paragraph then!
+    // For now we just collect all in one long 'sentence'
+    int numS = countSentences(true); //force last item to END_OF_SENTENCE
     vector<Token> outputTokens;
-    extractSentencesAndFlush( numS, outputTokens, lang );
+    for ( int i=0; i < numS; ++i ){
+      vector<Token> tokens = getSentence( 0 );
+      outputTokens.insert( outputTokens.end(), tokens.begin(), tokens.end() );
+      // clear processed sentence from buffer
+      if  (tokDebug > 0){
+	LOG << "[tokenizeSentenceElement] flushing 1 sentence from buffer..." << endl;
+      }
+      flushSentences( 1, lang );
+    }
     outputTokensXML( element, outputTokens, 0 );
   }
 
@@ -2530,4 +2485,19 @@ namespace Tokenizer {
     return true;
   }
 
-}//namespace
+  string get_language( const vector<Token>& tv ){
+    string result = "";
+    for ( const auto& t : tv ){
+      if ( !t.lc.empty() ){
+	if ( result.empty() ){
+	  result = t.lc;
+	}
+	else if ( result != t.lc ){
+	  throw logic_error( "ucto: conflicting language(s) assigned" );
+	}
+      }
+    }
+    return result;
+  }
+
+} //namespace Tokenizer

@@ -118,6 +118,13 @@ namespace Tokenizer {
     std::vector<Token> tokenizeOneSentence( std::istream& ,
 					    const std::string& ="default" );
 
+    std::vector<Token> tokenizeStream( std::istream& is,
+				       const std::string& l = "default" ){
+      // backward compatability
+      return tokenizeOneSentence( is, l );
+    }
+
+
     // Tokenize from an input stream to a UTF8 string (representing a sentence)
     // non greedy. Stops after the first full sentence is detected.
     // NOTE: may return more then one sentence, when more sentences are present
@@ -158,7 +165,6 @@ namespace Tokenizer {
 
     //return the sentence with the specified index in a Token vector;
     std::vector<Token> getSentence( int );
-    void extractSentencesAndFlush( int, std::vector<Token>&, const std::string& );
 
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
@@ -385,6 +391,10 @@ namespace Tokenizer {
     }
     return dummy.str();
   }
+
+  // extract the language assigned to this vector, if any...
+  // will return "" if indetermined.
+  std::string get_language( const std::vector<Token>& );
 
 }
 #endif
