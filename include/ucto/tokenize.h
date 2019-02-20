@@ -60,6 +60,7 @@ namespace Tokenizer {
 
   std::ostream& operator<<( std::ostream&, const TokenRole& );
 
+  // setter
   inline TokenRole operator|( TokenRole T1, TokenRole T2 ){
     return (TokenRole)( (int)T1|(int)T2 );
   }
@@ -69,12 +70,18 @@ namespace Tokenizer {
     return T1;
   }
 
-  inline TokenRole operator^( TokenRole T1, TokenRole T2 ){
-    return (TokenRole)( (int)T1^(int)T2 );
+  // invert
+  inline TokenRole operator~( TokenRole T1 ){
+    return (TokenRole)~(int)T1;
   }
 
-  inline TokenRole& operator^= ( TokenRole& T1, TokenRole T2 ){
-    T1 = (T1 ^ T2);
+  // union
+  inline TokenRole operator&( TokenRole T1, TokenRole T2 ){
+    return (TokenRole)( (int)T1 & (int)T2 );
+  }
+
+  inline TokenRole& operator&=( TokenRole& T1, TokenRole T2 ){
+    T1 = (T1 & T2);
     return T1;
   }
 

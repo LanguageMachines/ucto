@@ -1199,19 +1199,16 @@ namespace Tokenizer {
 	   && (quotelevel == 0)) {
 	//we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
 	//Change TEMPENDOFSENTENCE to ENDOFSENTENCE and make sure sentences match up sanely
-	token.role ^= TEMPENDOFSENTENCE;
+	token.role &= ~TEMPENDOFSENTENCE;
 	token.role |= ENDOFSENTENCE;
-	tokens[begin].role |= BEGINOFSENTENCE;
       }
+      tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
       if ( (token.role & ENDOFSENTENCE)
 	   && (quotelevel == 0) ) {
 	begin = i + 1;
 	count++;
 	if (tokDebug >= 5){
 	  LOG << "[countSentences] SENTENCE #" << count << " found" << endl;
-	}
-	if ( begin < size ){
-	  tokens[begin].role |= BEGINOFSENTENCE;
 	}
       }
       if ( forceentirebuffer
@@ -1256,7 +1253,6 @@ namespace Tokenizer {
 
       if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
 	end = i;
-	tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
 	if (tokDebug >= 1){
 	  LOG << "[tokenize] extracted sentence, begin=" << begin
 	      << ",end="<< end << endl;
@@ -1376,7 +1372,7 @@ namespace Tokenizer {
 	  if (tokens[i].role & ENDOFSENTENCE) expectingend--;
 
 	  if (tokens[i].role & TEMPENDOFSENTENCE) {
-	    tokens[i].role ^= TEMPENDOFSENTENCE;
+	    tokens[i].role &= ~TEMPENDOFSENTENCE;
 	    tokens[i].role |= ENDOFSENTENCE;
 	    tokens[beginsentence].role |= BEGINOFSENTENCE;
 	    beginsentence = i + 1;
@@ -1569,14 +1565,15 @@ namespace Tokenizer {
 	  }
 	  tokens[i].role |= ENDOFSENTENCE;
 	  //if this is the end of the sentence, the next token is the beginning of a new one
-	  if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
+	  if ( (i + 1) < size) {
 	    tokens[i+1].role |= BEGINOFSENTENCE;
+	  }
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE;
-	    if (tokens[i].role & BEGINOFSENTENCE) {
-	      tokens[i].role ^= BEGINOFSENTENCE;
-	    }
+	  if ( i > 0
+	       && ( tokens[i-1].role & ENDOFSENTENCE )
+	       && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
+	    tokens[i-1].role &= ~ENDOFSENTENCE;
+	    tokens[i].role &= ~BEGINOFSENTENCE;
 	  }
 	}
 	else if ( isClosing(tokens[i] ) ) {
@@ -1585,11 +1582,11 @@ namespace Tokenizer {
 	    LOG << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  }
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE;
-	    if (tokens[i].role & BEGINOFSENTENCE) {
-	      tokens[i].role ^= BEGINOFSENTENCE;
-	    }
+	  if ( i > 0
+	       && ( tokens[i-1].role & ENDOFSENTENCE )
+	       && !( tokens[i-1].role & BEGINOFSENTENCE) ) {
+	    tokens[i-1].role &= ~ENDOFSENTENCE;
+	    tokens[i].role &= ~BEGINOFSENTENCE;
 	  }
 	}
       }
@@ -1605,13 +1602,9 @@ namespace Tokenizer {
 			<< ", role=" << tokens[i].role << endl;
       }
       if ( tokens[i].type.startsWith("PUNCTUATION") ) {
-	if (tokens[i].role & BEGINOFSENTENCE) {
-	  tokens[i].role ^= BEGINOFSENTENCE;
-	}
+	tokens[i].role &= ~BEGINOFSENTENCE;
 	if ( i != size-1 ){
-	  if (tokens[i].role & ENDOFSENTENCE) {
-	    tokens[i].role ^= ENDOFSENTENCE;
-	  }
+	  tokens[i].role &= ~ENDOFSENTENCE;
 	}
       }
       else
@@ -1642,8 +1635,9 @@ namespace Tokenizer {
 	    //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
 	    tokens[i].role |= TEMPENDOFSENTENCE;
 	    //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
-	    if ((i > 0) && (tokens[i-1].role & TEMPENDOFSENTENCE))
-	      tokens[i-1].role ^= TEMPENDOFSENTENCE;
+	    if ( i > 0 ){
+	      tokens[i-1].role &= ~TEMPENDOFSENTENCE;
+	    }
 	  }
 	  else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
 	    if ( tokDebug > 1 ){
@@ -1651,14 +1645,15 @@ namespace Tokenizer {
 	    }
 	    tokens[i].role |= ENDOFSENTENCE;
 	    //if this is the end of the sentence, the next token is the beginning of a new one
-	    if ((i + 1 < size) && !(tokens[i+1].role & BEGINOFSENTENCE))
+	    if ( (i + 1) < size ){
 	      tokens[i+1].role |= BEGINOFSENTENCE;
+	    }
 	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	    if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	      tokens[i-1].role ^= ENDOFSENTENCE;
-	      if (tokens[i].role & BEGINOFSENTENCE) {
-		tokens[i].role ^= BEGINOFSENTENCE;
-	      }
+	    if ( i > 0
+		 && ( tokens[i-1].role & ENDOFSENTENCE )
+		 && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
+	      tokens[i-1].role &= ~ENDOFSENTENCE;
+	      tokens[i].role &= ~BEGINOFSENTENCE;
 	    }
 	  }
 	}
@@ -1668,11 +1663,11 @@ namespace Tokenizer {
 	    LOG << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
 	  }
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	  if ((i > 0) && (tokens[i-1].role & ENDOFSENTENCE) && !(tokens[i-1].role & BEGINOFSENTENCE) ) {
-	    tokens[i-1].role ^= ENDOFSENTENCE;
-	    if (tokens[i].role & BEGINOFSENTENCE) {
-	      tokens[i].role ^= BEGINOFSENTENCE;
-	    }
+	  if ( i > 0
+	       && ( tokens[i-1].role & ENDOFSENTENCE )
+	       && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
+	    tokens[i-1].role &= ~ENDOFSENTENCE;
+	    tokens[i].role &= ~BEGINOFSENTENCE;
 	  }
 	}
 	//check quotes
@@ -1733,8 +1728,8 @@ namespace Tokenizer {
 	      LOG << "   [passThruLine] skipped PUNCTUATION ["
 			      << input << "]" << endl;
 	    }
-	    if ( !tokens.empty() && tokens.back().role & NOSPACE ){
-	      tokens.back().role ^= NOSPACE;
+	    if ( !tokens.empty() ){
+	      tokens.back().role &= ~NOSPACE;
 	    }
 	  }
 	  else {
@@ -1796,8 +1791,8 @@ namespace Tokenizer {
 	    LOG << "   [passThruLine] skipped PUNCTUATION ["
 			    << input << "]" << endl;
 	  }
-	  if ( !tokens.empty() && tokens.back().role & NOSPACE ){
-	    tokens.back().role ^= NOSPACE;
+	  if ( !tokens.empty() ){
+	    tokens.back().role &= ~NOSPACE;
 	  }
 	}
 	else {
@@ -2226,8 +2221,8 @@ namespace Tokenizer {
 	  LOG << "   [tokenizeWord] skipped PUNCTUATION ["
 			  << input << "]" << endl;
 	}
-	if ( !tokens.empty() && tokens.back().role & NOSPACE ){
-	  tokens.back().role ^= NOSPACE;
+	if ( !tokens.empty() ){
+	  tokens.back().role &= ~NOSPACE;
 	}
       }
       else {
@@ -2311,9 +2306,8 @@ namespace Tokenizer {
 		  LOG << "   [tokenizeWord] skipped PUNCTUATION ["
 				  << matches[m] << "]" << endl;
 		}
-		if ( !tokens.empty()
-		     && tokens.back().role & NOSPACE ){
-		  tokens.back().role ^= NOSPACE;
+		if ( !tokens.empty() ){
+		  tokens.back().role &= ~NOSPACE;
 		}
 	      }
 	      else {
