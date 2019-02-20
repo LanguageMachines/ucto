@@ -296,8 +296,6 @@ namespace Tokenizer {
 				     const std::string& = "default" );
     void detectQuoteBounds( const int,
 			    Quoting& );
-    //Signal the tokeniser that a paragraph is detected
-    void signalParagraph( bool b=true ) { paragraphsignal = b; };
 
     bool resolveQuote( int, const UnicodeString&, Quoting& );
     bool u_isquote( UChar32,

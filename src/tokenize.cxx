@@ -328,7 +328,8 @@ namespace Tokenizer {
 	}
       }
       if ( done || input_line.isEmpty() ){
-	signalParagraph();
+	//Signal the tokeniser that a paragraph is detected
+	paragraphsignal = true;
 	numS = countSentences(true); //count full sentences in token buffer,
 	// setting explicit END_OF_SENTENCE
       }
@@ -1274,7 +1275,6 @@ namespace Tokenizer {
       }
     }
     throw uRangeError( "No sentence could be popped " );
-    return outToks;
   }
 
   string TokenizerClass::getString( const vector<Token>& v ){
@@ -1519,7 +1519,7 @@ namespace Tokenizer {
       }
       else {
 	UnicodeString open = quotes.lookupClose( c );
-	if ( !open.isEmpty() ) { // we have a closeing quote
+	if ( !open.isEmpty() ) { // we have a closing quote
 	  if (tokDebug > 1 ) {
 	    LOG << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
 	  }
