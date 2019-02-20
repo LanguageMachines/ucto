@@ -149,15 +149,6 @@ namespace Tokenizer {
     int tokenizeLine( const std::string&,
 		      const std::string& = "default" ); // UTF8 chars
 
-    void passthruLine( const UnicodeString&, bool& );
-    void passthruLine( const std::string&, bool& );
-
-    //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
-    int countSentences(bool forceentirebuffer = false);
-    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
-    int flushSentences( int, const std::string& = "default" );
-    //Flush n sentences from buffer (does some extra validation as well)
-
     // convert the sentence in the token vector to a string (UTF-8 encoded)
     std::string getString( const std::vector<Token>& );
 
@@ -167,6 +158,18 @@ namespace Tokenizer {
     //Get all sentences as a vector of strings (UTF-8 encoded)
     std::vector<std::string> getSentences();
 
+    void passthruLine( const UnicodeString&, bool& );
+    void passthruLine( const std::string&, bool& );
+
+  private:
+
+    //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
+    int countSentences(bool forceentirebuffer = false);
+    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
+    int flushSentences( int, const std::string& = "default" );
+    //Flush n sentences from buffer (does some extra validation as well)
+
+  public:
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
     bool getVerbose() const { return verbose; }
@@ -246,13 +249,12 @@ namespace Tokenizer {
     bool getXMLOutput() const { return xmlout; }
     bool getXMLInput() const { return xmlin; }
 
-    const std::string getTextClass( ) const { return inputclass; }
-    const std::string setTextClass( const std::string& cls) {
-      std::string res = inputclass;
-      inputclass = cls;
-      outputclass = cls;
-      return res;
-    }
+    bool setXMLOutput( bool b ) {
+      bool t = xmlout; xmlout = b; return t; }
+    bool setXMLOutput( bool b, const std::string& id ) {
+      setDocID( id ); return setXMLOutput(b); }
+    bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
+
     const std::string getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
       std::string res = inputclass;
@@ -269,16 +271,21 @@ namespace Tokenizer {
     std::string getDocID() const { return docid; }
     std::string setDocID( const std::string& id ) {
       const std::string s = docid; docid = id; return s; }
-    bool setXMLOutput( bool b ) {
-      bool t = xmlout; xmlout = b; return t; }
-    bool setXMLOutput( bool b, const std::string& id ) {
-      setDocID( id ); return setXMLOutput(b); }
-    bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
 
-    void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
+
   private:
     TokenizerClass( const TokenizerClass& ); // inhibit copies
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
+
+    /* const std::string getTextClass( ) const { return inputclass; } */
+    /* const std::string setTextClass( const std::string& cls) { */
+    /*   std::string res = inputclass; */
+    /*   inputclass = cls; */
+    /*   outputclass = cls; */
+    /*   return res; */
+    /* } */
+
+    void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
     void add_rule( const UnicodeString&,
 		   const std::vector<UnicodeString>& );
     void tokenizeWord( const UnicodeString&,
@@ -309,7 +316,6 @@ namespace Tokenizer {
     void tokenizeElement( folia::FoliaElement * );
     void tokenizeSentenceElement( folia::FoliaElement *,
 				  const std::string& );
-
     TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
