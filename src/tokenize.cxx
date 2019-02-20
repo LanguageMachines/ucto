@@ -1036,7 +1036,9 @@ namespace Tokenizer {
 	root = q;
 	quotelevel++;
       }
-      if ( ( token.role & ENDOFSENTENCE ) && (!root_is_sentence) && (!root->isinstance(folia::Utterance_t))) {
+      if ( ( token.role & ENDOFSENTENCE )
+	   && !root_is_sentence
+	   && !root->isinstance(folia::Utterance_t) ) {
 	if  (tokDebug > 0) {
 	  LOG << "[outputTokensXML] End of sentence" << endl;
 	}
@@ -1398,7 +1400,9 @@ namespace Tokenizer {
 	  LOG << "marked   END: " << tokens[endindex] << endl;
 	}
       }
-      else if ((expectingend == 1) && (subquote == 0) && !(tokens[endindex - 1].role & ENDOFSENTENCE)) {
+      else if ( expectingend == 1
+		&& subquote == 0
+		&& !( tokens[endindex - 1].role & ENDOFSENTENCE) ) {
 	//missing one endofsentence, we can correct, last token in quote token is endofsentence:
 	if ( tokDebug >= 2 ) {
 	  LOG << "[resolveQuote] Missing endofsentence in quote, fixing... " << expectingend << endl;
@@ -1418,7 +1422,8 @@ namespace Tokenizer {
       quotes.eraseAtPos( stackindex );
       //FBK: ENDQUOTES NEED TO BE MARKED AS ENDOFSENTENCE IF THE PREVIOUS TOKEN
       //WAS AN ENDOFSENTENCE. OTHERWISE THE SENTENCES WILL NOT BE SPLIT.
-      if ((tokens[endindex].role & ENDQUOTE) && (tokens[endindex-1].role & ENDOFSENTENCE)) {
+      if ( tokens[endindex].role & ENDQUOTE
+	   && tokens[endindex-1].role & ENDOFSENTENCE ) {
         //FBK: CHECK FOR EOS AFTER QUOTES
         if ((endindex+1 == size) || //FBK: endindex EQUALS TOKEN SIZE, MUST BE EOSMARKERS
             ((endindex + 1 < size) && (is_BOS(tokens[endindex+1].us[0])))) {
@@ -1559,21 +1564,53 @@ namespace Tokenizer {
 				 settings[lang]->eosmarkers,
 				 settings[lang]->quotes );
 	if (is_eos) {
-	  if ((tokDebug > 1 )){
-	    LOG << "[detectSentenceBounds] EOS FOUND @i="
-			    << i << endl;
+	  if ( detectQuotes ){
+	    if ( !settings[lang]->quotes.emptyStack() ) {
+	      if ( tokDebug > 1 ){
+		LOG << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
+	      }
+	      //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
+	      tokens[i].role |= TEMPENDOFSENTENCE;
+	      //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
+	      if ( i > 0 ){
+		tokens[i-1].role &= ~TEMPENDOFSENTENCE;
+	      }
+	    }
+	    else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
+	      if ( tokDebug > 1 ){
+		LOG << "[detectQuotedSentenceBounds] EOS FOUND @i=" << i << endl;
+	      }
+	      tokens[i].role |= ENDOFSENTENCE;
+	      //if this is the end of the sentence, the next token is the beginning of a new one
+	      if ( (i + 1) < size ){
+		tokens[i+1].role |= BEGINOFSENTENCE;
+	      }
+	      //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
+	      if ( i > 0
+		   && ( tokens[i-1].role & ENDOFSENTENCE )
+		   && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
+		tokens[i-1].role &= ~ENDOFSENTENCE;
+		tokens[i].role &= ~BEGINOFSENTENCE;
+	      }
+	    }
 	  }
-	  tokens[i].role |= ENDOFSENTENCE;
-	  //if this is the end of the sentence, the next token is the beginning of a new one
-	  if ( (i + 1) < size) {
-	    tokens[i+1].role |= BEGINOFSENTENCE;
-	  }
-	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	  if ( i > 0
-	       && ( tokens[i-1].role & ENDOFSENTENCE )
-	       && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
-	    tokens[i-1].role &= ~ENDOFSENTENCE;
-	    tokens[i].role &= ~BEGINOFSENTENCE;
+	  else {
+	    if ((tokDebug > 1 )){
+	      LOG << "[detectSentenceBounds] EOS FOUND @i="
+		  << i << endl;
+	    }
+	    tokens[i].role |= ENDOFSENTENCE;
+	    //if this is the end of the sentence, the next token is the beginning of a new one
+	    if ( (i + 1) < size) {
+	      tokens[i+1].role |= BEGINOFSENTENCE;
+	    }
+	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
+	    if ( i > 0
+		 && ( tokens[i-1].role & ENDOFSENTENCE )
+		 && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
+	      tokens[i-1].role &= ~ENDOFSENTENCE;
+	      tokens[i].role &= ~BEGINOFSENTENCE;
+	    }
 	  }
 	}
 	else if ( isClosing(tokens[i] ) ) {
@@ -1589,26 +1626,32 @@ namespace Tokenizer {
 	    tokens[i].role &= ~BEGINOFSENTENCE;
 	  }
 	}
-      }
-    }
-    for (int i = size-1; i > offset; --i ) {
-      // at the end of the buffer there may be some PUNCTUATION which
-      // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
-      // fix this up to avoid sentences containing only punctuation
-      if (tokDebug > 1 ){
-	LOG << "[detectSentenceBounds:fixup] i="<< i << " word=["
-			<< tokens[i].us
-			<< "] type=" << tokens[i].type
-			<< ", role=" << tokens[i].role << endl;
-      }
-      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
-	tokens[i].role &= ~BEGINOFSENTENCE;
-	if ( i != size-1 ){
-	  tokens[i].role &= ~ENDOFSENTENCE;
+	if ( detectQuotes ){
+	  // check the quotes
+	  detectQuoteBounds( i, settings[lang]->quotes );
 	}
       }
-      else
-	break;
+    }
+    if ( !detectQuotes ){
+      for (int i = size-1; i > offset; --i ) {
+	// at the end of the buffer there may be some PUNCTUATION which
+	// has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
+	// fix this up to avoid sentences containing only punctuation
+	if (tokDebug > 1 ){
+	  LOG << "[detectSentenceBounds:fixup] i="<< i << " word=["
+	      << tokens[i].us
+	      << "] type=" << tokens[i].type
+	      << ", role=" << tokens[i].role << endl;
+	}
+	if ( tokens[i].type.startsWith("PUNCTUATION") ) {
+	  tokens[i].role &= ~BEGINOFSENTENCE;
+	  if ( i != size-1 ){
+	    tokens[i].role &= ~ENDOFSENTENCE;
+	  }
+	}
+	else
+	  break;
+      }
     }
   }
 
@@ -2158,16 +2201,11 @@ namespace Tokenizer {
 	tokens[begintokencount].role |= BEGINOFSENTENCE;
 	tokens.back().role |= ENDOFSENTENCE;
 	if ( detectQuotes ){
-	  detectQuotedSentenceBounds( begintokencount );
+	  detectSentenceBounds( begintokencount );
 	}
       }
       else {
-	if ( detectQuotes ){
-	  detectQuotedSentenceBounds( begintokencount );
-	}
-	else {
-	  detectSentenceBounds( begintokencount );
-	}
+	detectSentenceBounds( begintokencount );
       }
     }
     return numNewTokens;
