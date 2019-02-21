@@ -1626,26 +1626,28 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( !detectQuotes ){
-      for (int i = size-1; i > offset; --i ) {
-	// at the end of the buffer there may be some PUNCTUATION which
-	// has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
-	// fix this up to avoid sentences containing only punctuation
-	if (tokDebug > 1 ){
-	  LOG << method << " fixup-end i="<< i << " word=["
-	      << tokens[i].us
-	      << "] type=" << tokens[i].type
-	      << ", role=" << tokens[i].role << endl;
-	}
-	if ( tokens[i].type.startsWith("PUNCTUATION") ) {
-	  tokens[i].role &= ~BEGINOFSENTENCE;
+    for (int i = size-1; i > offset; --i ) {
+      // at the end of the buffer there may be some PUNCTUATION which
+      // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
+      // fix this up to avoid sentences containing only punctuation
+      // also we don't want a BEGINQUOTE to be an ENDOFSENTENCE
+      if (true ){
+	LOG << method << " fixup-end i="<< i << " word=["
+	    << tokens[i].us
+	    << "] type=" << tokens[i].type
+	    << ", role=" << tokens[i].role << endl;
+      }
+      if ( tokens[i].type.startsWith("PUNCTUATION") ) {
+	tokens[i].role &= ~BEGINOFSENTENCE;
+	if ( !detectQuotes ||
+	     (tokens[i].role & BEGINQUOTE) ){
 	  if ( i != size-1 ){
 	    tokens[i].role &= ~ENDOFSENTENCE;
 	  }
 	}
-	else
-	  break;
       }
+      else
+	break;
     }
   }
 
