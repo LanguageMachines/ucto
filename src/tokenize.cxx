@@ -1546,65 +1546,59 @@ namespace Tokenizer {
   void TokenizerClass::detectSentenceBounds( const int offset,
 					     const string& lang ){
     //find sentences
+    string method;
+    if ( detectQuotes ){
+      method = "[detectSentenceBounds-(quoted)]";
+    }
+    else {
+      method = "[detectSentenceBounds]";
+    }
     const int size = tokens.size();
     for (int i = offset; i < size; i++) {
       if (tokDebug > 1 ){
-	LOG << "[detectSentenceBounds] i="<< i << " word=["
-			<< tokens[i].us
-			<< "] type=" << tokens[i].type
-			<< ", role=" << tokens[i].role << endl;
+	LOG << method << " i="<< i << " word=[" << tokens[i].us
+	    << "] type=" << tokens[i].type
+	    << ", role=" << tokens[i].role << endl;
       }
       if ( tokens[i].type.startsWith("PUNCTUATION") ){
 	if ((tokDebug > 1 )){
-	  LOG << "[detectSentenceBounds] PUNCTUATION FOUND @i="
-			  << i << endl;
+	  LOG << method << " PUNCTUATION FOUND @i=" << i << endl;
 	}
 	// we have some kind of punctuation. Does it mark an eos?
 	bool is_eos = detectEos( i,
 				 settings[lang]->eosmarkers,
 				 settings[lang]->quotes );
 	if (is_eos) {
-	  if ( detectQuotes ){
-	    if ( !settings[lang]->quotes.emptyStack() ) {
-	      if ( tokDebug > 1 ){
-		LOG << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
-	      }
-	      //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
-	      tokens[i].role |= TEMPENDOFSENTENCE;
-	      //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
-	      if ( i > 0 ){
-		tokens[i-1].role &= ~TEMPENDOFSENTENCE;
-	      }
+	  // end of sentence found/ so wrap up
+	  if ( detectQuotes
+	       && !settings[lang]->quotes.emptyStack() ) {
+	    // we have some quotes!
+	    if ( tokDebug > 1 ){
+	      LOG << method << " Unbalances quotes: Preliminary EOS FOUND @i="
+		  << i << endl;
 	    }
-	    else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
-	      if ( tokDebug > 1 ){
-		LOG << "[detectQuotedSentenceBounds] EOS FOUND @i=" << i << endl;
-	      }
-	      tokens[i].role |= ENDOFSENTENCE;
-	      //if this is the end of the sentence, the next token is the beginning of a new one
-	      if ( (i + 1) < size ){
-		tokens[i+1].role |= BEGINOFSENTENCE;
-	      }
-	      //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	      if ( i > 0
-		   && ( tokens[i-1].role & ENDOFSENTENCE )
-		   && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
-		tokens[i-1].role &= ~ENDOFSENTENCE;
-		tokens[i].role &= ~BEGINOFSENTENCE;
-	      }
+	    // we set a temporary EOS marker,
+	    // to be resolved later when full quote is found.
+	    tokens[i].role |= TEMPENDOFSENTENCE;
+	    // If previous token is also TEMPENDOFSENTENCE,
+	    // it stops being so in favour of this one
+	    if ( i > 0 ){
+	      tokens[i-1].role &= ~TEMPENDOFSENTENCE;
 	    }
 	  }
 	  else {
-	    if ((tokDebug > 1 )){
-	      LOG << "[detectSentenceBounds] EOS FOUND @i="
-		  << i << endl;
+	    // No quotes
+	    if ( tokDebug > 1 ){
+	      LOG << method << " EOS FOUND @i=" << i << endl;
 	    }
 	    tokens[i].role |= ENDOFSENTENCE;
-	    //if this is the end of the sentence, the next token is the beginning of a new one
-	    if ( (i + 1) < size) {
+	    // if this is the end of the sentence,
+	    // the next token is the beginning of a new one
+	    if ( (i + 1) < size ){
 	      tokens[i+1].role |= BEGINOFSENTENCE;
 	    }
-	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
+	    // if previous token is EOS and not BOS, it will stop being EOS,
+	    // as this one will take its place
 	    if ( i > 0
 		 && ( tokens[i-1].role & ENDOFSENTENCE )
 		 && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
@@ -1616,7 +1610,7 @@ namespace Tokenizer {
 	else if ( isClosing(tokens[i] ) ) {
 	  // we have a closing symbol
 	  if ( tokDebug > 1 ){
-	    LOG << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
+	    LOG << method << " Close FOUND @i=" << i << endl;
 	  }
 	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
 	  if ( i > 0
@@ -1638,7 +1632,7 @@ namespace Tokenizer {
 	// has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
 	// fix this up to avoid sentences containing only punctuation
 	if (tokDebug > 1 ){
-	  LOG << "[detectSentenceBounds:fixup] i="<< i << " word=["
+	  LOG << method << " fixup-end i="<< i << " word=["
 	      << tokens[i].us
 	      << "] type=" << tokens[i].type
 	      << ", role=" << tokens[i].role << endl;
@@ -1651,70 +1645,6 @@ namespace Tokenizer {
 	}
 	else
 	  break;
-      }
-    }
-  }
-
-  void TokenizerClass::detectQuotedSentenceBounds( const int offset,
-						   const string& lang ){
-    //find sentences
-    const int size = tokens.size();
-    for (int i = offset; i < size; i++) {
-      if (tokDebug > 1 ){
-	LOG << "[detectQuotedSentenceBounds] i="<< i << " word=["
-			<< tokens[i].us
-			<<"] role=" << tokens[i].role << endl;
-      }
-      if ( tokens[i].type.startsWith("PUNCTUATION") ){
-	// we have some kind of punctuation. Does it mark an eos?
-	bool is_eos = detectEos( i,
-				 settings[lang]->eosmarkers,
-				 settings[lang]->quotes );
-	if (is_eos) {
-	  if ( !settings[lang]->quotes.emptyStack() ) {
-	    if ( tokDebug > 1 ){
-	      LOG << "[detectQuotedSentenceBounds] Preliminary EOS FOUND @i=" << i << endl;
-	    }
-	    //if there are quotes on the stack, we set a temporary EOS marker, to be resolved later when full quote is found.
-	    tokens[i].role |= TEMPENDOFSENTENCE;
-	    //If previous token is also TEMPENDOFSENTENCE, it stops being so in favour of this one
-	    if ( i > 0 ){
-	      tokens[i-1].role &= ~TEMPENDOFSENTENCE;
-	    }
-	  }
-	  else if (!sentenceperlineinput)  { //No quotes on stack (and no one-sentence-per-line input)
-	    if ( tokDebug > 1 ){
-	      LOG << "[detectQuotedSentenceBounds] EOS FOUND @i=" << i << endl;
-	    }
-	    tokens[i].role |= ENDOFSENTENCE;
-	    //if this is the end of the sentence, the next token is the beginning of a new one
-	    if ( (i + 1) < size ){
-	      tokens[i+1].role |= BEGINOFSENTENCE;
-	    }
-	    //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	    if ( i > 0
-		 && ( tokens[i-1].role & ENDOFSENTENCE )
-		 && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
-	      tokens[i-1].role &= ~ENDOFSENTENCE;
-	      tokens[i].role &= ~BEGINOFSENTENCE;
-	    }
-	  }
-	}
-	else if ( isClosing(tokens[i] ) ) {
-	  // we have a closing symbol
-	  if ( tokDebug > 1 ){
-	    LOG << "[detectSentenceBounds] Close FOUND @i=" << i << endl;
-	  }
-	  //if previous token is EOS and not BOS, it will stop being EOS, as this one will take its place
-	  if ( i > 0
-	       && ( tokens[i-1].role & ENDOFSENTENCE )
-	       && !( tokens[i-1].role & BEGINOFSENTENCE ) ) {
-	    tokens[i-1].role &= ~ENDOFSENTENCE;
-	    tokens[i].role &= ~BEGINOFSENTENCE;
-	  }
-	}
-	//check quotes
-	detectQuoteBounds( i, settings[lang]->quotes );
       }
     }
   }
