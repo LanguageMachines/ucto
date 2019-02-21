@@ -804,7 +804,7 @@ namespace Tokenizer {
     else {
       // folia may encode newlines. These should be converted to <br/> nodes
       // but Linebreak and newline handling is very dangerous and complicated
-      // so for now is is disabled!
+      // so for now it is disabled!
       vector<UnicodeString> parts;
       parts.push_back( line ); // just one part
       //split_nl( line, parts ); // disabled multipart
@@ -827,8 +827,8 @@ namespace Tokenizer {
     // But it may have embedded punctuation. In fact is should be replaced
     // by a paragraph then!
     // For now we just collect all in one long 'sentence'
-    int numS = countSentences(true); //force last item to END_OF_SENTENCE
     vector<Token> outputTokens;
+    int numS = countSentences(true); //force last item to END_OF_SENTENCE
     for ( int i=0; i < numS; ++i ){
       vector<Token> tokens = popSentence();
       outputTokens.insert( outputTokens.end(), tokens.begin(), tokens.end() );
@@ -870,8 +870,7 @@ namespace Tokenizer {
     folia::FoliaElement *lastS = root;
     if  (tokDebug > 0) {
       LOG << "[outputTokensXML] root=<" << root->classname()
-		      << ">" << endl;
-      LOG << "[outputTokensXML] root-id=" << root->id() << endl;
+	  << "> id=" << root->id() << endl;
     }
     bool root_is_sentence = false;
     bool root_is_structure_element = false;
@@ -946,10 +945,7 @@ namespace Tokenizer {
 	   && !root_is_sentence
 	   && !root->isinstance( folia::Utterance_t ) ) {
 	folia::KWargs args;
-	string id = root->id();
-	if ( id.empty() ){
-	  id = root->parent()->id();
-	}
+	string id = get_parent_id(root);
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
 	}
@@ -1023,10 +1019,7 @@ namespace Tokenizer {
 	  LOG << "[outputTokensXML] Creating quote element" << endl;
 	}
 	folia::KWargs args;
-	string id = root->id();
-	if ( id.empty() ){
-	  id = root->parent()->id();
-	}
+	string id = get_parent_id(root);
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
 	}
@@ -2130,15 +2123,11 @@ namespace Tokenizer {
       }
       //find sentence boundaries
       if (sentenceperlineinput) {
+	// force it to be a sentence
 	tokens[begintokencount].role |= BEGINOFSENTENCE;
 	tokens.back().role |= ENDOFSENTENCE;
-	if ( detectQuotes ){
-	  detectSentenceBounds( begintokencount );
-	}
       }
-      else {
-	detectSentenceBounds( begintokencount );
-      }
+      detectSentenceBounds( begintokencount );
     }
     return numNewTokens;
   }
