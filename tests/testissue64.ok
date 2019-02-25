@@ -36,4 +36,6 @@
   </text>
 </FoLiA>
 
-
+outb.xml failed: inconsistent text: node div(bug.text.div.2) has a mismatch for the text in set:current
+the element text ='Kinderjaren.'
+ the deeper text ='Kinderjaren. Kinderjaren.'
