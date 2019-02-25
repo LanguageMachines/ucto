@@ -33,8 +33,10 @@ then
 	if [ $sum = $expected ]
 	then
 		echo -e "$ACCEPT, $sum errors, as expected"
+		exit 0
 	else
 		echo -e "$FAIL, $sum errors, but expected $expected"
+		exit $sum
 	fi
 else
 	echo -e "ALL $OK"
