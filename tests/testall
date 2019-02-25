@@ -1,6 +1,11 @@
 # /bin/sh -x
 
-RETURN=0
+OK="\033[1;32m OK  \033[0m"
+FAIL="\033[1;31m  FAILED  \033[0m"
+ACCEPT="\033[1;33m  FOR NOW ACCEPTABLE  \033[0m"
+
+sum=0
+expected=1
 
 mkdir testoutput 2> /dev/null
 \rm testoutput/*.diff 2> /dev/null
@@ -14,13 +19,25 @@ for file in testusage testlanguage testconf1 testconf2 testinclude \
 do
    ./testone $file
    if [ $? -ne 0 ]; then
-        RETURN=1
+      sum=$(($sum + 1))
    fi
 done
 
 python2 test.py
 if [ $? -ne 0 ]; then
-   RETURN=1
+   sum=$(($sum + 1))
 fi
 
-exit $RETURN
+if [ $sum != "0" ]
+then
+	if [ $sum = $expected ]
+	then
+		echo -e "$ACCEPT, $sum errors, as expected"
+	else
+		echo -e "$FAIL, $sum errors, but expected $expected"
+	fi
+else
+	echo -e "ALL $OK"
+fi
+
+exit $sum
