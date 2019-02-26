@@ -149,10 +149,12 @@ namespace Tokenizer {
 
     // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
+    // you may
+    // OR use popSentence() repeatedly to extract all sentences as vecors
+    //    using getString() to extract the UTF8 value of that sentence
+    // OR getSentences() to get ALL sentences as UTF8 strings in a vector
     void tokenizeLine( const UnicodeString& );
     void tokenizeLine( const std::string& );
-
-    std::vector<Token> tokenize_line( const std::string& );
 
     // convert the sentence in the token vector to a string (UTF-8 encoded)
     std::string getString( const std::vector<Token>& );
@@ -166,7 +168,6 @@ namespace Tokenizer {
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
-  public:
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
     bool getVerbose() const { return verbose; }

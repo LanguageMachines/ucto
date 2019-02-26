@@ -385,6 +385,7 @@ namespace Tokenizer {
     return result;
   }
 
+#ifdef WEG
   vector<Token> TokenizerClass::tokenize_line( const string& line ){
     // tokenize a line of input into a token vector
     // consumes the WHOLE line
@@ -429,6 +430,7 @@ namespace Tokenizer {
       return result;
     }
   }
+#endif
 
   string TokenizerClass::tokenizeSentenceStream( istream& IN ){
     vector<Token> tokens = tokenizeOneSentence( IN );
@@ -1835,14 +1837,14 @@ namespace Tokenizer {
   // string wrapper
   void TokenizerClass::tokenizeLine( const string& s ){
     UnicodeString us = convert( s, inputEncoding );
-    bool bos = true;
-    tokenize_one_line( us, bos );
+    tokenizeLine( us );
   }
 
   // UnicodeString wrapper
   void TokenizerClass::tokenizeLine( const UnicodeString& us ){
     bool bos = true;
     tokenize_one_line( us, bos );
+    countSentences(true); // force the ENDOFSENTENCE
   }
 
   bool u_isemo( UChar32 c ){
