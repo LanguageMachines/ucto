@@ -93,19 +93,21 @@ namespace Tokenizer {
   UnicodeString convert( const string& line,
 			 const string& inputEncoding ){
     UnicodeString result;
-    try {
-      result = UnicodeString( line.c_str(),
-			      line.length(),
-			      inputEncoding.c_str() );
-    }
-    catch ( exception &e) {
-      throw uCodingError( "Unexpected character found in input. " +
-			  string(e.what()) + "Make sure input is valid: " +
-			  inputEncoding );
-    }
-    if ( result.isBogus() ){
-      throw uCodingError( "string decoding failed: (invalid inputEncoding '"
-			  + inputEncoding + "' ?)" );
+    if ( !line.empty() ){
+      try {
+	result = UnicodeString( line.c_str(),
+				line.length(),
+				inputEncoding.c_str() );
+      }
+      catch ( exception &e) {
+	throw uCodingError( "Unexpected character found in input. " +
+			    string(e.what()) + "Make sure input is valid: " +
+			    inputEncoding );
+      }
+      if ( result.isBogus() ){
+	throw uCodingError( "string decoding failed: (invalid inputEncoding '"
+			    + inputEncoding + "' ?)" );
+      }
     }
     return result;
   }
@@ -266,15 +268,61 @@ namespace Tokenizer {
     }
   }
 
-  void stripCR( string& s ){
-    string::size_type pos = s.rfind( '\r' );
+  void fixup_UTF16( string& line, const string& encoding ){
+    // some hackery to handle exotic input. UTF-16 but also CR at end.
+    string::size_type pos = line.rfind( '\r' );
     if ( pos != string::npos ){
-      s.erase( pos );
+      line.erase( pos );
+    }
+    if ( line.size() > 0 && line[0] == 0 ){
+      // when processing UTF16LE, '0' bytes show up at pos 0
+      // we discard them, not for UTF16BE!
+      // this works on Linux with GCC (atm)
+      if ( encoding != "UTF16BE" ){
+	line.erase(0,1);
+      }
+    }
+    if ( line.size() > 0 && encoding == "UTF16BE" &&
+	 line.back() == 0 ){
+      // when processing UTF16BE, '0' bytes show up at the end
+      // we discard them.
+      // this works on Linux with GCC (atm)
+      line.erase(line.size()-1);
     }
   }
 
-  vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN,
-						     const string& lang ) {
+  void TokenizerClass::handle_line( const UnicodeString& input_line,
+				    bool& bos ){
+    if ( passthru ){
+      passthruLine( input_line, bos );
+    }
+    else {
+      string language = "default";
+      if ( tc ){
+	if ( tokDebug > 3 ){
+	  LOG << "use textCat to guess language from: "
+	      << input_line << endl;
+	}
+	UnicodeString temp = input_line;
+	temp.toLower();
+	language = tc->get_language( TiCC::UnicodeToUTF8(temp) );
+	if ( settings.find( language ) != settings.end() ){
+	  if ( tokDebug > 3 ){
+	    LOG << "found a supported language: " << language << endl;
+	  }
+	}
+	else {
+	  if ( tokDebug > 3 ){
+	    LOG << "found an unsupported language: " << language << endl;
+	  }
+	  language = "default";
+	}
+      }
+      tokenizeLine( input_line, language );
+    }
+  }
+
+  vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN ){
     int numS = countSentences(); //count full sentences in token buffer
     if ( numS > 0 ) { // still some sentences in the buffer
       if  (tokDebug > 0) {
@@ -283,48 +331,25 @@ namespace Tokenizer {
       }
       return popSentence( );
     }
-    string language = lang;
     bool done = false;
     bool bos = true;
     string line;
     do {
       done = !getline( IN, line );
-      linenum++;
-      if (tokDebug > 0) {
-	LOG << "[tokenize] Read input line " << linenum << endl;
-      }
-      if ( tokDebug > 0 ){
-	LOG << "voor strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
-      }
-      stripCR( line );
       UnicodeString input_line;
-      if ( line.size() > 0 && line[0] == 0 ){
-	// when processing UTF16LE, '0' bytes show up at pos 0
-	// we discard them, not for UTF16BE!
-	// this works on Linux with GCC (atm)
-	if ( inputEncoding != "UTF16BE" ){
-	  line.erase(0,1);
+      if ( !done ){
+	linenum++;
+	if (tokDebug > 0) {
+	  LOG << "[tokenize] Read input line " << linenum
+	      << "-'" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
-      }
-      if ( line.size() > 0 && inputEncoding == "UTF16BE" &&
-	   line.back() == 0 ){
-	// when processing UTF16BE, '0' bytes show up at the end
-	// we discard them.
-	// this works on Linux with GCC (atm)
-	line.erase(line.size()-1);
-      }
-      if ( tokDebug > 0 ){
-	LOG << "After strip:'" << TiCC::format_nonascii( line ) << "'" << endl;
-      }
-      if ( !line.empty() ){
+	fixup_UTF16( line, inputEncoding );
+	if ( tokDebug > 0 ){
+	  LOG << "After fixp:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	}
 	input_line = convert( line, inputEncoding );
 	if ( sentenceperlineinput ){
 	  input_line += " " + eosmark;
-	}
-      }
-      else {
-	if ( sentenceperlineinput ){
-	  input_line = eosmark;
 	}
       }
       if ( done || input_line.isEmpty() ){
@@ -334,33 +359,7 @@ namespace Tokenizer {
 	// setting explicit END_OF_SENTENCE
       }
       else {
-	if ( passthru ){
-	  passthruLine( input_line, bos );
-	}
-	else {
-	  if ( tc ){
-	    if ( tokDebug > 3 ){
-	      LOG << "use textCat to guess language from: "
-		  << input_line << endl;
-	    }
-	    UnicodeString temp = input_line;
-	    temp.toLower();
-	    string lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
-	    if ( settings.find( lan ) != settings.end() ){
-	      if ( tokDebug > 3 ){
-		LOG << "found a supported language: " << lan << endl;
-	      }
-	    }
-	    else {
-	      if ( tokDebug > 3 ){
-		LOG << "found an unsupported language: " << lan << endl;
-	      }
-	      lan = "default";
-	    }
-	    language = lan;
-	  }
-	  tokenizeLine( input_line, language );
-	}
+	handle_line( input_line, bos );
 	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) {
@@ -400,35 +399,8 @@ namespace Tokenizer {
 	input_line = eosmark;
       }
     }
-    if ( passthru ){
-      bool bos = true;
-      passthruLine( input_line, bos );
-    }
-    else {
-      string language;
-      if ( tc ){
-	if ( tokDebug > 3 ){
-	  LOG << "use textCat to guess language from: "
-	      << input_line << endl;
-	}
-	UnicodeString temp = input_line;
-	temp.toLower();
-	string lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
-	if ( settings.find( lan ) != settings.end() ){
-	  if ( tokDebug > 3 ){
-	    LOG << "found a supported language: " << lan << endl;
-	  }
-	}
-	else {
-	  if ( tokDebug > 3 ){
-	    LOG << "found an unsupported language: " << lan << endl;
-	  }
-	  lan = "default";
-	}
-	language = lan;
-      }
-      tokenizeLine( input_line, language );
-    }
+    bool bos = true;
+    handle_line( input_line, bos );
     int numS = countSentences(true); //count all sentences in token buffer
     if ( numS > 0 ) {
       // 1 or more sentences in the buffer.
@@ -453,9 +425,8 @@ namespace Tokenizer {
     }
   }
 
-  string TokenizerClass::tokenizeSentenceStream( istream& IN,
-						 const string& lang ) {
-    vector<Token> tokens = tokenizeOneSentence( IN, lang );
+  string TokenizerClass::tokenizeSentenceStream( istream& IN ){
+    vector<Token> tokens = tokenizeOneSentence( IN );
     return getString( tokens );
   }
 
@@ -869,35 +840,10 @@ namespace Tokenizer {
       LOG << "[tokenizeSentenceElement] Processing sentence:"
 		      << line << endl;
     }
-    if ( passthru ){
-      bool bos = true;
-      passthruLine( line, bos );
-    }
-    else {
-      // folia may encode newlines. These should be converted to <br/> nodes
-      // but Linebreak and newline handling is very dangerous and complicated
-      // so for now it is disabled!
-      vector<UnicodeString> parts;
-      parts.push_back( line ); // just one part
-      //split_nl( line, parts ); // disabled multipart
-      for ( auto const& l : parts ){
-	if ( tokDebug >= 1 ){
-	  LOG << "[tokenizeSentenceElement] tokenize part: " << l << endl;
-	}
-	tokenizeLine( l, lang, element->id() );
-	if ( &l != &parts.back() ){
-	  // append '<br'>
-	  Token T( "type_linebreak", "\n", LINEBREAK, "" );
-	  if ( tokDebug >= 1 ){
-	    LOG << "[tokenizeSentenceElement] added LINEBREAK token " << endl;
-	  }
-	  tokens.push_back( T );
-	}
-      }
-    }
-    // ignore EOL data, we have by definition only one sentence
-    // But it may have embedded punctuation. In fact is should be replaced
-    // by a paragraph then!
+    bool bos = true;
+    handle_line ( line, bos );
+    // We may have embedded punctuation.
+    // In fact we should insert a paragraph then!
     // For now we just collect all in one long 'sentence'
     vector<Token> outputTokens;
     int numS = countSentences(true); //force last item to END_OF_SENTENCE
@@ -1296,48 +1242,48 @@ namespace Tokenizer {
   vector<Token> TokenizerClass::popSentence( ) {
     vector<Token> outToks;
     const int size = tokens.size();
-    if ( size == 0 ){
-      return outToks;
-    }
-    short quotelevel = 0;
-    size_t begin = 0;
-    size_t end = 0;
-    for ( int i = 0; i < size; ++i ) {
-      if (tokens[i].role & NEWPARAGRAPH) {
-	quotelevel = 0;
-      }
-      else if (tokens[i].role & ENDQUOTE) {
-	--quotelevel;
-      }
-      if ( (tokens[i].role & BEGINOFSENTENCE)
-	   && (quotelevel == 0)) {
-	begin = i;
-      }
-      //FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
-      if (tokens[i].role & BEGINQUOTE) {
-	++quotelevel;
-      }
+    if ( size != 0 ){
+      short quotelevel = 0;
+      size_t begin = 0;
+      size_t end = 0;
+      for ( int i = 0; i < size; ++i ) {
+	if (tokens[i].role & NEWPARAGRAPH) {
+	  quotelevel = 0;
+	}
+	else if (tokens[i].role & ENDQUOTE) {
+	  --quotelevel;
+	}
+	if ( (tokens[i].role & BEGINOFSENTENCE)
+	     && (quotelevel == 0)) {
+	  begin = i;
+	}
+	//FBK: QUOTELEVEL GOES UP BEFORE begin IS UPDATED... RESULTS IN DUPLICATE OUTPUT
+	if (tokens[i].role & BEGINQUOTE) {
+	  ++quotelevel;
+	}
 
-      if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	end = i;
-	if (tokDebug >= 1){
-	  LOG << "[tokenize] extracted sentence, begin=" << begin
-	      << ",end="<< end << endl;
-	}
-	for ( size_t i=begin; i <= end; ++i ){
-	  outToks.push_back( tokens[i] );
-	}
-	tokens.erase( tokens.begin(), tokens.begin()+end+1 );
-	if ( !passthru ){
-	  string lang = get_language( outToks );
-	  if ( !settings[lang]->quotes.emptyStack() ) {
-	    settings[lang]->quotes.flushStack( end+1 );
+	if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	  end = i;
+	  if (tokDebug >= 1){
+	    LOG << "[tokenize] extracted sentence, begin=" << begin
+		<< ",end="<< end << endl;
 	  }
+	  for ( size_t i=begin; i <= end; ++i ){
+	    outToks.push_back( tokens[i] );
+	  }
+	  tokens.erase( tokens.begin(), tokens.begin()+end+1 );
+	  if ( !passthru ){
+	    string lang = get_language( outToks );
+	    if ( !settings[lang]->quotes.emptyStack() ) {
+	      settings[lang]->quotes.flushStack( end+1 );
+	    }
+	  }
+	  // we are done...
+	  return outToks;
 	}
-	return outToks;
       }
     }
-    throw uRangeError( "No sentence could be popped " );
+    return outToks;
   }
 
   string TokenizerClass::getString( const vector<Token>& v ){
@@ -1874,9 +1820,6 @@ namespace Tokenizer {
       result = encoding;
       if ( result == "UTF16BE"
 	   || result == "UTF-16BE" ){
-	// throw uCodingError( string(" BigEndian UTF16 is not supported.\n")
-	// 		    + "Please use 'iconv -f UTF16BE -t UTF16LE'"
-	// 		    + " to convert your input to a supported format" );
 	result = "UTF16BE";
       }
     }

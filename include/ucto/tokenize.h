@@ -122,13 +122,12 @@ namespace Tokenizer {
     // Tokenize from an input stream to a token vector (representing a sentence)
     // non greedy. Stops after the first full sentence is returned.
     // may be called multiple times until EOF
-    std::vector<Token> tokenizeOneSentence( std::istream& ,
-					    const std::string& ="default" );
+    std::vector<Token> tokenizeOneSentence( std::istream& );
 
     std::vector<Token> tokenizeStream( std::istream& is,
-				       const std::string& l = "default" ){
+				       const std::string& = "default" ){
       // backward compatability
-      return tokenizeOneSentence( is, l );
+      return tokenizeOneSentence( is );
     }
 
 
@@ -137,8 +136,7 @@ namespace Tokenizer {
     // NOTE: may return more then one sentence, when more sentences are present
     // on 1 line!
     // should be called multiple times until EOF
-    std::string tokenizeSentenceStream( std::istream&,
-					const std::string& = "default" );
+    std::string tokenizeSentenceStream( std::istream& );
 
     //Tokenize from input file to output file (support xmlin + xmlout)
     void tokenize( const std::string&, const std::string& );
@@ -304,6 +302,8 @@ namespace Tokenizer {
     int tokenizeLine( const UnicodeString&,
 		      const std::string&,
 		      const std::string& );
+
+    void handle_line( const UnicodeString&, bool& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
