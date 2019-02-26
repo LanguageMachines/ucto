@@ -149,10 +149,8 @@ namespace Tokenizer {
 
     // Tokenize a line (a line is NOT a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
-    int tokenizeLine( const UnicodeString&,
-		      const std::string& = "default" ); // Unicode chars
-    int tokenizeLine( const std::string&,
-		      const std::string& = "default" ); // UTF8 chars
+    void tokenizeLine( const UnicodeString& );
+    void tokenizeLine( const std::string& );
 
     std::vector<Token> tokenize_line( const std::string& );
 
@@ -167,14 +165,6 @@ namespace Tokenizer {
 
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
-
-  private:
-
-    //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
-    int countSentences(bool forceentirebuffer = false);
-    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
-    int flushSentences( int, const std::string& = "default" );
-    //Flush n sentences from buffer (does some extra validation as well)
 
   public:
     //Enable verbose mode
@@ -279,18 +269,16 @@ namespace Tokenizer {
     std::string setDocID( const std::string& id ) {
       const std::string s = docid; docid = id; return s; }
 
-
   private:
+
     TokenizerClass( const TokenizerClass& ); // inhibit copies
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
 
-    /* const std::string getTextClass( ) const { return inputclass; } */
-    /* const std::string setTextClass( const std::string& cls) { */
-    /*   std::string res = inputclass; */
-    /*   inputclass = cls; */
-    /*   outputclass = cls; */
-    /*   return res; */
-    /* } */
+    //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
+    int countSentences(bool forceentirebuffer = false);
+    //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
+    int flushSentences( int, const std::string& = "default" );
+    //Flush n sentences from buffer (does some extra validation as well)
 
     void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
     void add_rule( const UnicodeString&,
@@ -300,10 +288,9 @@ namespace Tokenizer {
 		       const std::string&,
 		       const UnicodeString& ="" );
     int tokenizeLine( const UnicodeString&,
-		      const std::string&,
 		      const std::string& );
 
-    void handle_line( const UnicodeString&, bool& );
+    void tokenize_one_line( const UnicodeString&, bool& );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,

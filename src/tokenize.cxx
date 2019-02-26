@@ -268,7 +268,8 @@ namespace Tokenizer {
     }
   }
 
-  void fixup_UTF16( string& line, const string& encoding ){
+  string fixup_UTF16( string& input_line, const string& encoding ){
+    string line = input_line;
     // some hackery to handle exotic input. UTF-16 but also CR at end.
     string::size_type pos = line.rfind( '\r' );
     if ( pos != string::npos ){
@@ -289,22 +290,24 @@ namespace Tokenizer {
       // this works on Linux with GCC (atm)
       line.erase(line.size()-1);
     }
+    return line;
   }
 
-  void TokenizerClass::handle_line( const UnicodeString& input_line,
-				    bool& bos ){
+  void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
+					  bool& bos ){
     if ( passthru ){
       passthruLine( input_line, bos );
     }
     else {
       string language = "default";
       if ( tc ){
+	UnicodeString temp = input_line;
+	temp.findAndReplace( eosmark, "" );
+	temp.toLower();
 	if ( tokDebug > 3 ){
 	  LOG << "use textCat to guess language from: "
-	      << input_line << endl;
+	      << temp << endl;
 	}
-	UnicodeString temp = input_line;
-	temp.toLower();
 	language = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	if ( settings.find( language ) != settings.end() ){
 	  if ( tokDebug > 3 ){
@@ -338,16 +341,18 @@ namespace Tokenizer {
       done = !getline( IN, line );
       UnicodeString input_line;
       if ( !done ){
-	linenum++;
+	++linenum;
 	if (tokDebug > 0) {
 	  LOG << "[tokenize] Read input line " << linenum
-	      << "-'" << TiCC::format_nonascii( line ) << "'" << endl;
+	      << "-: '" << TiCC::format_nonascii( line ) << "'" << endl;
 	}
-	fixup_UTF16( line, inputEncoding );
-	if ( tokDebug > 0 ){
-	  LOG << "After fixp:'" << TiCC::format_nonascii( line ) << "'" << endl;
+	string tmp_line = fixup_UTF16( line, inputEncoding );
+	if ( tokDebug > 0
+	     && tmp_line != line ){
+	  LOG << "After fixup, input_line= '"
+	      << TiCC::format_nonascii( tmp_line ) << "'" << endl;
 	}
-	input_line = convert( line, inputEncoding );
+	input_line = convert( tmp_line, inputEncoding );
 	if ( sentenceperlineinput ){
 	  input_line += " " + eosmark;
 	}
@@ -359,7 +364,7 @@ namespace Tokenizer {
 	// setting explicit END_OF_SENTENCE
       }
       else {
-	handle_line( input_line, bos );
+	tokenize_one_line( input_line, bos );
 	numS = countSentences(); //count full sentences in token buffer
       }
       if ( numS > 0 ) {
@@ -400,7 +405,7 @@ namespace Tokenizer {
       }
     }
     bool bos = true;
-    handle_line( input_line, bos );
+    tokenize_one_line( input_line, bos );
     int numS = countSentences(true); //count all sentences in token buffer
     if ( numS > 0 ) {
       // 1 or more sentences in the buffer.
@@ -735,6 +740,7 @@ namespace Tokenizer {
 	if ( lan.empty() ){
 	  // no, so try to detect it!
 	  UnicodeString temp = element->text( inputclass );
+	  temp.findAndReplace( eosmark, "" );
 	  temp.toLower();
 	  lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
 	  if ( lan.empty() ){
@@ -840,8 +846,7 @@ namespace Tokenizer {
       LOG << "[tokenizeSentenceElement] Processing sentence:"
 		      << line << endl;
     }
-    bool bos = true;
-    handle_line ( line, bos );
+    tokenizeLine( line, lang );
     // We may have embedded punctuation.
     // In fact we should insert a paragraph then!
     // For now we just collect all in one long 'sentence'
@@ -1828,16 +1833,16 @@ namespace Tokenizer {
   }
 
   // string wrapper
-  int TokenizerClass::tokenizeLine( const string& s,
-				    const string& lang ){
-    UnicodeString uinputstring = convert( s, inputEncoding );
-    return tokenizeLine( uinputstring, lang, "" );
+  void TokenizerClass::tokenizeLine( const string& s ){
+    UnicodeString us = convert( s, inputEncoding );
+    bool bos = true;
+    tokenize_one_line( us, bos );
   }
 
   // UnicodeString wrapper
-  int TokenizerClass::tokenizeLine( const UnicodeString& u,
-				    const string& lang ){
-    return tokenizeLine( u, lang, "" );
+  void TokenizerClass::tokenizeLine( const UnicodeString& us ){
+    bool bos = true;
+    tokenize_one_line( us, bos );
   }
 
   bool u_isemo( UChar32 c ){
@@ -1960,8 +1965,7 @@ namespace Tokenizer {
   }
 
   int TokenizerClass::tokenizeLine( const UnicodeString& originput,
-				    const string& _lang,
-				    const string& id ){
+				    const string& _lang ){
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";
@@ -1983,14 +1987,8 @@ namespace Tokenizer {
       input = settings[lang]->filter.filter( input );
     }
     if ( input.isBogus() ){ //only tokenize valid input
-      if ( id.empty() ){
-	LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
-	    << "   '" << input << "'" << endl;
-      }
-      else {
-	LOG << "ERROR: Invalid UTF-8 in element:" << id << endl
-	    << "   '" << input << "'" << endl;
-      }
+      LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
+	  << "   '" << input << "'" << endl;
       return 0;
     }
     int32_t len = input.countChar32();
@@ -2115,18 +2113,10 @@ namespace Tokenizer {
       ++i;
       ++tok_size;
       if ( tok_size > 2500 ){
-	if ( id.empty() ){
-	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
-	      << "in line: " << linenum << ". Skipped ..." << endl;
-	  LOG << "The line starts with " << UnicodeString( word, 0, 75 )
-	      << "..." << endl;
-	}
-	else {
-	  LOG << "Ridiculously long word/token (over 2500 characters) detected "
-	      << "in element: " << id << ". Skipped ..." << endl;
-	  LOG << "The text starts with " << UnicodeString( word, 0, 75 )
-	      << "..." << endl;
-	}
+	LOG << "Ridiculously long word/token (over 2500 characters) detected "
+	    << "in line: " << linenum << ". Skipped ..." << endl;
+	LOG << "The line starts with " << UnicodeString( word, 0, 75 )
+	    << "..." << endl;
 	return 0;
       }
     }
