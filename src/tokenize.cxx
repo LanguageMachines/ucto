@@ -381,6 +381,78 @@ namespace Tokenizer {
     return result;
   }
 
+  vector<Token> TokenizerClass::tokenize_line( const string& line ){
+    // tokenize a line of input into a token vector
+    // consumes the WHOLE line
+    if ( tokDebug > 0 ) {
+      LOG << "[tokenize_line] Read input line '"
+	  << TiCC::format_nonascii( line ) << "'" << endl;
+    }
+    UnicodeString input_line;
+    if ( !line.empty() ){
+      input_line = convert( line, inputEncoding );
+      if ( sentenceperlineinput ){
+	input_line += " " + eosmark;
+      }
+    }
+    else {
+      if ( sentenceperlineinput ){
+	input_line = eosmark;
+      }
+    }
+    if ( passthru ){
+      bool bos = true;
+      passthruLine( input_line, bos );
+    }
+    else {
+      string language;
+      if ( tc ){
+	if ( tokDebug > 3 ){
+	  LOG << "use textCat to guess language from: "
+	      << input_line << endl;
+	}
+	UnicodeString temp = input_line;
+	temp.toLower();
+	string lan = tc->get_language( TiCC::UnicodeToUTF8(temp) );
+	if ( settings.find( lan ) != settings.end() ){
+	  if ( tokDebug > 3 ){
+	    LOG << "found a supported language: " << lan << endl;
+	  }
+	}
+	else {
+	  if ( tokDebug > 3 ){
+	    LOG << "found an unsupported language: " << lan << endl;
+	  }
+	  lan = "default";
+	}
+	language = lan;
+      }
+      tokenizeLine( input_line, language );
+    }
+    int numS = countSentences(true); //count all sentences in token buffer
+    if ( numS > 0 ) {
+      // 1 or more sentences in the buffer.
+      if  (tokDebug > 0) {
+	LOG << "[tokenize_line] " << numS
+	    << " sentence(s) in buffer, gathering all..." << endl;
+      }
+      vector<Token> outputTokens;
+      for ( int i=0; i < numS; ++i ){
+	vector<Token> tokens = popSentence();
+	outputTokens.insert( outputTokens.end(), tokens.begin(), tokens.end() );
+      }
+      // extract the first 1
+      return outputTokens;
+    }
+    else {
+      if  (tokDebug > 0) {
+	LOG << "[tokenize_line] nothing found" << endl;
+      }
+      vector<Token> result;
+      return result;
+    }
+  }
+
   string TokenizerClass::tokenizeSentenceStream( istream& IN,
 						 const string& lang ) {
     vector<Token> tokens = tokenizeOneSentence( IN, lang );

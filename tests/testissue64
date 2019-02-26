@@ -1,6 +1,26 @@
 #/bin/sh
 
+bindir=/usr/local/bin
+
+if [ ! -e $bindir/folialint ]
+then
+   bindir=/home/sloot/usr/local/bin
+   if [ ! -e $bindir/folialint ]
+   then
+      bindir=/exp/sloot/usr/local/bin
+      if [ ! -e $bindir/folialint ]
+      then
+         echo "cannot find executable for folialint"
+      exit
+      fi
+   fi
+fi
 
 exe=../src/ucto
 
-$exe issue064.xml -L nld
+$exe issue064a.xml -L nld outa.xml
+$bindir/folialint outa.xml 2>&1
+$exe issue064b.xml -L nld outb.xml
+$bindir/folialint outb.xml 2>&1
+$exe issue064c.xml -L nld outc.xml
+$bindir/folialint outc.xml 2>&1

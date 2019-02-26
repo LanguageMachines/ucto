@@ -36,4 +36,67 @@
   </text>
 </FoLiA>
 
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="bug" generator="libfolia-v0.11" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2015-05-26T04:47:24" set="tokconfig-nld"/>
+    </annotations>
+  </metadata>
+  <text xml:id="bug.text">
+    <div xml:id="bug.text.div.2">
+      <t>Kinderjaren.</t>
+      <head xml:id="bug.text.div.2.head.1">
+        <t>Kinderjaren.</t>
+	<s xml:id="bug.p.1.s.1">
+          <w xml:id="bug.p.1.s.1.w.1" class="WORD" space="no">
+            <t>Kinderjaren</t>
+          </w>
+          <w xml:id="bug.p.1.s.1.w.2" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </head>
+    </div>
+  </text>
+</FoLiA>
 
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="bug" generator="libfolia-v0.11" version="1.5">
+  <metadata type="native">
+    <annotations>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2015-05-26T04:47:24" set="tokconfig-nld"/>
+    </annotations>
+  </metadata>
+  <text xml:id="bug.text">
+    <div xml:id="bug.text.div.1">
+      <t>Kinderjaren. In Nijmegen.</t>
+      <head xml:id="bug.text.div.1.head.1">
+        <t>Kinderjaren.</t>
+        <s xml:id="bug.text.div.1.head.1.s.1">
+          <w xml:id="bug.text.div.1.head.1.s.1.w.1" class="WORD" space="no">
+            <t>Kinderjaren</t>
+          </w>
+          <w xml:id="bug.text.div.1.head.1.s.1.w.2" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+      </head>
+      <div xml:id="bug.text.div.2">
+	<t>In Nijmegen.</t>
+        <s xml:id="bug.text.div.1.div.2.s.1">
+          <w xml:id="bug.text.div.1.div.2.s.1.w.1" class="WORD">
+            <t>In</t>
+          </w>
+          <w xml:id="bug.text.div.1.div.2.s.1.w.2" class="WORD" space="no">
+            <t>Nijmegen</t>
+          </w>
+          <w xml:id="bug.text.div.1.div.2.s.1.w.3" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+        </s>
+
+      </div>
+    </div>
+  </text>
+</FoLiA>

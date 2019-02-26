@@ -156,6 +156,8 @@ namespace Tokenizer {
     int tokenizeLine( const std::string&,
 		      const std::string& = "default" ); // UTF8 chars
 
+    std::vector<Token> tokenize_line( const std::string& );
+
     // convert the sentence in the token vector to a string (UTF-8 encoded)
     std::string getString( const std::vector<Token>& );
 
