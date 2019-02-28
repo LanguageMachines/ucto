@@ -71,8 +71,8 @@ namespace Tokenizer {
 
   const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset";
 
-  std::string Version() { return VERSION; }
-  std::string VersionName() { return PACKAGE_STRING; }
+  const std::string Version() { return VERSION; }
+  const std::string VersionName() { return PACKAGE_STRING; }
 
   class uRangeError: public std::out_of_range {
   public:
@@ -124,8 +124,8 @@ namespace Tokenizer {
 
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
-		TokenRole _role, const string& _lc ):
-    type(_type), us(_s), role(_role), lc(_lc) {
+		TokenRole _role, const string& _lang_code ):
+    type(_type), us(_s), role(_role), lang_code(_lang_code) {
     //    cerr << "Created " << *this << endl;
   }
 
@@ -134,7 +134,7 @@ namespace Tokenizer {
   std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
-    os << t.type << " : " << t.role  << ":" << t.us << " (" << t.lc << ")";
+    os << t.type << " : " << t.role  << ":" << t.us << " (" << t.lang_code << ")";
     return os;
   }
 
@@ -431,11 +431,6 @@ namespace Tokenizer {
     }
   }
 #endif
-
-  string TokenizerClass::tokenizeSentenceStream( istream& IN ){
-    vector<Token> tokens = tokenizeOneSentence( IN );
-    return getString( tokens );
-  }
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
@@ -980,7 +975,7 @@ namespace Tokenizer {
 	}
 	folia::FoliaElement *s = new folia::Sentence( args, root->doc() );
 	root->append( s );
-	string tok_lan = token.lc;
+	string tok_lan = token.lang_code;
 	auto it = settings.find(tok_lan);
 	if ( it == settings.end() ){
 	  tok_lan = root->doc()->language();
@@ -1013,7 +1008,7 @@ namespace Tokenizer {
 	  args["set"] = "passthru";
 	}
 	else {
-	  auto it = settings.find(token.lc);
+	  auto it = settings.find(token.lang_code);
 	  if ( it == settings.end() ){
 	    it = settings.find("default");
 	  }
@@ -1649,7 +1644,7 @@ namespace Tokenizer {
       // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
       // fix this up to avoid sentences containing only punctuation
       // also we don't want a BEGINQUOTE to be an ENDOFSENTENCE
-      if (true ){
+      if ( tokDebug > 2 ){
 	LOG << method << " fixup-end i="<< i << " word=["
 	    << tokens[i].us
 	    << "] type=" << tokens[i].type
@@ -1667,12 +1662,6 @@ namespace Tokenizer {
       else
 	break;
     }
-  }
-
-  void TokenizerClass::passthruLine( const string& s, bool& bos ) {
-    // string wrapper
-    UnicodeString us = convert( s, inputEncoding );;
-    passthruLine( us, bos );
   }
 
   void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
@@ -2395,11 +2384,11 @@ namespace Tokenizer {
   string get_language( const vector<Token>& tv ){
     string result = "default";
     for ( const auto& t : tv ){
-      if ( !t.lc.empty() && t.lc != "default" ){
+      if ( !t.lang_code.empty() && t.lang_code != "default" ){
 	if ( result == "default" ){
-	  result = t.lc;
+	  result = t.lang_code;
 	}
-	if ( result != t.lc ){
+	if ( result != t.lang_code ){
 	  throw logic_error( "ucto: conflicting language(s) assigned" );
 	}
       }

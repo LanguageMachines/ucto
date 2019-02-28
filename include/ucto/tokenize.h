@@ -43,8 +43,8 @@ namespace Tokenizer {
 
   using namespace icu;
 
-  std::string Version();
-  std::string VersionName();
+  const std::string Version();
+  const std::string VersionName();
 
   enum TokenRole {
     NOROLE                      = 0,
@@ -95,7 +95,7 @@ namespace Tokenizer {
 	   const UnicodeString&,
 	   TokenRole role = NOROLE,
 	   const std::string& = "" );
-    std::string lc;                // ISO 639-3 language code
+    std::string lang_code;                // ISO 639-3 language code
     std::string texttostring();
     std::string typetostring();
   };
@@ -113,60 +113,41 @@ namespace Tokenizer {
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
-    // Tokenize from input stream to a FoLiA document
+    // Tokenize from input stream with text to a FoLiA document
     folia::Document *tokenize( std::istream& );
-    //
+
     // Tokenize a folia document
     bool tokenize( folia::Document& );
 
-    // Tokenize from an input stream to a token vector (representing a sentence)
+    // Tokenize from an input text stream to a token vector
+    // (representing a sentence)
     // non greedy. Stops after the first full sentence is returned.
     // may be called multiple times until EOF
     std::vector<Token> tokenizeOneSentence( std::istream& );
 
-    std::vector<Token> tokenizeStream( std::istream& is,
-				       const std::string& = "default" ){
-      // backward compatability
-      return tokenizeOneSentence( is );
-    }
-
-
-    // Tokenize from an input stream to a UTF8 string (representing a sentence)
-    // non greedy. Stops after the first full sentence is detected.
-    // NOTE: may return more then one sentence, when more sentences are present
-    // on 1 line!
-    // should be called multiple times until EOF
-    std::string tokenizeSentenceStream( std::istream& );
-
-    //Tokenize from input file to output file (support xmlin + xmlout)
+    // tokenize from file to file
     void tokenize( const std::string&, const std::string& );
 
     //Tokenize from input stream to output stream
     void tokenize( std::istream&, std::ostream& );
-    void tokenize( std::istream* in, std::ostream* out){
-      // for backward compatability
-      return tokenize( *in, *out );};
 
-    // Tokenize a line (a line is NOT a sentence, but an arbitrary string
+    // Tokenize a line (a line is NOT just a sentence, but an arbitrary string
     //                  of characters, inclusive EOS markers, Newlines etc.)
-    // you may
-    // OR use popSentence() repeatedly to extract all sentences as vecors
+    //
+    // OR use popSentence() repeatedly to extract all sentences as vectors
     //    using getString() to extract the UTF8 value of that sentence
     // OR getSentences() to get ALL sentences as UTF8 strings in a vector
     void tokenizeLine( const UnicodeString& );
     void tokenizeLine( const std::string& );
 
-    // convert the sentence in the token vector to a string (UTF-8 encoded)
-    std::string getString( const std::vector<Token>& );
-
     // extract 1 sentence from Token vector;
     std::vector<Token> popSentence();
 
-    //Get all sentences as a vector of strings (UTF-8 encoded)
-    std::vector<std::string> getSentences();
+    // convert the sentence in a token vector to a string (UTF-8 encoded)
+    std::string getString( const std::vector<Token>& );
 
-    void passthruLine( const UnicodeString&, bool& );
-    void passthruLine( const std::string&, bool& );
+    // extract all sentences as a vector of strings (UTF-8 encoded)
+    std::vector<std::string> getSentences();
 
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };
@@ -231,6 +212,7 @@ namespace Tokenizer {
     std::string getInputEncoding() const { return inputEncoding; };
 
     void setLanguage( const std::string& l ){ default_language = l; };
+    std::string getLanguage() const { return default_language; };
 
     // set eos marker
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
@@ -244,14 +226,15 @@ namespace Tokenizer {
     bool setSentencePerLineInput( bool b=true ) { bool t = sentenceperlineinput; sentenceperlineinput = b; return t; };
     bool getSentencePerLineInput() const { return sentenceperlineinput; }
 
-    bool getXMLOutput() const { return xmlout; }
-    bool getXMLInput() const { return xmlin; }
-
     bool setXMLOutput( bool b ) {
       bool t = xmlout; xmlout = b; return t; }
     bool setXMLOutput( bool b, const std::string& id ) {
       setDocID( id ); return setXMLOutput(b); }
+    bool getXMLOutput() const { return xmlout; }
+
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
+    bool getXMLInput() const { return xmlin; }
+
 
     const std::string getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
@@ -274,6 +257,9 @@ namespace Tokenizer {
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies
     TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
+
+    void passthruLine( const UnicodeString&, bool& );
+    void passthruLine( const std::string&, bool& );
 
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
     int countSentences(bool forceentirebuffer = false);
