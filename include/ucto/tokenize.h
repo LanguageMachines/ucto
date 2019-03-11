@@ -119,6 +119,8 @@ namespace Tokenizer {
     // Tokenize a folia document
     bool tokenize( folia::Document& );
 
+    folia::Document *tokenize_folia( const std::string& );
+
     // Tokenize from an input text stream to a token vector
     // (representing a sentence)
     // non greedy. Stops after the first full sentence is returned.

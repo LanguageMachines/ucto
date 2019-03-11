@@ -2396,4 +2396,16 @@ namespace Tokenizer {
     return result;
   }
 
+  folia::Document *TokenizerClass::tokenize_folia( const string& buffer ){
+    folia::Document *doc = new folia::Document();
+    if ( buffer.find("<?xml " ) == 0 ){
+      doc->readFromString( buffer );
+    }
+    else {
+      doc->readFromFile( buffer );
+    }
+    tokenize( *doc );
+    return doc;
+  }
+
 } //namespace Tokenizer
