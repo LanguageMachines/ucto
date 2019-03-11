@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:21" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -64,14 +64,13 @@
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:21" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">eng</meta>
   </metadata>
@@ -131,15 +130,14 @@
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:21" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:21" set="tokconfig-eng"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -214,17 +212,16 @@
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.20" version="1.5.1">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.16" version="1.5.1">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-deu"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-eng"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-fra"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-spa"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-deu"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-fra"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-spa"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
@@ -917,14 +914,13 @@
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.20" version="1.5.1">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.16" version="1.5.1">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2018-11-01T14:55:42" set="tokconfig-eng"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:22" set="tokconfig-eng"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
@@ -1102,5 +1098,4 @@
     </p>
   </text>
 </FoLiA>
-
 

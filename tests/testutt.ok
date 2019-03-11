@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-23T09:48:17" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:35:26" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -215,14 +215,13 @@
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
       <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-10-23T09:48:17" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:35:26" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -282,5 +281,4 @@
     </event>
   </text>
 </FoLiA>
-
 

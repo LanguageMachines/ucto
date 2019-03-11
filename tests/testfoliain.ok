@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:50" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -61,13 +61,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:50" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -125,13 +124,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -174,13 +172,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -234,13 +231,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -258,14 +254,13 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="1.4.987">
   <metadata type="native">
     <annotations>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -293,13 +288,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -326,13 +320,12 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -359,12 +352,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -426,12 +418,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -491,12 +482,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -558,12 +548,11 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -633,12 +622,11 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -701,12 +689,11 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.3">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="1.3">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -802,12 +789,11 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="1.5">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -903,13 +889,12 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="BLA" generator="libfolia-v1.11" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="BLA" generator="libfolia-v1.16" version="1.5">
   <metadata type="native">
     <annotations>
       <style-annotation annotatortype="auto" set="unknown"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -970,12 +955,11 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.4">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.16" version="1.4">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:36:51" set="tokconfig-nld"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
@@ -1010,5 +994,4 @@ Dit is een tekst in een note</t>
     </div>
   </text>
 </FoLiA>
-
 
