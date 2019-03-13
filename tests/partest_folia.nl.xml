@@ -3,13 +3,15 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.16" version="1.5.1">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:29:53" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T11:56:30" set="tokconfig-nld"/>
+      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="test.text">
     <p xml:id="test.p.1">
       <s xml:id="test.p.1.s.1">
+        <lang class="nld"/>
         <w xml:id="test.p.1.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -39,6 +41,7 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.2">
+        <lang class="nld"/>
         <w xml:id="test.p.1.s.2.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -68,6 +71,7 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.3">
+        <lang class="nld"/>
         <w xml:id="test.p.1.s.3.w.1" class="WORD">
           <t>En</t>
         </w>
@@ -87,6 +91,7 @@
     </p>
     <p xml:id="test.p.2">
       <s xml:id="test.p.2.s.1">
+        <lang class="nld"/>
         <w xml:id="test.p.2.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -118,6 +123,7 @@
     </p>
     <p xml:id="test.p.3">
       <s xml:id="test.p.3.s.1">
+        <lang class="nld"/>
         <w xml:id="test.p.3.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -138,6 +144,7 @@
         </w>
       </s>
       <s xml:id="test.p.3.s.2">
+        <lang class="nld"/>
         <w xml:id="test.p.3.s.2.w.1" class="WORD">
           <t>Deze</t>
         </w>

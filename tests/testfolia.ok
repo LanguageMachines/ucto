@@ -3,13 +3,15 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.16" version="1.5.1">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:54" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T11:54:15" set="tokconfig-nld"/>
+      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
       <s xml:id="foliatest.p.1.s.1">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
           <t>Die</t>
         </w>
@@ -39,33 +41,35 @@
         </w>
       </s>
       <s xml:id="foliatest.p.1.s.2">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
           <t>We</t>
         </w>
         <w xml:id="foliatest.p.1.s.2.w.2" class="WORD">
           <t>zijn</t>
         </w>
-        <w xml:id="foliatest.p.1.s.2.w.3" class="PUNCTUATION" space="no">
-          <t>"</t>
-        </w>
         <quote xml:id="foliatest.p.1.s.2.quote.1">
-          <w xml:id="foliatest.p.1.s.2.w.4" class="WORD" space="no">
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.1" class="PUNCTUATION" space="no">
+            <t>"</t>
+          </w>
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.2" class="WORD" space="no">
             <t>errug</t>
           </w>
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.3" class="PUNCTUATION">
+            <t>"</t>
+          </w>
         </quote>
-        <w xml:id="foliatest.p.1.s.2.w.5" class="PUNCTUATION">
-          <t>"</t>
-        </w>
-        <w xml:id="foliatest.p.1.s.2.w.6" class="WORD" space="no">
+        <w xml:id="foliatest.p.1.s.2.w.3" class="WORD" space="no">
           <t>benieuwd</t>
         </w>
-        <w xml:id="foliatest.p.1.s.2.w.7" class="PUNCTUATION">
+        <w xml:id="foliatest.p.1.s.2.w.4" class="PUNCTUATION">
           <t>.</t>
         </w>
       </s>
     </p>
     <p xml:id="foliatest.p.2">
       <s xml:id="foliatest.p.2.s.1">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
           <t>De</t>
         </w>
@@ -124,13 +128,15 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="foliatest" generator="libfolia-v1.16" version="1.5.1">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-11T15:34:54" set="tokconfig-nld"/>
+      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T11:54:15" set="tokconfig-nld"/>
+      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
     </annotations>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
       <s xml:id="foliatest.p.1.s.1">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
           <t>Die</t>
         </w>
@@ -160,33 +166,35 @@
         </w>
       </s>
       <s xml:id="foliatest.p.1.s.2">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
           <t>We</t>
         </w>
         <w xml:id="foliatest.p.1.s.2.w.2" class="WORD">
           <t>zijn</t>
         </w>
-        <w xml:id="foliatest.p.1.s.2.w.3" class="PUNCTUATION" space="no">
-          <t>"</t>
-        </w>
         <quote xml:id="foliatest.p.1.s.2.quote.1">
-          <w xml:id="foliatest.p.1.s.2.w.4" class="WORD" space="no">
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.1" class="PUNCTUATION" space="no">
+            <t>"</t>
+          </w>
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.2" class="WORD" space="no">
             <t>errug</t>
           </w>
+          <w xml:id="foliatest.p.1.s.2.quote.1.w.3" class="PUNCTUATION">
+            <t>"</t>
+          </w>
         </quote>
-        <w xml:id="foliatest.p.1.s.2.w.5" class="PUNCTUATION">
-          <t>"</t>
-        </w>
-        <w xml:id="foliatest.p.1.s.2.w.6" class="WORD" space="no">
+        <w xml:id="foliatest.p.1.s.2.w.3" class="WORD" space="no">
           <t>benieuwd</t>
         </w>
-        <w xml:id="foliatest.p.1.s.2.w.7" class="PUNCTUATION">
+        <w xml:id="foliatest.p.1.s.2.w.4" class="PUNCTUATION">
           <t>.</t>
         </w>
       </s>
     </p>
     <p xml:id="foliatest.p.2">
       <s xml:id="foliatest.p.2.s.1">
+        <lang class="nld"/>
         <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
           <t>De</t>
         </w>

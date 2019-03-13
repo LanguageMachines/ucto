@@ -113,13 +113,14 @@ namespace Tokenizer {
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
 
-    // Tokenize from input stream with text to a FoLiA document
+    // Tokenize from input stream with text OR FoLiA to a FoLiA document
+    folia::Document *tokenize_folia( const std::string& );
+    // Tokenize from input stream with text to a FoLiA document (
     folia::Document *tokenize( std::istream& );
 
-    // Tokenize a folia document
-    bool tokenize( folia::Document& );
-
-    folia::Document *tokenize_folia( const std::string& );
+    // Tokenize from input stream with text OR FoLiA to a FoLiA document and
+    //   save it
+    void tokenize_folia( const std::string&, const std::string&  );
 
     // Tokenize from an input text stream to a token vector
     // (representing a sentence)
@@ -263,6 +264,20 @@ namespace Tokenizer {
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
 
+    folia::Document *start_document( const std::string& ) const;
+    folia::FoliaElement *append_to_folia( folia::FoliaElement *root,
+					  const std::vector<Token>& tv,
+					  int& p_count ) const;
+
+    std::vector<folia::Word*> add_words( folia::Sentence*,
+					 const std::string& tok_set,
+					 const std::vector<Token>& toks ) const;
+    void append_to_sentence( folia::Sentence *,
+			     const std::vector<Token>& ) const;
+    void handle_one_sentence( folia::Sentence *, int& );
+    void handle_one_paragraph( folia::Paragraph *, int& );
+    void handle_one_text_parent( folia::FoliaElement *, int& );
+
     //Processes tokens and initialises the sentence buffer. Returns the amount of sentences found
     int countSentences(bool forceentirebuffer = false);
     //count the number of sentences (only after detectSentenceBounds) (does some extra validation as well)
@@ -295,12 +310,6 @@ namespace Tokenizer {
     std::string checkBOM( std::istream& );
     void outputTokensDoc_init( folia::Document& ) const;
 
-    int outputTokensXML( folia::FoliaElement *,
-			 const std::vector<Token>& ,
-			 int = 0 ) const;
-    void tokenizeElement( folia::FoliaElement * );
-    void tokenizeSentenceElement( folia::FoliaElement *,
-				  const std::string& );
     TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
