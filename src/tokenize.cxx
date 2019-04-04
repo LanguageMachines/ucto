@@ -569,8 +569,7 @@ namespace Tokenizer {
     folia::KWargs args;
     args["class"] = lan;
     args["set"] = ISO_SET;
-    folia::LangAnnotation *node = new folia::LangAnnotation( e->doc() );
-    node->setAttributes( args );
+    folia::LangAnnotation *node = new folia::LangAnnotation( args, e->doc() );
     e->replace( node );
   }
 
