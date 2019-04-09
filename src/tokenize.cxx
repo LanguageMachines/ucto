@@ -37,6 +37,7 @@
 #include "ticcutils/StringOps.h"
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/Unicode.h"
+#include "ticcutils/Timer.h"
 #include "ucto/my_textcat.h"
 
 #define DO_READLINE
@@ -304,28 +305,44 @@ namespace Tokenizer {
       LOG << "start document!!!" << endl;
     }
     if ( passthru ){
-      doc->declare( folia::AnnotationType::TOKEN, "passthru", "annotator='ucto', annotatortype='auto', datetime='now()'" );
+      folia::KWargs args;
+      args["name"] = "ucto";
+      args["id"] = "p1";
+      args["version"] = PACKAGE_VERSION;
+      folia::processor *proc = doc->add_processor( args );
+      args.clear();
+      args["processor"] = "p1";
+      args["datetime"] = "now()";
+      doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
+      folia::KWargs args;
+      args["name"] = "ucto";
+      args["id"] = "p1";
+      args["version"] = PACKAGE_VERSION;
+      folia::processor *proc = doc->add_processor( args );
+      args.clear();
+      args["processor"] = "p1";
+      args["datetime"] = "now()";
       for ( const auto& s : settings ){
 	if ( tokDebug > 3 ){
 	  LOG << "language: " << s.first << endl;
 	}
 	doc->declare( folia::AnnotationType::TOKEN,
 		      s.second->set_file,
-		      "annotator='ucto', annotatortype='auto', datetime='now()'");
+		      args );
 	if ( tokDebug > 3 ){
 	  LOG << "added token-annotation for: '"
 	      << s.second->set_file << "'" << endl;
 	}
-	doc->declare( folia::AnnotationType::LANG,
-		      ISO_SET, "annotator='ucto'" );
       }
+      doc->declare( folia::AnnotationType::LANG,
+		    ISO_SET, "annotator='ucto'" );
+
     }
     folia::KWargs args;
     args["xml:id"] = doc->id() + ".text";
-    folia::Text *text = new folia::Text( args );
-    doc->addText( text );
+    doc->create_root<folia::Text>( args );
     return doc;
   }
 
