@@ -6,7 +6,9 @@
       <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
-      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset">
+        <annotator processor="p1"/>
+      </lang-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
@@ -138,7 +140,9 @@
       <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
-      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset">
+        <annotator processor="p1"/>
+      </lang-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">

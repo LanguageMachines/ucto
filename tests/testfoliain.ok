@@ -4,7 +4,7 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:47" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -75,7 +75,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:47" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -146,7 +146,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:47" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -202,7 +202,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:47" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -269,7 +269,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:47" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -301,7 +301,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -342,7 +342,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -382,7 +382,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -421,7 +421,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -495,7 +495,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -567,7 +567,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -641,7 +641,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -717,7 +717,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -792,7 +792,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -900,7 +900,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -1009,7 +1009,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <style-annotation set="unknown"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
@@ -1081,7 +1081,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T15:49:48" set="tokconfig-nld">
+      <token-annotation set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>

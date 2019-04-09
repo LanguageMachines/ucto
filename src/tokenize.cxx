@@ -309,10 +309,9 @@ namespace Tokenizer {
       args["name"] = "ucto";
       args["id"] = "p1";
       args["version"] = PACKAGE_VERSION;
-      folia::processor *proc = doc->add_processor( args );
+      doc->add_processor( args );
       args.clear();
       args["processor"] = "p1";
-      args["datetime"] = "now()";
       doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
@@ -320,10 +319,9 @@ namespace Tokenizer {
       args["name"] = "ucto";
       args["id"] = "p1";
       args["version"] = PACKAGE_VERSION;
-      folia::processor *proc = doc->add_processor( args );
+      doc->add_processor( args );
       args.clear();
       args["processor"] = "p1";
-      args["datetime"] = "now()";
       for ( const auto& s : settings ){
 	if ( tokDebug > 3 ){
 	  LOG << "language: " << s.first << endl;
@@ -337,7 +335,8 @@ namespace Tokenizer {
 	}
       }
       doc->declare( folia::AnnotationType::LANG,
-		    ISO_SET, "annotator='ucto'" );
+		    ISO_SET,
+		    args );
 
     }
     folia::KWargs args;
@@ -846,7 +845,6 @@ namespace Tokenizer {
 	  sent->doc()->add_processor( args );
 	  args.clear();
 	  args["processor"] = "p1";
-	  args["datetime"] = "now()";
 	  sent->doc()->declare( folia::AnnotationType::TOKEN,
 				tok_set,
 				args );
@@ -1083,7 +1081,6 @@ namespace Tokenizer {
       proc.doc()->add_processor( args );
       args.clear();
       args["processor"] = "p1";
-      args["datetime"] = "now()";
       proc.declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
@@ -1108,7 +1105,6 @@ namespace Tokenizer {
 	proc.doc()->add_processor( args );
 	args.clear();
 	args["processor"] = "p1";
-	args["datetime"] = "now()";
 	proc.doc()->declare( folia::AnnotationType::TOKEN,
 			     "tokconfig-nld",
 			     args );
