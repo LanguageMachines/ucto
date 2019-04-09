@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <event-annotation annotator="ucto" set="event"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T12:01:38" set="tokconfig-nld"/>
+      <token-annotation datetime="2019-04-09T15:53:02" set="tokconfig-nld">
+        <annotator processor="p1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="p1" name="ucto" version="0.15">
+        <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -229,14 +236,21 @@
 </FoLiA>
 
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.16" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <event-annotation annotator="ucto" annotatortype="auto" set="event"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <event-annotation annotator="ucto" set="event"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T12:01:38" set="tokconfig-nld"/>
+      <token-annotation datetime="2019-04-09T15:53:02" set="tokconfig-nld">
+        <annotator processor="p1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="p1" name="ucto" version="0.15">
+        <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">

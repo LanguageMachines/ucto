@@ -834,12 +834,23 @@ namespace Tokenizer {
       }
       if ( !sent->doc()->isDeclared( folia::AnnotationType::LANG ) ){
 	sent->doc()->declare( folia::AnnotationType::LANG,
-			    ISO_SET, "annotator='ucto'" );
+			      ISO_SET, "annotator='ucto'" );
       }
       if ( !tok_set.empty() ){
-	sent->doc()->declare( folia::AnnotationType::TOKEN,
-			      tok_set,
-			      "annotator='ucto', annotatortype='auto', datetime='now()'");
+	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
+				     tok_set ) ){
+	  folia::KWargs args;
+	  args["name"] = "ucto";
+	  args["id"] = "p1";
+	  args["version"] = PACKAGE_VERSION;
+	  sent->doc()->add_processor( args );
+	  args.clear();
+	  args["processor"] = "p1";
+	  args["datetime"] = "now()";
+	  sent->doc()->declare( folia::AnnotationType::TOKEN,
+				tok_set,
+				args );
+	}
       }
       vector<folia::Word*> wv = add_words( sent, tok_set, toks );
     }
@@ -1065,8 +1076,15 @@ namespace Tokenizer {
     }
     folia::TextProcessor proc( infile_name );
     if ( passthru ){
-      proc.declare( folia::AnnotationType::TOKEN, "passthru",
-		    "annotator='ucto', annotatortype='auto', datetime='now()'" );
+      folia::KWargs args;
+      args["name"] = "ucto";
+      args["id"] = "p1";
+      args["version"] = PACKAGE_VERSION;
+      proc.doc()->add_processor( args );
+      args.clear();
+      args["processor"] = "p1";
+      args["datetime"] = "now()";
+      proc.declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
       if ( !proc.is_declared( folia::AnnotationType::LANG ) ){
@@ -1081,9 +1099,20 @@ namespace Tokenizer {
 	LOG << "[WARNING] cannot set meta data language on FoLiA documents of type: "
 	    << proc.doc()->metadatatype() << endl;
       }
-      proc.declare( folia::AnnotationType::TOKEN,
-		    "tokconfig-nld",
-		    "annotator='ucto', annotatortype='auto', datetime='now()'");
+      if ( !proc.doc()->declared( folia::AnnotationType::TOKEN,
+				  "tokconfig-nld" ) ){
+	folia::KWargs args;
+	args["name"] = "ucto";
+	args["id"] = "p1";
+	args["version"] = PACKAGE_VERSION;
+	proc.doc()->add_processor( args );
+	args.clear();
+	args["processor"] = "p1";
+	args["datetime"] = "now()";
+	proc.doc()->declare( folia::AnnotationType::TOKEN,
+			     "tokconfig-nld",
+			     args );
+      }
     }
     if  ( tokDebug > 8){
       proc.set_dbg_stream( theErrLog );

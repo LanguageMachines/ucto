@@ -4,8 +4,15 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" datetime="2019-04-09T14:16:17" set="tokconfig-nld"/>
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-nld">
+        <annotator processor="p1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="p1" name="ucto" version="0.15">
+        <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -70,9 +77,18 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" datetime="2019-04-09T14:16:17" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" datetime="2019-04-09T14:16:17" set="tokconfig-eng"/>
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-nld">
+        <annotator processor="p1"/>
+      </token-annotation>
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-eng">
+        <annotator processor="p1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="p1" name="ucto" version="0.15">
+        <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+      </processor>
+    </provenance>
     <meta id="language">eng</meta>
   </metadata>
   <text xml:id="text">
@@ -137,9 +153,18 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation annotator="ucto" datetime="2019-04-09T14:16:17" set="tokconfig-nld"/>
-      <token-annotation annotator="ucto" datetime="2019-04-09T14:16:17" set="tokconfig-eng"/>
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-nld">
+        <annotator processor="p1"/>
+      </token-annotation>
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-eng">
+        <annotator processor="p1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="p1" name="ucto" version="0.15">
+        <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -218,19 +243,19 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.20" version="2.0.1">
   <metadata type="native">
     <annotations>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-nld">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-deu">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-deu">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-eng">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-eng">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-fra">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-fra">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-spa">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-spa">
         <annotator processor="p1"/>
       </token-annotation>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
@@ -937,10 +962,10 @@
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.20" version="2.0.1">
   <metadata type="native">
     <annotations>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-nld">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-nld">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation datetime="2019-04-09T14:16:17" set="tokconfig-eng">
+      <token-annotation datetime="2019-04-09T15:56:38" set="tokconfig-eng">
         <annotator processor="p1"/>
       </token-annotation>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
