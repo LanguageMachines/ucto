@@ -761,7 +761,6 @@ namespace Tokenizer {
       if ( !tok_set.empty() ){
       	args["set"] = tok_set;
       }
-      //      args["processor"] = "p1";
       folia::Word *w;
 #pragma omp critical (foliaupdate)
       {
@@ -851,29 +850,70 @@ namespace Tokenizer {
     else {
       // add tokenization, when applicable
       string tok_set;
+      Setting *sett = 0;;
       if ( toks[0].lang_code != "default" ){
 	tok_set = "tokconfig-" + tc_lc;
+	auto it = settings.find(tc_lc);
+	sett = it->second;
       }
       else if (default_language != "none" ) {
 	tok_set = "tokconfig-" + default_language;
+	auto it = settings.find(default_language);
+	sett = it->second;
       }
-      if ( !sent->doc()->isDeclared( folia::AnnotationType::LANG ) ){
-	sent->doc()->declare( folia::AnnotationType::LANG,
-			      ISO_SET, "annotator='ucto'" );
+      else {
+	auto it = settings.find("default");
+	sett = it->second;
+      }
+      cerr << "TOKSET+" << tok_set << endl;
+      if ( sett ){
+	cerr << "VERSION:" << sett->version << endl;
+      }
+      else {
+	cerr << "FAAL" <<  endl;
       }
       if ( !tok_set.empty() ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 				     tok_set ) ){
 	  folia::KWargs args;
 	  args["name"] = "ucto";
-	  args["id"] = "p1";
+	  string main_id = "p1";
+	  args["id"] = main_id;
 	  args["version"] = PACKAGE_VERSION;
-	  sent->doc()->add_processor( args );
+	  folia::processor *proc = sent->doc()->add_processor( args );
 	  args.clear();
-	  args["processor"] = "p1";
+	  args["name"] = "uctodata";
+	  string id = "p1.1";
+	  args["id"] = id;
+	  args["type"] = "datasource";
+	  args["version"] = data_version;
+	  args["generator"] = "NO";
+	  proc = sent->doc()->add_processor( args, proc );
+	  args.clear();
+	  string sub_id = id + ".1";
+	  args["name"] = tok_set;
+	  args["id"] = sub_id;
+	  args["type"] = "datasource";
+	  args["version"] = sett->version;
+	  args["generator"] = "NO";
+	  sent->doc()->add_processor( args, proc );
+	  args.clear();
+	  args["processor"] = main_id;
+	  args["alias"] = tok_set;
 	  sent->doc()->declare( folia::AnnotationType::TOKEN,
-				tok_set,
+				"https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + sett->set_file + ".foliaset.ttl",
 				args );
+	  if ( tokDebug >= 0 ){
+	    LOG << "added processor and token-annotation for: '"
+		<< sett->set_file << "'" << endl;
+	  }
+	  args.clear();
+	  args["processor"] = main_id;
+	  if ( !sent->doc()->isDeclared( folia::AnnotationType::LANG ) ){
+	    sent->doc()->declare( folia::AnnotationType::LANG,
+				  ISO_SET,
+				  args );
+	  }
 	}
       }
       vector<folia::Word*> wv = add_words( sent, tok_set, toks );
@@ -1121,19 +1161,6 @@ namespace Tokenizer {
       else {
 	LOG << "[WARNING] cannot set meta data language on FoLiA documents of type: "
 	    << proc.doc()->metadatatype() << endl;
-      }
-      if ( !proc.doc()->declared( folia::AnnotationType::TOKEN,
-				  "tokconfig-nld" ) ){
-	folia::KWargs args;
-	args["name"] = "ucto";
-	args["id"] = "p1";
-	args["version"] = PACKAGE_VERSION;
-	proc.doc()->add_processor( args );
-	args.clear();
-	args["processor"] = "p1";
-	proc.doc()->declare( folia::AnnotationType::TOKEN,
-			     "tokconfig-nld",
-			     args );
       }
     }
     if  ( tokDebug > 8){

@@ -4,13 +4,16 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -75,13 +78,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -146,13 +152,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -202,13 +211,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -269,13 +281,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
   </metadata>
@@ -301,13 +316,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <string-annotation set="alto"/>
       <correction-annotation annotator="TICCL" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -342,13 +360,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
   </metadata>
@@ -382,13 +403,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
   </metadata>
@@ -421,13 +445,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -495,13 +522,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -567,13 +597,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -641,13 +674,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -717,13 +753,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -792,13 +831,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -900,13 +942,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -1009,13 +1054,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
     <annotations>
       <style-annotation set="unknown"/>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -1081,13 +1129,16 @@ Gaat deze datum: 28-11-2011 goed?</t>
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>

@@ -4,13 +4,16 @@
   <metadata type="native">
     <annotations>
       <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
-      <token-annotation datetime="2019-04-09T16:06:04" set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>

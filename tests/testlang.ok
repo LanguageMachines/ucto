@@ -4,13 +4,16 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
@@ -77,16 +80,16 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation set="tokconfig-nld">
-        <annotator processor="p1"/>
-      </token-annotation>
-      <token-annotation set="tokconfig-eng">
+      <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">eng</meta>
@@ -103,19 +106,19 @@
         <s xml:id="s2">
           <t>This isn't dutch.</t>
           <lang class="eng"/>
-          <w xml:id="s2.w.1" class="WORD" set="tokconfig-eng">
+          <w xml:id="s2.w.1" class="WORD">
             <t>This</t>
           </w>
-          <w xml:id="s2.w.2" class="WORD" set="tokconfig-eng" space="no">
+          <w xml:id="s2.w.2" class="WORD" space="no">
             <t>is</t>
           </w>
-          <w xml:id="s2.w.3" class="SUFFIX" set="tokconfig-eng">
+          <w xml:id="s2.w.3" class="SUFFIX">
             <t>n't</t>
           </w>
-          <w xml:id="s2.w.4" class="WORD" set="tokconfig-eng" space="no">
+          <w xml:id="s2.w.4" class="WORD" space="no">
             <t>dutch</t>
           </w>
-          <w xml:id="s2.w.5" class="PUNCTUATION" set="tokconfig-eng">
+          <w xml:id="s2.w.5" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
@@ -123,22 +126,22 @@
       <p xml:id="p3">
         <s xml:id="s3">
           <t>En dit is zin 2.</t>
-          <w xml:id="s3.w.1" class="WORD" set="tokconfig-eng">
+          <w xml:id="s3.w.1" class="WORD">
             <t>En</t>
           </w>
-          <w xml:id="s3.w.2" class="WORD" set="tokconfig-eng">
+          <w xml:id="s3.w.2" class="WORD">
             <t>dit</t>
           </w>
-          <w xml:id="s3.w.3" class="WORD" set="tokconfig-eng">
+          <w xml:id="s3.w.3" class="WORD">
             <t>is</t>
           </w>
-          <w xml:id="s3.w.4" class="WORD" set="tokconfig-eng">
+          <w xml:id="s3.w.4" class="WORD">
             <t>zin</t>
           </w>
-          <w xml:id="s3.w.5" class="NUMBER" set="tokconfig-eng" space="no">
+          <w xml:id="s3.w.5" class="NUMBER" space="no">
             <t>2</t>
           </w>
-          <w xml:id="s3.w.6" class="PUNCTUATION" set="tokconfig-eng">
+          <w xml:id="s3.w.6" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
@@ -153,16 +156,19 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <lang-annotation annotator="ko" annotatortype="manual"/>
-      <token-annotation set="tokconfig-nld">
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
-      <token-annotation set="tokconfig-eng">
+      <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
         <annotator processor="p1"/>
       </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="p1" name="ucto" version="0.15">
         <processor xml:id="p1.generator" folia_version="2.0.1" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="p1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="p1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
       </processor>
     </provenance>
     <meta id="language">nld</meta>
