@@ -366,6 +366,7 @@ namespace Tokenizer {
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
+    std::string data_version; // the version of uctodata
     TextCat *tc;
   };
 

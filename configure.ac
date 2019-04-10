@@ -122,6 +122,10 @@ PKG_CHECK_MODULES(
 UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
 UCTODATA_DIR=$UCTODATA_PRE/share/ucto
 AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
+UCTODATA_VER=`pkg-config --modversion uctodata`
+AC_DEFINE_UNQUOTED( [UCTODATA_VERSION],
+	   	    ["${UCTODATA_VER}"],
+		    [the uctodata version])
 
 # Checks for library functions.
 

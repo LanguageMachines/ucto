@@ -317,23 +317,48 @@ namespace Tokenizer {
     else {
       folia::KWargs args;
       args["name"] = "ucto";
-      args["id"] = "p1";
+      string main_id = "p1";
+      args["id"] = main_id;
       args["version"] = PACKAGE_VERSION;
-      doc->add_processor( args );
+      folia::processor *proc = doc->add_processor( args );
       args.clear();
-      args["processor"] = "p1";
+      args["name"] = "uctodata";
+      string id = "p1.1";
+      args["id"] = id;
+      args["type"] = "datasource";
+      args["version"] = data_version;
+      args["generator"] = "NO";
+      proc  = doc->add_processor( args, proc );
+      args.clear();
+      int i=0;
       for ( const auto& s : settings ){
 	if ( tokDebug > 3 ){
 	  LOG << "language: " << s.first << endl;
 	}
+	if ( s.first == "default" ){
+	  continue;
+	}
+	string sub_id = id + "." + TiCC::toString( ++i );
+	folia::KWargs args;
+	args["name"] = s.second->set_file;
+	args["id"] = sub_id;
+	args["type"] = "datasource";
+	args["version"] = s.second->version;
+	args["generator"] = "NO";
+	doc->add_processor( args, proc );
+	args.clear();
+	args["processor"] = main_id;
+	args["alias"] = s.second->set_file;
 	doc->declare( folia::AnnotationType::TOKEN,
-		      s.second->set_file,
+		      "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + s.second->set_file + ".foliaset.ttl",
 		      args );
 	if ( tokDebug > 3 ){
-	  LOG << "added token-annotation for: '"
+	  LOG << "added processor and token-annotation for: '"
 	      << s.second->set_file << "'" << endl;
 	}
       }
+      args.clear();
+      args["processor"] = main_id;
       doc->declare( folia::AnnotationType::LANG,
 		    ISO_SET,
 		    args );
@@ -734,8 +759,9 @@ namespace Tokenizer {
 	args["textclass"] = outputclass;
       }
       if ( !tok_set.empty() ){
-	args["set"] = tok_set;
+      	args["set"] = tok_set;
       }
+      //      args["processor"] = "p1";
       folia::Word *w;
 #pragma omp critical (foliaupdate)
       {
@@ -2379,10 +2405,15 @@ namespace Tokenizer {
     }
   }
 
+  string get_dataversion(){
+    return UCTODATA_VERSION;
+  }
+
   bool TokenizerClass::init( const string& fname, const string& tname ){
     if ( tokDebug ){
       LOG << "Initiating tokeniser..." << endl;
     }
+    data_version = get_dataversion();
     Setting *set = new Setting();
     if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
       LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
@@ -2415,6 +2446,7 @@ namespace Tokenizer {
     if ( tokDebug > 0 ){
       LOG << "Initiating tokeniser from language list..." << endl;
     }
+    data_version = get_dataversion();
     Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( tokDebug > 0 ){
