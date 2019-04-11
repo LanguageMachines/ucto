@@ -778,7 +778,7 @@ namespace Tokenizer {
 	  w = new folia::Word( args, doc );
 	}
 	catch ( const exception& e ){
-	  cerr << "WHAT=" << e.what() << endl;
+	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
 	  exit(EXIT_FAILURE);
 	}
 	w->setutext( ws, outputclass );
@@ -825,7 +825,7 @@ namespace Tokenizer {
       s_la = sent->annotation<folia::LangAnnotation>()->cls();
     }
     string tc_lc = toks[0].lang_code;
-    if ( tokDebug >= 0 ){
+    if ( tokDebug > 0 ){
       LOG << "append_to_sentence()" << endl;
       LOG << "language code= " << tc_lc << endl;
       LOG << "default language = " << default_language << endl;
@@ -865,34 +865,41 @@ namespace Tokenizer {
 	auto it = settings.find("default");
 	sett = it->second;
       }
-      cerr << "TOKSET+" << tok_set << endl;
-      if ( sett ){
-	cerr << "VERSION:" << sett->version << endl;
-      }
-      else {
-	cerr << "FAAL" <<  endl;
+      if ( tokDebug > 1 ){
+	cerr << "TOKSET+" << tok_set << endl;
+	if ( sett ){
+	  cerr << "VERSION:" << sett->version << endl;
+	}
+	else {
+	  cerr << "FAAL" <<  endl;
+	}
+	cerr << "DECLARATIONS: " << sent->doc()->annotationdefaults() << endl;
       }
       if ( !tok_set.empty() ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 				     tok_set ) ){
-	  folia::KWargs args;
-	  args["name"] = "ucto";
 	  string main_id = "p1";
-	  args["id"] = main_id;
-	  args["version"] = PACKAGE_VERSION;
-	  folia::processor *proc = sent->doc()->add_processor( args );
-	  args.clear();
-	  args["name"] = "uctodata";
-	  string id = "p1.1";
-	  args["id"] = id;
-	  args["type"] = "datasource";
-	  args["version"] = data_version;
-	  args["generator"] = "NO";
-	  proc = sent->doc()->add_processor( args, proc );
-	  args.clear();
-	  string sub_id = id + ".1";
+	  string data_id = "p1.1";
+	  folia::processor *proc = sent->doc()->get_processor( main_id );
+	  if ( !proc ){
+	    folia::KWargs args;
+	    args["name"] = "ucto";
+	    args["id"] = main_id;
+	    args["version"] = PACKAGE_VERSION;
+	    proc = sent->doc()->add_processor( args );
+	    args["name"] = "uctodata";
+	    args["id"] = data_id;
+	    args["type"] = "datasource";
+	    args["version"] = data_version;
+	    args["generator"] = "NO";
+	    proc = sent->doc()->add_processor( args, proc );
+	  }
+	  else {
+	    proc = sent->doc()->get_processor( data_id );
+	  }
+	  folia::KWargs args;
 	  args["name"] = tok_set;
-	  args["id"] = sub_id;
+	  args["id"] = "next()";
 	  args["type"] = "datasource";
 	  args["version"] = sett->version;
 	  args["generator"] = "NO";
@@ -903,9 +910,10 @@ namespace Tokenizer {
 	  sent->doc()->declare( folia::AnnotationType::TOKEN,
 				"https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + sett->set_file + ".foliaset.ttl",
 				args );
-	  if ( tokDebug >= 0 ){
+	  if ( tokDebug > 1 ){
 	    LOG << "added processor and token-annotation for: '"
 		<< sett->set_file << "'" << endl;
+	    LOG << "NOW: DECLARATIONS: " << sent->doc()->annotationdefaults() << endl;
 	  }
 	  args.clear();
 	  args["processor"] = main_id;
