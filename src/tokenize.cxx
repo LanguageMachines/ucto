@@ -309,7 +309,8 @@ namespace Tokenizer {
       args["name"] = "ucto";
       args["id"] = "p1";
       args["version"] = PACKAGE_VERSION;
-      doc->add_processor( args );
+      folia::processor *proc = doc->add_processor( args );
+      proc->get_system_defaults();
       args.clear();
       args["processor"] = "p1";
       doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
@@ -321,6 +322,7 @@ namespace Tokenizer {
       args["id"] = main_id;
       args["version"] = PACKAGE_VERSION;
       folia::processor *proc = doc->add_processor( args );
+      proc->get_system_defaults();
       args.clear();
       args["name"] = "uctodata";
       string id = "p1.1";
