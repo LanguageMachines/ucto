@@ -160,6 +160,9 @@ namespace Tokenizer {
     int setDebug( int d ) { int dd = tokDebug; tokDebug = d; return dd; };
     int getDebug() const { return tokDebug; }
 
+    // set the commandline used
+    void set_command( const std::string& c ){ _command =  c; };
+
     //set textcat debug value
     bool set_tc_debug( bool b );
 
@@ -321,6 +324,7 @@ namespace Tokenizer {
     std::string default_language;
     std::string document_language; // in case of an input FoLiA document
     std::map<std::string,Setting*> settings;
+    std::string _command; // original commandline
     //debug flag
     int tokDebug;
 

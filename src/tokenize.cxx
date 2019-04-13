@@ -309,6 +309,7 @@ namespace Tokenizer {
       args["name"] = "ucto";
       args["id"] = "p1";
       args["version"] = PACKAGE_VERSION;
+      args["command"] = _command;
       folia::processor *proc = doc->add_processor( args );
       proc->get_system_defaults();
       args.clear();
@@ -321,6 +322,7 @@ namespace Tokenizer {
       string main_id = "p1";
       args["id"] = main_id;
       args["version"] = PACKAGE_VERSION;
+      args["command"] = _command;
       folia::processor *proc = doc->add_processor( args );
       proc->get_system_defaults();
       args.clear();
@@ -888,6 +890,7 @@ namespace Tokenizer {
 	    args["name"] = "ucto";
 	    args["id"] = main_id;
 	    args["version"] = PACKAGE_VERSION;
+	    args["command"] = _command;
 	    proc = sent->doc()->add_processor( args );
 	    proc->get_system_defaults();
 	    args.clear();
@@ -1156,6 +1159,7 @@ namespace Tokenizer {
       args["name"] = "ucto";
       args["id"] = "p1";
       args["version"] = PACKAGE_VERSION;
+      args["command"] = _command;
       folia::processor *fp = proc.doc()->add_processor( args );
       fp->get_system_defaults();
       args.clear();

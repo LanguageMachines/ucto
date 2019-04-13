@@ -126,7 +126,10 @@ int main( int argc, char *argv[] ){
   bool sentencesplit = false;
   string norm_set_string;
   string add_tokens;
-
+  string command_line = "ucto";
+  for ( int i=1; i < argc; ++i ){
+    command_line += " " + string(argv[i]);
+  }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
@@ -340,6 +343,7 @@ int main( int argc, char *argv[] ){
     if ( files.size() > 2 ){
       cerr << "found additional arguments on the commandline: " << files[2]
 	   << "...." << endl;
+      return EXIT_FAILURE;
     }
   }
   catch( const TiCC::OptionError& e ){
@@ -434,11 +438,11 @@ int main( int argc, char *argv[] ){
       return EXIT_FAILURE;
     }
   }
-
   try {
     TokenizerClass tokenizer;
     // set debug first, so init() can be debugged too
     tokenizer.setDebug( debug );
+    tokenizer.set_command( command_line );
     if ( passThru ){
       tokenizer.setPassThru( true );
     }
