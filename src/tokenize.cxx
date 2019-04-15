@@ -1153,7 +1153,7 @@ namespace Tokenizer {
 	  << endl;
       setFiltering(false);
     }
-    folia::TextProcessor proc( infile_name );
+    folia::TextEngine proc( infile_name );
     if ( passthru ){
       folia::KWargs args;
       args["name"] = "ucto";
