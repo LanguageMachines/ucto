@@ -1046,7 +1046,7 @@ namespace Tokenizer {
 	  << endl;
       setFiltering(false);
     }
-    folia::TextProcessor proc( infile_name );
+    folia::TextEngine proc( infile_name );
     if ( passthru ){
       proc.declare( folia::AnnotationType::TOKEN, "passthru",
 		    "annotator='ucto', annotatortype='auto', datetime='now()'" );
