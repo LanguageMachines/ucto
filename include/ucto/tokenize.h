@@ -259,6 +259,10 @@ namespace Tokenizer {
     std::string setDocID( const std::string& id ) {
       const std::string s = docid; docid = id; return s; }
 
+    bool get_setting_info( const std::string&,
+			   std::string&,
+			   std::string& ) const;
+    std::string get_data_version() const;
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies

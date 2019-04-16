@@ -2449,7 +2449,7 @@ namespace Tokenizer {
     }
   }
 
-  string get_dataversion(){
+  string TokenizerClass::get_data_version() const {
     return UCTODATA_VERSION;
   }
 
@@ -2457,7 +2457,7 @@ namespace Tokenizer {
     if ( tokDebug ){
       LOG << "Initiating tokeniser..." << endl;
     }
-    data_version = get_dataversion();
+    data_version = get_data_version();
     Setting *set = new Setting();
     if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
       LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
@@ -2490,7 +2490,7 @@ namespace Tokenizer {
     if ( tokDebug > 0 ){
       LOG << "Initiating tokeniser from language list..." << endl;
     }
-    data_version = get_dataversion();
+    data_version = get_data_version();
     Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( tokDebug > 0 ){
@@ -2536,6 +2536,22 @@ namespace Tokenizer {
       }
     }
     return result;
+  }
+
+  bool TokenizerClass::get_setting_info( const std::string& language,
+					 std::string& set_file,
+					 std::string& version ) const {
+    set_file.clear();
+    version.clear();
+    auto const& it = settings.find( language );
+    if ( it == settings.end() ){
+      return false;
+    }
+    else {
+      set_file = it->second->set_file;
+      version = it->second->version;
+      return true;
+    }
   }
 
 } //namespace Tokenizer
