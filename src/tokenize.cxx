@@ -598,7 +598,7 @@ namespace Tokenizer {
       // exception
       return;
     }
-    UnicodeString utxt = root->text( outputclass, false, false );
+    UnicodeString utxt = root->text( outputclass );
     // so get Untokenized text from the children, and set it
     root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
   }
