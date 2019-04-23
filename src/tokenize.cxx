@@ -332,7 +332,7 @@ namespace Tokenizer {
       args["type"] = "datasource";
       args["version"] = data_version;
       args["generator"] = "NO";
-      proc  = doc->add_processor( args, proc );
+      proc = doc->add_processor( args, proc );
       args.clear();
       int i=0;
       for ( const auto& s : settings ){
