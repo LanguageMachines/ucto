@@ -505,7 +505,7 @@ namespace Tokenizer {
     istream *IN = NULL;
     if ( xmlin ){
       folia::Document *doc = tokenize_folia( ifile );
-      *OUT << *doc << endl;
+      *OUT << *doc;
       delete doc;
     }
     else {
@@ -528,7 +528,7 @@ namespace Tokenizer {
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
     if (xmlout) {
       folia::Document *doc = tokenize( IN );
-      OUT << doc << endl;
+      OUT << doc;
       delete doc;
     }
 #ifdef DO_READLINE
