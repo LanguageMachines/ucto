@@ -9,7 +9,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:41:18" command="ucto -L nl -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:48:30" command="ucto -L nl -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -85,7 +85,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:41:18" command="ucto -L en -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:48:30" command="ucto -L en -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -164,7 +164,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:41:18" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:48:30" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -270,7 +270,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:41:18" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:48:30" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
@@ -972,7 +972,6 @@
     </p>
   </text>
 </FoLiA>
-
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v1.20" version="2.0.3">
@@ -989,7 +988,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:41:18" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:48:30" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -1174,4 +1173,3 @@
     </p>
   </text>
 </FoLiA>
-
