@@ -307,19 +307,19 @@ namespace Tokenizer {
     if ( passthru ){
       folia::KWargs args;
       args["name"] = "ucto";
-      args["id"] = "p1";
+      args["id"] = "ucto.1";
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
       folia::processor *proc = doc->add_processor( args );
       proc->get_system_defaults();
       args.clear();
-      args["processor"] = "p1";
+      args["processor"] = "ucto.1";
       doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
       folia::KWargs args;
       args["name"] = "ucto";
-      string main_id = "p1";
+      string main_id = "ucto.1";
       args["id"] = main_id;
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
@@ -327,7 +327,7 @@ namespace Tokenizer {
       proc->get_system_defaults();
       args.clear();
       args["name"] = "uctodata";
-      string id = "p1.1";
+      string id = "ucto.1.1";
       args["id"] = id;
       args["type"] = "datasource";
       args["version"] = data_version;
@@ -882,8 +882,8 @@ namespace Tokenizer {
       if ( !tok_set.empty() ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 				     tok_set ) ){
-	  string main_id = "p1";
-	  string data_id = "p1.1";
+	  string main_id = "ucto.1";
+	  string data_id = "ucto.1.1";
 	  folia::processor *proc = sent->doc()->get_processor( main_id );
 	  if ( !proc ){
 	    folia::KWargs args;
@@ -1157,13 +1157,13 @@ namespace Tokenizer {
     if ( passthru ){
       folia::KWargs args;
       args["name"] = "ucto";
-      args["id"] = "p1";
+      args["id"] = "ucto.1";
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
       folia::processor *fp = proc.doc()->add_processor( args );
       fp->get_system_defaults();
       args.clear();
-      args["processor"] = "p1";
+      args["processor"] = "ucto.1";
       proc.declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
