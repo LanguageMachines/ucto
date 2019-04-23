@@ -352,7 +352,12 @@ namespace Tokenizer {
 	doc->add_processor( args, proc );
 	args.clear();
 	args["processor"] = main_id;
-	args["alias"] = s.second->set_file;
+	string alias = s.second->set_file;
+	args["alias"] = alias;
+	if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
+	  // we assume that an old-style declaration is present
+	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
+	}
 	doc->declare( folia::AnnotationType::TOKEN,
 		      "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + s.second->set_file + ".foliaset.ttl",
 		      args );
@@ -913,7 +918,12 @@ namespace Tokenizer {
 	  sent->doc()->add_processor( args, proc );
 	  args.clear();
 	  args["processor"] = main_id;
-	  args["alias"] = tok_set;
+	  string alias = tok_set;
+	  args["alias"] = alias;
+	  if ( sent->doc()->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
+	    // we assume that an old-style declaration is present
+	    sent->doc()->un_declare( folia::AnnotationType::TOKEN, alias );
+	  }
 	  sent->doc()->declare( folia::AnnotationType::TOKEN,
 				"https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + sett->set_file + ".foliaset.ttl",
 				args );
@@ -1154,22 +1164,53 @@ namespace Tokenizer {
       setFiltering(false);
     }
     folia::TextEngine proc( infile_name );
+    folia::KWargs args;
+    args["name"] = "ucto";
+    args["id"] = "ucto.1";
+    args["version"] = PACKAGE_VERSION;
+    args["command"] = _command;
+    folia::processor *fp = proc.doc()->add_processor( args );
+    fp->get_system_defaults();
     if ( passthru ){
-      folia::KWargs args;
-      args["name"] = "ucto";
-      args["id"] = "ucto.1";
-      args["version"] = PACKAGE_VERSION;
-      args["command"] = _command;
-      folia::processor *fp = proc.doc()->add_processor( args );
-      fp->get_system_defaults();
       args.clear();
       args["processor"] = "ucto.1";
       proc.declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     else {
+      auto it = settings.find("default");
+      args.clear();
+      args["processor"] = "ucto.1";
+      string alias = it->second->set_file;
+      args["alias"] = alias;
+      if ( proc.is_declared( folia::AnnotationType::TOKEN, alias ) ){
+	// we assume that an old-style declaration is present
+	proc.un_declare( folia::AnnotationType::TOKEN, alias );
+      }
+      proc.declare( folia::AnnotationType::TOKEN,
+		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + it->second->set_file + ".foliaset.ttl",
+		    args );
+      args.clear();
+      args["name"] = "uctodata";
+      args["id"] = "ucto.1.1";
+      args["type"] = "datasource";
+      args["version"] = data_version;
+      args["generator"] = "NO";
+      folia::processor *sub_proc = proc.doc()->add_processor( args, fp );
+      //      sub_proc->get_system_defaults();
+      args.clear();
+      args["name"] = it->second->set_file;
+      args["id"] = "next()";
+      args["type"] = "datasource";
+      args["version"] = it->second->version;
+      args["generator"] = "NO";
+      proc.doc()->add_processor( args, sub_proc );
+
       if ( !proc.is_declared( folia::AnnotationType::LANG ) ){
+	args.clear();
+	args["processor"] = "ucto.1";
 	proc.declare( folia::AnnotationType::LANG,
-		      ISO_SET, "annotator='ucto'" );
+		      ISO_SET,
+		      args );
       }
       if ( proc.doc()->metadatatype() == "native"
 	   && default_language != "none" ){

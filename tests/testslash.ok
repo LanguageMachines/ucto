@@ -4,13 +4,15 @@
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
       <event-annotation annotator="ucto" set="event"/>
-      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset">
+        <annotator processor="ucto.1"/>
+      </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T10:47:51" command="ucto -L nl -F slashes.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-23T15:26:09" command="ucto -L nl -F slashes.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
