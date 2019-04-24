@@ -330,6 +330,12 @@ namespace Tokenizer {
       args["generator"] = "NO";
       data_proc = doc->add_processor( args, ucto_proc );
     }
+    return data_proc;
+  }
+
+  folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc ) const {
+    folia::processor *ucto_proc = init_provenance( doc );
+    folia::processor *data_proc = add_provenance_data( doc );
     int i=0;
     for ( const auto& s : settings ){
       if ( tokDebug > 3 ){
@@ -338,7 +344,7 @@ namespace Tokenizer {
       if ( s.first == "default" ){
 	continue;
       }
-      string sub_id = id + "." + TiCC::toString( ++i );
+      string sub_id = "ucto.1.1." + TiCC::toString( ++i );
       folia::KWargs args;
       args["name"] = s.second->set_file;
       args["id"] = sub_id;
@@ -372,21 +378,11 @@ namespace Tokenizer {
     return data_proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
-							 const Setting *sett ) const {
+  folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc,
+							    const Setting *sett ) const {
     folia::processor *ucto_proc = init_provenance( doc );
-    string id = "ucto.1.1";
-    folia::processor *data_proc = doc->get_processor( id );
-    if ( !data_proc ){
-      folia::KWargs args;
-      args["name"] = "uctodata";
-      args["id"] = id;
-      args["type"] = "datasource";
-      args["version"] = data_version;
-      args["generator"] = "NO";
-      data_proc = doc->add_processor( args, ucto_proc );
-    }
-    string sub_id = "uct.1.1.1";
+    folia::processor *data_proc = add_provenance_data( doc );
+    string sub_id = "ucto.1.1.1";
     folia::processor *sub_proc = doc->get_processor( sub_id );
     if ( !sub_proc ){
       folia::KWargs args;
@@ -436,7 +432,7 @@ namespace Tokenizer {
       add_provenance_passthru( doc );
     }
     else {
-      add_provenance_data( doc );
+      add_provenance_setting( doc );
     }
     folia::KWargs args;
     args["xml:id"] = doc->id() + ".text";
@@ -938,7 +934,7 @@ namespace Tokenizer {
       if ( sett ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 	 			     tok_set ) ){
-	  add_provenance_data( sent->doc(), sett );
+	  add_provenance_setting( sent->doc(), sett );
 	}
       }
       vector<folia::Word*> wv = add_words( sent, tok_set, toks );
@@ -1169,7 +1165,7 @@ namespace Tokenizer {
       add_provenance_passthru(  proc.doc() );
     }
     else {
-      add_provenance_data( proc.doc() );
+      add_provenance_setting( proc.doc() );
       if ( proc.doc()->metadatatype() == "native"
 	   && default_language != "none" ){
 	proc.set_metadata( "language", default_language );
