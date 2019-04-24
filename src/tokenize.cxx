@@ -296,6 +296,10 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
+    if ( doc->metadatatype() == "native"
+	 && default_language != "none" ){
+      doc->set_metadata( "language", default_language );
+    }
     folia::processor *proc = doc->get_processor( "ucto.1" );
     if ( !proc ){
       folia::KWargs args;
@@ -336,7 +340,6 @@ namespace Tokenizer {
   folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc ) const {
     folia::processor *ucto_proc = init_provenance( doc );
     folia::processor *data_proc = add_provenance_data( doc );
-    int i=0;
     for ( const auto& s : settings ){
       if ( tokDebug > 3 ){
 	LOG << "language: " << s.first << endl;
@@ -344,10 +347,9 @@ namespace Tokenizer {
       if ( s.first == "default" ){
 	continue;
       }
-      string sub_id = "ucto.1.1." + TiCC::toString( ++i );
       folia::KWargs args;
       args["name"] = s.second->set_file;
-      args["id"] = sub_id;
+      args["id"] = "next()";
       args["type"] = "datasource";
       args["version"] = s.second->version;
       args["generator"] = "NO";
@@ -378,51 +380,8 @@ namespace Tokenizer {
     return data_proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc,
-							    const Setting *sett ) const {
-    folia::processor *ucto_proc = init_provenance( doc );
-    folia::processor *data_proc = add_provenance_data( doc );
-    string sub_id = "ucto.1.1.1";
-    folia::processor *sub_proc = doc->get_processor( sub_id );
-    if ( !sub_proc ){
-      folia::KWargs args;
-      args["name"] = sett->set_file;
-      args["id"] = sub_id;
-      args["type"] = "datasource";
-      args["version"] = sett->version;
-      args["generator"] = "NO";
-      doc->add_processor( args, data_proc );
-    }
-    folia::KWargs args;
-    args["processor"] = ucto_proc->id();
-    string alias = sett->set_file;
-    args["alias"] = alias;
-    if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
-      // we assume that an old-style declaration is present
-      doc->un_declare( folia::AnnotationType::TOKEN, alias );
-    }
-    doc->declare( folia::AnnotationType::TOKEN,
-		  "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + alias + ".foliaset.ttl",
-		  args );
-    if ( tokDebug > 3 ){
-      LOG << "added processor and token-annotation for: '"
-	  << alias << "'" << endl;
-    }
-    if ( !doc->isDeclared( folia::AnnotationType::LANG ) ){
-      args.clear();
-      args["processor"] = ucto_proc->id();
-      doc->declare( folia::AnnotationType::LANG,
-		    ISO_SET,
-		    args );
-    }
-    return data_proc;
-  }
-
   folia::Document *TokenizerClass::start_document( const string& id ) const {
     folia::Document *doc = new folia::Document( "xml:id='" + id + "'" );
-    if ( default_language != "none" ){
-      doc->set_metadata( "language", default_language );
-    }
     doc->addStyle( "text/xsl", "folia.xsl" );
     init_provenance( doc );
     if ( tokDebug > 3 ){
@@ -920,21 +879,16 @@ namespace Tokenizer {
     else {
       // add tokenization, when applicable
       string tok_set;
-      Setting *sett = 0;;
       if ( toks[0].lang_code != "default" ){
 	tok_set = "tokconfig-" + tc_lc;
-	auto it = settings.find(tc_lc);
-	sett = it->second;
       }
       else if (default_language != "none" ) {
 	tok_set = "tokconfig-" + default_language;
-	auto it = settings.find(default_language);
-	sett = it->second;
       }
-      if ( sett ){
+      if ( !tok_set.empty() ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 	 			     tok_set ) ){
-	  add_provenance_setting( sent->doc(), sett );
+	  add_provenance_setting( sent->doc() );
 	}
       }
       vector<folia::Word*> wv = add_words( sent, tok_set, toks );
@@ -1166,14 +1120,6 @@ namespace Tokenizer {
     }
     else {
       add_provenance_setting( proc.doc() );
-      if ( proc.doc()->metadatatype() == "native"
-	   && default_language != "none" ){
-	proc.set_metadata( "language", default_language );
-      }
-      else {
-	LOG << "[WARNING] cannot set meta data language on FoLiA documents of type: "
-	    << proc.doc()->metadatatype() << endl;
-      }
     }
     if  ( tokDebug > 8){
       proc.set_dbg_stream( theErrLog );
