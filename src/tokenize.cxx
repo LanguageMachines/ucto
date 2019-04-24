@@ -319,15 +319,17 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc ) const {
     folia::processor *ucto_proc = init_provenance( doc );
-    folia::KWargs args;
-    args["name"] = "uctodata";
     string id = "ucto.1.1";
-    args["id"] = id;
-    args["type"] = "datasource";
-    args["version"] = data_version;
-    args["generator"] = "NO";
-    folia::processor *data_proc = doc->add_processor( args, ucto_proc );
-    args.clear();
+    folia::processor *data_proc = doc->get_processor( id );
+    if ( !data_proc ){
+      folia::KWargs args;
+      args["name"] = "uctodata";
+      args["id"] = id;
+      args["type"] = "datasource";
+      args["version"] = data_version;
+      args["generator"] = "NO";
+      data_proc = doc->add_processor( args, ucto_proc );
+    }
     int i=0;
     for ( const auto& s : settings ){
       if ( tokDebug > 3 ){
@@ -353,12 +355,62 @@ namespace Tokenizer {
 	doc->un_declare( folia::AnnotationType::TOKEN, alias );
       }
       doc->declare( folia::AnnotationType::TOKEN,
-		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + s.second->set_file + ".foliaset.ttl",
+		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + alias + ".foliaset.ttl",
 		    args );
       if ( tokDebug > 3 ){
 	LOG << "added processor and token-annotation for: '"
-	    << s.second->set_file << "'" << endl;
+	    << alias << "'" << endl;
       }
+    }
+    if ( !doc->isDeclared( folia::AnnotationType::LANG ) ){
+      folia::KWargs args;
+      args["processor"] = ucto_proc->id();
+      doc->declare( folia::AnnotationType::LANG,
+		    ISO_SET,
+		    args );
+    }
+    return data_proc;
+  }
+
+  folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
+							 const Setting *sett ) const {
+    folia::processor *ucto_proc = init_provenance( doc );
+    string id = "ucto.1.1";
+    folia::processor *data_proc = doc->get_processor( id );
+    if ( !data_proc ){
+      folia::KWargs args;
+      args["name"] = "uctodata";
+      args["id"] = id;
+      args["type"] = "datasource";
+      args["version"] = data_version;
+      args["generator"] = "NO";
+      data_proc = doc->add_processor( args, ucto_proc );
+    }
+    string sub_id = "uct.1.1.1";
+    folia::processor *sub_proc = doc->get_processor( sub_id );
+    if ( !sub_proc ){
+      folia::KWargs args;
+      args["name"] = sett->set_file;
+      args["id"] = sub_id;
+      args["type"] = "datasource";
+      args["version"] = sett->version;
+      args["generator"] = "NO";
+      doc->add_processor( args, data_proc );
+    }
+    folia::KWargs args;
+    args["processor"] = ucto_proc->id();
+    string alias = sett->set_file;
+    args["alias"] = alias;
+    if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
+      // we assume that an old-style declaration is present
+      doc->un_declare( folia::AnnotationType::TOKEN, alias );
+    }
+    doc->declare( folia::AnnotationType::TOKEN,
+		  "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + alias + ".foliaset.ttl",
+		  args );
+    if ( tokDebug > 3 ){
+      LOG << "added processor and token-annotation for: '"
+	  << alias << "'" << endl;
     }
     if ( !doc->isDeclared( folia::AnnotationType::LANG ) ){
       args.clear();
@@ -899,59 +951,8 @@ namespace Tokenizer {
       }
       if ( !tok_set.empty() ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
-				     tok_set ) ){
-	  string main_id = "ucto.1";
-	  string data_id = "ucto.1.1";
-	  folia::processor *proc = sent->doc()->get_processor( main_id );
-	  if ( !proc ){
-	    folia::KWargs args;
-	    args["name"] = "ucto";
-	    args["id"] = main_id;
-	    args["version"] = PACKAGE_VERSION;
-	    args["command"] = _command;
-	    proc = sent->doc()->add_processor( args );
-	    proc->get_system_defaults();
-	    args.clear();
-	    args["name"] = "uctodata";
-	    args["id"] = data_id;
-	    args["type"] = "datasource";
-	    args["version"] = data_version;
-	    args["generator"] = "NO";
-	    proc = sent->doc()->add_processor( args, proc );
-	  }
-	  else {
-	    proc = sent->doc()->get_processor( data_id );
-	  }
-	  folia::KWargs args;
-	  args["name"] = tok_set;
-	  args["id"] = "next()";
-	  args["type"] = "datasource";
-	  args["version"] = sett->version;
-	  args["generator"] = "NO";
-	  sent->doc()->add_processor( args, proc );
-	  args.clear();
-	  args["processor"] = main_id;
-	  string alias = tok_set;
-	  args["alias"] = alias;
-	  if ( sent->doc()->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
-	    // we assume that an old-style declaration is present
-	    sent->doc()->un_declare( folia::AnnotationType::TOKEN, alias );
-	  }
-	  sent->doc()->declare( folia::AnnotationType::TOKEN,
-				"https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + sett->set_file + ".foliaset.ttl",
-				args );
-	  if ( tokDebug > 1 ){
-	    LOG << "added processor and token-annotation for: '"
-		<< sett->set_file << "'" << endl;
-	    LOG << "NOW: DECLARATIONS: " << sent->doc()->annotationdefaults() << endl;
-	  }
-	  args.clear();
-	  args["processor"] = main_id;
-	  if ( !sent->doc()->isDeclared( folia::AnnotationType::LANG ) ){
-	    sent->doc()->declare( folia::AnnotationType::LANG,
-				  ISO_SET,
-				  args );
-	  }
+	 			     tok_set ) ){
+	  add_provenance_data( sent->doc(), sett );
 	}
       }
       vector<folia::Word*> wv = add_words( sent, tok_set, toks );

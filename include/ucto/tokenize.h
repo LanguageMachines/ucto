@@ -266,7 +266,9 @@ namespace Tokenizer {
 
     folia::processor *init_provenance( folia::Document * ) const;
     folia::processor *add_provenance_passthru( folia::Document * ) const;
-    folia::processor *add_provenance_data( folia::Document *doc ) const;
+    folia::processor *add_provenance_data( folia::Document * ) const;
+    folia::processor *add_provenance_data( folia::Document *,
+					   const Setting * ) const;
 
   private:
 
