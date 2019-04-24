@@ -27,6 +27,7 @@
 
 #include "ucto/tokenize.h"
 
+#include <cassert>
 #include <unistd.h>
 #include <iostream>
 #include <fstream>
@@ -295,7 +296,7 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
-    folia::processor *proc = doc->get_processor( "ucto" );
+    folia::processor *proc = doc->get_processor( "ucto.1" );
     if ( !proc ){
       folia::KWargs args;
       args["name"] = "ucto";
@@ -317,7 +318,56 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc ) const {
-    return 0;
+    folia::processor *ucto_proc = init_provenance( doc );
+    folia::KWargs args;
+    args["name"] = "uctodata";
+    string id = "ucto.1.1";
+    args["id"] = id;
+    args["type"] = "datasource";
+    args["version"] = data_version;
+    args["generator"] = "NO";
+    folia::processor *data_proc = doc->add_processor( args, ucto_proc );
+    args.clear();
+    int i=0;
+    for ( const auto& s : settings ){
+      if ( tokDebug > 3 ){
+	LOG << "language: " << s.first << endl;
+      }
+      if ( s.first == "default" ){
+	continue;
+      }
+      string sub_id = id + "." + TiCC::toString( ++i );
+      folia::KWargs args;
+      args["name"] = s.second->set_file;
+      args["id"] = sub_id;
+      args["type"] = "datasource";
+      args["version"] = s.second->version;
+      args["generator"] = "NO";
+      doc->add_processor( args, data_proc );
+      args.clear();
+      args["processor"] = ucto_proc->id();
+      string alias = s.second->set_file;
+      args["alias"] = alias;
+      if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
+	// we assume that an old-style declaration is present
+	doc->un_declare( folia::AnnotationType::TOKEN, alias );
+      }
+      doc->declare( folia::AnnotationType::TOKEN,
+		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + s.second->set_file + ".foliaset.ttl",
+		    args );
+      if ( tokDebug > 3 ){
+	LOG << "added processor and token-annotation for: '"
+	    << s.second->set_file << "'" << endl;
+      }
+    }
+    if ( !doc->isDeclared( folia::AnnotationType::LANG ) ){
+      args.clear();
+      args["processor"] = ucto_proc->id();
+      doc->declare( folia::AnnotationType::LANG,
+		    ISO_SET,
+		    args );
+    }
+    return data_proc;
   }
 
   folia::Document *TokenizerClass::start_document( const string& id ) const {
@@ -326,7 +376,7 @@ namespace Tokenizer {
       doc->set_metadata( "language", default_language );
     }
     doc->addStyle( "text/xsl", "folia.xsl" );
-    folia::processor *ucto_proc = init_provenance( doc );
+    init_provenance( doc );
     if ( tokDebug > 3 ){
       LOG << "start document!!!" << endl;
     }
@@ -335,53 +385,6 @@ namespace Tokenizer {
     }
     else {
       add_provenance_data( doc );
-      folia::KWargs args;
-      args["name"] = "uctodata";
-      string id = "ucto.1.1";
-      args["id"] = id;
-      args["type"] = "datasource";
-      args["version"] = data_version;
-      args["generator"] = "NO";
-      folia::processor *proc = doc->add_processor( args, ucto_proc );
-      args.clear();
-      int i=0;
-      for ( const auto& s : settings ){
-	if ( tokDebug > 3 ){
-	  LOG << "language: " << s.first << endl;
-	}
-	if ( s.first == "default" ){
-	  continue;
-	}
-	string sub_id = id + "." + TiCC::toString( ++i );
-	folia::KWargs args;
-	args["name"] = s.second->set_file;
-	args["id"] = sub_id;
-	args["type"] = "datasource";
-	args["version"] = s.second->version;
-	args["generator"] = "NO";
-	doc->add_processor( args, proc );
-	args.clear();
-	args["processor"] = ucto_proc->id();
-	string alias = s.second->set_file;
-	args["alias"] = alias;
-	if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
-	  // we assume that an old-style declaration is present
-	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
-	}
-	doc->declare( folia::AnnotationType::TOKEN,
-		      "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + s.second->set_file + ".foliaset.ttl",
-		      args );
-	if ( tokDebug > 3 ){
-	  LOG << "added processor and token-annotation for: '"
-	      << s.second->set_file << "'" << endl;
-	}
-      }
-      args.clear();
-      args["processor"] = ucto_proc->id();
-      doc->declare( folia::AnnotationType::LANG,
-		    ISO_SET,
-		    args );
-
     }
     folia::KWargs args;
     args["xml:id"] = doc->id() + ".text";
@@ -1174,46 +1177,12 @@ namespace Tokenizer {
       setFiltering(false);
     }
     folia::TextEngine proc( infile_name );
-    folia::processor *fp = init_provenance( proc.doc() );
+    init_provenance( proc.doc() );
     if ( passthru ){
       add_provenance_passthru(  proc.doc() );
     }
     else {
-      auto it = settings.find("default");
-      folia::KWargs args;
-      args["processor"] = "ucto.1";
-      string alias = it->second->set_file;
-      args["alias"] = alias;
-      if ( proc.is_declared( folia::AnnotationType::TOKEN, alias ) ){
-	// we assume that an old-style declaration is present
-	proc.un_declare( folia::AnnotationType::TOKEN, alias );
-      }
-      proc.declare( folia::AnnotationType::TOKEN,
-		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + it->second->set_file + ".foliaset.ttl",
-		    args );
-      args.clear();
-      args["name"] = "uctodata";
-      args["id"] = "ucto.1.1";
-      args["type"] = "datasource";
-      args["version"] = data_version;
-      args["generator"] = "NO";
-      folia::processor *sub_proc = proc.doc()->add_processor( args, fp );
-      //      sub_proc->get_system_defaults();
-      args.clear();
-      args["name"] = it->second->set_file;
-      args["id"] = "next()";
-      args["type"] = "datasource";
-      args["version"] = it->second->version;
-      args["generator"] = "NO";
-      proc.doc()->add_processor( args, sub_proc );
-
-      if ( !proc.is_declared( folia::AnnotationType::LANG ) ){
-	args.clear();
-	args["processor"] = "ucto.1";
-	proc.declare( folia::AnnotationType::LANG,
-		      ISO_SET,
-		      args );
-      }
+      add_provenance_data( proc.doc() );
       if ( proc.doc()->metadatatype() == "native"
 	   && default_language != "none" ){
 	proc.set_metadata( "language", default_language );
