@@ -2409,6 +2409,9 @@ namespace Tokenizer {
     else {
       settings["default"] = set;
       default_language = "default";
+      if ( fname.find("tokconfig-") == 0 ){
+	settings[fname.substr(10)] = set;
+      }
     }
     if ( tokDebug ){
       LOG << "effective rules: " << endl;
