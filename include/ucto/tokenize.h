@@ -263,6 +263,11 @@ namespace Tokenizer {
 			   std::string&,
 			   std::string& ) const;
     std::string get_data_version() const;
+
+    folia::processor *init_provenance( folia::Document * ) const;
+    folia::processor *add_provenance_passthru( folia::Document * ) const;
+    folia::processor *add_provenance_data( folia::Document *doc ) const;
+
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies

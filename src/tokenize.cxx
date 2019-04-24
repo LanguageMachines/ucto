@@ -294,6 +294,31 @@ namespace Tokenizer {
     return line;
   }
 
+  folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
+    folia::processor *proc = doc->get_processor( "ucto" );
+    if ( !proc ){
+      folia::KWargs args;
+      args["name"] = "ucto";
+      args["id"] = "ucto.1";
+      args["version"] = PACKAGE_VERSION;
+      args["command"] = _command;
+      proc = doc->add_processor( args );
+      proc->get_system_defaults();
+    }
+    return proc;
+  }
+
+  folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc ) const {
+    folia::processor *proc = init_provenance( doc );
+    folia::KWargs args;
+    args["processor"] = proc->id();
+    doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
+    return proc;
+  }
+
+  folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc ) const {
+    return 0;
+  }
 
   folia::Document *TokenizerClass::start_document( const string& id ) const {
     folia::Document *doc = new folia::Document( "xml:id='" + id + "'" );
@@ -301,38 +326,23 @@ namespace Tokenizer {
       doc->set_metadata( "language", default_language );
     }
     doc->addStyle( "text/xsl", "folia.xsl" );
+    folia::processor *ucto_proc = init_provenance( doc );
     if ( tokDebug > 3 ){
       LOG << "start document!!!" << endl;
     }
     if ( passthru ){
-      folia::KWargs args;
-      args["name"] = "ucto";
-      args["id"] = "ucto.1";
-      args["version"] = PACKAGE_VERSION;
-      args["command"] = _command;
-      folia::processor *proc = doc->add_processor( args );
-      proc->get_system_defaults();
-      args.clear();
-      args["processor"] = "ucto.1";
-      doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
+      add_provenance_passthru( doc );
     }
     else {
+      add_provenance_data( doc );
       folia::KWargs args;
-      args["name"] = "ucto";
-      string main_id = "ucto.1";
-      args["id"] = main_id;
-      args["version"] = PACKAGE_VERSION;
-      args["command"] = _command;
-      folia::processor *proc = doc->add_processor( args );
-      proc->get_system_defaults();
-      args.clear();
       args["name"] = "uctodata";
       string id = "ucto.1.1";
       args["id"] = id;
       args["type"] = "datasource";
       args["version"] = data_version;
       args["generator"] = "NO";
-      proc = doc->add_processor( args, proc );
+      folia::processor *proc = doc->add_processor( args, ucto_proc );
       args.clear();
       int i=0;
       for ( const auto& s : settings ){
@@ -351,7 +361,7 @@ namespace Tokenizer {
 	args["generator"] = "NO";
 	doc->add_processor( args, proc );
 	args.clear();
-	args["processor"] = main_id;
+	args["processor"] = ucto_proc->id();
 	string alias = s.second->set_file;
 	args["alias"] = alias;
 	if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
@@ -367,7 +377,7 @@ namespace Tokenizer {
 	}
       }
       args.clear();
-      args["processor"] = main_id;
+      args["processor"] = ucto_proc->id();
       doc->declare( folia::AnnotationType::LANG,
 		    ISO_SET,
 		    args );
@@ -1164,21 +1174,13 @@ namespace Tokenizer {
       setFiltering(false);
     }
     folia::TextEngine proc( infile_name );
-    folia::KWargs args;
-    args["name"] = "ucto";
-    args["id"] = "ucto.1";
-    args["version"] = PACKAGE_VERSION;
-    args["command"] = _command;
-    folia::processor *fp = proc.doc()->add_processor( args );
-    fp->get_system_defaults();
+    folia::processor *fp = init_provenance( proc.doc() );
     if ( passthru ){
-      args.clear();
-      args["processor"] = "ucto.1";
-      proc.declare( folia::AnnotationType::TOKEN, "passthru", args );
+      add_provenance_passthru(  proc.doc() );
     }
     else {
       auto it = settings.find("default");
-      args.clear();
+      folia::KWargs args;
       args["processor"] = "ucto.1";
       string alias = it->second->set_file;
       args["alias"] = alias;
