@@ -935,21 +935,7 @@ namespace Tokenizer {
 	auto it = settings.find(default_language);
 	sett = it->second;
       }
-      else {
-	auto it = settings.find("default");
-	sett = it->second;
-      }
-      if ( tokDebug > 1 ){
-	cerr << "TOKSET+" << tok_set << endl;
-	if ( sett ){
-	  cerr << "VERSION:" << sett->version << endl;
-	}
-	else {
-	  cerr << "FAAL" <<  endl;
-	}
-	cerr << "DECLARATIONS: " << sent->doc()->annotationdefaults() << endl;
-      }
-      if ( !tok_set.empty() ){
+      if ( sett ){
 	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
 	 			     tok_set ) ){
 	  add_provenance_data( sent->doc(), sett );
