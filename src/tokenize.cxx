@@ -2410,7 +2410,8 @@ namespace Tokenizer {
       settings["default"] = set;
       default_language = "default";
       if ( fname.find("tokconfig-") == 0 ){
-	settings[fname.substr(10)] = set;
+	default_language = fname.substr(10);
+	settings[default_language] = set;
       }
     }
     if ( tokDebug ){
