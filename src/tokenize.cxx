@@ -296,8 +296,7 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
-    if ( doc->metadatatype() == "native"
-	 && default_language != "none" ){
+    if ( doc->metadatatype() == "native" ){
       doc->set_metadata( "language", default_language );
     }
     folia::processor *proc = doc->get_processor( "ucto.1" );
@@ -704,7 +703,7 @@ namespace Tokenizer {
       tok_set = "tokconfig-" + lang;
       set_language( s, lang );
     }
-    else if ( default_language != "none" ){
+    else {
       tok_set = "tokconfig-" + default_language;
     }
     vector<folia::Word*> wv = add_words( s, tok_set, tv );
@@ -861,10 +860,8 @@ namespace Tokenizer {
       LOG << "sentence language = " << s_la << endl;
     }
     if ( ( !s_la.empty() && s_la != default_language
-	   && default_language != "none"
 	   && settings.find(s_la) == settings.end() )
 	 || ( tc_lc != default_language
-	      && default_language != "none"
 	      && settings.find(tc_lc) == settings.end() ) ){
       // skip
       // if ( tc_lc != default_language ){
@@ -882,7 +879,7 @@ namespace Tokenizer {
       if ( toks[0].lang_code != "default" ){
 	tok_set = "tokconfig-" + tc_lc;
       }
-      else if (default_language != "none" ) {
+      else {
 	tok_set = "tokconfig-" + default_language;
       }
       if ( !tok_set.empty() ){
