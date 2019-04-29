@@ -399,34 +399,40 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
-					  bool& bos ){
+					  bool& bos,
+					  const string& lang ){
     if ( passthru ){
       passthruLine( input_line, bos );
     }
     else {
-      string language = "default";
-      if ( tc && doDetectLang ){
-	UnicodeString temp = input_line;
-	temp.findAndReplace( eosmark, "" );
-	temp.toLower();
+      string language = lang;
+      if ( language.empty() ){
 	if ( tokDebug > 3 ){
-	  LOG << "use textCat to guess language from: "
-	      << temp << endl;
+	  LOG << "should we guess the language? " << (tc && doDetectLang) << endl;
 	}
-	language = tc->get_language( TiCC::UnicodeToUTF8(temp) );
-	if ( settings.find( language ) != settings.end() ){
+	if ( tc && doDetectLang ){
+	  UnicodeString temp = input_line;
+	  temp.findAndReplace( eosmark, "" );
+	  temp.toLower();
 	  if ( tokDebug > 3 ){
-	    LOG << "found a supported language: " << language << endl;
+	    LOG << "use textCat to guess language from: "
+		<< temp << endl;
 	  }
-	}
-	else {
-	  if ( tokDebug > 3 ){
-	    LOG << "found an unsupported language: " << language << endl;
+	  language = tc->get_language( TiCC::UnicodeToUTF8(temp) );
+	  if ( settings.find( language ) != settings.end() ){
+	    if ( tokDebug > 3 ){
+	      LOG << "found a supported language: " << language << endl;
+	    }
 	  }
-	  language = "default";
+	  else {
+	    if ( tokDebug > 3 ){
+	      LOG << "found an unsupported language: " << language << endl;
+	    }
+	    language = "default";
+	  }
 	}
       }
-      tokenizeLine( input_line, language );
+      internal_tokenize_line( input_line, language );
     }
   }
 
@@ -1886,15 +1892,17 @@ namespace Tokenizer {
   }
 
   // string wrapper
-  void TokenizerClass::tokenizeLine( const string& s ){
+  void TokenizerClass::tokenizeLine( const string& s,
+				     const string& lang ){
     UnicodeString us = convert( s, inputEncoding );
-    tokenizeLine( us );
+    tokenizeLine( us, lang );
   }
 
   // UnicodeString wrapper
-  void TokenizerClass::tokenizeLine( const UnicodeString& us ){
+  void TokenizerClass::tokenizeLine( const UnicodeString& us,
+				     const string& lang ){
     bool bos = true;
-    tokenize_one_line( us, bos );
+    tokenize_one_line( us, bos, lang );
     countSentences(true); // force the ENDOFSENTENCE
   }
 
@@ -2017,8 +2025,8 @@ namespace Tokenizer {
     }
   }
 
-  int TokenizerClass::tokenizeLine( const UnicodeString& originput,
-				    const string& _lang ){
+  int TokenizerClass::internal_tokenize_line( const UnicodeString& originput,
+					      const string& _lang ){
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";

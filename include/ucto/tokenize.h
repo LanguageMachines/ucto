@@ -140,8 +140,8 @@ namespace Tokenizer {
     // OR use popSentence() repeatedly to extract all sentences as vectors
     //    using getString() to extract the UTF8 value of that sentence
     // OR getSentences() to get ALL sentences as UTF8 strings in a vector
-    void tokenizeLine( const UnicodeString& );
-    void tokenizeLine( const std::string& );
+    void tokenizeLine( const UnicodeString&, const std::string& = "" );
+    void tokenizeLine( const std::string&, const std::string& = "" );
 
     // extract 1 sentence from Token vector;
     std::vector<Token> popSentence();
@@ -304,10 +304,12 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
-    int tokenizeLine( const UnicodeString&,
-		      const std::string& );
+    int internal_tokenize_line( const UnicodeString&,
+				const std::string& );
 
-    void tokenize_one_line( const UnicodeString&, bool& );
+    void tokenize_one_line( const UnicodeString&,
+			    bool&,
+			    const std::string& = "" );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
