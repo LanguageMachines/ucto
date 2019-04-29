@@ -11,7 +11,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:47:51" command="ucto -Q -x folia2 -T none -L nl folia2.txt folia2a.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-29T09:36:43" command="ucto -Q -x folia2 -T none -L nl folia2.txt folia2a.xml" host="kokos" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -23,7 +23,6 @@
   <text xml:id="folia2.text">
     <p xml:id="folia2.p.1">
       <s xml:id="folia2.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="folia2.p.1.s.1.w.1" class="WORD" space="no">
           <t>AdJ</t>
         </w>
@@ -723,7 +722,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:47:51" command="ucto -Q -x folia2 -L nl folia2.txt folia2b.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-29T09:36:43" command="ucto -Q -x folia2 -L nl folia2.txt folia2b.xml" host="kokos" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -735,7 +734,6 @@
   <text xml:id="folia2.text">
     <p xml:id="folia2.p.1">
       <s xml:id="folia2.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="folia2.p.1.s.1.w.1" class="WORD" space="no">
           <t>AdJ</t>
         </w>

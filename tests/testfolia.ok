@@ -11,7 +11,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:47:51" command="ucto -Q -x foliatest -L nld folia.txt" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-29T09:36:43" command="ucto -Q -x foliatest -L nld folia.txt" host="kokos" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -23,7 +23,6 @@
   <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
       <s xml:id="foliatest.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
           <t>Die</t>
         </w>
@@ -53,7 +52,6 @@
         </w>
       </s>
       <s xml:id="foliatest.p.1.s.2">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
           <t>We</t>
         </w>
@@ -81,7 +79,6 @@
     </p>
     <p xml:id="foliatest.p.2">
       <s xml:id="foliatest.p.2.s.1">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
           <t>De</t>
         </w>
@@ -147,7 +144,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:47:51" command="ucto -Q -T none -x foliatest -L nld folia.txt" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-29T09:36:43" command="ucto -Q -T none -x foliatest -L nld folia.txt" host="kokos" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -159,7 +156,6 @@
   <text xml:id="foliatest.text">
     <p xml:id="foliatest.p.1">
       <s xml:id="foliatest.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.1.w.1" class="WORD">
           <t>Die</t>
         </w>
@@ -189,7 +185,6 @@
         </w>
       </s>
       <s xml:id="foliatest.p.1.s.2">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.1.s.2.w.1" class="WORD">
           <t>We</t>
         </w>
@@ -217,7 +212,6 @@
     </p>
     <p xml:id="foliatest.p.2">
       <s xml:id="foliatest.p.2.s.1">
-        <lang class="nld"/>
         <w xml:id="foliatest.p.2.s.1.w.1" class="WORD">
           <t>De</t>
         </w>

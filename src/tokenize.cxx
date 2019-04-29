@@ -405,7 +405,7 @@ namespace Tokenizer {
     }
     else {
       string language = "default";
-      if ( tc ){
+      if ( tc && doDetectLang ){
 	UnicodeString temp = input_line;
 	temp.findAndReplace( eosmark, "" );
 	temp.toLower();
@@ -848,53 +848,27 @@ namespace Tokenizer {
 
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
 					   const vector<Token>& toks ) const {
-    string s_la;
-    if ( sent->hasannotation<folia::LangAnnotation>() ){
-      s_la = sent->annotation<folia::LangAnnotation>()->cls();
-    }
-    string tc_lc = toks[0].lang_code;
-    if ( tokDebug > 0 ){
-      LOG << "append_to_sentence()" << endl;
-      LOG << "language code= " << tc_lc << endl;
-      LOG << "default language = " << default_language << endl;
-      LOG << "sentence language = " << s_la << endl;
-    }
-    if ( ( !s_la.empty() && s_la != default_language
-	   && settings.find(s_la) == settings.end() )
-	 || ( tc_lc != default_language
-	      && settings.find(tc_lc) == settings.end() ) ){
-      // skip
-      // if ( tc_lc != default_language ){
-      // 	set_language( sent, tc_lc );
-      // }
-      // cerr << "sla" << (settings.find(s_la) == settings.end() )<< endl;
-      // cerr << "tc_lc" << (settings.find(tc_lc) == settings.end()) << endl;
-      if ( tokDebug > 0 ){
-	LOG << "append_to_sentence() SKIP a sentence: " << s_la << endl;
-      }
+    string tc_lc = get_language( toks );
+    string tok_set;
+    if ( tc_lc != "default" ){
+      tok_set = "tokconfig-" + tc_lc;
     }
     else {
-      // add tokenization, when applicable
-      string tok_set;
-      if ( toks[0].lang_code != "default" ){
-	tok_set = "tokconfig-" + tc_lc;
-      }
-      else {
-	tok_set = "tokconfig-" + default_language;
-      }
-      if ( !tok_set.empty() ){
-	if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
-	 			     tok_set ) ){
-	  add_provenance_setting( sent->doc() );
-	}
-      }
-      vector<folia::Word*> wv = add_words( sent, tok_set, toks );
+      tok_set = "tokconfig-" + default_language;
     }
+    if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
+				 tok_set ) ){
+      add_provenance_setting( sent->doc() );
+    }
+    vector<folia::Word*> wv = add_words( sent, tok_set, toks );
   }
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
 					    int& sentence_done ){
     // check feasability
+    if ( tokDebug > 1 ){
+      LOG << "handle_one_sentence: " << s << endl;
+    }
     if ( inputclass != outputclass && outputclass == "current" ){
       if ( s->hastext( outputclass ) ){
 	throw uLogicError( "cannot set text with class='current' on node "
@@ -911,6 +885,20 @@ namespace Tokenizer {
       // there are already words.
     }
     else {
+      string s_la;
+      if ( s->hasannotation<folia::LangAnnotation>() ){
+	s_la = s->annotation<folia::LangAnnotation>()->cls();
+      }
+      if ( !s_la.empty() && settings.find(s_la) == settings.end() ){
+	// the Sentence already has a language code, and it
+	// is NOT what we search for.
+	// just ignore it
+	if ( tokDebug > 0 ){
+	  LOG << "skip sentence " << s->id() << " with unsupported language "
+	      << s_la << endl;
+	}
+	return;
+      }
       string text = s->str(inputclass);
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
@@ -2466,6 +2454,9 @@ namespace Tokenizer {
   }
 
   string get_language( const vector<Token>& tv ){
+    // examine the assigned languages of ALL tokens.
+    // they should all be the same
+    // assign that value
     string result = "default";
     for ( const auto& t : tv ){
       if ( !t.lang_code.empty() && t.lang_code != "default" ){

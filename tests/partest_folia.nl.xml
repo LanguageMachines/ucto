@@ -11,7 +11,7 @@
       </lang-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-23T11:46:16" command="ucto --id=test -X -Q -d 5 -v -Lnl partest_folia.nl.txt testoutput/partest_folia.nl.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-04-29T09:36:47" command="ucto --id=test -X -Q -d 5 -v -Lnl partest_folia.nl.txt testoutput/partest_folia.nl.xml" host="kokos" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -23,7 +23,6 @@
   <text xml:id="test.text">
     <p xml:id="test.p.1">
       <s xml:id="test.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -53,7 +52,6 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.2">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.2.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -83,7 +81,6 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.3">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.3.w.1" class="WORD">
           <t>En</t>
         </w>
@@ -103,7 +100,6 @@
     </p>
     <p xml:id="test.p.2">
       <s xml:id="test.p.2.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.2.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -135,7 +131,6 @@
     </p>
     <p xml:id="test.p.3">
       <s xml:id="test.p.3.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.3.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -156,7 +151,6 @@
         </w>
       </s>
       <s xml:id="test.p.3.s.2">
-        <lang class="nld"/>
         <w xml:id="test.p.3.s.2.w.1" class="WORD">
           <t>Deze</t>
         </w>
