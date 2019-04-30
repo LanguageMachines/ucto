@@ -71,7 +71,9 @@ namespace Tokenizer {
   using namespace icu;
   using TiCC::operator<<;
 
-  const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset";
+  const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset.ttl";
+
+  const string UCTO_SET_PREFIX = "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/";
 
   const std::string Version() { return VERSION; }
   const std::string VersionName() { return PACKAGE_STRING; }
@@ -336,6 +338,25 @@ namespace Tokenizer {
     return data_proc;
   }
 
+  folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc ) const {
+    folia::processor *ucto_proc = init_provenance( doc );
+    folia::KWargs args;
+    args["processor"] = ucto_proc->id();
+    if ( !doc->isDeclared( folia::AnnotationType::PARAGRAPH ) ){
+      doc->declare( folia::AnnotationType::PARAGRAPH, "", args );
+      if ( tokDebug > 3 ){
+	LOG << "added paragraph-annotation for: '" << ucto_proc->id() << endl;
+      }
+    }
+    if ( !doc->isDeclared( folia::AnnotationType::SENTENCE ) ){
+      doc->declare( folia::AnnotationType::SENTENCE, "", args );
+      if ( tokDebug > 3 ){
+	LOG << "added sentence-annotation for: '" << ucto_proc->id() << endl;
+      }
+    }
+    return ucto_proc;
+  }
+
   folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc ) const {
     folia::processor *ucto_proc = init_provenance( doc );
     folia::processor *data_proc = add_provenance_data( doc );
@@ -362,7 +383,7 @@ namespace Tokenizer {
 	doc->un_declare( folia::AnnotationType::TOKEN, alias );
       }
       doc->declare( folia::AnnotationType::TOKEN,
-		    "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/" + alias + ".foliaset.ttl",
+		    UCTO_SET_PREFIX + alias + ".foliaset.ttl",
 		    args );
       if ( tokDebug > 3 ){
 	LOG << "added processor and token-annotation for: '"
@@ -670,11 +691,13 @@ namespace Tokenizer {
       LOG << "append_to_folia, root = " << root << endl;
       LOG << "tokens=\n" << tv << endl;
     }
-    folia::KWargs args;
     if ( (tv[0].role & NEWPARAGRAPH) ) {
       if  ( tokDebug > 5 ){
 	LOG << "append_to_folia, NEW paragraph " << endl;
       }
+      folia::KWargs args;
+      folia::processor *proc = add_provenance_structure( root->doc() );
+      args["processor"] = proc->id();
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
       if ( root->element_id() == folia::Text_t ){
@@ -696,7 +719,7 @@ namespace Tokenizer {
       }
       root = p;
     }
-    args.clear();
+    folia::KWargs args;
     args["generate_id"] = root->id();
     folia::Sentence *s = new folia::Sentence( args, root->doc() );
     root->append( s );
@@ -1138,7 +1161,7 @@ namespace Tokenizer {
       LOG << "NO result!" << endl;
       return 0;
     }
-    return proc.doc(true); // take the doc over from the processor
+    return proc.doc(true); // take the doc over from the Engine
   }
 
   void TokenizerClass::tokenize_folia( const string& infile_name,
