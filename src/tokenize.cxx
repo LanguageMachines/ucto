@@ -298,9 +298,6 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
-    if ( doc->metadatatype() == "native" ){
-      doc->set_metadata( "language", default_language );
-    }
     folia::processor *proc = doc->get_processor( "ucto.1" );
     if ( !proc ){
       folia::KWargs args;
@@ -338,28 +335,35 @@ namespace Tokenizer {
     return data_proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc ) const {
+  folia::processor *TokenizerClass::add_provenance_structure(  folia::Document *doc,
+							       const folia::AnnotationType::AnnotationType type ) const {
     folia::processor *ucto_proc = init_provenance( doc );
     folia::KWargs args;
     args["processor"] = ucto_proc->id();
-    if ( !doc->isDeclared( folia::AnnotationType::PARAGRAPH ) ){
-      doc->declare( folia::AnnotationType::PARAGRAPH, "", args );
+    if ( !doc->isDeclared( type ) ){
+      doc->declare( type, "", args );
       if ( tokDebug > 3 ){
-	LOG << "added paragraph-annotation for: '" << ucto_proc->id() << endl;
-      }
-    }
-    if ( !doc->isDeclared( folia::AnnotationType::SENTENCE ) ){
-      doc->declare( folia::AnnotationType::SENTENCE, "", args );
-      if ( tokDebug > 3 ){
-	LOG << "added sentence-annotation for: '" << ucto_proc->id() << endl;
+	LOG << "added " << TiCC::toString(type) << "-annotation for: '"
+	    << ucto_proc->id() << endl;
       }
     }
     return ucto_proc;
   }
 
+  folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc ) const {
+    folia::processor *res = add_provenance_structure( doc,
+						      folia::AnnotationType::PARAGRAPH );
+    res = add_provenance_structure( doc,
+				    folia::AnnotationType::SENTENCE );
+    return res;
+  }
+
   folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc ) const {
     folia::processor *ucto_proc = init_provenance( doc );
     folia::processor *data_proc = add_provenance_data( doc );
+    if ( doc->metadatatype() == "native" ){
+      doc->set_metadata( "language", default_language );
+    }
     for ( const auto& s : settings ){
       if ( tokDebug > 3 ){
 	LOG << "language: " << s.first << endl;
@@ -695,8 +699,9 @@ namespace Tokenizer {
       if  ( tokDebug > 5 ){
 	LOG << "append_to_folia, NEW paragraph " << endl;
       }
+      folia::processor *proc = add_provenance_structure( root->doc(),
+							 folia::AnnotationType::PARAGRAPH );
       folia::KWargs args;
-      folia::processor *proc = add_provenance_structure( root->doc() );
       args["processor"] = proc->id();
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
@@ -719,7 +724,10 @@ namespace Tokenizer {
       }
       root = p;
     }
+    folia::processor *proc = add_provenance_structure( root->doc(),
+						       folia::AnnotationType::SENTENCE );
     folia::KWargs args;
+    args["processor"] = proc->id();
     args["generate_id"] = root->id();
     folia::Sentence *s = new folia::Sentence( args, root->doc() );
     root->append( s );
@@ -757,7 +765,10 @@ namespace Tokenizer {
 	if  (tokDebug > 5 ) {
 	  LOG << "[add_words] Creating quote element" << endl;
 	}
+	folia::processor *proc = add_provenance_structure( doc,
+							   folia::AnnotationType::QUOTE );
 	folia::KWargs args;
+	args["processor"] = proc->id();
 	string id = get_parent_id(root);
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
@@ -969,6 +980,9 @@ namespace Tokenizer {
       while ( !toks.empty() ){
 	folia::KWargs args;
 	string p_id = p->id();
+	folia::processor *proc = add_provenance_structure( p->doc(),
+							   folia::AnnotationType::SENTENCE );
+	args["processor"] = proc->id();
 	if ( !p_id.empty() ){
 	  args["generate_id"] = p_id;
 	}
@@ -1057,6 +1071,9 @@ namespace Tokenizer {
 	    if ( !e_id.empty() ){
 	      args["generate_id"] = e_id;
 	    }
+	    folia::processor *proc = add_provenance_structure( e->doc(),
+							       folia::AnnotationType::PARAGRAPH );
+	    args["processor"] =  proc->id();
 	    folia::Paragraph *p = new folia::Paragraph( args, e->doc() );
 	    e->append( p );
 	    rt = p;
@@ -1070,6 +1087,9 @@ namespace Tokenizer {
 	    if ( !p_id.empty() ){
 	      args["generate_id"] = p_id;
 	    }
+	    folia::processor *proc = add_provenance_structure( e->doc(),
+							       folia::AnnotationType::SENTENCE );
+	    args["processor"] =  proc->id();
 	    folia::Sentence *s = new folia::Sentence( args, e->doc() );
 	    append_to_sentence( s, sent );
 	    ++sentence_done;
@@ -1090,6 +1110,9 @@ namespace Tokenizer {
 	  else {
 	    args["generate_id"] = e_id;
 	  }
+	  folia::processor *proc = add_provenance_structure( e->doc(),
+							     folia::AnnotationType::SENTENCE );
+	  args["processor"] =  proc->id();
 	  folia::Sentence *s = new folia::Sentence( args, e->doc() );
 	  append_to_sentence( s, sents[0] );
 	  ++sentence_done;

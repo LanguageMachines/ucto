@@ -269,6 +269,8 @@ namespace Tokenizer {
     folia::processor *add_provenance_data( folia::Document * ) const;
     folia::processor *add_provenance_setting( folia::Document * ) const;
     folia::processor *add_provenance_structure( folia::Document * ) const;
+    folia::processor *add_provenance_structure( folia::Document *,
+						const folia::AnnotationType::AnnotationType ) const;
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies
