@@ -340,11 +340,20 @@ namespace Tokenizer {
     folia::processor *ucto_proc = init_provenance( doc );
     folia::KWargs args;
     args["processor"] = ucto_proc->id();
+    // if ( type == folia::AnnotationType::AnnotationType::TEXT ){
+    //   doc->un_declare( type, doc->defaultset(type) );
+    // }
     if ( !doc->isDeclared( type ) ){
       doc->declare( type, "", args );
       if ( tokDebug > 3 ){
-	LOG << "added " << TiCC::toString(type) << "-annotation for: '"
+	LOG << "added " << folia::toString(type) << "-annotation for: '"
 	    << ucto_proc->id() << endl;
+      }
+    }
+    else {
+      if ( tokDebug > 3 ){
+	LOG << folia::toString(type) << "-annotation already declared" << endl;
+	LOG << "defaultset=" << doc->defaultset(type) << endl;
       }
     }
     return ucto_proc;
@@ -355,6 +364,10 @@ namespace Tokenizer {
 						      folia::AnnotationType::PARAGRAPH );
     res = add_provenance_structure( doc,
 				    folia::AnnotationType::SENTENCE );
+    res = add_provenance_structure( doc,
+				    folia::AnnotationType::QUOTE );
+    // res = add_provenance_structure( doc,
+    // 				    folia::AnnotationType::TEXT );
     return res;
   }
 
@@ -524,6 +537,8 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = start_document( docid );
+    // folia::processor *proc = add_provenance_structure( doc,
+    // 						       folia::AnnotationType::TEXT );
     folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
     vector<Token> buffer;
