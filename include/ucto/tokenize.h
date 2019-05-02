@@ -264,13 +264,19 @@ namespace Tokenizer {
 			   std::string& ) const;
     std::string get_data_version() const;
 
-    folia::processor *init_provenance( folia::Document * ) const;
-    folia::processor *add_provenance_passthru( folia::Document * ) const;
-    folia::processor *add_provenance_data( folia::Document * ) const;
-    folia::processor *add_provenance_setting( folia::Document * ) const;
-    folia::processor *add_provenance_structure( folia::Document * ) const;
+    folia::processor *init_provenance( folia::Document *,
+				       folia::processor * =0 ) const;
+    folia::processor *add_provenance_passthru( folia::Document *,
+					       folia::processor * =0 ) const;
+    folia::processor *add_provenance_data( folia::Document *,
+					   folia::processor * =0 ) const;
+    folia::processor *add_provenance_setting( folia::Document *,
+					      folia::processor * =0 ) const;
     folia::processor *add_provenance_structure( folia::Document *,
-						const folia::AnnotationType::AnnotationType ) const;
+						folia::processor * =0 ) const;
+    folia::processor *add_provenance_structure( folia::Document *,
+						const folia::AnnotationType::AnnotationType,
+						folia::processor * =0 ) const;
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies

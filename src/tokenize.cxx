@@ -297,7 +297,8 @@ namespace Tokenizer {
     return line;
   }
 
-  folia::processor *TokenizerClass::init_provenance( folia::Document *doc ) const {
+  folia::processor *TokenizerClass::init_provenance( folia::Document *doc,
+						     folia::processor *parent ) const {
     folia::processor *proc = doc->get_processor( "ucto.1" );
     if ( !proc ){
       folia::KWargs args;
@@ -305,22 +306,29 @@ namespace Tokenizer {
       args["id"] = "ucto.1";
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
-      proc = doc->add_processor( args );
-      proc->get_system_defaults();
+      if ( parent ){
+	proc = doc->add_processor( args, parent );
+      }
+      else {
+	proc = doc->add_processor( args );
+	proc->get_system_defaults();
+      }
     }
     return proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc ) const {
-    folia::processor *proc = init_provenance( doc );
+  folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc,
+							     folia::processor *parent ) const {
+    folia::processor *proc = init_provenance( doc, parent );
     folia::KWargs args;
     args["processor"] = proc->id();
     doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     return proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc ) const {
-    folia::processor *ucto_proc = init_provenance( doc );
+  folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
+							 folia::processor* parent ) const {
+    folia::processor *ucto_proc = init_provenance( doc, parent );
     string id = "ucto.1.1";
     folia::processor *data_proc = doc->get_processor( id );
     if ( !data_proc ){
@@ -336,8 +344,9 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::add_provenance_structure(  folia::Document *doc,
-							       const folia::AnnotationType::AnnotationType type ) const {
-    folia::processor *ucto_proc = init_provenance( doc );
+							       const folia::AnnotationType::AnnotationType type,
+							       folia::processor *parent ) const {
+    folia::processor *ucto_proc = init_provenance( doc, parent );
     folia::KWargs args;
     args["processor"] = ucto_proc->id();
     // if ( type == folia::AnnotationType::AnnotationType::TEXT ){
@@ -359,21 +368,26 @@ namespace Tokenizer {
     return ucto_proc;
   }
 
-  folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc ) const {
+  folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
+							      folia::processor *parent ) const {
     folia::processor *res = add_provenance_structure( doc,
-						      folia::AnnotationType::PARAGRAPH );
+						      folia::AnnotationType::PARAGRAPH, parent );
     res = add_provenance_structure( doc,
-				    folia::AnnotationType::SENTENCE );
+				    folia::AnnotationType::SENTENCE,
+				    parent );
     res = add_provenance_structure( doc,
-				    folia::AnnotationType::QUOTE );
+				    folia::AnnotationType::QUOTE,
+				    parent );
     // res = add_provenance_structure( doc,
-    // 				    folia::AnnotationType::TEXT );
+    // 				       folia::AnnotationType::TEXT,
+    //                                 parent);
     return res;
   }
 
-  folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc ) const {
-    folia::processor *ucto_proc = init_provenance( doc );
-    folia::processor *data_proc = add_provenance_data( doc );
+  folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc,
+							    folia::processor *parent ) const {
+    folia::processor *ucto_proc = init_provenance( doc, parent );
+    folia::processor *data_proc = add_provenance_data( doc, parent );
     if ( doc->metadatatype() == "native" ){
       doc->set_metadata( "language", default_language );
     }
