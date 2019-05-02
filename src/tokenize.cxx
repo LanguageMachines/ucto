@@ -306,6 +306,7 @@ namespace Tokenizer {
       args["id"] = "ucto.1";
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
+      args["begindatetime"] = "now()";
       if ( parent ){
 	proc = doc->add_processor( args, parent );
       }
