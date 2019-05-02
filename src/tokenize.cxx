@@ -310,6 +310,7 @@ namespace Tokenizer {
 	proc = doc->add_processor( args, parent );
       }
       else {
+	args["generator"] = "yes";
 	proc = doc->add_processor( args );
 	proc->get_system_defaults();
       }
@@ -337,7 +338,6 @@ namespace Tokenizer {
       args["id"] = id;
       args["type"] = "datasource";
       args["version"] = data_version;
-      args["generator"] = "NO";
       data_proc = doc->add_processor( args, ucto_proc );
     }
     return data_proc;
@@ -403,7 +403,6 @@ namespace Tokenizer {
       args["id"] = "next()";
       args["type"] = "datasource";
       args["version"] = s.second->version;
-      args["generator"] = "NO";
       doc->add_processor( args, data_proc );
       args.clear();
       args["processor"] = ucto_proc->id();
