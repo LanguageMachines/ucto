@@ -772,14 +772,13 @@ namespace Tokenizer {
     else {
       tok_set = "tokconfig-" + default_language;
     }
-    vector<folia::Word*> wv = add_words( s, tok_set, tv );
+    add_words( s, tok_set, tv );
     return root;
   }
 
-  vector<folia::Word*> TokenizerClass::add_words( folia::Sentence* s,
-						  const string& tok_set,
-						  const vector<Token>& toks ) const{
-    vector<folia::Word*> wv;
+  void TokenizerClass::add_words( folia::Sentence* s,
+				  const string& tok_set,
+				  const vector<Token>& toks ) const{
     folia::FoliaElement *root = s;
     folia::Document *doc = s->doc();
     if ( tokDebug > 5 ){
@@ -884,7 +883,6 @@ namespace Tokenizer {
 	}
 	root->append( w );
       }
-      wv.push_back( w );
       if ( tok.role & ENDQUOTE ){
 	if ( i > 0
 	     && toks[i-1].role & ENDOFSENTENCE ){
@@ -912,7 +910,6 @@ namespace Tokenizer {
     else if ( text_redundancy == "none" ){
       removeText( s, outputclass );
     }
-    return wv;
   }
 
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
@@ -929,7 +926,7 @@ namespace Tokenizer {
 				 tok_set ) ){
       add_provenance_setting( sent->doc() );
     }
-    vector<folia::Word*> wv = add_words( sent, tok_set, toks );
+    add_words( sent, tok_set, toks );
   }
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
