@@ -551,8 +551,6 @@ namespace Tokenizer {
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = start_document( docid );
-    // folia::processor *proc = add_provenance_structure( doc,
-    // 						       folia::AnnotationType::TEXT );
     folia::FoliaElement *root = doc->doc()->index(0);
     int parCount = 0;
     vector<Token> buffer;
@@ -695,9 +693,21 @@ namespace Tokenizer {
 
   void set_language( folia::FoliaElement* e, const string& lan ){
     // set or reset the language: append a LangAnnotation child of class 'lan'
+    string lang_set;
+    if ( e->doc()->isDeclared( folia::AnnotationType::LANG ) ){
+      lang_set = e->doc()->defaultset( folia::AnnotationType::LANG );
+    }
+    if ( lang_set.empty() ){
+      lang_set = ISO_SET;
+      folia::KWargs args;
+      args["processor"] = "ucto.1";
+      e->doc()->declare( folia::AnnotationType::LANG,
+			 ISO_SET,
+			 args );
+    }
     folia::KWargs args;
     args["class"] = lan;
-    args["set"] = ISO_SET;
+    args["set"] = lang_set;
     folia::LangAnnotation *node = new folia::LangAnnotation( args, e->doc() );
     e->replace( node );
   }
@@ -714,73 +724,20 @@ namespace Tokenizer {
     }
   }
 
-  folia::FoliaElement *TokenizerClass::append_to_folia( folia::FoliaElement *root,
-							const vector<Token>& tv,
-							int& p_count ) const {
-    if ( !root || !root->doc() ){
-      throw logic_error( "missing root" );
-    }
-    if  ( tokDebug > 5 ){
-      LOG << "append_to_folia, root = " << root << endl;
-      LOG << "tokens=\n" << tv << endl;
-    }
-    if ( (tv[0].role & NEWPARAGRAPH) ) {
-      if  ( tokDebug > 5 ){
-	LOG << "append_to_folia, NEW paragraph " << endl;
-      }
-      folia::processor *proc = add_provenance_structure( root->doc(),
-							 folia::AnnotationType::PARAGRAPH );
-      folia::KWargs args;
-      args["processor"] = proc->id();
-      args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
-      folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
-      if ( root->element_id() == folia::Text_t ){
-	if  ( tokDebug > 5 ){
-	  LOG << "append_to_folia, add paragraph to Text" << endl;
-	}
-	root->append( p );
-      }
-      else {
-	// root is a paragraph, which is done now.
-	if ( text_redundancy == "full" ){
-	  root->settext( root->str(outputclass), outputclass);
-	}
-	if  ( tokDebug > 5 ){
-	  LOG << "append_to_folia, add paragraph to parent of " << root << endl;
-	}
-	root = root->parent();
-	root->append( p );
-      }
-      root = p;
-    }
-    folia::processor *proc = add_provenance_structure( root->doc(),
-						       folia::AnnotationType::SENTENCE );
-    folia::KWargs args;
-    args["processor"] = proc->id();
-    args["generate_id"] = root->id();
-    folia::Sentence *s = new folia::Sentence( args, root->doc() );
-    root->append( s );
-    if  ( tokDebug > 5 ){
-      LOG << "append_to_folia, created Sentence" << s << endl;
-    }
+  vector<folia::Word*> TokenizerClass::add_words( folia::Sentence* s,
+						  const vector<Token>& toks ) const{
+    vector<folia::Word*> result;
+    folia::Document *doc = s->doc();
+    string tc_lc = get_language( toks );
     string tok_set;
-    string lang = get_language( tv );
-    if ( lang != "default" ){
-      tok_set = "tokconfig-" + lang;
-      set_language( s, lang );
+    if ( tc_lc != "default" ){
+      tok_set = "tokconfig-" + tc_lc;
+      set_language( s, tc_lc );
     }
     else {
       tok_set = "tokconfig-" + default_language;
     }
-    add_words( s, tok_set, tv );
-    return root;
-  }
-
-  void TokenizerClass::add_words( folia::Sentence* s,
-				  const string& tok_set,
-				  const vector<Token>& toks ) const{
     folia::FoliaElement *root = s;
-    folia::Document *doc = s->doc();
     if ( tokDebug > 5 ){
       LOG << "add_words\n" << toks << endl;
     }
@@ -877,6 +834,7 @@ namespace Tokenizer {
 	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
 	  exit(EXIT_FAILURE);
 	}
+	result.push_back( w );
 	w->setutext( ws, outputclass );
 	if ( tokDebug > 5 ){
 	  LOG << "add_result, create a word, done:" << w << endl;
@@ -910,23 +868,66 @@ namespace Tokenizer {
     else if ( text_redundancy == "none" ){
       removeText( s, outputclass );
     }
+    return result;
+  }
+
+
+  folia::FoliaElement *TokenizerClass::append_to_folia( folia::FoliaElement *root,
+							const vector<Token>& tv,
+							int& p_count ) const {
+    if ( !root || !root->doc() ){
+      throw logic_error( "missing root" );
+    }
+    if  ( tokDebug > 5 ){
+      LOG << "append_to_folia, root = " << root << endl;
+      LOG << "tokens=\n" << tv << endl;
+    }
+    if ( (tv[0].role & NEWPARAGRAPH) ) {
+      if  ( tokDebug > 5 ){
+	LOG << "append_to_folia, NEW paragraph " << endl;
+      }
+      folia::processor *proc = add_provenance_structure( root->doc(),
+							 folia::AnnotationType::PARAGRAPH );
+      folia::KWargs args;
+      args["processor"] = proc->id();
+      args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
+      folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
+      if ( root->element_id() == folia::Text_t ){
+	if  ( tokDebug > 5 ){
+	  LOG << "append_to_folia, add paragraph to Text" << endl;
+	}
+	root->append( p );
+      }
+      else {
+	// root is a paragraph, which is done now.
+	if ( text_redundancy == "full" ){
+	  root->settext( root->str(outputclass), outputclass);
+	}
+	if  ( tokDebug > 5 ){
+	  LOG << "append_to_folia, add paragraph to parent of " << root << endl;
+	}
+	root = root->parent();
+	root->append( p );
+      }
+      root = p;
+    }
+    folia::processor *proc = add_provenance_structure( root->doc(),
+						       folia::AnnotationType::SENTENCE );
+    folia::KWargs args;
+    args["processor"] = proc->id();
+    args["generate_id"] = root->id();
+    folia::Sentence *s = new folia::Sentence( args, root->doc() );
+    root->append( s );
+    if  ( tokDebug > 5 ){
+      LOG << "append_to_folia, created Sentence" << s << endl;
+    }
+    add_words( s, tv );
+    return root;
   }
 
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
 					   const vector<Token>& toks ) const {
-    string tc_lc = get_language( toks );
-    string tok_set;
-    if ( tc_lc != "default" ){
-      tok_set = "tokconfig-" + tc_lc;
-    }
-    else {
-      tok_set = "tokconfig-" + default_language;
-    }
-    if ( !sent->doc()->declared( folia::AnnotationType::TOKEN,
-				 tok_set ) ){
-      add_provenance_setting( sent->doc() );
-    }
-    add_words( sent, tok_set, toks );
+    add_words( sent, toks );
   }
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
