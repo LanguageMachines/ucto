@@ -421,13 +421,6 @@ namespace Tokenizer {
 	    << alias << "'" << endl;
       }
     }
-    if ( !doc->isDeclared( folia::AnnotationType::LANG ) ){
-      folia::KWargs args;
-      args["processor"] = ucto_proc->id();
-      doc->declare( folia::AnnotationType::LANG,
-		    ISO_SET,
-		    args );
-    }
     return data_proc;
   }
 
