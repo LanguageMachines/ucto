@@ -9,7 +9,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-30T14:10:25" command="ucto -L nl -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T10:45:59" command="ucto -L nl -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -85,7 +85,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-30T14:10:25" command="ucto -L en -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T10:45:59" command="ucto -L en -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -164,7 +164,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-30T14:10:25" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T10:45:59" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -221,6 +221,7 @@
       <p xml:id="p3">
         <s xml:id="s3">
           <t>En dit is zin 2.</t>
+          <lang class="nld"/>
           <w xml:id="s3.w.1" class="WORD" set="tokconfig-nld">
             <t>En</t>
           </w>
@@ -276,7 +277,7 @@
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-30T14:10:25" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T10:45:59" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
@@ -1000,7 +1001,7 @@
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-04-30T14:10:25" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T10:45:59" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
         <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
         <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="ucto.1.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
