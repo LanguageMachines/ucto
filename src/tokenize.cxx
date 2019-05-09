@@ -691,25 +691,28 @@ namespace Tokenizer {
     root->cleartextcontent( outputclass );
   }
 
-  void set_language( folia::FoliaElement* e, const string& lan ){
-    // set or reset the language: append a LangAnnotation child of class 'lan'
+  void set_language( folia::FoliaElement* node, const string& lang ){
+    // set the language on this @node to @lang
+    // If a LangAnnotation with a set is already present, we silently
+    // keep using that set.
+    // Otherwise we add the ISO_SET
     string lang_set;
-    if ( e->doc()->isDeclared( folia::AnnotationType::LANG ) ){
-      lang_set = e->doc()->defaultset( folia::AnnotationType::LANG );
+    if ( node->doc()->isDeclared( folia::AnnotationType::LANG ) ){
+      lang_set = node->doc()->defaultset( folia::AnnotationType::LANG );
     }
     if ( lang_set.empty() ){
       lang_set = ISO_SET;
       folia::KWargs args;
       args["processor"] = "ucto.1";
-      e->doc()->declare( folia::AnnotationType::LANG,
-			 ISO_SET,
-			 args );
+      node->doc()->declare( folia::AnnotationType::LANG,
+			    ISO_SET,
+			    args );
     }
     folia::KWargs args;
-    args["class"] = lan;
+    args["class"] = lang;
     args["set"] = lang_set;
-    folia::LangAnnotation *node = new folia::LangAnnotation( args, e->doc() );
-    e->replace( node );
+    folia::LangAnnotation *la = new folia::LangAnnotation( args, node->doc() );
+    node->replace( la );
   }
 
   string get_parent_id( folia::FoliaElement *el ){
