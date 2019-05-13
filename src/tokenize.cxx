@@ -720,20 +720,20 @@ namespace Tokenizer {
     }
   }
 
-  vector<folia::Word*> TokenizerClass::add_words( folia::Sentence* s,
-						  const vector<Token>& toks ) const{
+  vector<folia::Word*> TokenizerClass::append_to_sentence( folia::Sentence *sent,
+							   const vector<Token>& toks ) const {
     vector<folia::Word*> result;
-    folia::Document *doc = s->doc();
+    folia::Document *doc = sent->doc();
     string tc_lc = get_language( toks );
     string tok_set;
     if ( tc_lc != "default" ){
       tok_set = "tokconfig-" + tc_lc;
-      set_language( s, tc_lc );
+      set_language( sent, tc_lc );
     }
     else {
       tok_set = "tokconfig-" + default_language;
     }
-    folia::FoliaElement *root = s;
+    folia::FoliaElement *root = sent;
     if ( tokDebug > 5 ){
       LOG << "add_words\n" << toks << endl;
     }
@@ -768,11 +768,11 @@ namespace Tokenizer {
 	}
       }
       else if ( (tok.role & BEGINOFSENTENCE)
-		&& root != s
+		&& root != sent
 		&& root->element_id() == folia::Sentence_t ){
 	// Ok, another Sentence in a quote
 	if ( i > 0 && !(toks[i-1].role & BEGINQUOTE) ){
-	// close the current one, and start a new one.
+	  // close the current one, and start a new one.
 	  // except when it is implicit created by a QUOTE
 	  if ( tokDebug > 5 ){
 	    LOG << "[add_words] next embedded sentence" << endl;
@@ -859,14 +859,13 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( s, outputclass );
+      appendText( sent, outputclass );
     }
     else if ( text_redundancy == "none" ){
-      removeText( s, outputclass );
+      removeText( sent, outputclass );
     }
     return result;
   }
-
 
   folia::FoliaElement *TokenizerClass::append_to_folia( folia::FoliaElement *root,
 							const vector<Token>& tv,
@@ -917,13 +916,8 @@ namespace Tokenizer {
     if  ( tokDebug > 5 ){
       LOG << "append_to_folia, created Sentence" << s << endl;
     }
-    add_words( s, tv );
+    append_to_sentence( s, tv );
     return root;
-  }
-
-  void TokenizerClass::append_to_sentence( folia::Sentence *sent,
-					   const vector<Token>& toks ) const {
-    add_words( sent, toks );
   }
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
@@ -1075,7 +1069,7 @@ namespace Tokenizer {
 	// just words or text
 	string text = e->str(inputclass);
 	if ( tokDebug > 1 ){
-	  LOG << "frog-" << e->xmltag() << ":" << text << endl;
+	  LOG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
 	tokenizeLine( text );
 	vector<vector<Token>> sents;
