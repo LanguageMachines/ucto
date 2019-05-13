@@ -415,6 +415,7 @@ namespace Tokenizer {
   // extract the language assigned to this vector, if any...
   // will return "" if indetermined.
   std::string get_language( const std::vector<Token>& );
-
+  // set the language on a FoliaElement
+  void set_language( folia::FoliaElement*, const std::string& );
 }
 #endif
