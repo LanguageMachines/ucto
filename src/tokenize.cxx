@@ -833,7 +833,7 @@ namespace Tokenizer {
 	result.push_back( w );
 	w->setutext( ws, outputclass );
 	if ( tokDebug > 5 ){
-	  LOG << "add_result, create a word, done:" << w << endl;
+	  LOG << "add_result, created a word: " << w << "(" << ws << ")" << endl;
 	}
 	root->append( w );
       }
