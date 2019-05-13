@@ -31,10 +31,10 @@ def checkVGsummary( id, lang ):
         for part in s:
             num +=1
             if part == "lost:":
-                LOST = int( s[ num ] )
+                LOST = int( s[num].replace(',','') )
                 break
             if part == "SUMMARY:":
-                ERRORS = int( s[ num ] )
+                ERRORS = int( s[num].replace(',','') )
                 break
     if ( LOST != 0 or ERRORS != 0 ):
         print color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True)
