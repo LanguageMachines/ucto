@@ -564,6 +564,9 @@ namespace Tokenizer {
       LOG << "[tokenize] end of stream reached" << endl;
     }
     if (!buffer.empty()){
+      if ( tokDebug > 1 ){
+	LOG << "[tokenize] remainder=" << buffer << endl;
+      }
       append_to_folia( root, buffer, parCount);
     }
     return doc;
