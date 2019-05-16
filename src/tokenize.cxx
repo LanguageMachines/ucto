@@ -350,9 +350,6 @@ namespace Tokenizer {
     folia::processor *ucto_proc = init_provenance( doc, parent );
     folia::KWargs args;
     args["processor"] = ucto_proc->id();
-    // if ( type == folia::AnnotationType::AnnotationType::TEXT ){
-    //   doc->un_declare( type, doc->defaultset(type) );
-    // }
     if ( !doc->isDeclared( type ) ){
       doc->declare( type, "", args );
       if ( tokDebug > 3 ){
@@ -379,9 +376,6 @@ namespace Tokenizer {
     res = add_provenance_structure( doc,
 				    folia::AnnotationType::QUOTE,
 				    parent );
-    // res = add_provenance_structure( doc,
-    // 				       folia::AnnotationType::TEXT,
-    //                                 parent);
     return res;
   }
 
