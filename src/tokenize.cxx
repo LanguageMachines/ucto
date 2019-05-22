@@ -350,7 +350,7 @@ namespace Tokenizer {
     folia::processor *ucto_proc = init_provenance( doc, parent );
     folia::KWargs args;
     args["processor"] = ucto_proc->id();
-    if ( !doc->isDeclared( type ) ){
+    if ( !doc->declared( type ) ){
       doc->declare( type, "", args );
       if ( tokDebug > 3 ){
 	LOG << "added " << folia::toString(type) << "-annotation for: '"
@@ -360,7 +360,7 @@ namespace Tokenizer {
     else {
       if ( tokDebug > 3 ){
 	LOG << folia::toString(type) << "-annotation already declared" << endl;
-	LOG << "defaultset=" << doc->defaultset(type) << endl;
+	LOG << "default_set=" << doc->default_set(type) << endl;
       }
     }
     return ucto_proc;
@@ -383,7 +383,7 @@ namespace Tokenizer {
 							    folia::processor *parent ) const {
     folia::processor *ucto_proc = init_provenance( doc, parent );
     folia::processor *data_proc = add_provenance_data( doc, parent );
-    if ( doc->metadatatype() == "native" ){
+    if ( doc->metadata_type() == "native" ){
       doc->set_metadata( "language", default_language );
     }
     for ( const auto& s : settings ){
@@ -403,7 +403,7 @@ namespace Tokenizer {
       args["processor"] = ucto_proc->id();
       string alias = s.second->set_file;
       args["alias"] = alias;
-      if ( doc->isDeclared( folia::AnnotationType::TOKEN, alias ) ){
+      if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
 	// we assume that an old-style declaration is present
 	doc->un_declare( folia::AnnotationType::TOKEN, alias );
       }
@@ -687,8 +687,8 @@ namespace Tokenizer {
     // keep using that set.
     // Otherwise we add the ISO_SET
     string lang_set;
-    if ( node->doc()->isDeclared( folia::AnnotationType::LANG ) ){
-      lang_set = node->doc()->defaultset( folia::AnnotationType::LANG );
+    if ( node->doc()->declared( folia::AnnotationType::LANG ) ){
+      lang_set = node->doc()->default_set( folia::AnnotationType::LANG );
     }
     if ( lang_set.empty() ){
       lang_set = ISO_SET;
