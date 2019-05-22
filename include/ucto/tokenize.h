@@ -140,8 +140,8 @@ namespace Tokenizer {
     // OR use popSentence() repeatedly to extract all sentences as vectors
     //    using getString() to extract the UTF8 value of that sentence
     // OR getSentences() to get ALL sentences as UTF8 strings in a vector
-    void tokenizeLine( const UnicodeString& );
-    void tokenizeLine( const std::string& );
+    void tokenizeLine( const UnicodeString&, const std::string& = "" );
+    void tokenizeLine( const std::string&, const std::string& = "" );
 
     // extract 1 sentence from Token vector;
     std::vector<Token> popSentence();
@@ -159,6 +159,9 @@ namespace Tokenizer {
     //set debug value
     int setDebug( int d ) { int dd = tokDebug; tokDebug = d; return dd; };
     int getDebug() const { return tokDebug; }
+
+    // set the commandline used
+    void set_command( const std::string& c ){ _command =  c; };
 
     //set textcat debug value
     bool set_tc_debug( bool b );
@@ -256,6 +259,24 @@ namespace Tokenizer {
     std::string setDocID( const std::string& id ) {
       const std::string s = docid; docid = id; return s; }
 
+    bool get_setting_info( const std::string&,
+			   std::string&,
+			   std::string& ) const;
+    std::string get_data_version() const;
+
+    folia::processor *init_provenance( folia::Document *,
+				       folia::processor * =0 ) const;
+    folia::processor *add_provenance_passthru( folia::Document *,
+					       folia::processor * =0 ) const;
+    folia::processor *add_provenance_data( folia::Document *,
+					   folia::processor * =0 ) const;
+    folia::processor *add_provenance_setting( folia::Document *,
+					      folia::processor * =0 ) const;
+    folia::processor *add_provenance_structure( folia::Document *,
+						folia::processor * =0 ) const;
+    folia::processor *add_provenance_structure( folia::Document *,
+						const folia::AnnotationType::AnnotationType,
+						folia::processor * =0 ) const;
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies
@@ -269,11 +290,8 @@ namespace Tokenizer {
 					  const std::vector<Token>& tv,
 					  int& p_count ) const;
 
-    std::vector<folia::Word*> add_words( folia::Sentence*,
-					 const std::string& tok_set,
-					 const std::vector<Token>& toks ) const;
-    void append_to_sentence( folia::Sentence *,
-			     const std::vector<Token>& ) const;
+    std::vector<folia::Word*> append_to_sentence( folia::Sentence *,
+						  const std::vector<Token>& ) const;
     void handle_one_sentence( folia::Sentence *, int& );
     void handle_one_paragraph( folia::Paragraph *, int& );
     void handle_one_text_parent( folia::FoliaElement *, int& );
@@ -291,10 +309,12 @@ namespace Tokenizer {
 		       bool,
 		       const std::string&,
 		       const UnicodeString& ="" );
-    int tokenizeLine( const UnicodeString&,
-		      const std::string& );
+    int internal_tokenize_line( const UnicodeString&,
+				const std::string& );
 
-    void tokenize_one_line( const UnicodeString&, bool& );
+    void tokenize_one_line( const UnicodeString&,
+			    bool&,
+			    const std::string& = "" );
 
     bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
     void detectSentenceBounds( const int offset,
@@ -321,6 +341,7 @@ namespace Tokenizer {
     std::string default_language;
     std::string document_language; // in case of an input FoLiA document
     std::map<std::string,Setting*> settings;
+    std::string _command; // original commandline
     //debug flag
     int tokDebug;
 
@@ -366,6 +387,7 @@ namespace Tokenizer {
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
+    std::string data_version; // the version of uctodata
     TextCat *tc;
   };
 
@@ -391,6 +413,7 @@ namespace Tokenizer {
   // extract the language assigned to this vector, if any...
   // will return "" if indetermined.
   std::string get_language( const std::vector<Token>& );
-
+  // set the language on a FoliaElement
+  void set_language( folia::FoliaElement*, const std::string& );
 }
 #endif

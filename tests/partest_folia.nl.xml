@@ -1,17 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.16" version="1.5.1">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="test" generator="libfolia-v1.20" version="2.0.3">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2019-03-13T11:56:30" set="tokconfig-nld"/>
-      <lang-annotation annotator="ucto" set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <paragraph-annotation>
+        <annotator processor="ucto.1"/>
+      </paragraph-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-16T16:42:56" command="ucto --id=test -X -Q -d 5 -v -Lnl partest_folia.nl.txt testoutput/partest_folia.nl.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="test.text">
     <p xml:id="test.p.1">
       <s xml:id="test.p.1.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -41,7 +56,6 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.2">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.2.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -71,7 +85,6 @@
         </w>
       </s>
       <s xml:id="test.p.1.s.3">
-        <lang class="nld"/>
         <w xml:id="test.p.1.s.3.w.1" class="WORD">
           <t>En</t>
         </w>
@@ -91,7 +104,6 @@
     </p>
     <p xml:id="test.p.2">
       <s xml:id="test.p.2.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.2.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -123,7 +135,6 @@
     </p>
     <p xml:id="test.p.3">
       <s xml:id="test.p.3.s.1">
-        <lang class="nld"/>
         <w xml:id="test.p.3.s.1.w.1" class="WORD">
           <t>Dit</t>
         </w>
@@ -144,7 +155,6 @@
         </w>
       </s>
       <s xml:id="test.p.3.s.2">
-        <lang class="nld"/>
         <w xml:id="test.p.3.s.2.w.1" class="WORD">
           <t>Deze</t>
         </w>
@@ -170,4 +180,3 @@
     </p>
   </text>
 </FoLiA>
-
