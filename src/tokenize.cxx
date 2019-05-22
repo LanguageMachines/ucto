@@ -678,7 +678,7 @@ namespace Tokenizer {
   void removeText( folia::FoliaElement *root,
 		   const string& outputclass  ){
     // remove the textcontent in outputclass of root
-    root->cleartextcontent( outputclass );
+    root->clear_textcontent( outputclass );
   }
 
   void set_language( folia::FoliaElement* node, const string& lang ){
@@ -940,7 +940,7 @@ namespace Tokenizer {
     }
     else {
       string s_la;
-      if ( s->hasannotation<folia::LangAnnotation>() ){
+      if ( s->has_annotation<folia::LangAnnotation>() ){
 	s_la = s->annotation<folia::LangAnnotation>()->cls();
       }
       if ( !s_la.empty() && settings.find(s_la) == settings.end() ){
