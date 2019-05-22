@@ -368,11 +368,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
 							      folia::processor *parent ) const {
-    folia::processor *res = add_provenance_structure( doc,
-						      folia::AnnotationType::PARAGRAPH, parent );
-    res = add_provenance_structure( doc,
-				    folia::AnnotationType::SENTENCE,
-				    parent );
+    folia::processor *res = 0;
+    add_provenance_structure( doc,
+			      folia::AnnotationType::PARAGRAPH, parent );
+    add_provenance_structure( doc,
+			      folia::AnnotationType::SENTENCE,
+			      parent );
     res = add_provenance_structure( doc,
 				    folia::AnnotationType::QUOTE,
 				    parent );
