@@ -24,8 +24,9 @@ do
 done
 
 python2 test.py
-if [ $? -ne 0 ]; then
-   sum=$(($sum + 1))
+erc=$?
+if [ $erc -ne 0 ]; then
+   sum=$(($sum + $erc))
 fi
 
 if [ $sum != "0" ]

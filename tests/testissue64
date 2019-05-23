@@ -19,8 +19,8 @@ fi
 exe=../src/ucto
 
 $exe issue064a.xml -L nld outa.xml
-$bindir/folialint outa.xml 2>&1
+$bindir/folialint --KANON outa.xml 2>&1
 $exe issue064b.xml -L nld outb.xml
-$bindir/folialint outb.xml 2>&1
+$bindir/folialint --KANON outb.xml 2>&1
 $exe issue064c.xml -L nld outc.xml
-$bindir/folialint outc.xml 2>&1
+$bindir/folialint --KANON outc.xml 2>&1

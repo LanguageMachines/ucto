@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.15], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
+AC_INIT([ucto], [0.16], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -96,7 +96,7 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.6.16] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-PKG_CHECK_MODULES([folia], [folia >= 1.10] )
+PKG_CHECK_MODULES([folia], [folia >= 2.0] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
@@ -122,6 +122,10 @@ PKG_CHECK_MODULES(
 UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
 UCTODATA_DIR=$UCTODATA_PRE/share/ucto
 AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
+UCTODATA_VER=`pkg-config --modversion uctodata`
+AC_DEFINE_UNQUOTED( [UCTODATA_VERSION],
+	   	    ["${UCTODATA_VER}"],
+		    [the uctodata version])
 
 # Checks for library functions.
 

@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia1.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -61,14 +71,23 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --outputclass=ligafilter folia1.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -125,14 +144,26 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --filterpunct --outputclass=FILTER -F folia2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
@@ -174,58 +205,73 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:31" set="tokconfig-nld"/>
+      <division-annotation annotator="ucto" set="div"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <paragraph-annotation>
+        <annotator processor="ucto.1"/>
+      </paragraph-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -u --outputclass=UPP -F folia3.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <div xml:id="WR-P-E-J-0000000001.div0.1" class="div">
       <t>Dit is een test.
 Gaat deze datum: 28-11-2011 goed?</t>
-      <p xml:id="WR-P-E-J-0000000001.p.1">
-        <s xml:id="WR-P-E-J-0000000001.p.1.s.1">
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.1" class="WORD" textclass="UPP">
+      <p xml:id="WR-P-E-J-0000000001.div0.1.p.1">
+        <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.1" class="WORD" textclass="UPP">
             <t class="UPP">DIT</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.2" class="WORD" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.2" class="WORD" textclass="UPP">
             <t class="UPP">IS</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.3" class="WORD" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.3" class="WORD" textclass="UPP">
             <t class="UPP">EEN</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.4" class="WORD" space="no" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.4" class="WORD" space="no" textclass="UPP">
             <t class="UPP">TEST</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.1.w.5" class="PUNCTUATION" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.1.w.5" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">.</t>
           </w>
         </s>
-        <s xml:id="WR-P-E-J-0000000001.p.1.s.2">
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.1" class="WORD" textclass="UPP">
+        <s xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.1" class="WORD" textclass="UPP">
             <t class="UPP">GAAT</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.2" class="WORD" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.2" class="WORD" textclass="UPP">
             <t class="UPP">DEZE</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.3" class="WORD" space="no" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.3" class="WORD" space="no" textclass="UPP">
             <t class="UPP">DATUM</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.4" class="PUNCTUATION" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.4" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">:</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.5" class="DATE" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.5" class="DATE" textclass="UPP">
             <t class="UPP">28-11-2011</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.6" class="WORD" space="no" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.6" class="WORD" space="no" textclass="UPP">
             <t class="UPP">GOED</t>
           </w>
-          <w xml:id="WR-P-E-J-0000000001.p.1.s.2.w.7" class="PUNCTUATION" textclass="UPP">
+          <w xml:id="WR-P-E-J-0000000001.div0.1.p.1.s.2.w.7" class="PUNCTUATION" textclass="UPP">
             <t class="UPP">?</t>
           </w>
         </s>
@@ -234,14 +280,26 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia4.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <event xml:id="WR-P-E-J-0000000001.event.139" actor="chatter110" begindatetime="2004-04-09T13:21:54" class="message">
@@ -258,15 +316,27 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="1.4.987">
   <metadata type="native">
     <annotations>
       <string-annotation set="alto"/>
-      <correction-annotation annotator="TICCL" annotatortype="auto" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <correction-annotation annotator="TICCL" datetime="2013-06-26T18:28:58" set="Ticcl-Set"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F empty.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -293,14 +363,26 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --inputclass OCR -F folia5.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <p xml:id="p.1">
@@ -326,14 +408,26 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v1.20" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
     <annotations>
       <event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --inputclass OCR --outputclass=AHA -F folia5.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
   </metadata>
   <text xml:id="WR-P-E-J-0000000001.text">
     <p xml:id="p.1">
@@ -359,13 +453,25 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia7.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -426,13 +532,25 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --textredundancy none folia7.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -491,13 +609,25 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --textredundancy minimal folia7.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -558,23 +688,29 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl --textredundancy full folia7.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
-    <t>Dit is een tekst in een head
-
-Dit is een tekst in een note</t>
     <div>
-      <t>Dit is een tekst in een head
-
-Dit is een tekst in een note</t>
       <head xml:id="h.1">
         <t>Dit is een tekst in een head</t>
         <s xml:id="h.1.s.1">
@@ -633,13 +769,25 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="0.8">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia8.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -701,13 +849,25 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.3">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="1.3">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia9a.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -802,13 +962,25 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="1.5">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:26" command="ucto -L nl -F folia9b.xml foliatmp.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -903,18 +1075,29 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="BLA" generator="libfolia-v1.11" version="1.5">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="BLA" generator="libfolia-v1.20" version="1.5">
   <metadata type="native">
     <annotations>
-      <style-annotation annotatortype="auto" set="unknown"/>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <style-annotation set="unknown"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:27" command="ucto -L nl -Tfull textproblem.xml foliatmp2.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="T.1">
-    <t>egieringh in Indiën, en hoedanigh hebben toegedragen en dat alles is gereguleert.</t>
     <p xml:id="T.1.p.1">
       <t>
         <t-style class="italic">egieringh in Indiën,</t-style>
@@ -970,13 +1153,25 @@ Dit is een tekst in een note</t>
   </text>
 </FoLiA>
 
-
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.11" version="1.4">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v1.20" version="1.4">
   <metadata type="native">
     <annotations>
-      <token-annotation annotator="ucto" annotatortype="auto" datetime="2017-12-02T13:52:32" set="tokconfig-nld"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2019-05-09T11:18:27" command="ucto -L nl cell.xml cellout.xml" host="bonus" name="ucto" user="sloot" version="0.15">
+        <processor xml:id="ucto.1.generator" folia_version="2.0.3" name="libfolia" type="generator" version="1.20"/>
+        <processor xml:id="ucto.1.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="ucto.1.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
@@ -1010,5 +1205,4 @@ Dit is een tekst in een note</t>
     </div>
   </text>
 </FoLiA>
-
 

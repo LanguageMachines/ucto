@@ -31,10 +31,10 @@ def checkVGsummary( id, lang ):
         for part in s:
             num +=1
             if part == "lost:":
-                LOST = int( s[ num ] )
+                LOST = int( s[num].replace(',','') )
                 break
             if part == "SUMMARY:":
-                ERRORS = int( s[ num ] )
+                ERRORS = int( s[num].replace(',','') )
                 break
     if ( LOST != 0 or ERRORS != 0 ):
         print color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True)
@@ -98,7 +98,7 @@ for f in glob.glob(mask):
         if outputfile[-4:] == ".xml":
             for f2 in (reffile, outputfile):
             #strip the FoLiA version number and the token-annotation declaration (different timestamp)
-                os.system("sed -e 's/generator=\".*\"//g' -e 's/version=\"[0.12\.]*\"//g' -e '/token-annotation/d' "  + f2 + " > " + f2 + ".tmp")
+                os.system("sed -e 's/generator=\".*\"//g' -e 's/version=\"[0.12\.]*\"//g' -e 's/datetime=\".*\"//g' -e '/token-annotation/d'  -e '/libfolia/d' "  + f2 + " > " + f2 + ".tmp")
             retcode = os.system('diff -w ' + reffile + '.tmp ' + outputfile  + '.tmp > testoutput/'  + id + '.' + lang + '.diff')
         else:
             retcode = os.system('diff -w ' + outputfile + ' ' + reffile  + ' > testoutput/' + id + '.' + lang + '.diff')
