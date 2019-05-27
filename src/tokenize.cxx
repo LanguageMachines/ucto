@@ -315,6 +315,7 @@ namespace Tokenizer {
       // ucto has been used before we can't do it again!
       LOG << "unable to tokenize " << doc->filename()
 	  << " again, already processed by ucto before!" << endl;
+      LOG << " The document will be copied as-is to the output file" << endl;
       already_tokenized = true;
       return 0;
     }
