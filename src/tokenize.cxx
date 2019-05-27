@@ -173,6 +173,8 @@ namespace Tokenizer {
     xmlout(false),
     xmlin(false),
     passthru(false),
+    ucto_processor(0),
+    already_tokenized(false),
     inputclass("current"),
     outputclass("current"),
     tc( 0 )
@@ -224,6 +226,8 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::reset( const string& lang ){
+    ucto_processor = 0;
+    already_tokenized = false;
     tokens.clear();
     settings[lang]->quotes.clearStack();
     return true;
@@ -299,8 +303,19 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc,
 						     folia::processor *parent ) const {
-    folia::processor *proc = doc->get_processor( "ucto.1" );
-    if ( !proc ){
+    if ( ucto_processor ){
+      // already created
+      LOG << "use our processor: " << ucto_processor->id() << endl;
+      return ucto_processor;
+    }
+    vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
+    if ( !procs.empty() ){
+      // ucto has been used before we can't do it again!
+      LOG << "unable to tokenize again, already done before!" << endl;
+      already_tokenized = true;
+      return 0;
+    }
+    else {
       folia::KWargs args;
       args["name"] = "ucto";
       args["id"] = "ucto.1";
@@ -308,15 +323,16 @@ namespace Tokenizer {
       args["command"] = _command;
       args["begindatetime"] = "now()";
       if ( parent ){
-	proc = doc->add_processor( args, parent );
+	ucto_processor = doc->add_processor( args, parent );
       }
       else {
 	args["generator"] = "yes";
-	proc = doc->add_processor( args );
-	proc->get_system_defaults();
+	ucto_processor = doc->add_processor( args );
+	ucto_processor->get_system_defaults();
       }
+      LOG << "created new processor: " << ucto_processor->id() << endl;
+      return ucto_processor;
     }
-    return proc;
   }
 
   folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc,
@@ -1167,11 +1183,13 @@ namespace Tokenizer {
     }
     folia::TextEngine proc( infile_name );
     init_provenance( proc.doc() );
-    if ( passthru ){
-      add_provenance_passthru(  proc.doc() );
-    }
-    else {
-      add_provenance_setting( proc.doc() );
+    if ( !already_tokenized ){
+      if ( passthru ){
+	add_provenance_passthru(  proc.doc() );
+      }
+      else {
+	add_provenance_setting( proc.doc() );
+      }
     }
     if  ( tokDebug > 8){
       proc.set_dbg_stream( theErrLog );
@@ -1183,7 +1201,12 @@ namespace Tokenizer {
     folia::FoliaElement *p = 0;
     while ( (p = proc.next_text_parent() ) ){
       //    LOG << "next text parent: " << p << endl;
-      handle_one_text_parent( p, sentence_done );
+      if ( already_tokenized ){
+	++sentence_done;
+      }
+      else {
+	handle_one_text_parent( p, sentence_done );
+      }
       if ( tokDebug > 0 ){
 	LOG << "done with sentence " << sentence_done << endl;
       }
