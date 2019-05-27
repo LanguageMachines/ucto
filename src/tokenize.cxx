@@ -313,7 +313,8 @@ namespace Tokenizer {
     vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
     if ( !procs.empty() ){
       // ucto has been used before we can't do it again!
-      LOG << "unable to tokenize again, already done before!" << endl;
+      LOG << "unable to tokenize " << doc->filename()
+	  << " again, already processed by ucto before!" << endl;
       already_tokenized = true;
       return 0;
     }
