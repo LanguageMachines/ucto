@@ -305,7 +305,9 @@ namespace Tokenizer {
 						     folia::processor *parent ) const {
     if ( ucto_processor ){
       // already created
-      LOG << "use our processor: " << ucto_processor->id() << endl;
+      if ( tokDebug > 0 ){
+	LOG << "use already created processor: " << ucto_processor->id() << endl;
+      }
       return ucto_processor;
     }
     vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
@@ -330,7 +332,9 @@ namespace Tokenizer {
 	ucto_processor = doc->add_processor( args );
 	ucto_processor->get_system_defaults();
       }
-      LOG << "created new processor: " << ucto_processor->id() << endl;
+      if ( tokDebug > 0 ){
+	LOG << "created a new processor: " << ucto_processor->id() << endl;
+      }
       return ucto_processor;
     }
   }
