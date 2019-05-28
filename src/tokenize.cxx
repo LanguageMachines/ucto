@@ -512,6 +512,9 @@ namespace Tokenizer {
   }
 
   vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN ){
+    if  (tokDebug > 0) {
+      LOG << "[tokenizeOneSentence()] before countSent " << endl;
+    }
     int numS = countSentences(); //count full sentences in token buffer
     if ( numS > 0 ) { // still some sentences in the buffer
       if  (tokDebug > 0) {
@@ -519,6 +522,9 @@ namespace Tokenizer {
 	    << " sentence(s) in buffer, processing..." << endl;
       }
       return popSentence( );
+    }
+    if  (tokDebug > 0) {
+      LOG << "[tokenizeOneSentence] NO sentences in buffer, searching.." << endl;
     }
     bool done = false;
     bool bos = true;
@@ -542,6 +548,9 @@ namespace Tokenizer {
 	if ( sentenceperlineinput ){
 	  input_line += " " + eosmark;
 	}
+      }
+      if  (tokDebug > 0) {
+	LOG << "[tokenizeOneSentences()] before next countSentences " << endl;
       }
       if ( done || input_line.isEmpty() ){
 	//Signal the tokeniser that a paragraph is detected
@@ -993,7 +1002,9 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
+      LOG << "STEP 1 " << endl;
       tokenizeLine( text );
+      LOG << "STEP 2 " << endl;
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
 	append_to_sentence( s, sent );
@@ -1025,7 +1036,9 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "handle_one_paragraph:" << text << endl;
       }
+      LOG << "STEP 3 " << endl;
       tokenizeLine( text );
+      LOG << "STEP 4 " << endl;
       vector<Token> toks = popSentence();
       while ( !toks.empty() ){
 	folia::KWargs args;
@@ -1104,14 +1117,20 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
+	LOG << "STEP 5 " << endl;
 	tokenizeLine( text );
+	LOG << "STEP 6 " << endl;
 	vector<vector<Token>> sents;
 	vector<Token> toks = popSentence();
 	while ( toks.size() > 0 ){
 	  sents.push_back( toks );
 	  toks = popSentence();
 	}
-	if ( sents.size() > 1 ){
+	if ( sents.size() == 0 ){
+	  // can happen in very rare cases (strange spaces in the input)
+	  // SKIP!
+	}
+	else if ( sents.size() > 1 ){
 	  // multiple sentences. We need an extra Paragraph.
 	  // But first check if this is allowed!
 	  folia::FoliaElement *rt;
@@ -1406,6 +1425,9 @@ namespace Tokenizer {
       }
       ++i;
     }
+    if (tokDebug >= 5){
+      LOG << "[countSentences] end of loop: returns " << count << endl;
+    }
     return count;
   }
 
@@ -1471,7 +1493,13 @@ namespace Tokenizer {
 
   vector<string> TokenizerClass::getSentences() {
     vector<string> sentences;
+    if  (tokDebug > 0) {
+      LOG << "[getSentences()] before countSent " << endl;
+    }
     int numS = countSentences(true); // force buffer to end with END_OF_SENTENCE
+    if  (tokDebug > 0) {
+      LOG << "[getSentences] found " << numS << " sentence(s)" << endl;
+    }
     for (int i = 0; i < numS; i++) {
       vector<Token> v = popSentence( );
       string tmp = getString( v );
@@ -2003,6 +2031,9 @@ namespace Tokenizer {
 				     const string& lang ){
     bool bos = true;
     tokenize_one_line( us, bos, lang );
+    if  (tokDebug > 0) {
+      LOG << "[tokenizeLine()] before countSent " << endl;
+    }
     countSentences(true); // force the ENDOFSENTENCE
   }
 
@@ -2141,7 +2172,7 @@ namespace Tokenizer {
     }
     if (tokDebug){
       LOG << "[tokenizeLine] input: line=["
-	  << originput << "] (" << lang << ")" << endl;
+	  << originput << "] (language= " << lang << ")" << endl;
     }
     UnicodeString input = normalizer.normalize( originput );
     if ( doFilter ){
@@ -2243,6 +2274,9 @@ namespace Tokenizer {
 	    }
 	  }
 	}
+	if ( word.length() == 0 ){
+	  LOG << "[tokenizeLine], empty word!" << endl;
+	}
 	if ( word.length() > 0
 	     && expliciteosfound == -1 ) {
 	  if (tokDebug >= 2){
@@ -2281,7 +2315,10 @@ namespace Tokenizer {
 	return 0;
       }
     }
+    LOG << "tokens.size() = " << tokens.size() << endl;
+    LOG << "begintokencount = " << begintokencount << endl;
     int numNewTokens = tokens.size() - begintokencount;
+    LOG << "numnew = " << numNewTokens << endl;
     if ( numNewTokens > 0 ){
       if (paragraphsignal) {
 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
