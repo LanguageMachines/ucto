@@ -173,6 +173,8 @@ namespace Tokenizer {
     xmlout(false),
     xmlin(false),
     passthru(false),
+    ucto_processor(0),
+    already_tokenized(false),
     inputclass("current"),
     outputclass("current"),
     tc( 0 )
@@ -224,6 +226,8 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::reset( const string& lang ){
+    ucto_processor = 0;
+    already_tokenized = false;
     tokens.clear();
     settings[lang]->quotes.clearStack();
     return true;
@@ -299,8 +303,23 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc,
 						     folia::processor *parent ) const {
-    folia::processor *proc = doc->get_processor( "ucto.1" );
-    if ( !proc ){
+    if ( ucto_processor ){
+      // already created
+      if ( tokDebug > 0 ){
+	LOG << "use already created processor: " << ucto_processor->id() << endl;
+      }
+      return ucto_processor;
+    }
+    vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
+    if ( !procs.empty() ){
+      // ucto has been used before we can't do it again!
+      LOG << "unable to tokenize " << doc->filename()
+	  << " again, already processed by ucto before!" << endl;
+      LOG << " The document will be copied as-is to the output file" << endl;
+      already_tokenized = true;
+      return 0;
+    }
+    else {
       folia::KWargs args;
       args["name"] = "ucto";
       args["id"] = "ucto.1";
@@ -308,62 +327,74 @@ namespace Tokenizer {
       args["command"] = _command;
       args["begindatetime"] = "now()";
       if ( parent ){
-	proc = doc->add_processor( args, parent );
+	ucto_processor = doc->add_processor( args, parent );
       }
       else {
 	args["generator"] = "yes";
-	proc = doc->add_processor( args );
-	proc->get_system_defaults();
+	ucto_processor = doc->add_processor( args );
+	ucto_processor->get_system_defaults();
       }
+      if ( tokDebug > 0 ){
+	LOG << "created a new processor: " << ucto_processor->id() << endl;
+      }
+      return ucto_processor;
     }
-    return proc;
   }
 
   folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc,
 							     folia::processor *parent ) const {
     folia::processor *proc = init_provenance( doc, parent );
-    folia::KWargs args;
-    args["processor"] = proc->id();
-    doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
+    if ( proc ){
+      folia::KWargs args;
+      args["processor"] = proc->id();
+      doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
+    }
     return proc;
   }
 
   folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
 							 folia::processor* parent ) const {
-    folia::processor *ucto_proc = init_provenance( doc, parent );
-    string id = "ucto.1.1";
-    folia::processor *data_proc = doc->get_processor( id );
-    if ( !data_proc ){
-      folia::KWargs args;
-      args["name"] = "uctodata";
-      args["id"] = id;
-      args["type"] = "datasource";
-      args["version"] = data_version;
-      data_proc = doc->add_processor( args, ucto_proc );
+    folia::processor *proc = init_provenance( doc, parent );
+    if ( proc ){
+      string id = "ucto.1.1";
+      folia::processor *data_proc = doc->get_processor( id );
+      if ( !data_proc ){
+	folia::KWargs args;
+	args["name"] = "uctodata";
+	args["id"] = id;
+	args["type"] = "datasource";
+	args["version"] = data_version;
+	data_proc = doc->add_processor( args, proc );
+      }
+      return data_proc;
     }
-    return data_proc;
+    else {
+      return 0;
+    }
   }
 
   folia::processor *TokenizerClass::add_provenance_structure(  folia::Document *doc,
 							       const folia::AnnotationType::AnnotationType type,
 							       folia::processor *parent ) const {
-    folia::processor *ucto_proc = init_provenance( doc, parent );
-    folia::KWargs args;
-    args["processor"] = ucto_proc->id();
-    if ( !doc->declared( type ) ){
-      doc->declare( type, "", args );
-      if ( tokDebug > 3 ){
-	LOG << "added " << folia::toString(type) << "-annotation for: '"
-	    << ucto_proc->id() << endl;
+    folia::processor *proc = init_provenance( doc, parent );
+    if ( proc ){
+      folia::KWargs args;
+      args["processor"] = proc->id();
+      if ( !doc->declared( type ) ){
+	doc->declare( type, "", args );
+	if ( tokDebug > 3 ){
+	  LOG << "added " << folia::toString(type) << "-annotation for: '"
+	      << proc->id() << endl;
+	}
+      }
+      else {
+	if ( tokDebug > 3 ){
+	  LOG << folia::toString(type) << "-annotation already declared" << endl;
+	  LOG << "default_set=" << doc->default_set(type) << endl;
+	}
       }
     }
-    else {
-      if ( tokDebug > 3 ){
-	LOG << folia::toString(type) << "-annotation already declared" << endl;
-	LOG << "default_set=" << doc->default_set(type) << endl;
-      }
-    }
-    return ucto_proc;
+    return proc;
   }
 
   folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
@@ -382,47 +413,51 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc,
 							    folia::processor *parent ) const {
-    folia::processor *ucto_proc = init_provenance( doc, parent );
-    folia::processor *data_proc = add_provenance_data( doc, parent );
-    if ( doc->metadata_type() == "native" ){
-      doc->set_metadata( "language", default_language );
+    folia::processor *proc = init_provenance( doc, parent );
+    if ( proc ){
+      folia::processor *data_proc = add_provenance_data( doc, parent );
+      if ( doc->metadata_type() == "native" ){
+	doc->set_metadata( "language", default_language );
+      }
+      for ( const auto& s : settings ){
+	if ( tokDebug > 3 ){
+	  LOG << "language: " << s.first << endl;
+	}
+	if ( s.first == "default" ){
+	  continue;
+	}
+	folia::KWargs args;
+	args["name"] = s.second->set_file;
+	args["id"] = "next()";
+	args["type"] = "datasource";
+	args["version"] = s.second->version;
+	doc->add_processor( args, data_proc );
+	args.clear();
+	args["processor"] = proc->id();
+	string alias = s.second->set_file;
+	args["alias"] = alias;
+	if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
+	  // we assume that an old-style declaration is present
+	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
+	}
+	doc->declare( folia::AnnotationType::TOKEN,
+		      UCTO_SET_PREFIX + alias + ".foliaset.ttl",
+		      args );
+	if ( tokDebug > 3 ){
+	  LOG << "added processor and token-annotation for: '"
+	      << alias << "'" << endl;
+	}
+      }
+      return data_proc;
     }
-    for ( const auto& s : settings ){
-      if ( tokDebug > 3 ){
-	LOG << "language: " << s.first << endl;
-      }
-      if ( s.first == "default" ){
-	continue;
-      }
-      folia::KWargs args;
-      args["name"] = s.second->set_file;
-      args["id"] = "next()";
-      args["type"] = "datasource";
-      args["version"] = s.second->version;
-      doc->add_processor( args, data_proc );
-      args.clear();
-      args["processor"] = ucto_proc->id();
-      string alias = s.second->set_file;
-      args["alias"] = alias;
-      if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
-	// we assume that an old-style declaration is present
-	doc->un_declare( folia::AnnotationType::TOKEN, alias );
-      }
-      doc->declare( folia::AnnotationType::TOKEN,
-		    UCTO_SET_PREFIX + alias + ".foliaset.ttl",
-		    args );
-      if ( tokDebug > 3 ){
-	LOG << "added processor and token-annotation for: '"
-	    << alias << "'" << endl;
-      }
+    else {
+      return 0;
     }
-    return data_proc;
   }
 
   folia::Document *TokenizerClass::start_document( const string& id ) const {
     folia::Document *doc = new folia::Document( "xml:id='" + id + "'" );
     doc->addStyle( "text/xsl", "folia.xsl" );
-    init_provenance( doc );
     if ( tokDebug > 3 ){
       LOG << "start document!!!" << endl;
     }
@@ -1166,7 +1201,6 @@ namespace Tokenizer {
       setFiltering(false);
     }
     folia::TextEngine proc( infile_name );
-    init_provenance( proc.doc() );
     if ( passthru ){
       add_provenance_passthru(  proc.doc() );
     }
@@ -1183,7 +1217,12 @@ namespace Tokenizer {
     folia::FoliaElement *p = 0;
     while ( (p = proc.next_text_parent() ) ){
       //    LOG << "next text parent: " << p << endl;
-      handle_one_text_parent( p, sentence_done );
+      if ( already_tokenized ){
+	++sentence_done;
+      }
+      else {
+	handle_one_text_parent( p, sentence_done );
+      }
       if ( tokDebug > 0 ){
 	LOG << "done with sentence " << sentence_done << endl;
       }

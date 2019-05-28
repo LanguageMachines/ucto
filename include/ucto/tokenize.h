@@ -383,7 +383,8 @@ namespace Tokenizer {
     bool xmlout;
     bool xmlin;
     bool passthru;
-
+    mutable folia::processor *ucto_processor;
+    mutable bool already_tokenized; // set when ucto is called again on tokenized FoLiA
     std::string docid; //document ID (UTF-8), necessary for XML output
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
