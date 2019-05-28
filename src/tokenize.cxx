@@ -1002,9 +1002,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
-      LOG << "STEP 1 " << endl;
       tokenizeLine( text );
-      LOG << "STEP 2 " << endl;
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
 	append_to_sentence( s, sent );
@@ -1036,9 +1034,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	LOG << "handle_one_paragraph:" << text << endl;
       }
-      LOG << "STEP 3 " << endl;
       tokenizeLine( text );
-      LOG << "STEP 4 " << endl;
       vector<Token> toks = popSentence();
       while ( !toks.empty() ){
 	folia::KWargs args;
@@ -1117,9 +1113,7 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
-	LOG << "STEP 5 " << endl;
 	tokenizeLine( text );
-	LOG << "STEP 6 " << endl;
 	vector<vector<Token>> sents;
 	vector<Token> toks = popSentence();
 	while ( toks.size() > 0 ){
@@ -2274,9 +2268,6 @@ namespace Tokenizer {
 	    }
 	  }
 	}
-	if ( word.length() == 0 ){
-	  LOG << "[tokenizeLine], empty word!" << endl;
-	}
 	if ( word.length() > 0
 	     && expliciteosfound == -1 ) {
 	  if (tokDebug >= 2){
@@ -2315,10 +2306,12 @@ namespace Tokenizer {
 	return 0;
       }
     }
-    LOG << "tokens.size() = " << tokens.size() << endl;
-    LOG << "begintokencount = " << begintokencount << endl;
     int numNewTokens = tokens.size() - begintokencount;
-    LOG << "numnew = " << numNewTokens << endl;
+    if (tokDebug >= 10){
+      LOG << "tokens.size() = " << tokens.size() << endl;
+      LOG << "begintokencount = " << begintokencount << endl;
+      LOG << "numnew = " << numNewTokens << endl;
+    }
     if ( numNewTokens > 0 ){
       if (paragraphsignal) {
 	tokens[begintokencount].role |= NEWPARAGRAPH | BEGINOFSENTENCE;
