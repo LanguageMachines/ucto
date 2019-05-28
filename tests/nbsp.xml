@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="nasty" version="2.0" generator="libfolia-v0.4">
+  <metadata type="native">
+    <annotations>
+      <text-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="nasty.text">
+    <table xml:id="nast.table">
+      <row xml:id="nasty.row">
+        <cell xml:id="nasty.cell.1">
+          <t> </t>
+        </cell>
+        <cell xml:id="nasty.cell.2">
+          <t> </t>
+        </cell>
+        <cell xml:id="nasty.cell.3">
+          <t>0</t>
+        </cell>
+      </row>
+    </table>
+  </text>
+</FoLiA>
