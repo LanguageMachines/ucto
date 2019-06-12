@@ -312,7 +312,7 @@ namespace Tokenizer {
     }
     vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
     if ( !procs.empty() ){
-      // ucto has been used before we can't do it again!
+      // ucto has been used before, we can't do it again!
       LOG << "unable to tokenize " << doc->filename()
 	  << " again, already processed by ucto before!" << endl;
       LOG << " The document will be copied as-is to the output file" << endl;
@@ -435,14 +435,15 @@ namespace Tokenizer {
 	args.clear();
 	args["processor"] = proc->id();
 	string alias = s.second->set_file;
+	string ucto_set = UCTO_SET_PREFIX + alias + ".foliaset.ttl";
 	args["alias"] = alias;
 	if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
 	  // we assume that an old-style declaration is present
 	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
 	}
-	doc->declare( folia::AnnotationType::TOKEN,
-		      UCTO_SET_PREFIX + alias + ".foliaset.ttl",
-		      args );
+	if ( !doc->declared( folia::AnnotationType::TOKEN, ucto_set ) ){
+	  doc->declare( folia::AnnotationType::TOKEN, ucto_set, args );
+	}
 	if ( tokDebug > 3 ){
 	  LOG << "added processor and token-annotation for: '"
 	      << alias << "'" << endl;
