@@ -322,7 +322,7 @@ namespace Tokenizer {
     else {
       folia::KWargs args;
       args["name"] = "ucto";
-      args["id"] = "ucto.1";
+      args["generate_id"] = "auto()";
       args["version"] = PACKAGE_VERSION;
       args["command"] = _command;
       args["begindatetime"] = "now()";
@@ -361,7 +361,7 @@ namespace Tokenizer {
       if ( !data_proc ){
 	folia::KWargs args;
 	args["name"] = "uctodata";
-	args["id"] = id;
+	args["generate_id"] = "auto()";
 	args["type"] = "datasource";
 	args["version"] = data_version;
 	data_proc = doc->add_processor( args, proc );
@@ -428,7 +428,7 @@ namespace Tokenizer {
 	}
 	folia::KWargs args;
 	args["name"] = s.second->set_file;
-	args["id"] = "next()";
+	args["generate_id"] = "next()";
 	args["type"] = "datasource";
 	args["version"] = s.second->version;
 	doc->add_processor( args, data_proc );
