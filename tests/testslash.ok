@@ -10,7 +10,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T10:18:34" command="ucto -L nl -F slashes.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
+      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:53:24" command="ucto -L nl -F slashes.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
         <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -92,4 +92,3 @@
     </div>
   </text>
 </FoLiA>
-
