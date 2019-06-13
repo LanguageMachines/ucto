@@ -103,6 +103,9 @@ script:
   - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testone testmac >&2
 
 after_failure:
+  - cat testoutput/testmac.diff
+  - cat testoutput/testmac.err
+  - cat testoutput/testmac.tmp
   - cat testoutput/testfoliain.tmp
   - cat testoutput/testnbsp.tmp
   - tail -n 500 ../config.log
