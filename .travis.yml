@@ -61,6 +61,7 @@ before_install:
       brew install cppcheck;
       brew install ccache;
       brew install libtextcat;
+      brew install valgrind;
       brew outdated boost || brew upgrade boost;
     fi
 
@@ -98,7 +99,8 @@ install:
   - sudo make CXX=$COMPILER install
 
 script:
-  - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
+#  - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
+  - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testone testmac >&2
 
 after_failure:
   - cat testoutput/testfoliain.tmp
