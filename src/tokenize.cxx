@@ -767,14 +767,19 @@ namespace Tokenizer {
 							   const vector<Token>& toks ) const {
     vector<folia::Word*> result;
     folia::Document *doc = sent->doc();
-    string tc_lc = get_language( toks );
     string tok_set;
-    if ( tc_lc != "default" ){
-      tok_set = "tokconfig-" + tc_lc;
-      set_language( sent, tc_lc );
+    if ( passthru ){
+      tok_set = "passthru";
     }
     else {
-      tok_set = "tokconfig-" + default_language;
+      string tc_lc = get_language( toks );
+      if ( tc_lc != "default" ){
+	tok_set = "tokconfig-" + tc_lc;
+	set_language( sent, tc_lc );
+      }
+      else {
+	tok_set = "tokconfig-" + default_language;
+      }
     }
     folia::FoliaElement *root = sent;
     if ( tokDebug > 5 ){
