@@ -349,6 +349,12 @@ namespace Tokenizer {
       args["processor"] = proc->id();
       doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
+    else {
+      // fallback
+      folia::KWargs args;
+      args["annotator"] = "ucto";
+      doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
+    }
     return proc;
   }
 
