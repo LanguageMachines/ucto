@@ -1,0 +1,8 @@
+#/bin/sh
+
+
+exe=../src/ucto
+
+$exe issue72_a.xml --passthru -L nld
+
+$exe issue72_a.xml -L nld
