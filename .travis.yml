@@ -34,6 +34,7 @@ matrix:
       env:
         - COMPILER=clang++
         - SCAN=scan-build
+        - OPENMPFLAG=--disable-openmp
 
     - os: osx
       compiler: gcc
@@ -69,28 +70,28 @@ before_install:
   - git clone --depth=1 --single-branch https://github.com/LanguageMachines/ticcutils
   - cd ticcutils
   - bash bootstrap.sh
-  - ./configure
+  - ./configure $OPENMPFLAG
   - make CXX=$COMPILER
   - sudo make CXX=$COMPILER install
   - cd ..
   - git clone --depth=1 --single-branch https://github.com/LanguageMachines/libfolia
   - cd libfolia
   - bash bootstrap.sh
-  - ./configure
+  - ./configure $OPENMPFLAG
   - make CXX=$COMPILER
   - sudo make CXX=$COMPILER install
   - cd ..
   - git clone --depth=1 --single-branch https://github.com/LanguageMachines/uctodata
   - cd uctodata
   - bash bootstrap.sh
-  - ./configure
+  - ./configure $OPENMPFLAG
   - make
   - sudo make install
   - cd ..
 
 install:
   - bash bootstrap.sh
-  - ./configure
+  - ./configure $OPENMPFLAG
   - cppcheck --enable=all --quiet --error-exitcode=0 .
   - $SCAN --status-bugs ./configure
   - $SCAN --status-bugs make CXX=$COMPILER
