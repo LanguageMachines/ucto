@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" version="2.1.0" generator="foliapy-v2.1.4">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/paragraph">
+        <annotator processor="proc.unspecified.55a5653d"/>
+      </paragraph-annotation>
+      <division-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/division">
+        <annotator processor="proc.unspecified.55a5653d"/>
+      </division-annotation>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
+      <token-annotation set="tokconfig-nld">
+        <annotator processor="proc.ucto.f6836ea3"/>
+      </token-annotation>
+      <sentence-annotation/>
+    </annotations>
+    <provenance>
+      <processor name="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.pre-upgrade" xml:id="proc.huygensing-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.pre-upgrade.ec6aa71b" folia_version="1.5" format="text/folia+xml" host="mlp09.science.ru.nl" type="datasource" src="file://input/HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.xml"/>
+      <processor name="foliaupgrade" command="foliaupgrade -n input/HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.xml" xml:id="proc.foliaupgrade.949e2b2e" src="https://github.com/proycon/foliatools" folia_version="2.1.0" host="mlp09.science.ru.nl" type="auto" begindatetime="2019-06-13T22:08:36" user="proycon" version="2.1.6">
+        <processor name="foliapy" xml:id="proc.foliaupgrade.949e2b2e.generator" type="generator" folia_version="2.1.0" version="2.1.4" src="https://github.com/proycon/foliapy"/>
+        <processor name="unspecified" xml:id="proc.unspecified.55a5653d" type="auto"/>
+        <processor name="ucto" xml:id="proc.ucto.f6836ea3" type="auto"/>
+      </processor>
+    </provenance>
+  </metadata>
+  <text xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.TEI.1">
+    <div>
+        <p xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.6" class="p">
+          <t>1893</t>
+          <lang class="UNKNOWN"/>
+        </p>
+    </div>
+  </text>
+</FoLiA>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" version="2.1.0" generator="foliapy-v2.1.4">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/paragraph"/>
+      <division-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/division"/>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl"/>
+      <sentence-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.TEI.1">
+    <div>
+        <p xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5" class="p">
+          <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">Baarn, 16 Dec.</t>
+          <lang class="nld"/>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1">
+            <w xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1.w.1" space="no" class="WORD" datetime="2018-06-19T11:53:23">
+              <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">Baarn</t>
+            </w>
+            <w xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1.w.2" class="PUNCTUATION" datetime="2018-06-19T11:53:23">
+              <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">,</t>
+            </w>
+            <w xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1.w.3" class="NUMBER" datetime="2018-06-19T11:53:23">
+              <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">16</t>
+            </w>
+            <w xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1.w.4" space="no" class="WORD" datetime="2018-06-19T11:53:23">
+              <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">Dec</t>
+            </w>
+            <w xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.5.s.1.w.5" class="PUNCTUATION" datetime="2018-06-19T11:53:23">
+              <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">.</t>
+            </w>
+          </s>
+        </p>
+        <p xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.text.1.body.1.p.6" class="p">
+          <t set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">1893</t>
+          <lang class="UNKNOWN"/>
+        </p>
+    </div>
+  </text>
+</FoLiA>

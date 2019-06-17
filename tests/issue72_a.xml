@@ -1,0 +1,238 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" generator="foliapy-v2.1.4" version="2.1.0" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <phon-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/phon.foliaset.ttl"/>
+      <gap-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/gap"/>
+      <style-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/style"/>
+      
+      <part-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/part"/>
+      <paragraph-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/paragraph">
+        <annotator processor="proc.unspecified.878fa02e"/>
+      </paragraph-annotation>
+      <correction-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/correction"/>
+      <note-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/note"/>
+      <string-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/string"/>
+      <division-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/division">
+        <annotator processor="proc.unspecified.878fa02e"/>
+      </division-annotation>
+      <linebreak-annotation set="http://rdf.ivdnt.org/nederlab/folia/sets/linebreak">
+        <annotator processor="proc.unspecified.878fa02e"/>
+      </linebreak-annotation>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset">
+        <annotator processor="proc.ucto.9ae4f8b9"/>
+      </lang-annotation>
+      <token-annotation set="tokconfig-nld">
+        <annotator processor="proc.ucto.9ae4f8b9"/>
+      </token-annotation>
+      <token-annotation set="tokconfig-lat">
+        <annotator processor="proc.ucto.9ae4f8b9"/>
+      </token-annotation>
+      <sentence-annotation/>
+      <head-annotation/>
+    </annotations>
+    <provenance>
+      <processor folia_version="1.5" type="datasource" format="text/folia+xml" name="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.pre-upgrade" src="file://input/HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.folia.xml" xml:id="proc.huygensing-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.pre-upgrade.b05e984c" host="mlp09.science.ru.nl"/>
+      <processor folia_version="2.1.0" begindatetime="2019-06-14T21:46:45" name="foliaupgrade" type="auto" src="https://github.com/proycon/foliatools" xml:id="proc.foliaupgrade.af72d1d8" host="mlp09.science.ru.nl" user="proycon" version="2.1.7" command="foliaupgrade -n input/HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.folia.xml">
+        <processor folia_version="2.1.0" type="generator" xml:id="proc.foliaupgrade.af72d1d8.generator" name="foliapy" src="https://github.com/proycon/foliapy" version="2.1.4"/>
+        <processor name="unspecified" type="auto" xml:id="proc.unspecified.878fa02e"/>
+        <processor name="ucto" type="auto" xml:id="proc.ucto.9ae4f8b9"/>
+      </processor>
+    </provenance>
+  </metadata>
+  <text xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.TEI.1">
+    <div>
+      <div class="body">
+        <p class="p" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4">
+          <t>Hoe zou je 't vinden als we heel gauw de Koo vroegen om een stuk voor het Maartnummer. Wij hebben veel kopie, maar er mag wel wat varieteit in. Alles goeds in het nieuwe jaar, van ons aan jullie. Schrijf jij de K.? Of meld mij anders waar hij woont.</t>
+          <lang class="nld" annotator="ucto" annotatortype="auto"/>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1">
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.1">
+              <t>Hoe</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.2">
+              <t>zou</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.3">
+              <t>je</t>
+            </w>
+            <w class="WORD-TOKEN" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.4">
+              <t>'t</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.5">
+              <t>vinden</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.6">
+              <t>als</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.7">
+              <t>we</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.8">
+              <t>heel</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.9">
+              <t>gauw</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.10">
+              <t>de</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.11">
+              <t>Koo</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.12">
+              <t>vroegen</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.13">
+              <t>om</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.14">
+              <t>een</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.15">
+              <t>stuk</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.16">
+              <t>voor</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.17">
+              <t>het</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.18">
+              <t>Maartnummer</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.1.w.19">
+              <t>.</t>
+            </w>
+          </s>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2">
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.1">
+              <t>Wij</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.2">
+              <t>hebben</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.3">
+              <t>veel</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.4">
+              <t>kopie</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.5">
+              <t>,</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.6">
+              <t>maar</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.7">
+              <t>er</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.8">
+              <t>mag</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.9">
+              <t>wel</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.10">
+              <t>wat</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.11">
+              <t>varieteit</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.12">
+              <t>in</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.2.w.13">
+              <t>.</t>
+            </w>
+          </s>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3">
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.1">
+              <t>Alles</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.2">
+              <t>goeds</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.3">
+              <t>in</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.4">
+              <t>het</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.5">
+              <t>nieuwe</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.6">
+              <t>jaar</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.7">
+              <t>,</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.8">
+              <t>van</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.9">
+              <t>ons</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.10">
+              <t>aan</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.11">
+              <t>jullie</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.3.w.12">
+              <t>.</t>
+            </w>
+          </s>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4">
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.1">
+              <t>Schrijf</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.2">
+              <t>jij</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.3">
+              <t>de</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.4">
+              <t>K</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.5">
+              <t>.</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.4.w.6">
+              <t>?</t>
+            </w>
+          </s>
+          <s xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5">
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.1">
+              <t>Of</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.2">
+              <t>meld</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.3">
+              <t>mij</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.4">
+              <t>anders</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.5">
+              <t>waar</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.6">
+              <t>hij</t>
+            </w>
+            <w class="WORD" datetime="2018-06-19T12:08:18" space="no" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.7">
+              <t>woont</t>
+            </w>
+            <w class="PUNCTUATION" datetime="2018-06-19T12:08:18" set="tokconfig-nld" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.text.1.body.1.p.4.s.5.w.8">
+              <t>.</t>
+            </w>
+          </s>
+        </p>
+      </div>
+    </div>
+  </text>
+</FoLiA>
