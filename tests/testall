@@ -16,7 +16,7 @@ for file in testusage testlanguage testconf1 testconf2 testinclude \
 	    testfoliain testslash testquotes testquotes2 testtwitter testutt \
 	    testpunctuation testpunctfilter testclassnormalization testlang \
 	    testtokens testoption-P testoption-split testissue64 testissue66 \
-	    testnbsp
+	    testissue71 testissue72 testnbsp
 do
    ./testone $file
    if [ $? -ne 0 ]; then
