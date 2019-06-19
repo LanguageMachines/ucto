@@ -67,7 +67,6 @@ before_install:
       brew install cppcheck;
       brew install ccache;
       brew install libtextcat;
-      brew install boost;
     fi
 
   - export PATH="/usr/lib/ccache/bin/:/usr/local/opt/ccache/libexec/:$PATH"
