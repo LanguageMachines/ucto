@@ -108,6 +108,8 @@ script:
 
 after_failure:
   - cat testoutput/testissue64.tmp
+  - cat testoutput/outa.xml
+  - cat testoutput/outb.xml
   - cat testoutput/testfoliain.tmp
   - cat testoutput/testnbsp.tmp
   - tail -n 500 ../config.log
