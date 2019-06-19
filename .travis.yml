@@ -38,6 +38,11 @@ matrix:
 
     - os: osx
       compiler: gcc
+      cache:
+        directories:
+          - $HOME/Library/Caches/Homebrew
+      before_cache:
+        - brew cleanup
       env:
         - COMPILER=g++
         - SCAN=echo
