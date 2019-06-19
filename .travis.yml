@@ -59,18 +59,18 @@ before_install:
       brew update;
       brew install pkg-config;
       brew install autoconf-archive;
-      brew outdated || brew upgrade icu4c;
-      brew outdated || brew upgrade libxml2;
-      brew outdated || brew install bzip2;
-      brew outdated || brew install zlib;
+      brew install icu4c;
+      brew install libxml2;
+      brew install bzip2;
+      brew install zlib;
       brew install libtar;
       brew install cppcheck;
       brew install ccache;
       brew install libtextcat;
-      brew outdated boost || brew upgrade boost;
+      brew install boost;
     fi
 
-  - export PATH="/usr/lib/ccache/bin/:$PATH"
+  - export PATH="/usr/lib/ccache/bin/:/usr/local/opt/ccache/libexec/:$PATH"
 
   - git clone --depth=1 --single-branch https://github.com/LanguageMachines/ticcutils
   - cd ticcutils
