@@ -106,11 +106,7 @@ script:
   - cd tests && LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib ./testall >&2
 
 after_failure:
-  - cat testoutput/testissue64.tmp
-  - cat testoutput/outa.xml
-  - cat testoutput/outb.xml
-  - cat testoutput/testfoliain.tmp
-  - cat testoutput/testnbsp.tmp
+  - cat testoutput/testlang.tmp
   - tail -n 500 ../config.log
   - tail -n 100 testoutput/*.diff
   - tail -n 100 testoutput/*.err
