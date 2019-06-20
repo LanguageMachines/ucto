@@ -630,6 +630,7 @@ namespace Tokenizer {
     if ( xmlin ){
       folia::Document *doc = tokenize_folia( ifile );
       *OUT << *doc;
+      OUT->flush();
       delete doc;
     }
     else {
@@ -653,6 +654,7 @@ namespace Tokenizer {
     if (xmlout) {
       folia::Document *doc = tokenize( IN );
       OUT << doc;
+      OUT.flush();
       delete doc;
     }
 #ifdef DO_READLINE
