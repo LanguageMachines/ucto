@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.1" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -10,8 +10,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:51:55" command="ucto -L nl -F folia-lang.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-06-21T14:34:44" command="ucto -L nl -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
+        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
@@ -23,7 +23,7 @@
     <div xml:id="div">
       <p xml:id="p1">
         <s xml:id="s1">
-          <t>Dit is een test.</t>
+          <t>Dit is een test van een nederlandse tekt.</t>
           <lang class="nld"/>
           <w xml:id="s1.w.1" class="WORD">
             <t>Dit</t>
@@ -34,23 +34,35 @@
           <w xml:id="s1.w.3" class="WORD">
             <t>een</t>
           </w>
-          <w xml:id="s1.w.4" class="WORD" space="no">
+          <w xml:id="s1.w.4" class="WORD">
             <t>test</t>
           </w>
-          <w xml:id="s1.w.5" class="PUNCTUATION">
+          <w xml:id="s1.w.5" class="WORD">
+            <t>van</t>
+          </w>
+          <w xml:id="s1.w.6" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="s1.w.7" class="WORD">
+            <t>nederlandse</t>
+          </w>
+          <w xml:id="s1.w.8" class="WORD" space="no">
+            <t>tekt</t>
+          </w>
+          <w xml:id="s1.w.9" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
       </p>
       <p xml:id="p2">
         <s xml:id="s2">
-          <t>This isn't dutch.</t>
+          <t>This isn't dutch. It is clearly English, I'm sure.</t>
           <lang class="eng"/>
         </s>
       </p>
       <p xml:id="p3">
         <s xml:id="s3">
-          <t>En dit is zin 2.</t>
+          <t>En dit is zin 2; ook in het Nederlands.</t>
           <w xml:id="s3.w.1" class="WORD">
             <t>En</t>
           </w>
@@ -67,6 +79,21 @@
             <t>2</t>
           </w>
           <w xml:id="s3.w.6" class="PUNCTUATION">
+            <t>;</t>
+          </w>
+          <w xml:id="s3.w.7" class="WORD">
+            <t>ook</t>
+          </w>
+          <w xml:id="s3.w.8" class="WORD">
+            <t>in</t>
+          </w>
+          <w xml:id="s3.w.9" class="WORD">
+            <t>het</t>
+          </w>
+          <w xml:id="s3.w.10" class="WORD" space="no">
+            <t>Nederlands</t>
+          </w>
+          <w xml:id="s3.w.11" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
@@ -75,7 +102,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.1" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -86,8 +113,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:51:55" command="ucto -L en -F folia-lang.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-06-21T14:34:44" command="ucto -L en -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
+        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
         </processor>
@@ -99,13 +126,13 @@
     <div xml:id="div">
       <p xml:id="p1">
         <s xml:id="s1">
-          <t>Dit is een test.</t>
+          <t>Dit is een test van een nederlandse tekt.</t>
           <lang class="nld"/>
         </s>
       </p>
       <p xml:id="p2">
         <s xml:id="s2">
-          <t>This isn't dutch.</t>
+          <t>This isn't dutch. It is clearly English, I'm sure.</t>
           <lang class="eng"/>
           <w xml:id="s2.w.1" class="WORD">
             <t>This</t>
@@ -122,11 +149,38 @@
           <w xml:id="s2.w.5" class="PUNCTUATION">
             <t>.</t>
           </w>
+          <w xml:id="s2.w.6" class="WORD">
+            <t>It</t>
+          </w>
+          <w xml:id="s2.w.7" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="s2.w.8" class="WORD">
+            <t>clearly</t>
+          </w>
+          <w xml:id="s2.w.9" class="WORD" space="no">
+            <t>English</t>
+          </w>
+          <w xml:id="s2.w.10" class="PUNCTUATION">
+            <t>,</t>
+          </w>
+          <w xml:id="s2.w.11" class="WORD" space="no">
+            <t>I</t>
+          </w>
+          <w xml:id="s2.w.12" class="SUFFIX">
+            <t>'m</t>
+          </w>
+          <w xml:id="s2.w.13" class="WORD" space="no">
+            <t>sure</t>
+          </w>
+          <w xml:id="s2.w.14" class="PUNCTUATION">
+            <t>.</t>
+          </w>
         </s>
       </p>
       <p xml:id="p3">
         <s xml:id="s3">
-          <t>En dit is zin 2.</t>
+          <t>En dit is zin 2; ook in het Nederlands.</t>
           <w xml:id="s3.w.1" class="WORD">
             <t>En</t>
           </w>
@@ -143,6 +197,21 @@
             <t>2</t>
           </w>
           <w xml:id="s3.w.6" class="PUNCTUATION">
+            <t>;</t>
+          </w>
+          <w xml:id="s3.w.7" class="WORD">
+            <t>ook</t>
+          </w>
+          <w xml:id="s3.w.8" class="WORD">
+            <t>in</t>
+          </w>
+          <w xml:id="s3.w.9" class="WORD">
+            <t>het</t>
+          </w>
+          <w xml:id="s3.w.10" class="WORD" space="no">
+            <t>Nederlands</t>
+          </w>
+          <w xml:id="s3.w.11" class="PUNCTUATION">
             <t>.</t>
           </w>
         </s>
@@ -151,7 +220,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.1" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -165,8 +234,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:51:55" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-06-21T14:34:44" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
+        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -179,7 +248,7 @@
     <div xml:id="div">
       <p xml:id="p1">
         <s xml:id="s1">
-          <t>Dit is een test.</t>
+          <t>Dit is een test van een nederlandse tekt.</t>
           <lang class="nld"/>
           <w xml:id="s1.w.1" class="WORD" set="tokconfig-nld">
             <t>Dit</t>
@@ -190,18 +259,29 @@
           <w xml:id="s1.w.3" class="WORD" set="tokconfig-nld">
             <t>een</t>
           </w>
-          <w xml:id="s1.w.4" class="WORD" set="tokconfig-nld" space="no">
+          <w xml:id="s1.w.4" class="WORD" set="tokconfig-nld">
             <t>test</t>
           </w>
-          <w xml:id="s1.w.5" class="PUNCTUATION" set="tokconfig-nld">
+          <w xml:id="s1.w.5" class="WORD" set="tokconfig-nld">
+            <t>van</t>
+          </w>
+          <w xml:id="s1.w.6" class="WORD" set="tokconfig-nld">
+            <t>een</t>
+          </w>
+          <w xml:id="s1.w.7" class="WORD" set="tokconfig-nld">
+            <t>nederlandse</t>
+          </w>
+          <w xml:id="s1.w.8" class="WORD" set="tokconfig-nld" space="no">
+            <t>tekt</t>
+          </w>
+          <w xml:id="s1.w.9" class="PUNCTUATION" set="tokconfig-nld">
             <t>.</t>
           </w>
         </s>
       </p>
       <p xml:id="p2">
         <s xml:id="s2">
-          <t>This isn't dutch.</t>
-          <lang class="eng"/>
+          <t>This isn't dutch. It is clearly English, I'm sure.</t>
           <w xml:id="s2.w.1" class="WORD" set="tokconfig-eng">
             <t>This</t>
           </w>
@@ -217,11 +297,39 @@
           <w xml:id="s2.w.5" class="PUNCTUATION" set="tokconfig-eng">
             <t>.</t>
           </w>
+          <lang class="eng"/>
+          <w xml:id="s2.w.6" class="WORD" set="tokconfig-eng">
+            <t>It</t>
+          </w>
+          <w xml:id="s2.w.7" class="WORD" set="tokconfig-eng">
+            <t>is</t>
+          </w>
+          <w xml:id="s2.w.8" class="WORD" set="tokconfig-eng">
+            <t>clearly</t>
+          </w>
+          <w xml:id="s2.w.9" class="WORD" set="tokconfig-eng" space="no">
+            <t>English</t>
+          </w>
+          <w xml:id="s2.w.10" class="PUNCTUATION" set="tokconfig-eng">
+            <t>,</t>
+          </w>
+          <w xml:id="s2.w.11" class="WORD" set="tokconfig-eng" space="no">
+            <t>I</t>
+          </w>
+          <w xml:id="s2.w.12" class="SUFFIX" set="tokconfig-eng">
+            <t>'m</t>
+          </w>
+          <w xml:id="s2.w.13" class="WORD" set="tokconfig-eng" space="no">
+            <t>sure</t>
+          </w>
+          <w xml:id="s2.w.14" class="PUNCTUATION" set="tokconfig-eng">
+            <t>.</t>
+          </w>
         </s>
       </p>
       <p xml:id="p3">
         <s xml:id="s3">
-          <t>En dit is zin 2.</t>
+          <t>En dit is zin 2; ook in het Nederlands.</t>
           <lang class="nld"/>
           <w xml:id="s3.w.1" class="WORD" set="tokconfig-nld">
             <t>En</t>
@@ -239,6 +347,21 @@
             <t>2</t>
           </w>
           <w xml:id="s3.w.6" class="PUNCTUATION" set="tokconfig-nld">
+            <t>;</t>
+          </w>
+          <w xml:id="s3.w.7" class="WORD" set="tokconfig-nld">
+            <t>ook</t>
+          </w>
+          <w xml:id="s3.w.8" class="WORD" set="tokconfig-nld">
+            <t>in</t>
+          </w>
+          <w xml:id="s3.w.9" class="WORD" set="tokconfig-nld">
+            <t>het</t>
+          </w>
+          <w xml:id="s3.w.10" class="WORD" set="tokconfig-nld" space="no">
+            <t>Nederlands</t>
+          </w>
+          <w xml:id="s3.w.11" class="PUNCTUATION" set="tokconfig-nld">
             <t>.</t>
           </w>
         </s>
@@ -248,7 +371,7 @@
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.2" version="2.1.0">
   <metadata type="native">
     <annotations>
       <token-annotation alias="tokconfig-deu" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-deu.foliaset.ttl">
@@ -278,8 +401,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:51:55" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-06-21T14:34:44" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
+        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -982,7 +1105,7 @@
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.2" version="2.1.0">
   <metadata type="native">
     <annotations>
       <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
@@ -1003,8 +1126,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:51:55" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-06-21T14:34:45" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
+        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-nld" type="datasource" version="0.2"/>

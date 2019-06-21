@@ -11,18 +11,18 @@
 	<p xml:id="p1">
           <s xml:id="s1">
 	    <lang class="nld"/>
-	    <t>Dit is een test.</t>
+	    <t>Dit is een test van een nederlandse tekt.</t>
 	  </s>
 	</p>
 	<p xml:id="p2">
           <s xml:id="s2">
 	    <lang class="eng"/>
-	    <t>This isn't dutch.</t>
+	    <t>This isn't dutch. It is clearly English, I'm sure.</t>
 	  </s>
 	</p>
 	<p xml:id="p3">
           <s xml:id="s3">
-	    <t>En dit is zin 2.</t>
+	    <t>En dit is zin 2; ook in het Nederlands.</t>
 	  </s>
 	</p>
       </div>
