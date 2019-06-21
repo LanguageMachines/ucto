@@ -2,11 +2,10 @@
 
 exe=../src/ucto
 
-$exe -L nl -F folia-lang.xml
-$exe -L en -F folia-lang.xml
-#$exe --uselanguages=eng -F folia-lang-2.xml
-$exe --detectlanguages=nld,eng -F folia-lang.xml
-$exe --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml
-cat ml.xml
-$exe --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml
-cat ml2.xml
+#$exe -L nl -F folia-lang.xml
+#$exe -L en -F folia-lang.xml
+$exe -d10 --detectlanguages=nld,eng -F folia-lang.xml
+#$exe --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml
+#cat ml.xml
+#$exe --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml
+#cat ml2.xml
