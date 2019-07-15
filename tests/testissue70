@@ -1,0 +1,6 @@
+#/bin/sh
+
+
+exe=../src/ucto
+
+$exe issue70.xml -L nld-historical
