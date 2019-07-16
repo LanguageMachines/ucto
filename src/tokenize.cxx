@@ -386,8 +386,8 @@ namespace Tokenizer {
     if ( proc ){
       folia::KWargs args;
       args["processor"] = proc->id();
-      if ( !doc->declared( type ) ){
-	doc->declare( type, "", args );
+      if ( !doc->declared( type, "None" ) ){
+	doc->declare( type, "None", args );
 	if ( tokDebug > 3 ){
 	  LOG << "added " << folia::toString(type) << "-annotation for: '"
 	      << proc->id() << endl;
@@ -863,9 +863,7 @@ namespace Tokenizer {
       if ( outputclass != "current" ){
 	args["textclass"] = outputclass;
       }
-      if ( !tok_set.empty() ){
-      	args["set"] = tok_set;
-      }
+      args["set"] = tok_set;
       folia::Word *w;
 #pragma omp critical (foliaupdate)
       {
