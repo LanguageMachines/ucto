@@ -864,7 +864,6 @@ namespace Tokenizer {
 	args["textclass"] = outputclass;
       }
       args["set"] = tok_set;
-      folia::Word *w;
 #pragma omp critical (foliaupdate)
       {
 	UnicodeString ws = tok.us;
@@ -877,6 +876,7 @@ namespace Tokenizer {
 	if ( tokDebug > 5 ){
 	  LOG << "create Word(" << args << ") = " << ws << endl;
 	}
+	folia::Word *w;
 	try {
 	  w = new folia::Word( args, doc );
 	}
