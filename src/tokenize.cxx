@@ -810,6 +810,7 @@ namespace Tokenizer {
 	if ( !id.empty() ){
 	  args["generate_id"] = id;
 	}
+	args["set"] = "None";
 	folia::FoliaElement *q = new folia::Quote( args, doc );
 	root->append( q );
 	// might need a new Sentence
@@ -846,6 +847,7 @@ namespace Tokenizer {
 	  if ( !id.empty() ){
 	    args["generate_id"] = id;
 	  }
+	  args["set"] = "None";
 	  folia::Sentence *ns = new folia::Sentence( args, doc );
 	  root->append( ns );
 	  root = ns;
@@ -939,6 +941,7 @@ namespace Tokenizer {
 							 folia::AnnotationType::PARAGRAPH );
       folia::KWargs args;
       args["processor"] = proc->id();
+      args["set"] = "None";
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
       if ( root->element_id() == folia::Text_t ){
@@ -965,6 +968,7 @@ namespace Tokenizer {
     folia::KWargs args;
     args["processor"] = proc->id();
     args["generate_id"] = root->id();
+    args["set"] = "None";
     folia::Sentence *s = new folia::Sentence( args, root->doc() );
     root->append( s );
     if  ( tokDebug > 5 ){
@@ -1049,14 +1053,15 @@ namespace Tokenizer {
       tokenizeLine( text );
       vector<Token> toks = popSentence();
       while ( !toks.empty() ){
-	folia::KWargs args;
 	string p_id = p->id();
 	folia::processor *proc = add_provenance_structure( p->doc(),
 							   folia::AnnotationType::SENTENCE );
+	folia::KWargs args;
 	args["processor"] = proc->id();
 	if ( !p_id.empty() ){
 	  args["generate_id"] = p_id;
 	}
+	args["set"] = "None";
 	folia::Sentence *s = new folia::Sentence( args, p->doc() );
 	p->append( s );
 	append_to_sentence( s, toks );
@@ -1149,6 +1154,7 @@ namespace Tokenizer {
 	    folia::processor *proc = add_provenance_structure( e->doc(),
 							       folia::AnnotationType::PARAGRAPH );
 	    args["processor"] =  proc->id();
+	    args["set"] = "None";
 	    folia::Paragraph *p = new folia::Paragraph( args, e->doc() );
 	    e->append( p );
 	    rt = p;
@@ -1165,6 +1171,7 @@ namespace Tokenizer {
 	    folia::processor *proc = add_provenance_structure( e->doc(),
 							       folia::AnnotationType::SENTENCE );
 	    args["processor"] =  proc->id();
+	    args["set"] = "None";
 	    folia::Sentence *s = new folia::Sentence( args, e->doc() );
 	    append_to_sentence( s, sent );
 	    ++sentence_done;
@@ -1188,6 +1195,7 @@ namespace Tokenizer {
 	  folia::processor *proc = add_provenance_structure( e->doc(),
 							     folia::AnnotationType::SENTENCE );
 	  args["processor"] =  proc->id();
+	  args["set"] = "None";
 	  folia::Sentence *s = new folia::Sentence( args, e->doc() );
 	  append_to_sentence( s, sents[0] );
 	  ++sentence_done;
