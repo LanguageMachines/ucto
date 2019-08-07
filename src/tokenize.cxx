@@ -386,18 +386,10 @@ namespace Tokenizer {
     if ( proc ){
       folia::KWargs args;
       args["processor"] = proc->id();
-      if ( !doc->declared( type, "None" ) ){
-	doc->declare( type, "None", args );
-	if ( tokDebug > 3 ){
-	  LOG << "added " << folia::toString(type) << "-annotation for: '"
-	      << proc->id() << endl;
-	}
-      }
-      else {
-	if ( tokDebug > 3 ){
-	  LOG << folia::toString(type) << "-annotation already declared" << endl;
-	  LOG << "default_set=" << doc->default_set(type) << endl;
-	}
+      doc->declare( type, "None", args );
+      if ( tokDebug > 3 ){
+	LOG << "added " << folia::toString(type) << "-annotation for: '"
+	    << proc->id() << endl;
       }
     }
     return proc;
@@ -848,6 +840,7 @@ namespace Tokenizer {
 	    args["generate_id"] = id;
 	  }
 	  args["set"] = "None";
+	  args["processor"] = ucto_processor->id();
 	  folia::Sentence *ns = new folia::Sentence( args, doc );
 	  root->append( ns );
 	  root = ns;
@@ -1058,10 +1051,10 @@ namespace Tokenizer {
 							   folia::AnnotationType::SENTENCE );
 	folia::KWargs args;
 	args["processor"] = proc->id();
+	args["set"] = "None";
 	if ( !p_id.empty() ){
 	  args["generate_id"] = p_id;
 	}
-	args["set"] = "None";
 	folia::Sentence *s = new folia::Sentence( args, p->doc() );
 	p->append( s );
 	append_to_sentence( s, toks );
