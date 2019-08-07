@@ -1,11 +1,10 @@
 # /bin/sh -x
-# $Id$
-# $URL$
 
 OK="\033[1;32m OK  \033[0m"
 FAIL="\033[1;31m  FAILED  \033[0m"
 
 file=$1
+keep=$2
 
 if test -x $file
    then
@@ -27,10 +26,13 @@ if test -x $file
             exit 1
 	     else
             echo -e $OK
-            \rm -f testoutput/$file.diff
-            \rm -f testoutput/$file.err
+	    if [ $keep == "" ];
+	    then
+              \rm -f testoutput/$file.diff
+              \rm -f testoutput/$file.err
+	    fi
             exit 0
-	     fi
+	    fi
 	else
 	    \rm -f testoutput/$file.diff
 	    echo -e $OK

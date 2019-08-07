@@ -6,3 +6,5 @@ exe=../src/ucto
 $exe issue70.xml -L nld-historical
 
 $exe issue70_b.xml -L nld-historical
+
+$exe issue70_c.xml -L nld
