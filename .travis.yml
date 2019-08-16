@@ -1,4 +1,5 @@
 sudo: required
+dist: bionic
 
 group: edge
 
@@ -52,7 +53,7 @@ before_install:
       sudo apt-get update;
       sudo apt-get install pkg-config autoconf-archive ccache cppcheck;
       sudo apt-get install libicu-dev libxml2-dev libbz2-dev zlib1g-dev;
-      sudo apt-get install libtar-dev libboost-dev libboost-regex-dev;
+      sudo apt-get install libtar-dev;
       sudo apt-get install libexttextcat-dev;
     fi
   - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
