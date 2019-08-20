@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -30,7 +30,9 @@
       </token-annotation>
       <sentence-annotation/>
       <head-annotation/>
-      <token-annotation annotator="ucto" set="passthru"/>
+      <token-annotation set="passthru">
+        <annotator processor="proc.ucto.9ae4f8b9"/>
+      </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="proc.huygensing-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.pre-upgrade.b05e984c" folia_version="1.5" format="text/folia+xml" host="mlp09.science.ru.nl" name="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.pre-upgrade" src="file://input/HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311.folia.xml" type="datasource"/>
@@ -237,7 +239,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_d5cb802c-5b00-452a-ac7c-f12121bed311" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>

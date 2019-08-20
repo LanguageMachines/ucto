@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -13,8 +13,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:03" command="ucto issue71_b.xml --passthru -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_b.xml --passthru -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
       </processor>
     </provenance>
   </metadata>
@@ -54,7 +54,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -67,8 +67,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:03" command="ucto issue71_b.xml -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_b.xml -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
@@ -112,7 +112,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -127,7 +127,9 @@
         <annotator processor="proc.ucto.f6836ea3"/>
       </token-annotation>
       <sentence-annotation/>
-      <token-annotation annotator="ucto" set="passthru"/>
+      <token-annotation set="passthru">
+        <annotator processor="proc.ucto.f6836ea3"/>
+      </token-annotation>
     </annotations>
     <provenance>
       <processor xml:id="proc.huygensing-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.pre-upgrade.ec6aa71b" folia_version="1.5" format="text/folia+xml" host="mlp09.science.ru.nl" name="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.pre-upgrade" src="file://input/HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642.xml" type="datasource"/>
@@ -148,7 +150,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -183,7 +185,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -197,8 +199,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:03" command="ucto issue71_d.xml --passthru -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_d.xml --passthru -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
       </processor>
     </provenance>
   </metadata>
@@ -217,7 +219,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -230,8 +232,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:03" command="ucto issue71_d.xml -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_d.xml -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
@@ -254,7 +256,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -268,8 +270,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:03" command="ucto issue71_e.xml --passthru -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_e.xml --passthru -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
       </processor>
     </provenance>
   </metadata>
@@ -309,7 +311,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.1" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="HuygensING-brieven-correspondenten-1900-1-1_02ba32f1-34da-4c4b-b839-936e03ae1642" generator="libfolia-v2.3" version="2.1.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -322,8 +324,8 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-17T10:20:04" command="ucto issue71_e.xml -L nld" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-20T12:47:02" command="ucto issue71_e.xml -L nld" folia_version="2.2.0" host="kokos" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>

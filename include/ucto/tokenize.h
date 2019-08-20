@@ -277,6 +277,7 @@ namespace Tokenizer {
     folia::processor *add_provenance_structure( folia::Document *,
 						const folia::AnnotationType::AnnotationType,
 						folia::processor * =0 ) const;
+    bool ucto_re_run() const { return already_tokenized; };
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies
