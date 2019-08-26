@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="nasty" generator="libfolia-v2.1" version="2.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="nasty" generator="libfolia-v2.3" version="2.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <table-annotation/>
       <sentence-annotation>
         <annotator processor="ucto.1"/>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-12T14:54:23" command="ucto -Lnld nbsp.xml nbsp.out.xml" folia_version="2.1.0" host="bonus" name="ucto" user="sloot" version="0.17">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.1"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-26T15:05:42" command="ucto -d5 -Lnld nbsp.xml nbsp.out.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>

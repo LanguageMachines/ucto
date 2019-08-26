@@ -9,6 +9,8 @@
       <token-annotation alias="tokconfig-nld-historical" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld-historical.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <division-annotation/>
+      <table-annotation/>
       <paragraph-annotation>
         <annotator processor="ucto.1"/>
       </paragraph-annotation>
@@ -18,8 +20,8 @@
     </annotations>
     <provenance>
       <processor xml:id="proc.tei2folia.xsl" name="tei2folia.xsl"/>
-      <processor xml:id="ucto.1" begindatetime="2019-08-07T10:40:19" command="ucto issue70.xml -L nld-historical" folia_version="2.2.0" host="bonus" name="ucto" user="sloot" version="0.19">
-        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-26T15:04:52" command="ucto issue70.xml -L nld-historical" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld-historical" type="datasource" version="0.2"/>
         </processor>
@@ -68,17 +70,19 @@
       <token-annotation alias="tokconfig-nld-historical" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld-historical.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <division-annotation/>
       <sentence-annotation>
         <annotator processor="ucto.1"/>
       </sentence-annotation>
+      <table-annotation/>
       <paragraph-annotation>
         <annotator processor="ucto.1"/>
       </paragraph-annotation>
     </annotations>
     <provenance>
       <processor xml:id="proc.tei2folia.xsl" name="tei2folia.xsl"/>
-      <processor xml:id="ucto.1" begindatetime="2019-08-07T10:40:19" command="ucto issue70_b.xml -L nld-historical" folia_version="2.2.0" host="bonus" name="ucto" user="sloot" version="0.19">
-        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-26T15:04:52" command="ucto issue70_b.xml -L nld-historical" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld-historical" type="datasource" version="0.2"/>
         </processor>
@@ -150,14 +154,16 @@
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <division-annotation/>
       <sentence-annotation>
         <annotator processor="ucto.1"/>
       </sentence-annotation>
+      <table-annotation/>
     </annotations>
     <provenance>
       <processor xml:id="proc.tei2folia.xsl" name="tei2folia.xsl"/>
-      <processor xml:id="ucto.1" begindatetime="2019-08-07T10:40:20" command="ucto issue70_c.xml -L nld -d10" folia_version="2.2.0" host="bonus" name="ucto" user="sloot" version="0.19">
-        <processor xml:id="ucto.1.generator" folia_version="2.2.0" name="libfolia" type="generator" version="2.3"/>
+      <processor xml:id="ucto.1" begindatetime="2019-08-26T15:04:52" command="ucto issue70_c.xml -L nld" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.19">
+        <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.3"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
