@@ -43,6 +43,7 @@
 
 using namespace std;
 using namespace Tokenizer;
+using TiCC::operator<<;
 
 void usage(){
   set<string> languages = Setting::installed_languages();
@@ -487,6 +488,12 @@ int main( int argc, char *argv[] ){
 	  delete OUT;
 	}
 	return EXIT_FAILURE;
+      }
+      if ( !cfile.empty() ){
+	cerr << "ucto: configured from file: " << cfile << endl;
+      }
+      else {
+	cerr << "ucto: configured for languages: " << language_list << endl;
       }
     }
 

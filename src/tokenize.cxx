@@ -185,7 +185,7 @@ namespace Tokenizer {
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
     tc = new TextCat( textcat_cfg, theErrLog );
     //    tc->set_debug( true );
-    LOG << "configured TEXTCAT( " << textcat_cfg << " )" << endl;
+    LOG << " textcat configured from: " << textcat_cfg << endl;
     // ifstream is( textcat_cfg );
     // string line;
     // while ( getline( is, line ) ){
@@ -2555,7 +2555,7 @@ namespace Tokenizer {
 	settings[default_language] = set;
       }
       else if ( xmlout ){
-	LOG << "unable to determine a language. cannot proceed" << endl;
+	LOG << " unable to determine a language. cannot proceed" << endl;
 	return false;
       }
     }

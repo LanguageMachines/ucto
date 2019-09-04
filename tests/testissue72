@@ -18,7 +18,7 @@ then
   exit 1
 fi
 
-\rm issue72_*.xml
+\rm -f issue72_*.xml
 
 $exe -c $data_dir/tokconfig-nld datetime.nl.txt
 $exe -c $data_dir/tokconfig-nld datetime.nl.txt issue72_a.xml
