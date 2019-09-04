@@ -443,6 +443,27 @@ int main( int argc, char *argv[] ){
     // set debug first, so init() can be debugged too
     tokenizer.setDebug( debug );
     tokenizer.set_command( command_line );
+    tokenizer.setEosMarker( eosmarker );
+    tokenizer.setVerbose( verbose );
+    tokenizer.setSentenceSplit(sentencesplit);
+    tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
+    tokenizer.setSentencePerLineInput(sentenceperlineinput);
+    tokenizer.setLowercase(tolowercase);
+    tokenizer.setUppercase(touppercase);
+    tokenizer.setNormSet(norm_set_string);
+    tokenizer.setParagraphDetection(paragraphdetection);
+    tokenizer.setQuoteDetection(quotedetection);
+    tokenizer.setNormalization( normalization );
+    tokenizer.setInputEncoding( inputEncoding );
+    tokenizer.setFiltering(dofiltering);
+    tokenizer.setLangDetection(do_language_detect);
+    tokenizer.setPunctFilter(dopunctfilter);
+    tokenizer.setInputClass(inputclass);
+    tokenizer.setOutputClass(outputclass);
+    tokenizer.setXMLOutput(xmlout, docid);
+    tokenizer.setXMLInput(xmlin);
+    tokenizer.setTextRedundancy(redundancy);
+
     if ( passThru ){
       tokenizer.setPassThru( true );
     }
@@ -469,26 +490,6 @@ int main( int argc, char *argv[] ){
       }
     }
 
-    tokenizer.setEosMarker( eosmarker );
-    tokenizer.setVerbose( verbose );
-    tokenizer.setSentenceSplit(sentencesplit);
-    tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
-    tokenizer.setSentencePerLineInput(sentenceperlineinput);
-    tokenizer.setLowercase(tolowercase);
-    tokenizer.setUppercase(touppercase);
-    tokenizer.setNormSet(norm_set_string);
-    tokenizer.setParagraphDetection(paragraphdetection);
-    tokenizer.setQuoteDetection(quotedetection);
-    tokenizer.setNormalization( normalization );
-    tokenizer.setInputEncoding( inputEncoding );
-    tokenizer.setFiltering(dofiltering);
-    tokenizer.setLangDetection(do_language_detect);
-    tokenizer.setPunctFilter(dopunctfilter);
-    tokenizer.setInputClass(inputclass);
-    tokenizer.setOutputClass(outputclass);
-    tokenizer.setXMLOutput(xmlout, docid);
-    tokenizer.setXMLInput(xmlin);
-    tokenizer.setTextRedundancy(redundancy);
 
     if (xmlin) {
       folia::Document *doc = tokenizer.tokenize_folia( ifile );

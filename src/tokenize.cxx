@@ -436,7 +436,7 @@ namespace Tokenizer {
 	doc->add_processor( args, data_proc );
 	args.clear();
 	args["processor"] = proc->id();
-	string alias = s.second->set_file;
+	string alias = "tokconfig-" + s.first;
 	string ucto_set = UCTO_SET_PREFIX + alias + ".foliaset.ttl";
 	args["alias"] = alias;
 	if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
@@ -2549,9 +2549,14 @@ namespace Tokenizer {
     else {
       settings["default"] = set;
       default_language = "default";
-      if ( fname.find("tokconfig-") == 0 ){
-	default_language = fname.substr(10);
+      auto pos = fname.find("tokconfig-");
+      if ( pos != string::npos ){
+	default_language = fname.substr(pos+10);
 	settings[default_language] = set;
+      }
+      else if ( xmlout ){
+	LOG << "unable to determine a language. cannot proceed" << endl;
+	return false;
       }
     }
     if ( tokDebug ){
