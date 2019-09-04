@@ -18,16 +18,16 @@ then
   exit 1
 fi
 
+\rm issue72_*.xml
 
 $exe -c $data_dir/tokconfig-nld datetime.nl.txt
-
-$exe -c $data_dir/tokconfig-nld datetime.nl.txt issue72.xml
-
+$exe -c $data_dir/tokconfig-nld datetime.nl.txt issue72_a.xml
+cat issue72_a.xml
 
 $exe -c small.cfg datetime.nl.txt
-
-$exe -c small.cfg datetime.nl.txt issue72.xml
+$exe -c small.cfg datetime.nl.txt issue72_b.xml
+cat issue72_a.xml
 
 $exe -c small-tokconfig-nld datetime.nl.txt
-
-$exe -c small-tokconfig-nld datetime.nl.txt issue72.xml
+$exe -c small-tokconfig-nld datetime.nl.txt issue72_c.xml
+cat issue72_a.xml
