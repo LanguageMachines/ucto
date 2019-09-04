@@ -107,4 +107,4 @@ after_failure:
   - cat testoutput/testissue72.tmp
 #  - tail -n 500 ../config.log
 #  - tail testoutput/*.diff
-  - tail testoutput/*.err
+  - cat testoutput/testissue72.err
