@@ -1,8 +1,33 @@
-#/bin/sh
-
+#!/bin/bash
 
 exe=../src/ucto
 
-$exe issue72_a.xml --passthru -L nld
+data_dir=/home/sloot/usr/local/share/ucto
+if [ ! -d $data_dir ]
+then
+  data_dir=/exp/sloot/usr/local/share/ucto
+  if [ ! -d $data_dir ]
+  then
+    data_dir=/usr/local/share/ucto
+  fi
+fi
 
-$exe issue72_a.xml -L nld
+if [ ! -d $data_dir ]
+then
+  echo "unable to find $data_dir"
+  exit 1
+fi
+
+
+$exe -c $data_dir/tokconfig-nld datetime.nl.txt
+
+$exe -c $data_dir/tokconfig-nld datetime.nl.txt issue72.xml
+
+
+$exe -c small.cfg datetime.nl.txt
+
+$exe -c small.cfg datetime.nl.txt issue72.xml
+
+$exe -c small-tokconfig-nld datetime.nl.txt
+
+$exe -c small-tokconfig-nld datetime.nl.txt issue72.xml

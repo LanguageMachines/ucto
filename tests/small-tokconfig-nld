@@ -1,0 +1,11 @@
+version=3.14.sub
+[RULES]
+%include invoer
+
+#Date
+DATE=\p{N}{1,2}-\p{N}{1,2}-\p{N}{2,4}
+DATE-REVERSE=\p{N}{4}-\p{N}{1,2}-\p{N}{1,2}
+
+
+[EOSMARKERS]
+!
