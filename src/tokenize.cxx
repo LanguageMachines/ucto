@@ -2607,7 +2607,7 @@ namespace Tokenizer {
       }
     }
     if ( settings.empty() ){
-      cerr << "ucto: No useful settingsfile(s) could be found." << endl;
+      cerr << "ucto: No useful settingsfile(s) could be found (initiating from language list: " << languages << ")" << endl;
       return false;
     }
     return true;
