@@ -1,4 +1,11 @@
-0.18 2019-06-19
+0.19 2019-06-19
+[Ko van der Sloot]
+Bug fix release. solving:
+ * https://github.com/LanguageMachines/ucto/issues/72
+ * some problems with the newest libfolia.
+ * better provenance records
+
+0.18 2019-07-22
 [Ko van der Sloot]
 Bug fix release. solving:
   https://github.com/LanguageMachines/ucto/issues/70
