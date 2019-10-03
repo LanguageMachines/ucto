@@ -677,11 +677,13 @@ namespace Tokenizer {
 	  data += line + " ";
 	}
 	if ( !data.empty() ){
-	  vector<Token> v = tokenizeOneSentence( IN );
+	  tokenizeLine( data );
+	  // extract sentence from Token vector until done
+	  vector<Token> v = popSentence();
 	  while( !v.empty() ){
 	    outputTokens( OUT, v , (i>0) );
 	    ++i;
-	    v = tokenizeOneSentence( IN );
+	    v = popSentence();
 	  }
 	  OUT << endl;
 	}
