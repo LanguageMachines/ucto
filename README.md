@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/LanguageMachines/ucto.svg?branch=master)](https://travis-ci.org/LanguageMachines/ucto) [![Language Machines Badge](http://applejack.science.ru.nl/lamabadge.php/ucto)](http://applejack.science.ru.nl/languagemachines/) [![DOI](https://zenodo.org/badge/9028617.svg)](https://zenodo.org/badge/latestdoi/9028617)
+[![GitHub release](https://img.shields.io/github/release/LanguageMachines/ucto.svg)](https://GitHub.com/LanguageMachines/ucto/releases/) [![Project Status: Active – The project has reached a stable, usable state and is being actively developed.](https://www.repostatus.org/badges/latest/active.svg)](https://www.repostatus.org/#active)
 
 Ucto - A rule-based tokeniser
 ================================
