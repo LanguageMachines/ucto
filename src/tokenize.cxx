@@ -229,7 +229,9 @@ namespace Tokenizer {
     ucto_processor = 0;
     already_tokenized = false;
     tokens.clear();
-    settings[lang]->quotes.clearStack();
+    if ( settings.find("lang") != settings.end() ){
+      settings[lang]->quotes.clearStack();
+    }
     return true;
   }
 
