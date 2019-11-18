@@ -1038,15 +1038,10 @@ namespace Tokenizer {
   void TokenizerClass::handle_one_paragraph( folia::Paragraph *p,
 					     int& sentence_done ){
     // a Paragraph may contain both Word and Sentence nodes
-    // if so, the Sentences should be handled separately
-    vector<folia::Word*> wv = p->select<folia::Word>(false);
+    // Sentences will be handled
     vector<folia::Sentence*> sv = p->select<folia::Sentence>(false);
-    if ( tokDebug > 1 ){
-      LOG << "found some Words " << wv << endl;
-      LOG << "found some Sentences " << sv << endl;
-    }
     if ( sv.empty() ){
-      // No Sentence, so only words OR just text
+      // No Sentence, so just text
       string text = p->str(inputclass);
       if ( tokDebug > 0 ){
 	LOG << "handle_one_paragraph:" << text << endl;
@@ -1071,7 +1066,10 @@ namespace Tokenizer {
       }
     }
     else {
-      // For now wu just IGNORE the loose words (backward compatability)
+      if ( tokDebug > 1 ){
+	LOG << "found some Sentences " << sv << endl;
+      }
+      // For now wu just IGNORE loose words (backward compatability)
       for ( const auto& s : sv ){
 	handle_one_sentence( s, sentence_done );
       }
@@ -1115,16 +1113,10 @@ namespace Tokenizer {
     else {
       // Some text outside word, paragraphs or sentences (yet)
       // mabe <div> or <note> or such
-      // there may be Paragraph, Word and Sentence nodes
+      // there may be embedded Paragraph, Word and Sentence nodes
       // if so, Paragraphs and Sentences should be handled separately
-      vector<folia::Word*> wv = e->select<folia::Word>(false);
       vector<folia::Sentence*> sv = e->select<folia::Sentence>(false);
       vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
-      if ( tokDebug > 1 ){
-	LOG << "found some Words " << wv << endl;
-	LOG << "found some Sentences " << sv << endl;
-	LOG << "found some Paragraphs " << pv << endl;
-      }
       if ( pv.empty() && sv.empty() ){
 	// just words or text
 	string text = e->str(inputclass);
@@ -1207,6 +1199,9 @@ namespace Tokenizer {
 	}
       }
       else if ( !pv.empty() ){
+	if ( tokDebug > 1 ){
+	  LOG << "found some Paragraphs " << pv << endl;
+	}
 	// For now we only handle the Paragraphs, ignore sentences and words
 	// IS this even valid???
 	for ( const auto& p : pv ){
@@ -1214,6 +1209,9 @@ namespace Tokenizer {
 	}
       }
       else {
+	if ( tokDebug > 1 ){
+	  LOG << "found some Sentences " << sv << endl;
+	}
 	// For now we just IGNORE the loose words (backward compatability)
 	for ( const auto& s : sv ){
 	  handle_one_sentence( s, sentence_done );
