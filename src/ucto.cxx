@@ -45,6 +45,45 @@ using namespace std;
 using namespace Tokenizer;
 using TiCC::operator<<;
 
+string fix_639_1( const string& language ){
+  string result = language;
+  // support some backward compatability to old ISO 639-1 codes
+  if ( language == "nl" ){
+    result = "nld";
+  }
+  else if ( language == "de" ){
+    result = "deu";
+  }
+  else if ( language == "fr" ){
+    result = "fra";
+  }
+  else if ( language == "pt" ){
+    result = "por";
+  }
+  else if ( language == "es" ){
+    result = "spa";
+  }
+  else if ( language == "fy" ){
+    result = "fry";
+  }
+  else if ( language == "se" ){
+    result = "swe";
+  }
+  else if ( language == "en" ){
+    result = "eng";
+  }
+  else if ( language == "it" ){
+    result = "ita";
+  }
+  else if ( language == "ru" ){
+    result = "rus";
+  }
+  else if ( language == "tr" ){
+    result = "tur";
+  }
+  return result;
+}
+
 void usage(){
   set<string> languages = Setting::installed_languages();
   cerr << "Usage: " << endl;
@@ -123,7 +162,7 @@ int main( int argc, char *argv[] ){
   string ifile;
   string ofile;
   string c_file;
-  bool passThru = false;
+  bool pass_thru = false;
   bool sentencesplit = false;
   string norm_set_string;
   string add_tokens;
@@ -188,7 +227,6 @@ int main( int argc, char *argv[] ){
       }
       //      sentenceperlineoutput = true;
     }
-    passThru = Opts.extract( "passthru" );
     string textclass;
     Opts.extract( "textclass", textclass );
     Opts.extract( "inputclass", inputclass );
@@ -238,9 +276,22 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
+    pass_thru = Opts.extract( "passthru" );
     bool use_lang = Opts.is_present( "uselanguages" );
     bool detect_lang = Opts.is_present( "detectlanguages" );
+    if ( detect_lang && use_lang ){
+      throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
+    }
+    if ( use_lang && pass_thru ){
+      throw TiCC::OptionError( "--passtru an --uselanguages options conflict. Use only one of these." );
+    }
+    if ( detect_lang && pass_thru ){
+      throw TiCC::OptionError( "--passtru an --detectlanguages options conflict. Use only one of these." );
+    }
     if ( Opts.is_present('L') ) {
+      if ( pass_thru ){
+	throw TiCC::OptionError( "--passtru an -L options conflict. Use only one of these." );
+      }
       if ( Opts.is_present('c') ){
 	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
       }
@@ -259,65 +310,31 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "-c and --uselanguages options conflict. Use only one of these." );
       }
     }
-    if ( detect_lang && use_lang ){
-      throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
-    }
     Opts.extract( 'c', c_file );
 
-    string languages;
-    Opts.extract( "detectlanguages", languages );
-    if ( languages.empty() ){
-      Opts.extract( "uselanguages", languages );
-    }
-    else {
-      do_language_detect = true;
-    }
-    if ( !languages.empty() ){
-      if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
-	throw TiCC::OptionError( "invalid language list: " + languages );
+    if ( !pass_thru ){
+      string languages;
+      Opts.extract( "detectlanguages", languages );
+      if ( languages.empty() ){
+	Opts.extract( "uselanguages", languages );
       }
-    }
-    else {
-      // so --detectlanguages or --uselanguages
-      string language;
-      if ( Opts.extract('L', language ) ){
-	// support some backward compatability to old ISO 639-1 codes
-	if ( language == "nl" ){
-	  language = "nld";
-	}
-	else if ( language == "de" ){
-	  language = "deu";
-	}
-	else if ( language == "fr" ){
-	  language = "fra";
-	}
-	else if ( language == "pt" ){
-	  language = "por";
-	}
-	else if ( language == "es" ){
-	  language = "spa";
-	}
-	else if ( language == "fy" ){
-	  language = "fry";
-	}
-	else if ( language == "se" ){
-	  language = "swe";
-	}
-	else if ( language == "en" ){
-	  language = "eng";
-	}
-	else if ( language == "it" ){
-	  language = "ita";
-	}
-	else if ( language == "ru" ){
-	  language = "rus";
-	}
-	else if ( language == "tr" ){
-	  language = "tur";
+      else {
+	do_language_detect = true;
+      }
+      if ( !languages.empty() ){
+	if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
+	  throw TiCC::OptionError( "invalid language list: " + languages );
 	}
       }
-      if ( !language.empty() ){
-	language_list.push_back( language );
+      else {
+	// so NOT --detectlanguages or --uselanguages
+	string language;
+	if ( Opts.extract('L', language ) ){
+	  language = fix_639_1( language );
+	}
+	if ( !language.empty() ){
+	  language_list.push_back( language );
+	}
       }
     }
     Opts.extract("normalize", norm_set_string );
@@ -352,7 +369,7 @@ int main( int argc, char *argv[] ){
     usage();
     return EXIT_FAILURE;
   }
-  if ( !passThru ){
+  if ( !pass_thru ){
     set<string> available_languages = Setting::installed_languages();
     if ( !c_file.empty() ){
       cfile = c_file;
@@ -465,7 +482,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
 
-    if ( passThru ){
+    if ( pass_thru ){
       tokenizer.setPassThru( true );
     }
     else {

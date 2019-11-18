@@ -1236,7 +1236,7 @@ namespace Tokenizer {
     }
     folia::TextEngine proc( infile_name );
     if ( passthru ){
-      add_provenance_passthru(  proc.doc() );
+      add_provenance_passthru( proc.doc() );
     }
     else {
       add_provenance_setting( proc.doc() );

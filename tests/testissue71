@@ -3,14 +3,14 @@
 
 exe=../src/ucto
 
-$exe issue71_b.xml --passthru -L nld
+$exe issue71_b.xml --passthru
 $exe issue71_b.xml -L nld
 
-$exe issue71_c.xml --passthru -L nld
+$exe issue71_c.xml --passthru
 $exe issue71_c.xml -L nld
 
-$exe issue71_d.xml --passthru -L nld
+$exe issue71_d.xml --passthru
 $exe issue71_d.xml -L nld
 
-$exe issue71_e.xml --passthru -L nld
+$exe issue71_e.xml --passthru
 $exe issue71_e.xml -L nld
