@@ -1,4 +1,12 @@
-0.19 2019-06-19
+0.20 2019-11-27
+[Ko van der Sloot]
+Bug fix release. solving:
+ * https://github.com/LanguageMachines/frog/issues/84
+ * https://github.com/LanguageMachines/frog/issues/83
+ * https://github.com/LanguageMachines/ucto/issues/76
+ * https://github.com/LanguageMachines/ucto/issues/74
+
+0.19 2019-09-16
 [Ko van der Sloot]
 Bug fix release. solving:
  * https://github.com/LanguageMachines/ucto/issues/72
