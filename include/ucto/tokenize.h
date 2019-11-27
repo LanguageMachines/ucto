@@ -366,6 +366,7 @@ namespace Tokenizer {
 
     //has a paragraph been signaled?
     bool paragraphsignal;
+    bool paragraphsignal_next;
 
     //has do we attempt to assign languages?
     bool doDetectLang;

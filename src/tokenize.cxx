@@ -164,6 +164,7 @@ namespace Tokenizer {
     splitOnly( false ),
     detectPar(true),
     paragraphsignal(true),
+    paragraphsignal_next(false),
     doDetectLang(false),
     text_redundancy("minimal"),
     sentenceperlineoutput(false),
@@ -555,7 +556,7 @@ namespace Tokenizer {
 	}
       }
       if  (tokDebug > 0) {
-	LOG << "[tokenizeOneSentences()] before next countSentences " << endl;
+	LOG << "[tokenizeOneSentence] before next countSentences " << endl;
       }
       if ( done || input_line.isEmpty() ){
 	//Signal the tokeniser that a paragraph is detected
@@ -2238,8 +2239,7 @@ namespace Tokenizer {
       }
       if ( u_isspace(c) || i == len-1 ){
 	if (tokDebug){
-	  LOG << "[tokenizeLine] space detected, word=["
-			  << word << "]" << endl;
+	  LOG << "[tokenizeLine] space detected, word=[" << word << "]" << endl;
 	}
 	if ( i == len-1 ) {
 	  if ( u_ispunct(c)
@@ -2248,6 +2248,13 @@ namespace Tokenizer {
 	       || u_isemo(c) ){
 	    tokenizeword = true;
 	  }
+	}
+	if ( ( c == '\n' || c == '\n') && word.isEmpty() ){
+	  if (tokDebug){
+	    LOG << "[tokenizeLine] NEW PARAGRAPH upcoming " << endl;
+	  }
+	  // signal that the next word starts a new Paragraph. (if its there)
+	  paragraphsignal_next = true;
 	}
 	int expliciteosfound = -1;
 	if ( word.length() >= eosmark.length() ) {
@@ -2404,7 +2411,12 @@ namespace Tokenizer {
 	if ( norm_set.find( type ) != norm_set.end() ){
 	  word = "{{" + type + "}}";
 	}
-	Token T( type, word, space ? NOROLE : NOSPACE, lang );
+	TokenRole role = (space ? NOROLE : NOSPACE);
+	if ( paragraphsignal_next ){
+	  role |= NEWPARAGRAPH;
+	  paragraphsignal_next = false;
+	}
+	Token T( type, word, role, lang );
 	tokens.push_back( T );
 	if (tokDebug >= 2){
 	  LOG << "   [tokenizeWord] added token " << T << endl;
@@ -2445,7 +2457,12 @@ namespace Tokenizer {
 	      if ( tokDebug >= 4 ){
 		LOG << "\trecurse, match didn't do anything new for " << input << endl;
 	      }
-	      tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE, lang ) );
+	      TokenRole role = (space ? NOROLE : NOSPACE);
+	      if ( paragraphsignal_next ){
+		role |= NEWPARAGRAPH;
+		paragraphsignal_next = false;
+	      }
+	      tokens.push_back( Token( assigned_type, input, role, lang ) );
 	      return;
 	    }
 	    else {
@@ -2453,7 +2470,12 @@ namespace Tokenizer {
 		LOG << "\trecurse, match changes the type:"
 				<< assigned_type << " to " << type << endl;
 	      }
-	      tokens.push_back( Token( type, input, space ? NOROLE : NOSPACE, lang ) );
+	      TokenRole role = (space ? NOROLE : NOSPACE);
+	      if ( paragraphsignal_next ){
+		role |= NEWPARAGRAPH;
+		paragraphsignal_next = false;
+	      }
+	      tokens.push_back( Token( type, input, role, lang ) );
 	      return;
 	    }
 	  }
@@ -2495,11 +2517,21 @@ namespace Tokenizer {
 		UnicodeString word = matches[m];
 		if ( norm_set.find( type ) != norm_set.end() ){
 		  word = "{{" + type + "}}";
-		  tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE, lang ) );
+		  TokenRole role = (internal_space ? NOROLE : NOSPACE);
+		  if ( paragraphsignal_next ){
+		    role |= NEWPARAGRAPH;
+		    paragraphsignal_next = false;
+		  }
+		  tokens.push_back( Token( type, word, role, lang ) );
 		}
 		else {
 		  if ( recurse ){
-		    tokens.push_back( Token( type, word, internal_space ? NOROLE : NOSPACE, lang ) );
+		    TokenRole role = (internal_space ? NOROLE : NOSPACE);
+		    if ( paragraphsignal_next ){
+		      role |= NEWPARAGRAPH;
+		      paragraphsignal_next = false;
+		    }
+		    tokens.push_back( Token( type, word, role, lang ) );
 		  }
 		  else {
 		    tokenizeWord( word, internal_space, lang, type );
@@ -2527,7 +2559,12 @@ namespace Tokenizer {
 	if ( tokDebug >=4 ){
 	  LOG << "\tthere's no match at all" << endl;
 	}
-	tokens.push_back( Token( assigned_type, input, space ? NOROLE : NOSPACE , lang ) );
+	TokenRole role = (space ? NOROLE : NOSPACE);
+	if ( paragraphsignal_next ){
+	  role |= NEWPARAGRAPH;
+	  paragraphsignal_next = false;
+	}
+	tokens.push_back( Token( assigned_type, input, role, lang ) );
       }
     }
   }
