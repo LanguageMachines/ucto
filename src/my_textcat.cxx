@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2019
+  Copyright (c) 2020
   CLST - Radboud University
 
   This file is part of Ucto
