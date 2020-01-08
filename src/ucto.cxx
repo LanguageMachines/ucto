@@ -150,6 +150,7 @@ int main( int argc, char *argv[] ){
   bool xmlin = false;
   bool xmlout = false;
   bool verbose = false;
+  bool docorrectwords = false;
   string redundancy = "minimal";
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
@@ -172,7 +173,7 @@ int main( int argc, char *argv[] ){
   }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,correctwords");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -190,6 +191,7 @@ int main( int argc, char *argv[] ){
     }
     Opts.extract('e', inputEncoding );
     dopunctfilter = Opts.extract( "filterpunct" );
+    docorrectwords = Opts.extract( "correctwords" );
     paragraphdetection = !Opts.extract( 'P' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
@@ -474,6 +476,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setNormalization( normalization );
     tokenizer.setInputEncoding( inputEncoding );
     tokenizer.setFiltering(dofiltering);
+    tokenizer.setWordCorrection(docorrectwords);
     tokenizer.setLangDetection(do_language_detect);
     tokenizer.setPunctFilter(dopunctfilter);
     tokenizer.setInputClass(inputclass);

@@ -200,6 +200,13 @@ namespace Tokenizer {
     }
     bool getFiltering() const { return doFilter; };
 
+    //Enable word corrections (FoLiA only)
+    bool setWordCorrection( bool b=true ) {
+      bool t = doWordCorrection; doWordCorrection = b; return t;
+    }
+    bool getWordCorrection() const { return doWordCorrection; };
+
+    //Enable punctuation filtering
     bool setPunctFilter( bool b=true ) {
       bool t = doPunctFilter; doPunctFilter = b; return t;
     }
@@ -357,6 +364,9 @@ namespace Tokenizer {
 
     //filter all punctuation characters (default off)
     bool doPunctFilter;
+
+    //allow correction of FoLiA Word elements
+    bool doWordCorrection;
 
     // only sentence spliiting?
     bool splitOnly;

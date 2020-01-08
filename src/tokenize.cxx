@@ -161,6 +161,7 @@ namespace Tokenizer {
     detectQuotes(false),
     doFilter(true),
     doPunctFilter(false),
+    doWordCorrection(true),
     splitOnly( false ),
     detectPar(true),
     paragraphsignal(true),
