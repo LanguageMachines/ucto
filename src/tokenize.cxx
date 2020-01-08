@@ -982,7 +982,8 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::correct_word( folia::Word *orig_word,
-				     const vector<Token>& toks ) const {
+				     const vector<Token>& toks,
+				     const string& tok_set ) const {
     vector<folia::FoliaElement*> sV;
     vector<folia::FoliaElement*> cV;
     vector<folia::FoliaElement*> oV;
@@ -1001,7 +1002,7 @@ namespace Tokenizer {
       if ( outputclass != "current" ){
 	args["textclass"] = outputclass;
       }
-      //      args["set"] = tok_set;
+      args["set"] = tok_set;
 #pragma omp critical (foliaupdate)
       {
 	UnicodeString ws = tok.us;
@@ -1056,6 +1057,13 @@ namespace Tokenizer {
       }
       return false;
     }
+    string tok_set;
+    if ( !s_la.empty() ){
+      tok_set = "tokconfig-" + s_la;
+    }
+    else {
+      tok_set = "tokconfig-" + default_language;
+    }
     for ( auto w : wv ){
       string text = w->str(inputclass);
       if ( true || tokDebug > 0 ){
@@ -1065,7 +1073,7 @@ namespace Tokenizer {
       tokenizeLine( text );
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
-	correct_word( w, sent );
+	correct_word( w, sent, tok_set );
 	sent = popSentence();
       }
     }
@@ -1140,14 +1148,19 @@ namespace Tokenizer {
     // Sentences will be handled
     vector<folia::Sentence*> sv = p->select<folia::Sentence>(false);
     if ( sv.empty() ){
-      // No Sentence, so just text
-      if ( doWordCorrection ){
-	vector<folia::Word*> wv = p->select<folia::Word>(false);
-	if ( correct_words( p, wv ) ){
-	  ++sentence_done;
+      // No Sentence, so just text or Words
+      vector<folia::Word*> wv = p->select<folia::Word>(false);
+      if ( !wv.empty() ){
+	// Words found
+	if ( doWordCorrection ){
+	  if ( correct_words( p, wv ) ){
+	    ++sentence_done;
+	  }
 	}
+	// otherwise skip
       }
       else {
+	// No Words too, handle text, if any
 	string text = p->str(inputclass);
 	if ( tokDebug > 0 ){
 	  LOG << "handle_one_paragraph:" << text << endl;
