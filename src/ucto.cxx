@@ -116,6 +116,7 @@ void usage(){
        << "\t                    'full' - add text to all levels: <p> <s> <w> etc." << endl
        << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
+       << "\t--correctwords    - allow tokenization of FoLiA Word elements." << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
@@ -353,6 +354,9 @@ int main( int argc, char *argv[] ){
     }
     if ( use_lang && !xmlin ){
       throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
+    }
+    if ( docorrectwords && !xmlin ){
+      throw TiCC::OptionError( "--correctwords is only valid for FoLiA input" );
     }
     if ( files.size() == 2 ){
       ofile = files[1];

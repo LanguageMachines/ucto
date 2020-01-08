@@ -981,6 +981,97 @@ namespace Tokenizer {
     return root;
   }
 
+  void TokenizerClass::correct_word( folia::Word *orig_word,
+				     const vector<Token>& toks ) const {
+    vector<folia::FoliaElement*> sV;
+    vector<folia::FoliaElement*> cV;
+    vector<folia::FoliaElement*> oV;
+    vector<folia::FoliaElement*> nV;
+    // Original element
+    oV.push_back( orig_word );
+    // Add the edits
+    for ( const auto& tok : toks ){
+      // New elements
+      folia::KWargs args;
+      args["xml:id"] = orig_word->generateId( "tokenized" );
+      args["class"] = TiCC::UnicodeToUTF8(tok.type);
+      if ( tok.role & NOSPACE ){
+	args["space"] = "no";
+      }
+      if ( outputclass != "current" ){
+	args["textclass"] = outputclass;
+      }
+      //      args["set"] = tok_set;
+#pragma omp critical (foliaupdate)
+      {
+	UnicodeString ws = tok.us;
+	if (lowercase) {
+	  ws = ws.toLower();
+	}
+	else if (uppercase) {
+	  ws = ws.toUpper();
+	}
+	if ( tokDebug > 5 ){
+	  LOG << "create Word(" << args << ") = " << ws << endl;
+	}
+	folia::Word *w;
+	try {
+	  w = new folia::Word( args, orig_word->doc() );
+	}
+	catch ( const exception& e ){
+	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
+	  exit(EXIT_FAILURE);
+	}
+	w->setutext( ws, outputclass );
+	if ( tokDebug > 5 ){
+	  LOG << "add_result, created a word: " << w << "(" << ws << ")" << endl;
+	}
+	nV.push_back( w );
+      }
+    }
+    folia::KWargs no_args;
+    folia::Correction *c = orig_word->parent()->correct( oV, cV, nV, sV, no_args );
+    if ( tokDebug > 2 ){
+      LOG << "created: " << c->xmlstring() << endl;
+    }
+    else if ( tokDebug > 0 ){
+      LOG << "created: " << c << endl;
+    }
+  }
+
+  bool TokenizerClass::correct_words( folia::FoliaElement *e,
+				      const vector<folia::Word*>& wv ) {
+    // correct only when the sentence is in the desired language
+    string s_la;
+    if ( e->has_annotation<folia::LangAnnotation>() ){
+      s_la = e->annotation<folia::LangAnnotation>()->cls();
+    }
+    if ( !s_la.empty() && settings.find(s_la) == settings.end() ){
+      // the Sentence already has a language code, and it
+      // is NOT what we search for.
+      // just ignore it
+      if ( tokDebug > 0 ){
+	LOG << "skip FoLiA element " << e->id() << " with unsupported language "
+	    << s_la << endl;
+      }
+      return false;
+    }
+    for ( auto w : wv ){
+      string text = w->str(inputclass);
+      if ( true || tokDebug > 0 ){
+	LOG << "handle_one_sentence() on single word, text='"
+	    << text << "'" << endl;
+      }
+      tokenizeLine( text );
+      vector<Token> sent = popSentence();
+      while ( sent.size() > 0 ){
+	correct_word( w, sent );
+	sent = popSentence();
+      }
+    }
+    return true;
+  }
+
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
 					    int& sentence_done ){
     // check feasability
@@ -1001,6 +1092,12 @@ namespace Tokenizer {
     }
     if ( !wv.empty() ){
       // there are already words.
+      if ( doWordCorrection ){
+	// we are allowed to correct those
+	if ( correct_words( s, wv ) ){
+	  ++sentence_done;
+	}
+      }
     }
     else {
       string s_la;
@@ -1044,27 +1141,38 @@ namespace Tokenizer {
     vector<folia::Sentence*> sv = p->select<folia::Sentence>(false);
     if ( sv.empty() ){
       // No Sentence, so just text
-      string text = p->str(inputclass);
-      if ( tokDebug > 0 ){
-	LOG << "handle_one_paragraph:" << text << endl;
-      }
-      tokenizeLine( text );
-      vector<Token> toks = popSentence();
-      while ( !toks.empty() ){
-	string p_id = p->id();
-	folia::processor *proc = add_provenance_structure( p->doc(),
-							   folia::AnnotationType::SENTENCE );
-	folia::KWargs args;
-	args["processor"] = proc->id();
-	args["set"] = "None";
-	if ( !p_id.empty() ){
-	  args["generate_id"] = p_id;
+      if ( doWordCorrection ){
+	vector<folia::Word*> wv = p->select<folia::Word>(false);
+	if ( correct_words( p, wv ) ){
+	  ++sentence_done;
 	}
-	folia::Sentence *s = new folia::Sentence( args, p->doc() );
-	p->append( s );
-	append_to_sentence( s, toks );
-	++sentence_done;
-	toks = popSentence();
+      }
+      else {
+	string text = p->str(inputclass);
+	if ( tokDebug > 0 ){
+	  LOG << "handle_one_paragraph:" << text << endl;
+	}
+	tokenizeLine( text );
+	vector<Token> toks = popSentence();
+	folia::processor *proc = 0;
+	if ( !toks.empty() ){
+	  proc = add_provenance_structure( p->doc(),
+					   folia::AnnotationType::SENTENCE );
+	}
+	while ( !toks.empty() ){
+	  string p_id = p->id();
+	  folia::KWargs args;
+	  args["processor"] = proc->id();
+	  args["set"] = "None";
+	  if ( !p_id.empty() ){
+	    args["generate_id"] = p_id;
+	  }
+	  folia::Sentence *s = new folia::Sentence( args, p->doc() );
+	  p->append( s );
+	  append_to_sentence( s, toks );
+	  ++sentence_done;
+	  toks = popSentence();
+	}
       }
     }
     else {
