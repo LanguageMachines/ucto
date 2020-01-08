@@ -358,9 +358,6 @@ int main( int argc, char *argv[] ){
     if ( docorrectwords && !xmlin ){
       throw TiCC::OptionError( "--correctwords is only valid for FoLiA input" );
     }
-    if ( docorrectwords && inputclass == outputclass ){
-      throw TiCC::OptionError( "--outputclass may not be equal to --inputclass for --correctwords");
-    }
     if ( files.size() == 2 ){
       ofile = files[1];
       if ( TiCC::match_back( ofile, ".xml" ) ){
