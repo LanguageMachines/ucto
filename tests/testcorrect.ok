@@ -11,12 +11,9 @@
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
-      <sentence-annotation>
-        <annotator processor="ucto.1"/>
-      </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld folia-correct.xml folia-corrected-1.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T17:13:55" command="ucto -L nld folia-correct.xml folia-corrected-1.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -27,7 +24,7 @@
   </metadata>
   <text xml:id="text">
     <p xml:id="p1">
-      <s xml:id="s1" set="folia-correct">
+      <s xml:id="s1">
         <lang class="nld"/>
         <w xml:id="w1" set="folia-correct">
           <t>Dit</t>
@@ -62,35 +59,6 @@
       <w xml:id="p2.w6" set="folia-correct">
         <t>04-02-1954!</t>
       </w>
-      <s xml:id="p2.s.1">
-        <w xml:id="p2.s.1.w.1" class="WORD" set="tokconfig-nld">
-          <t>test</t>
-        </w>
-        <w xml:id="p2.s.1.w.2" class="NUMBER" set="tokconfig-nld" space="no">
-          <t>2</t>
-        </w>
-        <w xml:id="p2.s.1.w.3" class="PUNCTUATION" set="tokconfig-nld">
-          <t>;</t>
-        </w>
-        <w xml:id="p2.s.1.w.4" class="WORD" set="tokconfig-nld">
-          <t>met</t>
-        </w>
-        <w xml:id="p2.s.1.w.5" class="WORD" set="tokconfig-nld">
-          <t>een</t>
-        </w>
-        <w xml:id="p2.s.1.w.6" class="WORD" set="tokconfig-nld" space="no">
-          <t>datum</t>
-        </w>
-        <w xml:id="p2.s.1.w.7" class="PUNCTUATION" set="tokconfig-nld">
-          <t>:</t>
-        </w>
-        <w xml:id="p2.s.1.w.8" class="DATE" set="tokconfig-nld" space="no">
-          <t>04-02-1954</t>
-        </w>
-        <w xml:id="p2.s.1.w.9" class="PUNCTUATION" set="tokconfig-nld">
-          <t>!</t>
-        </w>
-      </s>
     </p>
   </text>
 </FoLiA>
@@ -109,7 +77,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld --correctwords folia-correct.xml folia-corrected-2.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T17:13:55" command="ucto -L nld --correctwords folia-correct.xml folia-corrected-2.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -124,7 +92,7 @@
         <lang class="nld"/>
         <correction xml:id="s1.correction.1">
           <new>
-            <w xml:id="w1.tokenized.1" class="WORD" set="folia-correct">
+            <w xml:id="w1.tokenized.1" class="WORD" set="tokconfig-nld">
               <t>Dit</t>
             </w>
           </new>
@@ -136,7 +104,7 @@
         </correction>
         <correction xml:id="s1.correction.2">
           <new>
-            <w xml:id="w2.tokenized.1" class="WORD" set="folia-correct">
+            <w xml:id="w2.tokenized.1" class="WORD" set="tokconfig-nld">
               <t>is</t>
             </w>
           </new>
@@ -148,7 +116,7 @@
         </correction>
         <correction xml:id="s1.correction.3">
           <new>
-            <w xml:id="w3.tokenized.1" class="WORD" set="folia-correct">
+            <w xml:id="w3.tokenized.1" class="WORD" set="tokconfig-nld">
               <t>een</t>
             </w>
           </new>
@@ -160,10 +128,10 @@
         </correction>
         <correction xml:id="s1.correction.4">
           <new>
-            <w xml:id="w4.tokenized.1" class="WORD" set="folia-correct" space="no">
+            <w xml:id="w4.tokenized.1" class="WORD" set="tokconfig-nld" space="no">
               <t>test</t>
             </w>
-            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
               <t>!</t>
             </w>
           </new>
@@ -178,7 +146,7 @@
     <p xml:id="p2">
       <correction xml:id="p2.correction.1">
         <new>
-          <w xml:id="p2.w1.tokenized.1" class="WORD" set="folia-correct">
+          <w xml:id="p2.w1.tokenized.1" class="WORD" set="tokconfig-nld">
             <t>test</t>
           </w>
         </new>
@@ -190,10 +158,10 @@
       </correction>
       <correction xml:id="p2.correction.2">
         <new>
-          <w xml:id="p2.w2.tokenized.1" class="NUMBER" set="folia-correct" space="no">
+          <w xml:id="p2.w2.tokenized.1" class="NUMBER" set="tokconfig-nld" space="no">
             <t>2</t>
           </w>
-          <w xml:id="p2.w2.tokenized.2" class="PUNCTUATION" set="folia-correct">
+          <w xml:id="p2.w2.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
             <t>;</t>
           </w>
         </new>
@@ -205,7 +173,7 @@
       </correction>
       <correction xml:id="p2.correction.3">
         <new>
-          <w xml:id="p2.w3.tokenized.1" class="WORD" set="folia-correct">
+          <w xml:id="p2.w3.tokenized.1" class="WORD" set="tokconfig-nld">
             <t>met</t>
           </w>
         </new>
@@ -217,7 +185,7 @@
       </correction>
       <correction xml:id="p2.correction.4">
         <new>
-          <w xml:id="p2.w4.tokenized.1" class="WORD" set="folia-correct">
+          <w xml:id="p2.w4.tokenized.1" class="WORD" set="tokconfig-nld">
             <t>een</t>
           </w>
         </new>
@@ -229,10 +197,10 @@
       </correction>
       <correction xml:id="p2.correction.5">
         <new>
-          <w xml:id="p2.w5.tokenized.1" class="WORD" set="folia-correct" space="no">
+          <w xml:id="p2.w5.tokenized.1" class="WORD" set="tokconfig-nld" space="no">
             <t>datum</t>
           </w>
-          <w xml:id="p2.w5.tokenized.2" class="PUNCTUATION" set="folia-correct">
+          <w xml:id="p2.w5.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
             <t>:</t>
           </w>
         </new>
@@ -244,10 +212,10 @@
       </correction>
       <correction xml:id="p2.correction.6">
         <new>
-          <w xml:id="p2.w6.tokenized.1" class="DATE" set="folia-correct" space="no">
+          <w xml:id="p2.w6.tokenized.1" class="DATE" set="tokconfig-nld" space="no">
             <t>04-02-1954</t>
           </w>
-          <w xml:id="p2.w6.tokenized.2" class="PUNCTUATION" set="folia-correct">
+          <w xml:id="p2.w6.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
             <t>!</t>
           </w>
         </new>
@@ -275,7 +243,7 @@
       </token-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld --correctwords folia-correct-corrected.xml folia-corrected-3.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T17:13:55" command="ucto -L nld --correctwords folia-correct-corrected.xml folia-corrected-3.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -290,7 +258,7 @@
         <lang class="nld"/>
         <correction xml:id="s1.correction.1">
           <new>
-            <w xml:id="w1.tokenized.1" class="WORD" set="folia-correct">
+            <w xml:id="w1.tokenized.1" class="WORD" set="tokconfig-nld">
               <t>Dit</t>
             </w>
           </new>
@@ -302,7 +270,7 @@
         </correction>
         <correction xml:id="s1.correction.2">
           <new>
-            <w xml:id="w2.tokenized.1" class="WORD" set="folia-correct">
+            <w xml:id="w2.tokenized.1" class="WORD" set="tokconfig-nld">
               <t>is</t>
             </w>
           </new>
@@ -314,10 +282,10 @@
         </correction>
         <correction xml:id="s1.correction.3">
           <new>
-            <w xml:id="w3.cor.tokenized.1" class="WORD" set="folia-correct" space="no">
+            <w xml:id="w3.cor.tokenized.1" class="WORD" set="tokconfig-nld" space="no">
               <t>één</t>
             </w>
-            <w xml:id="w3.cor.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <w xml:id="w3.cor.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
               <t>.</t>
             </w>
           </new>
@@ -338,10 +306,10 @@
         </correction>
         <correction xml:id="s1.correction.4">
           <new>
-            <w xml:id="w4.tokenized.1" class="WORD" set="folia-correct" space="no">
+            <w xml:id="w4.tokenized.1" class="WORD" set="tokconfig-nld" space="no">
               <t>test</t>
             </w>
-            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="tokconfig-nld">
               <t>.</t>
             </w>
           </new>
