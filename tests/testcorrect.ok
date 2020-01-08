@@ -1,19 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="2.2">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" set="div"/>
-      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <lang-annotation set="iso"/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <token-annotation set="folia-correct"/>
+      <sentence-annotation set="folia-correct"/>
+      <paragraph-annotation set="folia-correct"/>
+      <correction-annotation set="folia-correct"/>
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
-      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
       <sentence-annotation>
         <annotator processor="ucto.1"/>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:35:24" command="ucto -L nld folia-correct.xml folia-corrected-1.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld folia-correct.xml folia-corrected-1.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -23,98 +26,90 @@
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
-    <div xml:id="div">
-      <p xml:id="p1">
-        <s xml:id="s1">
-          <lang class="nld"/>
-          <w xml:id="w1">
-            <t>Dit</t>
-          </w>
-          <w xml:id="w2">
-            <t>is</t>
-          </w>
-          <w xml:id="w3">
-            <t>een</t>
-          </w>
-          <w xml:id="w4">
-            <t>test!</t>
-          </w>
-        </s>
-      </p>
-      <p xml:id="p2">
-        <w xml:id="p2.w1">
-          <t>test</t>
+    <p xml:id="p1">
+      <s xml:id="s1" set="folia-correct">
+        <lang class="nld"/>
+        <w xml:id="w1" set="folia-correct">
+          <t>Dit</t>
         </w>
-        <w xml:id="p2.w2">
-          <t>2;</t>
+        <w xml:id="w2" set="folia-correct">
+          <t>is</t>
         </w>
-        <w xml:id="p2.w3">
-          <t>met</t>
-        </w>
-        <w xml:id="p2.w4">
+        <w xml:id="w3" set="folia-correct">
           <t>een</t>
         </w>
-        <w xml:id="p2.w5">
-          <t>datum:</t>
+        <w xml:id="w4" set="folia-correct">
+          <t>test!</t>
         </w>
-        <w xml:id="p2.w6">
-          <t>datum:</t>
+      </s>
+    </p>
+    <p xml:id="p2">
+      <w xml:id="p2.w1" set="folia-correct">
+        <t>test</t>
+      </w>
+      <w xml:id="p2.w2" set="folia-correct">
+        <t>2;</t>
+      </w>
+      <w xml:id="p2.w3" set="folia-correct">
+        <t>met</t>
+      </w>
+      <w xml:id="p2.w4" set="folia-correct">
+        <t>een</t>
+      </w>
+      <w xml:id="p2.w5" set="folia-correct">
+        <t>datum:</t>
+      </w>
+      <w xml:id="p2.w6" set="folia-correct">
+        <t>04-02-1954!</t>
+      </w>
+      <s xml:id="p2.s.1">
+        <w xml:id="p2.s.1.w.1" class="WORD" set="tokconfig-nld">
+          <t>test</t>
         </w>
-        <w xml:id="p2.w7">
-          <t>04-02-1954!</t>
+        <w xml:id="p2.s.1.w.2" class="NUMBER" set="tokconfig-nld" space="no">
+          <t>2</t>
         </w>
-        <s xml:id="p2.s.1">
-          <w xml:id="p2.s.1.w.1" class="WORD">
-            <t>test</t>
-          </w>
-          <w xml:id="p2.s.1.w.2" class="NUMBER" space="no">
-            <t>2</t>
-          </w>
-          <w xml:id="p2.s.1.w.3" class="PUNCTUATION">
-            <t>;</t>
-          </w>
-          <w xml:id="p2.s.1.w.4" class="WORD">
-            <t>met</t>
-          </w>
-          <w xml:id="p2.s.1.w.5" class="WORD">
-            <t>een</t>
-          </w>
-          <w xml:id="p2.s.1.w.6" class="WORD" space="no">
-            <t>datum</t>
-          </w>
-          <w xml:id="p2.s.1.w.7" class="PUNCTUATION">
-            <t>:</t>
-          </w>
-          <w xml:id="p2.s.1.w.8" class="WORD" space="no">
-            <t>datum</t>
-          </w>
-          <w xml:id="p2.s.1.w.9" class="PUNCTUATION">
-            <t>:</t>
-          </w>
-          <w xml:id="p2.s.1.w.10" class="DATE" space="no">
-            <t>04-02-1954</t>
-          </w>
-          <w xml:id="p2.s.1.w.11" class="PUNCTUATION">
-            <t>!</t>
-          </w>
-        </s>
-      </p>
-    </div>
+        <w xml:id="p2.s.1.w.3" class="PUNCTUATION" set="tokconfig-nld">
+          <t>;</t>
+        </w>
+        <w xml:id="p2.s.1.w.4" class="WORD" set="tokconfig-nld">
+          <t>met</t>
+        </w>
+        <w xml:id="p2.s.1.w.5" class="WORD" set="tokconfig-nld">
+          <t>een</t>
+        </w>
+        <w xml:id="p2.s.1.w.6" class="WORD" set="tokconfig-nld" space="no">
+          <t>datum</t>
+        </w>
+        <w xml:id="p2.s.1.w.7" class="PUNCTUATION" set="tokconfig-nld">
+          <t>:</t>
+        </w>
+        <w xml:id="p2.s.1.w.8" class="DATE" set="tokconfig-nld" space="no">
+          <t>04-02-1954</t>
+        </w>
+        <w xml:id="p2.s.1.w.9" class="PUNCTUATION" set="tokconfig-nld">
+          <t>!</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="2.2">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" set="div"/>
-      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <lang-annotation set="iso"/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <token-annotation set="folia-correct"/>
+      <sentence-annotation set="folia-correct"/>
+      <paragraph-annotation set="folia-correct"/>
+      <correction-annotation set="folia-correct"/>
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
-      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:35:24" command="ucto -L nld --correctwords folia-correct.xml folia-corrected-2.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld --correctwords folia-correct.xml folia-corrected-2.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -124,177 +119,163 @@
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
-    <div xml:id="div">
-      <p xml:id="p1">
-        <s xml:id="s1">
-          <lang class="nld"/>
-          <correction xml:id="s1.correction.1">
-            <new>
-              <w xml:id="w1.tokenized.1" class="WORD">
-                <t>Dit</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w1">
-                <t>Dit</t>
-              </w>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.2">
-            <new>
-              <w xml:id="w2.tokenized.1" class="WORD">
-                <t>is</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w2">
-                <t>is</t>
-              </w>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.3">
-            <new>
-              <w xml:id="w3.tokenized.1" class="WORD">
-                <t>een</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w3">
-                <t>een</t>
-              </w>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.4">
-            <new>
-              <w xml:id="w4.tokenized.1" class="WORD" space="no">
-                <t>test</t>
-              </w>
-              <w xml:id="w4.tokenized.2" class="PUNCTUATION">
-                <t>!</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w4">
-                <t>test!</t>
-              </w>
-            </original>
-          </correction>
-        </s>
-      </p>
-      <p xml:id="p2">
-        <correction xml:id="p2.correction.1">
+    <p xml:id="p1">
+      <s xml:id="s1">
+        <lang class="nld"/>
+        <correction xml:id="s1.correction.1">
           <new>
-            <w xml:id="p2.w1.tokenized.1" class="WORD">
-              <t>test</t>
+            <w xml:id="w1.tokenized.1" class="WORD" set="folia-correct">
+              <t>Dit</t>
             </w>
           </new>
           <original auth="no">
-            <w xml:id="p2.w1">
-              <t>test</t>
+            <w xml:id="w1" set="folia-correct">
+              <t>Dit</t>
             </w>
           </original>
         </correction>
-        <correction xml:id="p2.correction.2">
+        <correction xml:id="s1.correction.2">
           <new>
-            <w xml:id="p2.w2.tokenized.1" class="NUMBER" space="no">
-              <t>2</t>
-            </w>
-            <w xml:id="p2.w2.tokenized.2" class="PUNCTUATION">
-              <t>;</t>
+            <w xml:id="w2.tokenized.1" class="WORD" set="folia-correct">
+              <t>is</t>
             </w>
           </new>
           <original auth="no">
-            <w xml:id="p2.w2">
-              <t>2;</t>
+            <w xml:id="w2" set="folia-correct">
+              <t>is</t>
             </w>
           </original>
         </correction>
-        <correction xml:id="p2.correction.3">
+        <correction xml:id="s1.correction.3">
           <new>
-            <w xml:id="p2.w3.tokenized.1" class="WORD">
-              <t>met</t>
-            </w>
-          </new>
-          <original auth="no">
-            <w xml:id="p2.w3">
-              <t>met</t>
-            </w>
-          </original>
-        </correction>
-        <correction xml:id="p2.correction.4">
-          <new>
-            <w xml:id="p2.w4.tokenized.1" class="WORD">
+            <w xml:id="w3.tokenized.1" class="WORD" set="folia-correct">
               <t>een</t>
             </w>
           </new>
           <original auth="no">
-            <w xml:id="p2.w4">
+            <w xml:id="w3" set="folia-correct">
               <t>een</t>
             </w>
           </original>
         </correction>
-        <correction xml:id="p2.correction.5">
+        <correction xml:id="s1.correction.4">
           <new>
-            <w xml:id="p2.w5.tokenized.1" class="WORD" space="no">
-              <t>datum</t>
+            <w xml:id="w4.tokenized.1" class="WORD" set="folia-correct" space="no">
+              <t>test</t>
             </w>
-            <w xml:id="p2.w5.tokenized.2" class="PUNCTUATION">
-              <t>:</t>
-            </w>
-          </new>
-          <original auth="no">
-            <w xml:id="p2.w5">
-              <t>datum:</t>
-            </w>
-          </original>
-        </correction>
-        <correction xml:id="p2.correction.6">
-          <new>
-            <w xml:id="p2.w6.tokenized.1" class="WORD" space="no">
-              <t>datum</t>
-            </w>
-            <w xml:id="p2.w6.tokenized.2" class="PUNCTUATION">
-              <t>:</t>
-            </w>
-          </new>
-          <original auth="no">
-            <w xml:id="p2.w6">
-              <t>datum:</t>
-            </w>
-          </original>
-        </correction>
-        <correction xml:id="p2.correction.7">
-          <new>
-            <w xml:id="p2.w7.tokenized.1" class="DATE" space="no">
-              <t>04-02-1954</t>
-            </w>
-            <w xml:id="p2.w7.tokenized.2" class="PUNCTUATION">
+            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="folia-correct">
               <t>!</t>
             </w>
           </new>
           <original auth="no">
-            <w xml:id="p2.w7">
-              <t>04-02-1954!</t>
+            <w xml:id="w4" set="folia-correct">
+              <t>test!</t>
             </w>
           </original>
         </correction>
-      </p>
-    </div>
+      </s>
+    </p>
+    <p xml:id="p2">
+      <correction xml:id="p2.correction.1">
+        <new>
+          <w xml:id="p2.w1.tokenized.1" class="WORD" set="folia-correct">
+            <t>test</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w1" set="folia-correct">
+            <t>test</t>
+          </w>
+        </original>
+      </correction>
+      <correction xml:id="p2.correction.2">
+        <new>
+          <w xml:id="p2.w2.tokenized.1" class="NUMBER" set="folia-correct" space="no">
+            <t>2</t>
+          </w>
+          <w xml:id="p2.w2.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <t>;</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w2" set="folia-correct">
+            <t>2;</t>
+          </w>
+        </original>
+      </correction>
+      <correction xml:id="p2.correction.3">
+        <new>
+          <w xml:id="p2.w3.tokenized.1" class="WORD" set="folia-correct">
+            <t>met</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w3" set="folia-correct">
+            <t>met</t>
+          </w>
+        </original>
+      </correction>
+      <correction xml:id="p2.correction.4">
+        <new>
+          <w xml:id="p2.w4.tokenized.1" class="WORD" set="folia-correct">
+            <t>een</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w4" set="folia-correct">
+            <t>een</t>
+          </w>
+        </original>
+      </correction>
+      <correction xml:id="p2.correction.5">
+        <new>
+          <w xml:id="p2.w5.tokenized.1" class="WORD" set="folia-correct" space="no">
+            <t>datum</t>
+          </w>
+          <w xml:id="p2.w5.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <t>:</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w5" set="folia-correct">
+            <t>datum:</t>
+          </w>
+        </original>
+      </correction>
+      <correction xml:id="p2.correction.6">
+        <new>
+          <w xml:id="p2.w6.tokenized.1" class="DATE" set="folia-correct" space="no">
+            <t>04-02-1954</t>
+          </w>
+          <w xml:id="p2.w6.tokenized.2" class="PUNCTUATION" set="folia-correct">
+            <t>!</t>
+          </w>
+        </new>
+        <original auth="no">
+          <w xml:id="p2.w6" set="folia-correct">
+            <t>04-02-1954!</t>
+          </w>
+        </original>
+      </correction>
+    </p>
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.4" version="2.2">
   <metadata type="native">
     <annotations>
-      <division-annotation annotator="ucto" set="div"/>
-      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <lang-annotation set="iso"/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <token-annotation set="folia-correct"/>
+      <sentence-annotation set="folia-correct"/>
+      <paragraph-annotation set="folia-correct"/>
+      <correction-annotation set="folia-correct"/>
       <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
-      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:35:24" command="ucto -L nld --correctwords folia-correct-corrected.xml folia-corrected-3.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
+      <processor xml:id="ucto.1" begindatetime="2020-01-08T16:59:18" command="ucto -L nld --correctwords folia-correct-corrected.xml folia-corrected-3.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.21">
         <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -304,75 +285,73 @@
     <meta id="language">nld</meta>
   </metadata>
   <text xml:id="text">
-    <div xml:id="div">
-      <p xml:id="p1">
-        <s xml:id="s1">
-          <lang class="nld"/>
-          <correction xml:id="s1.correction.1">
-            <new>
-              <w xml:id="w1.tokenized.1" class="WORD">
-                <t>Dit</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w1">
-                <t>Dit</t>
-              </w>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.2">
-            <new>
-              <w xml:id="w2.tokenized.1" class="WORD">
-                <t>is</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w2">
-                <t>is</t>
-              </w>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.3">
-            <new>
-              <w xml:id="w3.cor.tokenized.1" class="WORD" space="no">
-                <t>één</t>
-              </w>
-              <w xml:id="w3.cor.tokenized.2" class="PUNCTUATION">
-                <t>.</t>
-              </w>
-            </new>
-            <original auth="no">
-              <correction xml:id="cor1">
-                <new>
-                  <w xml:id="w3.cor">
-                    <t>één.</t>
-                  </w>
-                </new>
-                <original auth="no">
-                  <w xml:id="w3">
-                    <t>een.</t>
-                  </w>
-                </original>
-              </correction>
-            </original>
-          </correction>
-          <correction xml:id="s1.correction.4">
-            <new>
-              <w xml:id="w4.tokenized.1" class="WORD" space="no">
-                <t>test</t>
-              </w>
-              <w xml:id="w4.tokenized.2" class="PUNCTUATION">
-                <t>.</t>
-              </w>
-            </new>
-            <original auth="no">
-              <w xml:id="w4">
-                <t>test.</t>
-              </w>
-            </original>
-          </correction>
-        </s>
-      </p>
-    </div>
+    <p xml:id="p1">
+      <s xml:id="s1">
+        <lang class="nld"/>
+        <correction xml:id="s1.correction.1">
+          <new>
+            <w xml:id="w1.tokenized.1" class="WORD" set="folia-correct">
+              <t>Dit</t>
+            </w>
+          </new>
+          <original auth="no">
+            <w xml:id="w1" set="folia-correct">
+              <t>Dit</t>
+            </w>
+          </original>
+        </correction>
+        <correction xml:id="s1.correction.2">
+          <new>
+            <w xml:id="w2.tokenized.1" class="WORD" set="folia-correct">
+              <t>is</t>
+            </w>
+          </new>
+          <original auth="no">
+            <w xml:id="w2" set="folia-correct">
+              <t>is</t>
+            </w>
+          </original>
+        </correction>
+        <correction xml:id="s1.correction.3">
+          <new>
+            <w xml:id="w3.cor.tokenized.1" class="WORD" set="folia-correct" space="no">
+              <t>één</t>
+            </w>
+            <w xml:id="w3.cor.tokenized.2" class="PUNCTUATION" set="folia-correct">
+              <t>.</t>
+            </w>
+          </new>
+          <original auth="no">
+            <correction xml:id="cor1">
+              <new>
+                <w xml:id="w3.cor" set="folia-correct">
+                  <t>één.</t>
+                </w>
+              </new>
+              <original auth="no">
+                <w xml:id="w3" set="folia-correct">
+                  <t>een.</t>
+                </w>
+              </original>
+            </correction>
+          </original>
+        </correction>
+        <correction xml:id="s1.correction.4">
+          <new>
+            <w xml:id="w4.tokenized.1" class="WORD" set="folia-correct" space="no">
+              <t>test</t>
+            </w>
+            <w xml:id="w4.tokenized.2" class="PUNCTUATION" set="folia-correct">
+              <t>.</t>
+            </w>
+          </new>
+          <original auth="no">
+            <w xml:id="w4" set="folia-correct">
+              <t>test.</t>
+            </w>
+          </original>
+        </correction>
+      </s>
+    </p>
   </text>
 </FoLiA>

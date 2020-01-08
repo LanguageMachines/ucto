@@ -1,39 +1,41 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="2.2" generator="libfolia-v0.4">
   <metadata>
     <annotations>
-      <division-annotation annotator="ucto" annotatortype="auto" set="div"/>
-      <lang-annotation annotator="ko" annotatortype="manual"/>
+      <lang-annotation set="iso"/>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <token-annotation set="folia-correct"/>
+      <sentence-annotation set="folia-correct"/>
+      <paragraph-annotation set="folia-correct"/>
+      <correction-annotation set="folia-correct"/>
     </annotations>
   </metadata>
   <text xml:id="text">
-      <div xml:id="div">
-	<p xml:id="p1">
-          <s xml:id="s1">
-	    <lang class="nld"/>
-	    <w xml:id="w1">
-	      <t>Dit</t>
+    <p xml:id="p1">
+      <s xml:id="s1">
+	<lang class="nld"/>
+	<w xml:id="w1">
+	  <t>Dit</t>
+	</w>
+	<w xml:id="w2">
+	  <t>is</t>
+	</w>
+	<correction xml:id="cor1">
+	  <new>
+	    <w xml:id="w3.cor">
+	      <t>één.</t>
 	    </w>
-	    <w xml:id="w2">
-	      <t>is</t>
+	  </new>
+	  <original>
+	    <w xml:id="w3">
+	      <t>een.</t>
 	    </w>
-	    <correction xml:id="cor1">
-	      <new>
-		<w xml:id="w3.cor">
-		  <t>één.</t>
-		</w>
-	      </new>
-	      <original>
-		<w xml:id="w3">
-		  <t>een.</t>
-		</w>
-	      </original>
-	    </correction>
-	    <w xml:id="w4">
-	      <t>test.</t>
-	    </w>
-	  </s>
-	</p>
-      </div>
+	  </original>
+	</correction>
+	<w xml:id="w4">
+	  <t>test.</t>
+	</w>
+      </s>
+    </p>
   </text>
 </FoLiA>
