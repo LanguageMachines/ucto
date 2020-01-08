@@ -1,0 +1,9 @@
+#/bin/sh -x
+
+exe=../src/ucto
+
+$exe -L nld folia-correct.xml folia-corrected-1.xml
+cat folia-corrected-1.xml
+$exe -L nld --correctwords folia-correct.xml folia-corrected-2.xml
+$exe -L nld --correctwords --outputclass=cor folia-correct.xml folia-corrected-3.xml
+cat folia-corrected-3.xml
