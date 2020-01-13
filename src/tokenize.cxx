@@ -1067,7 +1067,7 @@ namespace Tokenizer {
     }
     for ( auto w : wv ){
       string text = w->str(inputclass);
-      if ( true || tokDebug > 0 ){
+      if ( tokDebug > 0 ){
 	LOG << "correct_words() text='" << text << "'" << endl;
       }
       tokenizeLine( text );
