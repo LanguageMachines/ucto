@@ -1072,13 +1072,16 @@ namespace Tokenizer {
       }
       tokenizeLine( text );
       vector<Token> sent = popSentence();
-      result.insert( result.end(), sent.begin(), sent.end() );
       while ( sent.size() > 0 ){
+	sent.front().role &= ~BEGINOFSENTENCE;
+	sent.back().role &= ~ENDOFSENTENCE;
+	result.insert( result.end(), sent.begin(), sent.end() );
 	correct_word( w, sent, tok_set );
 	sent = popSentence();
-	result.insert( result.end(), sent.begin(), sent.end() );
       }
     }
+    result.front().role |= BEGINOFSENTENCE;
+    result.back().role |= ENDOFSENTENCE;
     return result;
   }
 
