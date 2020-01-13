@@ -1040,8 +1040,9 @@ namespace Tokenizer {
     }
   }
 
-  bool TokenizerClass::correct_words( folia::FoliaElement *e,
-				      const vector<folia::Word*>& wv ) {
+  vector<Token> TokenizerClass::correct_words( folia::FoliaElement *e,
+					       const vector<folia::Word*>& wv ) {
+    vector<Token> result;
     // correct only when the sentence is in the desired language
     string s_la;
     if ( e->has_annotation<folia::LangAnnotation>() ){
@@ -1055,7 +1056,7 @@ namespace Tokenizer {
 	LOG << "skip FoLiA element " << e->id() << " with unsupported language "
 	    << s_la << endl;
       }
-      return false;
+      return result;
     }
     string tok_set;
     if ( !s_la.empty() ){
@@ -1067,17 +1068,18 @@ namespace Tokenizer {
     for ( auto w : wv ){
       string text = w->str(inputclass);
       if ( true || tokDebug > 0 ){
-	LOG << "handle_one_sentence() on single word, text='"
-	    << text << "'" << endl;
+	LOG << "correct_words() text='" << text << "'" << endl;
       }
       tokenizeLine( text );
       vector<Token> sent = popSentence();
+      result.insert( result.end(), sent.begin(), sent.end() );
       while ( sent.size() > 0 ){
 	correct_word( w, sent, tok_set );
 	sent = popSentence();
+	result.insert( result.end(), sent.begin(), sent.end() );
       }
     }
-    return true;
+    return result;
   }
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
@@ -1102,7 +1104,7 @@ namespace Tokenizer {
       // there are already words.
       if ( doWordCorrection ){
 	// we are allowed to correct those
-	if ( correct_words( s, wv ) ){
+	if ( !correct_words( s, wv ).empty() ){
 	  ++sentence_done;
 	}
       }
@@ -1153,7 +1155,7 @@ namespace Tokenizer {
       if ( !wv.empty() ){
 	// Words found
 	if ( doWordCorrection ){
-	  if ( correct_words( p, wv ) ){
+	  if ( correct_words( p, wv ).empty() ){
 	    ++sentence_done;
 	  }
 	}

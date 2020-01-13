@@ -285,6 +285,9 @@ namespace Tokenizer {
 						const folia::AnnotationType::AnnotationType,
 						folia::processor * =0 ) const;
     bool ucto_re_run() const { return already_tokenized; };
+    std::vector<Token> correct_words( folia::FoliaElement *,
+				      const std::vector<folia::Word*>& );
+
   private:
 
     TokenizerClass( const TokenizerClass& ); // inhibit copies
@@ -303,9 +306,6 @@ namespace Tokenizer {
     void correct_word( folia::Word *,
 		       const std::vector<Token>&,
 		       const std::string& ) const;
-
-    bool correct_words( folia::FoliaElement *,
-			const std::vector<folia::Word*>& );
 
     void handle_one_sentence( folia::Sentence *, int& );
     void handle_one_paragraph( folia::Paragraph *, int& );
