@@ -257,7 +257,10 @@ int main( int argc, char *argv[] ){
       }
       dofiltering = result;
     }
-    if ( dofiltering && xmlin && outputclass == inputclass ){
+    if ( dofiltering
+	 && xmlin
+	 && outputclass == inputclass
+	 && !docorrectwords ){
       // we cannot mangle the original inputclass, so disable filtering
       cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	   << endl;

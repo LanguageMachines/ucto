@@ -1031,6 +1031,8 @@ namespace Tokenizer {
       }
     }
     folia::KWargs no_args;
+    no_args["processor"] = ucto_processor->id();
+    no_args["set"] = tok_set;
     folia::Correction *c = orig_word->parent()->correct( oV, cV, nV, sV, no_args );
     if ( tokDebug > 2 ){
       LOG << "created: " << c->xmlstring() << endl;
@@ -1065,6 +1067,9 @@ namespace Tokenizer {
     else {
       tok_set = "tokconfig-" + default_language;
     }
+    folia::KWargs args;
+    args["processor"] = ucto_processor->id();
+    e->doc()->declare( folia::AnnotationType::CORRECTION, tok_set, args );
     for ( auto w : wv ){
       string text = w->str(inputclass);
       if ( tokDebug > 0 ){
@@ -1355,7 +1360,8 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize_folia( const string& infile_name ){
-    if ( inputclass == outputclass ){
+    if ( inputclass == outputclass
+	 && !doWordCorrection ){
       LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	  << endl;
       setFiltering(false);
