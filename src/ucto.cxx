@@ -116,7 +116,7 @@ void usage(){
        << "\t                    'full' - add text to all levels: <p> <s> <w> etc." << endl
        << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
-       << "\t--correctwords    - allow tokenization of FoLiA Word elements." << endl
+       << "\t--allow-word-corrections   - allow tokenization of FoLiA Word elements." << endl
        << "\t--filterpunct     - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
@@ -174,7 +174,7 @@ int main( int argc, char *argv[] ){
   }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,correctwords");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,allow-word-corrections");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -192,7 +192,7 @@ int main( int argc, char *argv[] ){
     }
     Opts.extract('e', inputEncoding );
     dopunctfilter = Opts.extract( "filterpunct" );
-    docorrectwords = Opts.extract( "correctwords" );
+    docorrectwords = Opts.extract( "allow-word-corrections" );
     paragraphdetection = !Opts.extract( 'P' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
@@ -359,7 +359,7 @@ int main( int argc, char *argv[] ){
       throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
     }
     if ( docorrectwords && !xmlin ){
-      throw TiCC::OptionError( "--correctwords is only valid for FoLiA input" );
+      throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
     }
     if ( files.size() == 2 ){
       ofile = files[1];

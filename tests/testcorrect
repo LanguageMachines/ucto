@@ -4,7 +4,7 @@ exe=../src/ucto
 
 $exe -L nld folia-correct.xml folia-corrected-1.xml
 cat folia-corrected-1.xml
-$exe -L nld --correctwords folia-correct.xml folia-corrected-2.xml
+$exe -L nld --allow-word-corrections folia-correct.xml folia-corrected-2.xml
 cat folia-corrected-2.xml
-$exe -L nld --correctwords folia-correct-corrected.xml folia-corrected-3.xml
+$exe -L nld --allow-word-corrections folia-correct-corrected.xml folia-corrected-3.xml
 cat folia-corrected-3.xml
