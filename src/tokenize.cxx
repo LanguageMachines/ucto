@@ -1181,11 +1181,11 @@ namespace Tokenizer {
 	tokenizeLine( text );
 	vector<Token> toks = popSentence();
 	folia::processor *proc = 0;
-	if ( !toks.empty() ){
-	  proc = add_provenance_structure( p->doc(),
-					   folia::AnnotationType::SENTENCE );
-	}
 	while ( !toks.empty() ){
+	  if ( proc == 0 ){
+	    proc = add_provenance_structure( p->doc(),
+					     folia::AnnotationType::SENTENCE );
+	  }
 	  string p_id = p->id();
 	  folia::KWargs args;
 	  args["processor"] = proc->id();
