@@ -285,8 +285,8 @@ namespace Tokenizer {
 						const folia::AnnotationType::AnnotationType,
 						folia::processor * =0 ) const;
     bool ucto_re_run() const { return already_tokenized; };
-    std::vector<Token> correct_words( folia::FoliaElement *,
-				      const std::vector<folia::Word*>& );
+    std::vector<Token> correct_elements( folia::FoliaElement *,
+					 const std::vector<folia::FoliaElement*>& );
 
   private:
 
@@ -303,9 +303,9 @@ namespace Tokenizer {
 
     std::vector<folia::Word*> append_to_sentence( folia::Sentence *,
 						  const std::vector<Token>& ) const;
-    void correct_word( folia::Word *,
-		       const std::vector<Token>&,
-		       const std::string& ) const;
+    void correct_element( folia::FoliaElement *,
+			  const std::vector<Token>&,
+			  const std::string& ) const;
 
     void handle_one_sentence( folia::Sentence *, int& );
     void handle_one_paragraph( folia::Paragraph *, int& );

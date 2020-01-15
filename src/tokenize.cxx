@@ -981,20 +981,20 @@ namespace Tokenizer {
     return root;
   }
 
-  void TokenizerClass::correct_word( folia::Word *orig_word,
-				     const vector<Token>& toks,
-				     const string& tok_set ) const {
+  void TokenizerClass::correct_element( folia::FoliaElement *orig,
+					const vector<Token>& toks,
+					const string& tok_set ) const {
     vector<folia::FoliaElement*> sV;
     vector<folia::FoliaElement*> cV;
     vector<folia::FoliaElement*> oV;
     vector<folia::FoliaElement*> nV;
     // Original element
-    oV.push_back( orig_word );
+    oV.push_back( orig );
     // Add the edits
     for ( const auto& tok : toks ){
       // New elements
       folia::KWargs args;
-      args["xml:id"] = orig_word->generateId( "tokenized" );
+      args["xml:id"] = orig->generateId( "tokenized" );
       args["class"] = TiCC::UnicodeToUTF8(tok.type);
       if ( tok.role & NOSPACE ){
 	args["space"] = "no";
@@ -1015,25 +1015,27 @@ namespace Tokenizer {
 	if ( tokDebug > 5 ){
 	  LOG << "create Word(" << args << ") = " << ws << endl;
 	}
-	folia::Word *w;
+	folia::FoliaElement *new_elt;
 	try {
-	  w = new folia::Word( args, orig_word->doc() );
+	  new_elt = folia::AbstractElement::createElement( orig->element_id(),
+							   orig->doc() );
+	  new_elt->setAttributes( args );
 	}
 	catch ( const exception& e ){
 	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
 	  exit(EXIT_FAILURE);
 	}
-	w->setutext( ws, outputclass );
+	new_elt->setutext( ws, outputclass );
 	if ( tokDebug > 5 ){
-	  LOG << "add_result, created a word: " << w << "(" << ws << ")" << endl;
+	  LOG << "add_result, created: " << new_elt << "(" << ws << ")" << endl;
 	}
-	nV.push_back( w );
+	nV.push_back( new_elt );
       }
     }
     folia::KWargs no_args;
     no_args["processor"] = ucto_processor->id();
     no_args["set"] = tok_set;
-    folia::Correction *c = orig_word->parent()->correct( oV, cV, nV, sV, no_args );
+    folia::Correction *c = orig->parent()->correct( oV, cV, nV, sV, no_args );
     if ( tokDebug > 2 ){
       LOG << "created: " << c->xmlstring() << endl;
     }
@@ -1042,8 +1044,8 @@ namespace Tokenizer {
     }
   }
 
-  vector<Token> TokenizerClass::correct_words( folia::FoliaElement *e,
-					       const vector<folia::Word*>& wv ) {
+  vector<Token> TokenizerClass::correct_elements( folia::FoliaElement *e,
+						  const vector<folia::FoliaElement*>& wv ) {
     vector<Token> result;
     // correct only when the sentence is in the desired language
     string s_la;
@@ -1073,7 +1075,7 @@ namespace Tokenizer {
     for ( auto w : wv ){
       string text = w->str(inputclass);
       if ( tokDebug > 0 ){
-	LOG << "correct_words() text='" << text << "'" << endl;
+	LOG << "correct_elements() text='" << text << "'" << endl;
       }
       tokenizeLine( text );
       vector<Token> sent = popSentence();
@@ -1081,7 +1083,7 @@ namespace Tokenizer {
 	sent.front().role &= ~BEGINOFSENTENCE;
 	sent.back().role &= ~ENDOFSENTENCE;
 	result.insert( result.end(), sent.begin(), sent.end() );
-	correct_word( w, sent, tok_set );
+	correct_element( w, sent, tok_set );
 	sent = popSentence();
       }
     }
@@ -1103,8 +1105,7 @@ namespace Tokenizer {
 			   " because it already has text in that class." );
       }
     }
-    vector<folia::Word*> wv;
-    wv = s->words( inputclass );
+    vector<folia::Word *> wv = s->words( inputclass );
     if ( wv.empty() ){
       wv = s->words();
     }
@@ -1112,7 +1113,8 @@ namespace Tokenizer {
       // there are already words.
       if ( doWordCorrection ){
 	// we are allowed to correct those
-	if ( !correct_words( s, wv ).empty() ){
+	vector<folia::FoliaElement*> ev(wv.begin(),wv.end());
+	if ( !correct_elements( s, ev ).empty() ){
 	  ++sentence_done;
 	}
       }
@@ -1161,9 +1163,10 @@ namespace Tokenizer {
       // No Sentence, so just text or Words
       vector<folia::Word*> wv = p->select<folia::Word>(false);
       if ( !wv.empty() ){
+	vector<folia::FoliaElement*> ev( wv.begin(), wv.end() );
 	// Words found
 	if ( doWordCorrection ){
-	  if ( correct_words( p, wv ).empty() ){
+	  if ( correct_elements( p, ev ).empty() ){
 	    ++sentence_done;
 	  }
 	}
