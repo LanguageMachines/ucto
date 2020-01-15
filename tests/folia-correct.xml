@@ -4,10 +4,9 @@
     <annotations>
       <lang-annotation set="iso"/>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
-      <token-annotation set="folia-correct"/>
-      <sentence-annotation set="folia-correct"/>
-      <paragraph-annotation set="folia-correct"/>
-      <correction-annotation set="folia-correct"/>
+      <token-annotation />
+      <sentence-annotation />
+      <paragraph-annotation />
     </annotations>
   </metadata>
   <text xml:id="text">

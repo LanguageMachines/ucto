@@ -4,11 +4,18 @@
     <annotations>
       <lang-annotation set="iso"/>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
-      <token-annotation set="folia-correct"/>
-      <sentence-annotation set="folia-correct"/>
-      <paragraph-annotation set="folia-correct"/>
-      <correction-annotation set="folia-correct"/>
+      <token-annotation />
+      <sentence-annotation />
+      <paragraph-annotation />
+      <correction-annotation set="folia-correct">
+        <annotator processor="FoLiA-correct.1"/>
+      </correction-annotation>
     </annotations>
+    <provenance>
+      <processor xml:id="FoLiA-correct.1" begindatetime="2020-01-06T12:08:30" command="FoLiA-correct --punct=punct.punct --unk=unk.unk --rank=rank.ranked --clear --inputclass=Test --ngram=3 -v  -v " folia_version="2.2.1" host="bonus" name="FoLiA-correct" user="sloot" version="0.14">
+        <processor xml:id="FoLiA-correct.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.4"/>
+      </processor>
+    </provenance>
   </metadata>
   <text xml:id="text">
     <p xml:id="p1">
