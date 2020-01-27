@@ -447,9 +447,7 @@ namespace Tokenizer {
 	  // we assume that an old-style declaration is present
 	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
 	}
-	if ( !doc->declared( folia::AnnotationType::TOKEN, ucto_set ) ){
-	  doc->declare( folia::AnnotationType::TOKEN, ucto_set, args );
-	}
+	doc->declare( folia::AnnotationType::TOKEN, ucto_set, args );
 	if ( tokDebug > 3 ){
 	  LOG << "added processor and token-annotation for: '"
 	      << alias << "'" << endl;
@@ -742,10 +740,7 @@ namespace Tokenizer {
     // If a LangAnnotation with a set is already present, we silently
     // keep using that set.
     // Otherwise we add the ISO_SET
-    string lang_set;
-    if ( node->doc()->declared( folia::AnnotationType::LANG ) ){
-      lang_set = node->doc()->default_set( folia::AnnotationType::LANG );
-    }
+    string lang_set = node->doc()->default_set( folia::AnnotationType::LANG );
     if ( lang_set.empty() ){
       lang_set = ISO_SET;
       folia::KWargs args;
