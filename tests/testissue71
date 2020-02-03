@@ -3,14 +3,22 @@
 
 exe=../src/ucto
 
-$exe issue71_b.xml --passthru
-$exe issue71_b.xml -L nld
+$exe issue71_b.xml testissue71_b_1_out.xml --passthru
+cat testissue71_b_1_out.xml
+$exe issue71_b.xml testissue71_b_2_out.xml -L nld
+cat testissue71_b_2_out.xml
 
-$exe issue71_c.xml --passthru
-$exe issue71_c.xml -L nld
+$exe issue71_c.xml testissue71_c_1_out.xml --passthru
+cat testissue71_c_1_out.xml
+$exe issue71_c.xml testissue71_c_2_out.xml -L nld
+cat testissue71_c_2_out.xml
 
-$exe issue71_d.xml --passthru
-$exe issue71_d.xml -L nld
+$exe issue71_d.xml testissue71_d_1_out.xml --passthru
+cat testissue71_d_1_out.xml
+$exe issue71_d.xml testissue71_d_2_out.xml -L nld
+cat testissue71_d_2_out.xml
 
-$exe issue71_e.xml --passthru
-$exe issue71_e.xml -L nld
+$exe issue71_e.xml testissue71_e_1_out.xml --passthru
+cat testissue71_e_1_out.xml
+$exe issue71_e.xml testissue71_e_2_out.xml -L nld
+cat testissue71_e_2_out.xml
