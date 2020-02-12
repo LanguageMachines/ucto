@@ -388,7 +388,7 @@ namespace Tokenizer {
   }
 
   folia::processor *TokenizerClass::add_provenance_structure(  folia::Document *doc,
-							       const folia::AnnotationType::AnnotationType type,
+							       const folia::AnnotationType type,
 							       folia::processor *parent ) const {
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc && !ucto_re_run() ){

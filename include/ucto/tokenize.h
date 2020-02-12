@@ -282,7 +282,7 @@ namespace Tokenizer {
     folia::processor *add_provenance_structure( folia::Document *,
 						folia::processor * =0 ) const;
     folia::processor *add_provenance_structure( folia::Document *,
-						const folia::AnnotationType::AnnotationType,
+						const folia::AnnotationType,
 						folia::processor * =0 ) const;
     bool ucto_re_run() const { return already_tokenized; };
     std::vector<Token> correct_elements( folia::FoliaElement *,
