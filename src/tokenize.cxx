@@ -578,7 +578,7 @@ namespace Tokenizer {
 	LOG << "[tokenizeOneSentence] before next countSentences " << endl;
       }
       if ( done || input_line.isEmpty() ){
-	//Signal the tokeniser that a paragraph is detected
+	//Signal the tokenizer that a paragraph is detected
 	paragraphsignal = true;
 	numS = countSentences(true); //count full sentences in token buffer,
 	// setting explicit END_OF_SENTENCE
@@ -2477,7 +2477,7 @@ namespace Tokenizer {
 	if ( word.length() > 0
 	     && expliciteosfound == -1 ) {
 	  if (tokDebug >= 2){
-	    LOG << "[tokenizeLine] Further tokenisation necessary for: ["
+	    LOG << "[tokenizeLine] Further tokenization necessary for: ["
 			    << word << "]" << endl;
 	  }
 	  if ( tokenizeword ) {
@@ -2498,7 +2498,7 @@ namespace Tokenizer {
 	  LOG << "[tokenizeLine] punctuation or digit detected, word=["
 			  << word << "]" << endl;
 	}
-	//there is punctuation or digits in this word, mark to run through tokeniser
+	//there is punctuation or digits in this word, mark to run through tokenizer
 	tokenizeword = true;
       }
       sit.next32();
@@ -2755,12 +2755,12 @@ namespace Tokenizer {
 
   bool TokenizerClass::init( const string& fname, const string& tname ){
     if ( tokDebug ){
-      LOG << "Initiating tokeniser..." << endl;
+      LOG << "Initiating tokenizer..." << endl;
     }
     data_version = get_data_version();
     Setting *set = new Setting();
     if ( !set->read( fname, tname, tokDebug, theErrLog ) ){
-      LOG << "Cannot read Tokeniser settingsfile " << fname << endl;
+      LOG << "Cannot read Tokenizer settingsfile " << fname << endl;
       LOG << "Unsupported language? (Did you install the uctodata package?)"
 	  << endl;
       return false;
@@ -2797,7 +2797,7 @@ namespace Tokenizer {
   bool TokenizerClass::init( const vector<string>& languages,
 			     const string& tname ){
     if ( tokDebug > 0 ){
-      LOG << "Initiating tokeniser from language list..." << endl;
+      LOG << "Initiating tokenizer from language list..." << endl;
     }
     data_version = get_data_version();
     Setting *default_set = 0;

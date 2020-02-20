@@ -126,7 +126,7 @@ void usage(){
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
        << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
-       << "\t-F                - Input file is in FoLiA XML. All untokenised sentences will be tokenised." << endl
+       << "\t-F                - Input file is in FoLiA XML. All untokenized sentences will be tokenized." << endl
        << "\t                    -F is automatically set when inputfile has extension '.xml'" << endl
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
