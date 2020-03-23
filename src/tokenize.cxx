@@ -2429,7 +2429,7 @@ namespace Tokenizer {
 	    tokenizeword = true;
 	  }
 	}
-	if ( ( c == '\n' || c == '\n') && word.isEmpty() ){
+	if ( c == '\n' && word.isEmpty() ){
 	  if (tokDebug){
 	    LOG << "[tokenizeLine] NEW PARAGRAPH upcoming " << endl;
 	  }
