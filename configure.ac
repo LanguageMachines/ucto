@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT([ucto], [0.22], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
+AC_INIT([ucto], [0.21.1], [lamasoftware@science.ru.nl]) #adapt version number in codemeta.json as well
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
@@ -12,7 +12,7 @@ SYSCONFDIR=$sysconfdir
 AC_SUBST([SYSCONFDIR])
 
 # Checks for programs.
-AC_PROG_CXX( [c++] )
+AC_PROG_CXX( [g++ c++] )
 
 # use libtool
 AC_PROG_LIBTOOL
