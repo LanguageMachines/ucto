@@ -1,3 +1,10 @@
+0.21 2020-04-15
+[Ko van der Sloot]
+* Adapted to newest libfolia 2.4
+* adapted some tests
+* added an --allow-word-corrections option
+* improved handling of odd FoLiA
+
 0.20 2019-11-27
 [Ko van der Sloot]
 Bug fix release. solving:
