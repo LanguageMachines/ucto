@@ -1,3 +1,7 @@
+0.22 2020-04-15
+[Ko vd Sloot]
+* fix for https://github.com/LanguageMachines/ucto/issues/79
+
 0.21.1 2020-04-15
 [Ko van der Sloot]
 * fix for https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=941498
