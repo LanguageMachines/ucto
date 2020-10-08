@@ -553,6 +553,7 @@ namespace Tokenizer {
     }
     bool done = false;
     bool bos = true;
+    inputEncoding = checkBOM( IN );
     string line;
     do {
       done = !getline( IN, line );
