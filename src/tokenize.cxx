@@ -1249,6 +1249,12 @@ namespace Tokenizer {
 	handle_one_sentence( s, sentence_done );
       }
     }
+    if ( text_redundancy == "full" ){
+      appendText( p, outputclass );
+    }
+    else if ( text_redundancy == "none" ){
+      removeText( p, outputclass );
+    }
   }
 
   void TokenizerClass::handle_one_text_parent( folia::FoliaElement *e,
@@ -1444,6 +1450,12 @@ namespace Tokenizer {
 	if ( tokDebug > 1 ){
 	  LOG << "looping for more ..." << endl;
 	}
+      }
+      if ( text_redundancy == "full" ){
+	appendText( p->parent(), outputclass );
+      }
+      else if ( text_redundancy == "none" ){
+	removeText( p->parent(), outputclass );
       }
     }
     if ( sentence_done == 0 ){
