@@ -99,7 +99,7 @@ void usage(){
        << "\t-L <language>     - Automatically selects a configuration file by language code." << endl
        << "\t                  - Available Languages:" << endl
        << "\t                    ";
-  for( const auto l : languages ){
+  for( const auto& l : languages ){
     cerr << l << ",";
   }
   cerr << endl;

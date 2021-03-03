@@ -1495,7 +1495,7 @@ namespace Tokenizer {
     // this makes paragraph boundaries work over multiple calls
     short quotelevel = 0;
     bool first = true;
-    for ( const auto token : tokens ) {
+    for ( const auto& token : tokens ) {
       if (tokDebug >= 5){
 	LOG << "outputTokens: token=" << token << endl;
       }
