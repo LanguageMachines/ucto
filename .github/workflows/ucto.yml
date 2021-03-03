@@ -6,6 +6,7 @@ on:
     paths:
       - 'src/**'
       - 'include/**'
+      - '.github/**'
 
   pull_request:
     branches: [master]
