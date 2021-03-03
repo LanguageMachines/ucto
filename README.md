@@ -10,7 +10,7 @@ Ucto - A rule-based tokeniser
     Centre for Language and Speech technology, Radboud University Nijmegen
     Induction of Linguistic Knowledge Research Group, Tilburg University
 
-Website: https://languagemachines.github.io/ucto/
+**Website**: https://languagemachines.github.io/ucto/
 
 Ucto tokenizes text files: it separates words from punctuation, and splits
 sentences. This is one of the first tasks for almost any Natural Language
