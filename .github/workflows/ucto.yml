@@ -102,6 +102,11 @@ jobs:
         run: make
       - name: install
         run: sudo make install
+      - name: check
+        env:
+          CXX:  ${{ matrix.compiler }}
+        run: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
+        continue-on-error: true
       - name: Notify IRC of failure
         if: ${{ failure() }}
         uses: Gottox/irc-message-action@v1
