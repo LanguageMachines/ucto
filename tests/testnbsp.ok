@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="nasty" generator="libfolia-v2.3" version="2.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="nasty" generator="libfolia-v2.8" version="2.0">
   <metadata type="native">
     <annotations>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
@@ -12,8 +12,8 @@
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-08-26T15:05:42" command="ucto -d5 -Lnld nbsp.xml nbsp.out.xml" folia_version="2.2.1" host="bonus" name="ucto" user="sloot" version="0.19">
-        <processor xml:id="ucto.1.generator" folia_version="2.2.1" name="libfolia" type="generator" version="2.3"/>
+      <processor xml:id="ucto.1" begindatetime="2021-04-06T15:25:29" command="ucto -d5 -Lnld nbsp.xml nbsp.out.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.8"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
@@ -25,10 +25,10 @@
     <table xml:id="nast.table">
       <row xml:id="nasty.row">
         <cell xml:id="nasty.cell.1">
-          <t> </t>
+          <t> </t>
         </cell>
         <cell xml:id="nasty.cell.2">
-          <t> </t>
+          <t> </t>
         </cell>
         <cell xml:id="nasty.cell.3">
           <t>0</t>
