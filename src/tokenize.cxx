@@ -175,6 +175,7 @@ namespace Tokenizer {
     xmlout(false),
     xmlin(false),
     passthru(false),
+    ignore_tag_hints(false),
     ucto_processor(0),
     already_tokenized(false),
     inputclass("current"),
@@ -1171,7 +1172,13 @@ namespace Tokenizer {
 	}
 	return;
       }
-      string text = s->special_str(inputclass);
+      string text;
+      if ( ignore_tag_hints ){
+	text = s->str(inputclass);
+      }
+      else {
+	text = s->special_str(inputclass);
+      }
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
@@ -2076,7 +2083,12 @@ namespace Tokenizer {
     StringCharacterIterator sit(input);
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
-      if ( u_isspace(c)) {
+      if ( c == u'\u200D' ){
+	// a joiner. just ignore
+	sit.next32();
+	continue;
+      }
+      if ( u_isspace(c) ) {
 	if ( word.isEmpty() ){
 	  // a leading space. Don't waste time on it. SKIP
 	  sit.next32();

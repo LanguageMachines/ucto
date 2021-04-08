@@ -117,7 +117,8 @@ void usage(){
        << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--allow-word-corrections   - allow tokenization of FoLiA Word elements." << endl
-       << "\t--filterpunct     - remove all punctuation from the output" << endl
+       << "\t--ignore-tag-hints - Do NOT use tag=\"token\" hints from the FoLiA input. (default is to use them)" << endl
+       << "\t--filterpunct      - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
        << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the" << endl
@@ -165,6 +166,7 @@ int main( int argc, char *argv[] ){
   string ofile;
   string c_file;
   bool pass_thru = false;
+  bool ignore_tags = false;
   bool sentencesplit = false;
   string norm_set_string;
   string add_tokens;
@@ -174,7 +176,7 @@ int main( int argc, char *argv[] ){
   }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,allow-word-corrections");
+			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,allow-word-corrections,ignore-tag-hints");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -282,6 +284,7 @@ int main( int argc, char *argv[] ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
+    ignore_tags = Opts.extract( "ignore-tag-hints" );
     pass_thru = Opts.extract( "passthru" );
     bool use_lang = Opts.is_present( "uselanguages" );
     bool detect_lang = Opts.is_present( "detectlanguages" );
@@ -491,7 +494,9 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
-
+    if ( ignore_tags ){
+      tokenizer.setNoTags( true );
+    }
     if ( pass_thru ){
       tokenizer.setPassThru( true );
     }

@@ -174,6 +174,12 @@ namespace Tokenizer {
     bool setPassThru( bool b=true ) { bool t = passthru; passthru = b; return t; };
     bool getPassThru() const { return passthru; }
 
+    //Disable tag hints
+    bool setNoTags( bool b=true ) { bool t = ignore_tag_hints;
+      ignore_tag_hints = b;
+      return t; };
+    bool getNoTags() const { return ignore_tag_hints; }
+
     //Enable conversion of all output to uppercase
     bool setUppercase( bool b=true ) { bool t = uppercase; uppercase = b; if (b) lowercase = false; return t; };
     bool getUppercase() const { return uppercase; }
@@ -402,6 +408,7 @@ namespace Tokenizer {
     bool xmlout;
     bool xmlin;
     bool passthru;
+    bool ignore_tag_hints;
     mutable folia::processor *ucto_processor;
     mutable bool already_tokenized; // set when ucto is called again on tokenized FoLiA
     std::string docid; //document ID (UTF-8), necessary for XML output
