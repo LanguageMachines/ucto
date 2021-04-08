@@ -14,5 +14,11 @@
 	subset="font_typeface"/>2</t-style></t-str> something
       </t>
     </s>
+    <s xml:id="tagged.text.s.2">
+      <t>
+	<t-str><t-style tag="token"><feat class="superscript"
+	subset="font_typeface"/>3</t-style>note</t-str> someone
+      </t>
+    </s>
   </text>
 </FoLiA>
