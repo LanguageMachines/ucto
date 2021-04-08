@@ -1171,10 +1171,14 @@ namespace Tokenizer {
 	}
 	return;
       }
-      string text = s->str(inputclass);
+      cerr << "voor special_str!" << endl;
+      string text = s->special_str(inputclass);
+      cerr << "special_str geeft: '" << TiCC::format_nonascii(text) << "'" << endl;
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
+      // text = s->str(inputclass);
+      // cerr << "str geeft: '" << TiCC::format_nonascii(text) << "'" << endl;
       tokenizeLine( text );
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
@@ -1262,7 +1266,7 @@ namespace Tokenizer {
     ///
     /// input is a FoLiA element @e containing text, direct or deeper
     /// this can be a Word, Sentence, Paragraph or some other element
-    /// In the latter case, we construct a Sentene from the text, and
+    /// In the latter case, we construct a Sentence from the text, and
     /// a Paragraph if more then one Sentence is found
     ///
     if ( inputclass != outputclass && outputclass == "current" ){
@@ -2410,6 +2414,11 @@ namespace Tokenizer {
     long int tok_size = 0;
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
+      bool joiner = false;
+      if ( c == u'\u200D' ){
+	cerr << "detected a joiner" << endl;
+	joiner = true;
+      }
       if ( tokDebug > 8 ){
 	UnicodeString s = c;
 	int8_t charT = u_charType( c );
@@ -2419,23 +2428,32 @@ namespace Tokenizer {
       if (reset) { //reset values for new word
 	reset = false;
 	tok_size = 0;
-	if (!u_isspace(c))
+	if ( !joiner && !u_isspace(c) ){
 	  word = c;
-	else
+	}
+	else {
 	  word = "";
+	}
 	tokenizeword = false;
       }
-      else {
-	if ( !u_isspace(c) ){
-	  word += c;
-	}
+      else if ( !joiner && !u_isspace(c) ){
+	word += c;
       }
-      if ( u_isspace(c) || i == len-1 ){
+      if ( joiner && sit.hasNext() ){
+	UChar32 peek = sit.next32();
+	cerr << "PEEK: '" << UnicodeString(peek) << "'" << endl;
+	if ( u_isspace(peek) ){
+	  joiner = false;
+	}
+	sit.previous32();
+      }
+      if ( u_isspace(c) || joiner || i == len-1 ){
 	if (tokDebug){
 	  LOG << "[tokenizeLine] space detected, word=[" << word << "]" << endl;
 	}
 	if ( i == len-1 ) {
-	  if ( u_ispunct(c)
+	  if ( joiner
+	       || u_ispunct(c)
 	       || u_isdigit(c)
 	       || u_isquote( c, settings[lang]->quotes )
 	       || u_isemo(c) ){
@@ -2494,16 +2512,17 @@ namespace Tokenizer {
 			    << word << "]" << endl;
 	  }
 	  if ( tokenizeword ) {
-	    tokenizeWord( word, true, lang );
+	    tokenizeWord( word, !joiner, lang );
 	  }
 	  else {
-	    tokenizeWord( word, true, lang, type_word );
+	    tokenizeWord( word, !joiner, lang, type_word );
 	  }
 	}
 	//reset values for new word
 	reset = true;
       }
-      else if ( u_ispunct(c)
+      else if ( joiner
+		|| u_ispunct(c)
 		|| u_isdigit(c)
 		|| u_isquote( c, settings[lang]->quotes )
 		|| u_isemo(c) ){
