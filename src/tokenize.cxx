@@ -1171,14 +1171,10 @@ namespace Tokenizer {
 	}
 	return;
       }
-      cerr << "voor special_str!" << endl;
       string text = s->special_str(inputclass);
-      cerr << "special_str geeft: '" << TiCC::format_nonascii(text) << "'" << endl;
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
-      // text = s->str(inputclass);
-      // cerr << "str geeft: '" << TiCC::format_nonascii(text) << "'" << endl;
       tokenizeLine( text );
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
@@ -2416,7 +2412,6 @@ namespace Tokenizer {
       UChar32 c = sit.current32();
       bool joiner = false;
       if ( c == u'\u200D' ){
-	cerr << "detected a joiner" << endl;
 	joiner = true;
       }
       if ( tokDebug > 8 ){
@@ -2441,7 +2436,6 @@ namespace Tokenizer {
       }
       if ( joiner && sit.hasNext() ){
 	UChar32 peek = sit.next32();
-	cerr << "PEEK: '" << UnicodeString(peek) << "'" << endl;
 	if ( u_isspace(peek) ){
 	  joiner = false;
 	}
