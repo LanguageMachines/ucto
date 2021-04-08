@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tagged" version="2.5">
+  <metadata>
+    <annotations>
+      <sentence-annotation/>
+      <string-annotation/>
+      <style-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="tagged.text">
+    <s xml:id="tagged.text.s.1">
+      <t>
+	<t-str>item1<t-style tag="token"><feat class="superscript"
+	subset="font_typeface"/>2</t-style></t-str> something
+      </t>
+    </s>
+  </text>
+</FoLiA>
