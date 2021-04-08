@@ -11,7 +11,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-08T17:51:39" command="ucto -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-08T17:56:58" command="ucto -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -33,6 +33,20 @@
       </w>
       <w xml:id="tagged.text.s.1.w.3" class="WORD">
         <t>something</t>
+      </w>
+    </s>
+    <s xml:id="tagged.text.s.2">
+      <t>
+	<t-str><t-style tag="token"><feat class="superscript" subset="font_typeface"/>3</t-style>note</t-str> someone
+      </t>
+      <w xml:id="tagged.text.s.2.w.1" class="NUMBER" space="no">
+        <t>3</t>
+      </w>
+      <w xml:id="tagged.text.s.2.w.2" class="WORD">
+        <t>note</t>
+      </w>
+      <w xml:id="tagged.text.s.2.w.3" class="WORD">
+        <t>someone</t>
       </w>
     </s>
   </text>
