@@ -9,7 +9,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:09:59" command="ucto -L nl -F folia1.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:46" command="ucto -L nl -F folia1.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -82,7 +82,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --outputclass=ligafilter folia1.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:46" command="ucto -L nl --outputclass=ligafilter folia1.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -158,7 +158,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --filterpunct --outputclass=FILTER -F folia2.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --filterpunct --outputclass=FILTER -F folia2.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -222,7 +222,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -u --outputclass=UPP -F folia3.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -u --outputclass=UPP -F folia3.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -294,7 +294,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F folia4.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F folia4.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -331,7 +331,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F empty.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F empty.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -377,7 +377,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --inputclass OCR -F folia5.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --inputclass OCR -F folia5.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -422,7 +422,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --inputclass OCR --outputclass=AHA -F folia5.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --inputclass OCR --outputclass=AHA -F folia5.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -466,7 +466,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -545,7 +545,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --textredundancy none folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --textredundancy none folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -622,7 +622,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --textredundancy minimal folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --textredundancy minimal folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -701,7 +701,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl --textredundancy full folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl --textredundancy full folia7.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -712,7 +712,9 @@ Gaat deze datum: 28-11-2011 goed?</t>
   </metadata>
   <text xml:id="text">
     <div>
-      <t>Dit is een tekst in een head</t>
+      <t>Dit is een tekst in een head
+
+Dit is een tekst in een note</t>
       <head xml:id="h.1">
         <t>Dit is een tekst in een head</t>
         <s xml:id="h.1.s.1">
@@ -783,7 +785,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F folia8.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F folia8.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -863,7 +865,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F folia9a.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F folia9a.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -976,7 +978,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -F folia9b.xml foliatmp.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -F folia9b.xml foliatmp.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -1090,7 +1092,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl -Tfull textproblem.xml foliatmp2.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl -Tfull textproblem.xml foliatmp2.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -1168,7 +1170,7 @@ Gaat deze datum: 28-11-2011 goed?</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-09T12:10:00" command="ucto -L nl cell.xml cellout.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-09T17:28:47" command="ucto -L nl cell.xml cellout.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
