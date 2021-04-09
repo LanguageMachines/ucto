@@ -1,0 +1,6 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -L nl -Tfull bug81.xml bug81.out.xml
+cat < bug81.out.xml

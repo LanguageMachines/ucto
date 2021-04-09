@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="bug" version="2.3">
+  <metadata>
+    <annotations>
+      <sentence-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="text">
+    <s xml:id="s.1">
+      <t>something</t>
+    </s>
+    <s xml:id="s.2">
+      <t>someone</t>
+    </s>
+  </text>
+</FoLiA>
