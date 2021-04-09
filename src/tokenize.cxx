@@ -1442,8 +1442,13 @@ namespace Tokenizer {
     proc.setup( inputclass, true );
     int sentence_done = 0;
     folia::FoliaElement *p = 0;
+    folia::FoliaElement *parent = 0;
     while ( (p = proc.next_text_parent() ) ){
-      //    LOG << "next text parent: " << p << endl;
+      //      LOG << "next text parent: " << p << endl;
+      if ( !parent ){
+	parent = p->parent();
+	//	LOG << "my parent: " << parent << endl;
+      }
       if ( already_tokenized ){
 	++sentence_done;
       }
@@ -1458,12 +1463,12 @@ namespace Tokenizer {
 	  LOG << "looping for more ..." << endl;
 	}
       }
-      if ( text_redundancy == "full" ){
-	appendText( p->parent(), outputclass );
-      }
-      else if ( text_redundancy == "none" ){
-	removeText( p->parent(), outputclass );
-      }
+    }
+    if ( text_redundancy == "full" ){
+      appendText( parent, outputclass );
+    }
+    else if ( text_redundancy == "none" ){
+      removeText( parent, outputclass );
     }
     if ( sentence_done == 0 ){
       LOG << "document contains no text in the desired inputclass: "
