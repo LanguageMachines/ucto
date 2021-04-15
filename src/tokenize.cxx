@@ -1130,6 +1130,14 @@ namespace Tokenizer {
     return result;
   }
 
+  UnicodeString handle_token_tag( const folia::FoliaElement *d,
+				  const folia::TextPolicy& tp ){
+    UnicodeString tmp_result = text( d, tp );
+    tmp_result = u'\u200D' + tmp_result;
+    tmp_result += u'\u200D';
+    return tmp_result;
+  }
+
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
 					    int& sentence_done ){
     // check feasability
@@ -1173,12 +1181,12 @@ namespace Tokenizer {
 	return;
       }
       string text;
-      if ( ignore_tag_hints ){
-	text = s->str(inputclass);
+      folia::TextPolicy tp( inputclass );
+      if ( !ignore_tag_hints ){
+	tp._tag_handler = &handle_token_tag;
+	tp._honour_tag = true;
       }
-      else {
-	text = s->special_str(inputclass);
-      }
+      text = s->str(tp);
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
