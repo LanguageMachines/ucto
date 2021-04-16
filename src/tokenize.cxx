@@ -1183,8 +1183,7 @@ namespace Tokenizer {
       string text;
       folia::TextPolicy tp( inputclass );
       if ( !ignore_tag_hints ){
-	tp._tag_handler = &handle_token_tag;
-	tp._honour_tag = true;
+	tp._tag_handlers.insert(make_pair("token", &handle_token_tag));
       }
       text = s->str(tp);
       if ( tokDebug > 0 ){
