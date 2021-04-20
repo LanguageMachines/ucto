@@ -1019,6 +1019,14 @@ namespace Tokenizer {
     return root;
   }
 
+  UnicodeString handle_token_tag( const folia::FoliaElement *d,
+				  const folia::TextPolicy& tp ){
+    UnicodeString tmp_result = text( d, tp );
+    tmp_result = u'\u200D' + tmp_result;
+    tmp_result += u'\u200D';
+    return tmp_result;
+  }
+
   void TokenizerClass::correct_element( folia::FoliaElement *orig,
 					const vector<Token>& toks,
 					const string& tok_set ) const {
@@ -1110,8 +1118,12 @@ namespace Tokenizer {
     folia::KWargs args;
     args["processor"] = ucto_processor->id();
     e->doc()->declare( folia::AnnotationType::CORRECTION, tok_set, args );
+    folia::TextPolicy tp( inputclass );
+    if ( !ignore_tag_hints ){
+      tp.add_handler("token", &handle_token_tag );
+    }
     for ( auto w : wv ){
-      string text = w->str(inputclass);
+      string text = w->str(tp);
       if ( tokDebug > 0 ){
 	LOG << "correct_elements() text='" << text << "'" << endl;
       }
@@ -1130,17 +1142,9 @@ namespace Tokenizer {
     return result;
   }
 
-  UnicodeString handle_token_tag( const folia::FoliaElement *d,
-				  const folia::TextPolicy& tp ){
-    UnicodeString tmp_result = text( d, tp );
-    tmp_result = u'\u200D' + tmp_result;
-    tmp_result += u'\u200D';
-    return tmp_result;
-  }
-
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
 					    int& sentence_done ){
-    // check feasability
+    // check feasibility
     if ( tokDebug > 1 ){
       LOG << "handle_one_sentence: " << s << endl;
     }
@@ -1225,7 +1229,11 @@ namespace Tokenizer {
       }
       else {
 	// No Words too, handle text, if any
-	string text = p->str(inputclass);
+	folia::TextPolicy tp( inputclass );
+	if ( !ignore_tag_hints ){
+	  tp.add_handler("token", &handle_token_tag );
+	}
+	string text = p->str(tp);
 	if ( tokDebug > 0 ){
 	  LOG << "handle_one_paragraph:" << text << endl;
 	}
@@ -1314,7 +1322,11 @@ namespace Tokenizer {
       vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
       if ( pv.empty() && sv.empty() ){
 	// just words or text
-	string text = e->str(inputclass);
+	folia::TextPolicy tp( inputclass );
+	if ( !ignore_tag_hints ){
+	  tp.add_handler("token", &handle_token_tag );
+	}
+	string text = e->str(tp);
 	if ( tokDebug > 1 ){
 	  LOG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
