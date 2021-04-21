@@ -1022,6 +1022,19 @@ namespace Tokenizer {
 
   UnicodeString handle_token_tag( const folia::FoliaElement *d,
 				  const folia::TextPolicy& tp ){
+    /// a handler that is passed on to libfolia to handle special tag="token"
+    /// nodes
+    /*!
+      \param d The FoliaElement that libfolia will handle us
+      \param tp The TextPolicy at hand. This function has been registered in
+      \em tp
+      \return a UnicodeString which we will mark specially so that we know
+      that this string is to be handled as a separate token
+
+      This function will be called by libfolia's text() functions on
+      encountering a tag="token" attribute in a TextContent.
+      It has to be registered in \em tp
+     */
     UnicodeString tmp_result = text( d, tp );
     tmp_result = u'\u200D' + tmp_result;
     tmp_result += u'\u200D';
