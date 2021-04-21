@@ -277,8 +277,8 @@ namespace Tokenizer {
 				fname );
 	  }
 	  UnicodeString id = UnicodeString( line, 0,splitpoint);
-	  UnicodeString pattern = UnicodeString( line, splitpoint+1);
-	  rulesmap[id] = new Rule( id, pattern);
+	  UnicodeString pat = UnicodeString( line, splitpoint+1);
+	  rulesmap[id] = new Rule( id, pat );
 	}
       }
     }
@@ -310,8 +310,9 @@ namespace Tokenizer {
 	    LOG << "include line = " << rawline << endl;
 	  }
 	  int splitpoint = line.indexOf(" ");
-	  if ( splitpoint == -1 )
+	  if ( splitpoint == -1 ){
 	    splitpoint = line.indexOf("\t");
+	  }
 	  if ( splitpoint == -1 ){
 	    throw uConfigError( "invalid QUOTES entry: " + line
 				+ " (missing whitespace)",
@@ -652,8 +653,8 @@ namespace Tokenizer {
 				    set_file );
 	      }
 	      UnicodeString id = UnicodeString( line, 0,splitpoint);
-	      UnicodeString pattern = UnicodeString( line, splitpoint+1);
-	      rulesmap[id] = new Rule( id, pattern);
+	      UnicodeString pat = UnicodeString( line, splitpoint+1);
+	      rulesmap[id] = new Rule( id, pat );
 	    }
 	      break;
 	    case RULEORDER:
@@ -762,27 +763,27 @@ namespace Tokenizer {
 			      set_file );
 	}
 	string nam = TiCC::trim( mr.substr( 0, pos ) );
-	string split = "%";
+	string splitter = "%";
 	if ( nam == "SPLITTER" ){
-	  split = mr.substr( pos+1 );
-	  if ( split.empty() ) {
+	  splitter = mr.substr( pos+1 );
+	  if ( splitter.empty() ) {
 	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr,
 				set_file );
 	  }
-	  if ( split[0] == '"' && split[split.length()-1] == '"' ){
-	    split = split.substr(1,split.length()-2);
+	  if ( splitter[0] == '"' && splitter[splitter.length()-1] == '"' ){
+	    splitter = splitter.substr(1,splitter.length()-2);
 	  }
 	  if ( tokDebug > 5 ){
-	    LOG << "SET SPLIT: '" << split << "'" << endl;
+	    LOG << "SET SPLIT: '" << splitter << "'" << endl;
 	  }
 	  continue;
 	}
 	UnicodeString name = TiCC::UnicodeFromUTF8( nam );
 	string rule = mr.substr( pos+1 );
 	if ( tokDebug > 5 ){
-	  LOG << "SPLIT using: '" << split << "'" << endl;
+	  LOG << "SPLIT using: '" << splitter << "'" << endl;
 	}
-	vector<string> parts = TiCC::split_at( rule, split );
+	vector<string> parts = TiCC::split_at( rule, splitter );
 	for ( auto& str : parts ){
 	  str = TiCC::trim( str );
 	}
@@ -791,8 +792,8 @@ namespace Tokenizer {
 	bool skip_rule = false;
 	for ( const auto& part : parts ){
 	  UnicodeString meta = TiCC::UnicodeFromUTF8( part );
-	  ConfigMode mode = getMode( "[" + meta + "]" );
-	  switch ( mode ){
+	  ConfigMode local_mode = getMode( "[" + meta + "]" );
+	  switch ( local_mode ){
 	  case ORDINALS:
 	  case ABBREVIATIONS:
 	  case TOKENS:
@@ -802,8 +803,8 @@ namespace Tokenizer {
 	  case CURRENCY:
 	  case PREFIXES:
 	  case SUFFIXES:
-	    if ( !pattern[mode].isEmpty()){
-	      new_parts.push_back( pattern[mode] );
+	    if ( !pattern[local_mode].isEmpty()){
+	      new_parts.push_back( pattern[local_mode] );
 	    }
 	    else {
 	      undef_parts.push_back( meta );

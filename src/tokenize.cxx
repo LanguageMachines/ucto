@@ -281,7 +281,7 @@ namespace Tokenizer {
     }
   }
 
-  string fixup_UTF16( string& input_line, const string& encoding ){
+  string fixup_UTF16( const string& input_line, const string& encoding ){
     string line = input_line;
     // some hackery to handle exotic input. UTF-16 but also CR at end.
     string::size_type pos = line.rfind( '\r' );
@@ -838,18 +838,18 @@ namespace Tokenizer {
 	// might need a new Sentence
 	if ( i+1 < toks.size()
 	     && toks[i+1].role & BEGINOFSENTENCE ){
-	  folia::processor *proc = add_provenance_structure( doc,
-							   folia::AnnotationType::SENTENCE );
-	  folia::KWargs args;
-	  string id = get_parent_id(root);
-	  if ( !id.empty() ){
-	    args["generate_id"] = id;
+	  folia::processor *proc2 = add_provenance_structure( doc,
+							     folia::AnnotationType::SENTENCE );
+	  folia::KWargs args2;
+	  string pid = get_parent_id(root);
+	  if ( !pid.empty() ){
+	    args2["generate_id"] = pid;
 	  }
-	  if ( proc ){
-	    args["processor"] = proc->id();
+	  if ( proc2 ){
+	    args2["processor"] = proc2->id();
 	  }
-	  args["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *ns = new folia::Sentence( args, doc );
+	  args2["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
+	  folia::Sentence *ns = new folia::Sentence( args2, doc );
 	  q->append( ns );
 	  root = ns;
 	}
@@ -1526,7 +1526,6 @@ namespace Tokenizer {
     // times and it is not the first invokation
     // this makes paragraph boundaries work over multiple calls
     short quotelevel = 0;
-    bool first = true;
     for ( const auto& token : tokens ) {
       if (tokDebug >= 5){
 	LOG << "outputTokens: token=" << token << endl;
@@ -1534,7 +1533,7 @@ namespace Tokenizer {
       if ( detectPar
 	   && (token.role & NEWPARAGRAPH)
 	   && !verbose
-	   && ( !first || continued ) ) {
+	   && continued ) {
 	//output paragraph separator
 	if (sentenceperlineoutput) {
 	  OUT << endl;
@@ -2552,8 +2551,7 @@ namespace Tokenizer {
 	//reset values for new word
 	reset = true;
       }
-      else if ( joiner
-		|| u_ispunct(c)
+      else if ( u_ispunct(c)
 		|| u_isdigit(c)
 		|| u_isquote( c, settings[lang]->quotes )
 		|| u_isemo(c) ){
