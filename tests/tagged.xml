@@ -20,5 +20,19 @@
 	subset="font_typeface"/>3</t-style>note</t-str> someone
       </t>
     </s>
+    <p xml:id="tagged.p.1">
+      <s xml:id="tagged.text.p.1.s.1">
+	<t>
+	  <t-str><t-style tag="token"><feat class="superscript"
+	  subset="font_typeface"/>4</t-style>opm:</t-str> iets
+	</t>
+      </s>
+      <s xml:id="tagged.text.p.1.s.2">
+	<t>
+	  <t-str>item6<t-style tag="token"><feat class="superscript"
+	  subset="font_typeface"/>*</t-style></t-str> notitie
+	</t>
+      </s>
+    </p>
   </text>
 </FoLiA>

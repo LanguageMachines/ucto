@@ -9,9 +9,10 @@
         <annotator processor="ucto.1"/>
       </token-annotation>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-08T19:04:35" command="ucto -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-21T09:22:07" command="ucto -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -49,6 +50,39 @@
         <t>someone</t>
       </w>
     </s>
+    <p xml:id="tagged.p.1">
+      <s xml:id="tagged.text.p.1.s.1">
+        <t>
+	  <t-str><t-style tag="token"><feat class="superscript" subset="font_typeface"/>4</t-style>opm:</t-str> iets
+	</t>
+        <w xml:id="tagged.text.p.1.s.1.w.1" class="NUMBER" space="no">
+          <t>4</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.2" class="ABBREVIATION-KNOWN" space="no">
+          <t>opm</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.3" class="PUNCTUATION">
+          <t>:</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.4" class="WORD">
+          <t>iets</t>
+        </w>
+      </s>
+      <s xml:id="tagged.text.p.1.s.2">
+        <t>
+	  <t-str>item6<t-style tag="token"><feat class="superscript" subset="font_typeface"/>*</t-style></t-str> notitie
+	</t>
+        <w xml:id="tagged.text.p.1.s.2.w.1" class="STRING-NUMBER" space="no">
+          <t>item6</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.2.w.2" class="PUNCTUATION">
+          <t>*</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.2.w.3" class="WORD">
+          <t>notitie</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -62,9 +96,10 @@
         <annotator processor="ucto.1"/>
       </token-annotation>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-08T19:04:35" command="ucto --passthru -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-21T09:22:07" command="ucto --passthru -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
       </processor>
     </provenance>
@@ -92,6 +127,30 @@
         <t>someone</t>
       </w>
     </s>
+    <p xml:id="tagged.p.1">
+      <s xml:id="tagged.text.p.1.s.1">
+        <t>
+	  <t-str><t-style tag="token"><feat class="superscript" subset="font_typeface"/>4</t-style>opm:</t-str> iets
+	</t>
+        <w xml:id="tagged.text.p.1.s.1.w.1" class="UNKNOWN">
+          <t>4opm:</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.2" class="WORD">
+          <t>iets</t>
+        </w>
+      </s>
+      <s xml:id="tagged.text.p.1.s.2">
+        <t>
+	  <t-str>item6<t-style tag="token"><feat class="superscript" subset="font_typeface"/>*</t-style></t-str> notitie
+	</t>
+        <w xml:id="tagged.text.p.1.s.2.w.1" class="UNKNOWN">
+          <t>item6*</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.2.w.2" class="WORD">
+          <t>notitie</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
@@ -105,9 +164,10 @@
         <annotator processor="ucto.1"/>
       </token-annotation>
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2021-04-08T19:04:35" command="ucto --ignore-tag-hints -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
+      <processor xml:id="ucto.1" begindatetime="2021-04-21T09:22:07" command="ucto --ignore-tag-hints -L nl -v tagged.xml" folia_version="2.5.0" host="kokos" name="ucto" user="sloot" version="0.23">
         <processor xml:id="ucto.1.generator" folia_version="2.5.0" name="libfolia" type="generator" version="2.9"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -139,5 +199,38 @@
         <t>someone</t>
       </w>
     </s>
+    <p xml:id="tagged.p.1">
+      <s xml:id="tagged.text.p.1.s.1">
+        <t>
+	  <t-str><t-style tag="token"><feat class="superscript" subset="font_typeface"/>4</t-style>opm:</t-str> iets
+	</t>
+        <w xml:id="tagged.text.p.1.s.1.w.1" class="NUMBER" space="no">
+          <t>4</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.2" class="ABBREVIATION-KNOWN" space="no">
+          <t>opm</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.3" class="PUNCTUATION">
+          <t>:</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.1.w.4" class="WORD">
+          <t>iets</t>
+        </w>
+      </s>
+      <s xml:id="tagged.text.p.1.s.2">
+        <t>
+	  <t-str>item6<t-style tag="token"><feat class="superscript" subset="font_typeface"/>*</t-style></t-str> notitie
+	</t>
+        <w xml:id="tagged.text.p.1.s.2.w.1" class="STRING-NUMBER" space="no">
+          <t>item6</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.2.w.2" class="PUNCTUATION">
+          <t>*</t>
+        </w>
+        <w xml:id="tagged.text.p.1.s.2.w.3" class="WORD">
+          <t>notitie</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
