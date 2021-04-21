@@ -416,6 +416,7 @@ namespace Tokenizer {
     std::string outputclass; // class for folia text
     std::string data_version; // the version of uctodata
     TextCat *tc;
+    folia::TextPolicy text_policy;
   };
 
   template< typename T >

@@ -1118,12 +1118,8 @@ namespace Tokenizer {
     folia::KWargs args;
     args["processor"] = ucto_processor->id();
     e->doc()->declare( folia::AnnotationType::CORRECTION, tok_set, args );
-    folia::TextPolicy tp( inputclass );
-    if ( !ignore_tag_hints ){
-      tp.add_handler("token", &handle_token_tag );
-    }
     for ( auto w : wv ){
-      string text = w->str(tp);
+      string text = w->str( text_policy );
       if ( tokDebug > 0 ){
 	LOG << "correct_elements() text='" << text << "'" << endl;
       }
@@ -1184,12 +1180,7 @@ namespace Tokenizer {
 	}
 	return;
       }
-      string text;
-      folia::TextPolicy tp( inputclass );
-      if ( !ignore_tag_hints ){
-	tp.add_handler("token", &handle_token_tag );
-      }
-      text = s->str(tp);
+      string text = s->str( text_policy );
       if ( tokDebug > 0 ){
 	LOG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
@@ -1229,11 +1220,7 @@ namespace Tokenizer {
       }
       else {
 	// No Words too, handle text, if any
-	folia::TextPolicy tp( inputclass );
-	if ( !ignore_tag_hints ){
-	  tp.add_handler("token", &handle_token_tag );
-	}
-	string text = p->str(tp);
+	string text = p->str( text_policy );
 	if ( tokDebug > 0 ){
 	  LOG << "handle_one_paragraph:" << text << endl;
 	}
@@ -1322,11 +1309,7 @@ namespace Tokenizer {
       vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
       if ( pv.empty() && sv.empty() ){
 	// just words or text
-	folia::TextPolicy tp( inputclass );
-	if ( !ignore_tag_hints ){
-	  tp.add_handler("token", &handle_token_tag );
-	}
-	string text = e->str(tp);
+	string text = e->str( text_policy );
 	if ( tokDebug > 1 ){
 	  LOG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
@@ -1445,6 +1428,10 @@ namespace Tokenizer {
       LOG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	  << endl;
       setFiltering(false);
+    }
+    text_policy.set_class( inputclass );
+    if ( !ignore_tag_hints ){
+      text_policy.add_handler("token", &handle_token_tag );
     }
     folia::TextEngine proc( infile_name );
     if ( passthru ){
