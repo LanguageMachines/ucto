@@ -180,14 +180,14 @@ namespace Tokenizer {
     already_tokenized(false),
     inputclass("current"),
     outputclass("current"),
-    tc( 0 )
+    text_cat( 0 )
   {
     theErrLog = new TiCC::LogStream(cerr, "ucto" );
     theErrLog->setstamp( StampMessage );
 #ifdef HAVE_TEXTCAT
     string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-    tc = new TextCat( textcat_cfg, theErrLog );
-    //    tc->set_debug( true );
+    text_cat = new TextCat( textcat_cfg, theErrLog );
+    //    text_cat->set_debug( true );
     LOG << " textcat configured from: " << textcat_cfg << endl;
     // ifstream is( textcat_cfg );
     // string line;
@@ -225,7 +225,7 @@ namespace Tokenizer {
 
     }
     delete theErrLog;
-    delete tc;
+    delete text_cat;
   }
 
   bool TokenizerClass::reset( const string& lang ){
@@ -248,7 +248,7 @@ namespace Tokenizer {
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
     if ( theErrLog != os ){
-      tc->set_debug_stream( os );
+      text_cat->set_debug_stream( os );
       delete theErrLog;
     }
     theErrLog = os;
@@ -273,11 +273,11 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::set_tc_debug( bool b ){
-    if ( !tc ){
+    if ( !text_cat ){
       throw logic_error( "attempt to set debug on uninitialized TextClass object" );
     }
     else {
-      return tc->set_debug( b );
+      return text_cat->set_debug( b );
     }
   }
 
@@ -509,9 +509,10 @@ namespace Tokenizer {
       string language = lang;
       if ( language.empty() ){
 	if ( tokDebug > 3 ){
-	  LOG << "should we guess the language? " << (tc && doDetectLang) << endl;
+	  LOG << "should we guess the language? "
+	      << (text_cat && doDetectLang) << endl;
 	}
-	if ( tc && doDetectLang ){
+	if ( text_cat && doDetectLang ){
 	  UnicodeString temp = input_line;
 	  temp.findAndReplace( eosmark, "" );
 	  temp.toLower();
@@ -519,7 +520,7 @@ namespace Tokenizer {
 	    LOG << "use textCat to guess language from: "
 		<< temp << endl;
 	  }
-	  language = tc->get_language( TiCC::UnicodeToUTF8(temp) );
+	  language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
 	  if ( settings.find( language ) != settings.end() ){
 	    if ( tokDebug > 3 ){
 	      LOG << "found a supported language: " << language << endl;

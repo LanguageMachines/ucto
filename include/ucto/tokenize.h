@@ -415,7 +415,7 @@ namespace Tokenizer {
     std::string inputclass; // class for folia text
     std::string outputclass; // class for folia text
     std::string data_version; // the version of uctodata
-    TextCat *tc;
+    TextCat *text_cat;
     folia::TextPolicy text_policy;
   };
 
