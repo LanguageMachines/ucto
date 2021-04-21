@@ -99,6 +99,8 @@ jobs:
         env:
           CXX: ${{ matrix.compiler }}
         run: ./configure
+      - name: Static Code-check
+        run: cppcheck --enable=all --quiet --error-exitcode=0 .
       - name: make
         run: make
       - name: install
