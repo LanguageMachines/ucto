@@ -97,7 +97,7 @@ jobs:
         run: sh bootstrap.sh
       - name: configure
         env:
-          CXX:  ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: ./configure
       - name: make
         run: make
@@ -105,24 +105,30 @@ jobs:
         run: sudo make install
       - name: check
         env:
-          CXX:  ${{ matrix.compiler }}
+          CXX: ${{ matrix.compiler }}
         run: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
         continue-on-error: true
+      - name: show log
+        run: cat src/test-suite.log
+      - id: compiler
+        run: |
+          id=$(echo ${{matrix.compiler}} | cut -d\+ -f1)
+          echo "::set-output name=id::$id"
       - name: Notify IRC of failure
-        if: ${{ failure() }}
+        if: ${{ steps.check.outcome != 'success' }}
         uses: Gottox/irc-message-action@v1
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
-          nickname: GitHub
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
           message: |-
             ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
       - name: Notify IRC of succes
-        if: ${{ success() }}
+        if: ${{ steps.check.outcome == 'success' }}
         uses: Gottox/irc-message-action@v1
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
-          nickname: GitHub
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
           message: |-
             ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
