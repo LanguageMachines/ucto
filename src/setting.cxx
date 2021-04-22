@@ -32,6 +32,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include "config.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/FileUtils.h"
@@ -172,11 +173,15 @@ namespace Tokenizer {
   }
 
   UnicodeString Quoting::lookupOpen( const UnicodeString &q ) const {
-    for ( const auto& quote : _quotes ){
-      if ( quote.openQuote.indexOf(q) >=0 )
-	return quote.closeQuote;
+    auto res = find_if( _quotes.begin(),
+			_quotes.end(),
+			[q]( const QuotePair& qp){ return qp.openQuote.indexOf(q) >=0; } );
+    if ( res != _quotes.end() ){
+      return res->closeQuote;
     }
-    return "";
+    else {
+      return "";
+    }
   }
 
   UnicodeString Quoting::lookupClose( const UnicodeString &q ) const {

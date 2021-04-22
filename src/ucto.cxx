@@ -417,8 +417,8 @@ int main( int argc, char *argv[] ){
 	  }
 	  else {
 	    cerr << "ucto: Available Languages: ";
-	    for( const auto& l : available_languages ){
-	      cerr << l << ",";
+	    for( const auto& lang : available_languages ){
+	      cerr << lang << ",";
 	    }
 	    cerr << endl;
 	  }

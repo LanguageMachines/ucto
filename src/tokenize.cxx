@@ -1698,8 +1698,8 @@ namespace Tokenizer {
 	    LOG << "[tokenize] extracted sentence, begin=" << begin
 		<< ",end="<< end << endl;
 	  }
-	  for ( size_t i=begin; i <= end; ++i ){
-	    outToks.push_back( tokens[i] );
+	  for ( size_t index=begin; index <= end; ++index ){
+	    outToks.push_back( tokens[index] );
 	  }
 	  tokens.erase( tokens.begin(), tokens.begin()+end+1 );
 	  if ( !passthru ){
@@ -1906,13 +1906,14 @@ namespace Tokenizer {
 	is_eos = true; //Newline after eosmarker
       }
       else {
-	UChar32 c = tokens[i+1].us.char32At(0);
+	c = tokens[i+1].us.char32At(0);
 	if ( u_isquote( c, quotes ) ){
 	  // next word is quote
-	  if ( detectQuotes )
+	  if ( detectQuotes ){
 	    is_eos = true;
+	  }
 	  else if ( i + 2 < tokens.size() ) {
-	    UChar32 c = tokens[i+2].us.char32At(0);
+	    c = tokens[i+2].us.char32At(0);
 	    if ( u_isupper(c) || u_istitle(c) || u_ispunct(c) ){
 	      //next 'word' after quote starts with uppercase or is punct
 	      is_eos = true;
