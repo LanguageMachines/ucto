@@ -117,7 +117,6 @@ void usage(){
        << "\t                    'minimal' - don't introduce text on higher levels, but retain what is already there." << endl
        << "\t                    'none' - only introduce text on <w>, AND remove all text from higher levels" << endl
        << "\t--allow-word-corrections   - allow tokenization of FoLiA Word elements." << endl
-       << "\t\t DISABLED!, Produces invalid FoLiA. Needs a fix" << endl
        << "\t--ignore-tag-hints - Do NOT use tag=\"token\" hints from the FoLiA input. (default is to use them)" << endl
        << "\t--filterpunct      - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
@@ -196,10 +195,6 @@ int main( int argc, char *argv[] ){
     Opts.extract('e', inputEncoding );
     dopunctfilter = Opts.extract( "filterpunct" );
     docorrectwords = Opts.extract( "allow-word-corrections" );
-    if ( docorrectwords ){
-      cerr << "option --allow-word-corrections DISABLED!. Produces invalid FoLiA!" << endl;
-      return EXIT_FAILURE;
-    }
     paragraphdetection = !Opts.extract( 'P' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
