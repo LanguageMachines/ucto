@@ -594,7 +594,9 @@ namespace Tokenizer {
 	  string file = rawline.substr( 9 );
 	  switch ( mode ){
 	  case RULES: {
-	    file += ".rule";
+	    if ( !TiCC::match_back( file, ".rule" ) ){
+	      file += ".rule";
+	    }
 	    file = get_filename( file );
 	    if ( !readrules( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
@@ -602,7 +604,9 @@ namespace Tokenizer {
 	  }
 	    break;
 	  case FILTER:{
-	    file += ".filter";
+	    if ( !TiCC::match_back( file, ".filter" ) ){
+	      file += ".filter";
+	    }
 	    file = get_filename( file );
 	    if ( !readfilters( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
@@ -610,7 +614,9 @@ namespace Tokenizer {
 	  }
 	    break;
 	  case QUOTES:{
-	    file += ".quote";
+	    if ( !TiCC::match_back( file, ".quote" ) ){
+	      file += ".quote";
+	    }
 	    file = get_filename( file );
 	    if ( !readquotes( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
@@ -618,7 +624,9 @@ namespace Tokenizer {
 	  }
 	    break;
 	  case EOSMARKERS:{
-	    file += ".eos";
+	    if ( !TiCC::match_back( file, ".eos" ) ){
+	      file += ".eos";
+	    }
 	    file = get_filename( file );
 	    if ( !readeosmarkers( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
@@ -626,7 +634,9 @@ namespace Tokenizer {
 	  }
 	    break;
 	  case ABBREVIATIONS:{
-	    file += ".abr";
+	    if ( !TiCC::match_back( file, ".abr" ) ){
+	      file += ".abr";
+	    }
 	    file = get_filename( file );
 	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
