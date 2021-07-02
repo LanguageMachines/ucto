@@ -1,0 +1,8 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -L deu -Tfull shy.xml shy.out1.xml
+cat < shy.out1.xml
+$exe -L deu -Tfull --outputclass=SHY shy.xml shy.out2.xml
+cat < shy.out2.xml

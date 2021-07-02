@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia2html.xsl"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="MWG" version="2.0.0" generator="docutils-rst2folia-2.5.1">
+<metadata type="native">
+ <annotations>
+   <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">
+     <annotator processor="proc.rst2folia" />
+   </text-annotation>
+   <paragraph-annotation>
+     <annotator processor="proc.rst2folia" />
+   </paragraph-annotation>
+ </annotations>
+ <provenance>
+  <processor xml:id="proc.rst2folia" name="rst2folia" type="auto" version="2.5.1" folia_version="2.0.0">
+    <processor xml:id="proc.rst2folia.generator" name="docutils" type="generator" version="0.15.2" folia_version="2.0.0"/>
+  </processor>
+ </provenance>
+
+</metadata>
+<text xml:id="MWG.text">
+   <p xml:id="MWG.p.1">
+    <t>ﬀ in Bo­logna</t>
+   </p>
+   <p xml:id="MWG.p.2">
+    <t>des Hammer­klaviers</t>
+   </p>
+</text>
+</FoLiA>
