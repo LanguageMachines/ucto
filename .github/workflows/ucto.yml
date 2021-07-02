@@ -7,6 +7,7 @@ on:
       - 'src/**'
       - 'include/**'
       - '.github/**'
+      - 'tests/**'
 
   pull_request:
     branches: [master]
