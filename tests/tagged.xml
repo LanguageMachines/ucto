@@ -2,6 +2,8 @@
 <FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="tagged" version="2.5">
   <metadata>
     <annotations>
+      <text-annotation/>
+      <paragraph-annotation/>
       <sentence-annotation/>
       <string-annotation/>
       <style-annotation/>

@@ -3,6 +3,7 @@
   <metadata type="native">
     <annotations>
       <text-annotation/>
+      <table-annotation/>
     </annotations>
   </metadata>
   <text xml:id="nasty.text">

@@ -15,7 +15,6 @@
     <processor xml:id="proc.rst2folia.generator" name="docutils" type="generator" version="0.15.2" folia_version="2.0.0"/>
   </processor>
  </provenance>
-
 </metadata>
 <text xml:id="MWG.text">
    <p xml:id="MWG.p.1">

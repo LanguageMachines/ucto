@@ -6,6 +6,8 @@
       <paragraph-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/tei2folia/paragraphs.foliaset.ttl">
         <annotator processor="proc.tei2folia.xsl"/>
       </paragraph-annotation>
+      <division-annotation/>
+      <table-annotation/>
     </annotations>
     <provenance>
       <processor xml:id="proc.tei2folia.xsl" name="tei2folia.xsl" type="auto"/>
