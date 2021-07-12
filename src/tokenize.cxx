@@ -1675,7 +1675,6 @@ namespace Tokenizer {
     if ( size != 0 ){
       short quotelevel = 0;
       size_t begin = 0;
-      size_t end = 0;
       for ( int i = 0; i < size; ++i ) {
 	if (tokens[i].role & NEWPARAGRAPH) {
 	  quotelevel = 0;
@@ -1693,7 +1692,7 @@ namespace Tokenizer {
 	}
 
 	if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
-	  end = i;
+	  size_t end = i;
 	  if (tokDebug >= 1){
 	    LOG << "[tokenize] extracted sentence, begin=" << begin
 		<< ",end="<< end << endl;
