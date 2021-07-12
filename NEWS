@@ -1,5 +1,17 @@
-0.22 2020-04-15
+0.23 2021-07-12
 [Ko vd Sloot]
+* added support for the new 'tag' feature in FoLiA, only for tag="token"
+* fixed a problem with '-T full' option not always adding text
+* use the new TextPolicy class from libfolia
+* fix for https://github.com/LanguageMachines/ucto/issues/81
+* fix for https://github.com/LanguageMachines/ucto/issues/82
+* added code to handle several Unicode joiners
+* replaced TravisCI by GutHub action
+* %include files may have an extension now
+* added tests for new features
+
+0.22 2020-10-08
+[Ko van der Sloot]
 * fix for https://github.com/LanguageMachines/ucto/issues/79
 
 0.21.1 2020-04-15
