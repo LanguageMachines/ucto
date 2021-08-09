@@ -43,6 +43,7 @@
 #include "ucto/setting.h"
 
 using namespace std;
+using TiCC::operator<<;
 
 #define LOG *TiCC::Log(theErrLog)
 
@@ -53,6 +54,7 @@ using namespace std;
 namespace Tokenizer {
 
   using namespace icu;
+  using TiCC::operator<<;
 
   string defaultConfigDir = UCTODATA_DIR;
 
@@ -555,6 +557,15 @@ namespace Tokenizer {
     }
   }
 
+  UnicodeString substitute_macros( const UnicodeString& in,
+				   const map<UnicodeString,UnicodeString>& macros ){
+    UnicodeString result = in;
+    for ( const auto& it : macros ){
+      result.findAndReplace( it.first, it.second );
+    }
+    return result;
+  }
+
   bool Setting::read( const string& settings_name,
 		      const string& add_tokens,
 		      int dbg, TiCC::LogStream* ls ) {
@@ -570,6 +581,7 @@ namespace Tokenizer {
 					       { ORDINALS, "" } };
     vector<UnicodeString> rules_order;
     vector<string> meta_rules;
+    map<UnicodeString, UnicodeString> macros;
     string conffile = get_filename( settings_name );
 
     if ( !TiCC::isFile( conffile ) ){
@@ -649,6 +661,17 @@ namespace Tokenizer {
 	  }
 	  continue;
 	}
+	else if ( rawline.find( "%define" ) != string::npos ){
+	  string def = rawline.substr( 8 );
+	  vector<string> parts = TiCC::split_at_first_of( def, " \t", 2 );
+	  if ( parts.size() < 2 ){
+	    throw uConfigError( "invalid %define: " + rawline, set_file );
+	  }
+	  UnicodeString macro = UnicodeString("%")
+	    + TiCC::UnicodeFromUTF8(parts[0]) + "%";
+	  macros[macro] = TiCC::UnicodeFromUTF8(parts[1]);
+	  continue;
+	}
 
 	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
@@ -660,6 +683,7 @@ namespace Tokenizer {
 	    if ( line[0] == '\\' && line.length() > 1 && line[1] == '[' ){
 	      line = UnicodeString( line, 1 );
 	    }
+	    line = substitute_macros( line, macros );
 	    switch( mode ){
 	    case RULES: {
 	      const int splitpoint = line.indexOf("=");
@@ -819,7 +843,9 @@ namespace Tokenizer {
 	  case PREFIXES:
 	  case SUFFIXES:
 	    if ( !pattern[local_mode].isEmpty()){
-	      new_parts.push_back( pattern[local_mode] );
+	      UnicodeString val = substitute_macros( pattern[local_mode],
+						     macros );
+	      new_parts.push_back( val );
 	    }
 	    else {
 	      undef_parts.push_back( meta );
@@ -828,7 +854,8 @@ namespace Tokenizer {
 	    break;
 	  case NONE:
 	  default:
-	    new_parts.push_back( TiCC::UnicodeFromUTF8(part) );
+	    new_parts.push_back( substitute_macros( TiCC::UnicodeFromUTF8(part),
+						    macros ) );
 	    break;
 	  }
 	}
