@@ -90,20 +90,22 @@ namespace Tokenizer {
   public:
     ~Setting();
     bool read( const std::string&, const std::string&, int, TiCC::LogStream* );
-    bool readrules( const std::string& );
-    bool readfilters( const std::string& );
-    bool readquotes( const std::string& );
-    bool readeosmarkers( const std::string& );
-    bool readabbreviations( const std::string&,  UnicodeString& );
+    bool read_rules( const std::string& );
+    bool read_filters( const std::string& );
+    bool read_quotes( const std::string& );
+    bool read_eosmarkers( const std::string& );
+    bool read_abbreviations( const std::string&,  UnicodeString& );
     void add_rule( const UnicodeString&,
 		   const std::vector<UnicodeString>& );
-    void sortRules( std::map<UnicodeString, Rule *>&,
-		    const std::vector<UnicodeString>& );
+    void sort_rules( std::map<UnicodeString, Rule *>&,
+		     const std::vector<UnicodeString>& );
     static std::set<std::string> installed_languages();
     UnicodeString eosmarkers;
+    std::map<UnicodeString, UnicodeString> macros;
     std::vector<Rule *> rules;
     std::map<UnicodeString, Rule *> rulesmap;
     std::map<UnicodeString, int> rules_index;
+    std::string splitter;
     Quoting quotes;
     TiCC::UniFilter filter;
     std::string set_file; // the name of the settingsfile

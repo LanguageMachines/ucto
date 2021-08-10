@@ -261,7 +261,7 @@ namespace Tokenizer {
     return result;
   }
 
-  bool Setting::readrules( const string& fname ){
+  bool Setting::read_rules( const string& fname ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
@@ -292,14 +292,14 @@ namespace Tokenizer {
     return true;
   }
 
-  bool Setting::readfilters( const string& fname ){
+  bool Setting::read_filters( const string& fname ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
     return filter.fill( fname );
   }
 
-  bool Setting::readquotes( const string& fname ){
+  bool Setting::read_quotes( const string& fname ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
@@ -341,7 +341,7 @@ namespace Tokenizer {
     return true;
   }
 
-  bool Setting::readeosmarkers( const string& fname ){
+  bool Setting::read_eosmarkers( const string& fname ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
@@ -402,8 +402,8 @@ namespace Tokenizer {
     return result;
   }
 
-  bool Setting::readabbreviations( const string& fname,
-				   UnicodeString& abbreviations ){
+  bool Setting::read_abbreviations( const string& fname,
+				    UnicodeString& abbreviations ){
     if ( tokDebug > 0 ){
       LOG << "%include " << fname << endl;
     }
@@ -440,8 +440,8 @@ namespace Tokenizer {
     rulesmap[name] = new Rule( name, pat );
   }
 
-  void Setting::sortRules( map<UnicodeString, Rule *>& rulesmap,
-			   const vector<UnicodeString>& sort ){
+  void Setting::sort_rules( map<UnicodeString, Rule *>& rulesmap,
+			    const vector<UnicodeString>& sort ){
     // LOG << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
     //   LOG << "rule " << i << " " << *rules[i] << endl;
@@ -571,17 +571,17 @@ namespace Tokenizer {
 		      int dbg, TiCC::LogStream* ls ) {
     tokDebug = dbg;
     theErrLog = ls;
-    map<ConfigMode, UnicodeString> pattern = { { ABBREVIATIONS, "" },
-					       { TOKENS, "" },
-					       { PREFIXES, "" },
-					       { SUFFIXES, "" },
-					       { ATTACHEDPREFIXES, "" },
-					       { ATTACHEDSUFFIXES, "" },
-					       { UNITS, "" },
-					       { ORDINALS, "" } };
+    splitter = "%";
+    map<ConfigMode, UnicodeString> patterns = { { ABBREVIATIONS, "" },
+						{ TOKENS, "" },
+						{ PREFIXES, "" },
+						{ SUFFIXES, "" },
+						{ ATTACHEDPREFIXES, "" },
+						{ ATTACHEDSUFFIXES, "" },
+						{ UNITS, "" },
+						{ ORDINALS, "" } };
     vector<UnicodeString> rules_order;
     vector<string> meta_rules;
-    map<UnicodeString, UnicodeString> macros;
     string conffile = get_filename( settings_name );
 
     if ( !TiCC::isFile( conffile ) ){
@@ -610,7 +610,7 @@ namespace Tokenizer {
 	      file += ".rule";
 	    }
 	    file = get_filename( file );
-	    if ( !readrules( file ) ){
+	    if ( !read_rules( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
@@ -620,7 +620,7 @@ namespace Tokenizer {
 	      file += ".filter";
 	    }
 	    file = get_filename( file );
-	    if ( !readfilters( file ) ){
+	    if ( !read_filters( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
@@ -630,7 +630,7 @@ namespace Tokenizer {
 	      file += ".quote";
 	    }
 	    file = get_filename( file );
-	    if ( !readquotes( file ) ){
+	    if ( !read_quotes( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
@@ -640,7 +640,7 @@ namespace Tokenizer {
 	      file += ".eos";
 	    }
 	    file = get_filename( file );
-	    if ( !readeosmarkers( file ) ){
+	    if ( !read_eosmarkers( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
@@ -650,7 +650,7 @@ namespace Tokenizer {
 	      file += ".abr";
 	    }
 	    file = get_filename( file );
-	    if ( !readabbreviations( file, pattern[ABBREVIATIONS] ) ){
+	    if ( !read_abbreviations( file, patterns[ABBREVIATIONS] ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
 	  }
@@ -670,6 +670,25 @@ namespace Tokenizer {
 	  UnicodeString macro = UnicodeString("%")
 	    + TiCC::UnicodeFromUTF8(parts[0]) + "%";
 	  macros[macro] = TiCC::UnicodeFromUTF8(parts[1]);
+	  continue;
+	}
+	else if ( rawline.find( "SPLITTER=" ) != string::npos ){
+	  string local_splitter = rawline.substr( 9 );
+	  if ( local_splitter.empty() ) {
+	    throw uConfigError( "invalid SPLITTER value in: " + rawline,
+				set_file );
+	  }
+	  if ( local_splitter[0] == '"'
+	       && local_splitter[local_splitter.length()-1] == '"' ){
+	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
+	  }
+	  if ( tokDebug > 5 ){
+	    LOG << "SET SPLITTER: '" << local_splitter << "'" << endl;
+	  }
+	  if ( local_splitter != splitter ){
+	    LOG << "updating splitter to: '" << local_splitter << "'" << endl;
+	  }
+	  splitter = local_splitter;
 	  continue;
 	}
 
@@ -712,9 +731,9 @@ namespace Tokenizer {
 	    case CURRENCY:
 	    case UNITS:
 	    case ORDINALS:
-	      if ( !pattern[mode].isEmpty() )
-		pattern[mode] += '|';
-	      pattern[mode] += line;
+	      if ( !patterns[mode].isEmpty() )
+		patterns[mode] += '|';
+	      patterns[mode] += line;
 	      break;
 	    case EOSMARKERS:
 	      if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
@@ -768,7 +787,7 @@ namespace Tokenizer {
 	}
       }
 
-      // set reasonable defaults for those items that ar NOT set
+      // set reasonable defaults for those items that are NOT set
       // in the configfile
       if ( eosmarkers.length() == 0 ){
 	eosmarkers = ".!?";
@@ -786,10 +805,10 @@ namespace Tokenizer {
 	  UnicodeString entry = TiCC::UnicodeFromUTF8(line);
 	  entry = escape_regex( entry );
 	  if ( !entry.isEmpty() ){
-	    if ( !pattern[TOKENS].isEmpty() ){
-	      pattern[TOKENS] += '|';
+	    if ( !patterns[TOKENS].isEmpty() ){
+	      patterns[TOKENS] += '|';
 	    }
-	    pattern[TOKENS] += entry;
+	    patterns[TOKENS] += entry;
 	  }
 	}
       }
@@ -802,19 +821,23 @@ namespace Tokenizer {
 			      set_file );
 	}
 	string nam = TiCC::trim( mr.substr( 0, pos ) );
-	string splitter = "%";
 	if ( nam == "SPLITTER" ){
-	  splitter = mr.substr( pos+1 );
-	  if ( splitter.empty() ) {
+	  string local_splitter = mr.substr( pos+1 );
+	  if ( local_splitter.empty() ) {
 	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr,
 				set_file );
 	  }
-	  if ( splitter[0] == '"' && splitter[splitter.length()-1] == '"' ){
-	    splitter = splitter.substr(1,splitter.length()-2);
+	  if ( local_splitter[0] == '"'
+	       && local_splitter[local_splitter.length()-1] == '"' ){
+	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
 	  }
 	  if ( tokDebug > 5 ){
-	    LOG << "SET SPLIT: '" << splitter << "'" << endl;
+	    LOG << "SET SPLITTER: '" << local_splitter << "'" << endl;
 	  }
+	  if ( local_splitter != splitter ){
+	    LOG << "updating splitter to: '" << local_splitter << "'" << endl;
+	  }
+	  splitter = local_splitter;
 	  continue;
 	}
 	UnicodeString name = TiCC::UnicodeFromUTF8( nam );
@@ -842,8 +865,8 @@ namespace Tokenizer {
 	  case CURRENCY:
 	  case PREFIXES:
 	  case SUFFIXES:
-	    if ( !pattern[local_mode].isEmpty()){
-	      UnicodeString val = substitute_macros( pattern[local_mode],
+	    if ( !patterns[local_mode].isEmpty()){
+	      UnicodeString val = substitute_macros( patterns[local_mode],
 						     macros );
 	      new_parts.push_back( val );
 	    }
@@ -869,7 +892,7 @@ namespace Tokenizer {
 	  add_rule( name, new_parts );
 	}
       }
-      sortRules( rulesmap, rules_order );
+      sort_rules( rulesmap, rules_order );
     }
     else {
       return false;
