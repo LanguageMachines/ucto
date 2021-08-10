@@ -667,8 +667,8 @@ namespace Tokenizer {
 	  if ( parts.size() < 2 ){
 	    throw uConfigError( "invalid %define: " + rawline, set_file );
 	  }
-	  UnicodeString macro = UnicodeString("%")
-	    + TiCC::UnicodeFromUTF8(parts[0]) + "%";
+	  UnicodeString macro = TiCC::UnicodeFromUTF8(splitter)
+	    + TiCC::UnicodeFromUTF8(parts[0]) + TiCC::UnicodeFromUTF8(splitter);
 	  macros[macro] = TiCC::UnicodeFromUTF8(parts[1]);
 	  continue;
 	}
