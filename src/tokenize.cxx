@@ -608,6 +608,28 @@ namespace Tokenizer {
     return result;
   }
 
+  void appendText( folia::FoliaElement *root,
+		   const string& outputclass  ){
+    // set the textcontent of root to that of it's children
+    if ( root->hastext( outputclass ) ){
+      // there is already text, bail out.
+      return;
+    }
+    if ( root->isSubClass( folia::Linebreak_t ) ){
+      // exception
+      return;
+    }
+    UnicodeString utxt = root->text( outputclass );
+    // so get Untokenized text from the children, and set it
+    root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
+  }
+
+  void removeText( folia::FoliaElement *root,
+		   const string& outputclass  ){
+    // remove the textcontent in outputclass of root
+    root->clear_textcontent( outputclass );
+  }
+
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
     inputEncoding = checkBOM( IN );
     folia::Document *doc = start_document( docid );
@@ -635,6 +657,13 @@ namespace Tokenizer {
 	LOG << "[tokenize] remainder=" << buffer << endl;
       }
       append_to_folia( root, buffer, parCount);
+    }
+    // make sure to set the text on the last root created
+    if ( text_redundancy == "full" ){
+      appendText( root, outputclass );
+    }
+    else if ( text_redundancy == "none" ){
+      removeText( root, outputclass );
     }
     return doc;
   }
@@ -734,28 +763,6 @@ namespace Tokenizer {
       }
       OUT << endl;
     }
-  }
-
-  void appendText( folia::FoliaElement *root,
-		   const string& outputclass  ){
-    // set the textcontent of root to that of it's children
-    if ( root->hastext( outputclass ) ){
-      // there is already text, bail out.
-      return;
-    }
-    if ( root->isSubClass( folia::Linebreak_t ) ){
-      // exception
-      return;
-    }
-    UnicodeString utxt = root->text( outputclass );
-    // so get Untokenized text from the children, and set it
-    root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
-  }
-
-  void removeText( folia::FoliaElement *root,
-		   const string& outputclass  ){
-    // remove the textcontent in outputclass of root
-    root->clear_textcontent( outputclass );
   }
 
   void set_language( folia::FoliaElement* node, const string& lang ){
