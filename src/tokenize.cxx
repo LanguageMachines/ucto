@@ -2253,8 +2253,10 @@ namespace Tokenizer {
     in >> s;
     UErrorCode err = U_ZERO_ERROR;
     int32_t bomLength = 0;
-    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(), s.length(),
-							&bomLength, &err);
+    const char *encoding = ucnv_detectUnicodeSignature( s.c_str(),
+							s.length(),
+							&bomLength,
+							&err);
     if ( bomLength ){
       if ( tokDebug ){
 	LOG << "Autodetected encoding: " << encoding << endl;
