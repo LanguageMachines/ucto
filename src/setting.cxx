@@ -519,8 +519,8 @@ namespace Tokenizer {
   }
 
   void split( const string& version, int& major, int& minor, string& sub ){
-    vector<string> parts;
-    size_t num = TiCC::split_at( version, parts, "." );
+    vector<string> parts = TiCC::split_at( version, "." );
+    size_t num = parts.size();
     major = 0;
     minor = 0;
     sub.clear();

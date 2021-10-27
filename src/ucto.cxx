@@ -331,7 +331,8 @@ int main( int argc, char *argv[] ){
 	do_language_detect = true;
       }
       if ( !languages.empty() ){
-	if ( TiCC::split_at( languages, language_list, "," ) < 1 ){
+	language_list = TiCC::split_at( languages, "," );
+	if ( language_list.empty() ){
 	  throw TiCC::OptionError( "invalid language list: " + languages );
 	}
       }
