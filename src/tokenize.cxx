@@ -611,6 +611,9 @@ namespace Tokenizer {
   void appendText( folia::FoliaElement *root,
 		   const string& outputclass  ){
     // set the textcontent of root to that of it's children
+    if ( !root ){
+      throw logic_error( "appendText() on empty root" );
+    }
     if ( root->hastext( outputclass ) ){
       // there is already text, bail out.
       return;
@@ -626,6 +629,9 @@ namespace Tokenizer {
 
   void removeText( folia::FoliaElement *root,
 		   const string& outputclass  ){
+    if ( !root ){
+      throw logic_error( "removeText() on empty root" );
+    }
     // remove the textcontent in outputclass of root
     root->clear_textcontent( outputclass );
   }
