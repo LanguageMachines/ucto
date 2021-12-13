@@ -1759,20 +1759,20 @@ namespace Tokenizer {
     return outToks;
   }
 
-  string TokenizerClass::getString( const vector<Token>& v ){
+  UnicodeString TokenizerClass::getString( const vector<Token>& v ){
     if ( !v.empty() ){
       //This only makes sense in non-verbose mode, force verbose=false
       const bool tv = verbose;
       verbose = false;
       UnicodeString res = outputTokens( v );
       verbose = tv;
-      return TiCC::UnicodeToUTF8(res);
+      return res;
     }
     return "";
   }
 
-  vector<string> TokenizerClass::getSentences() {
-    vector<string> sentences;
+  vector<UnicodeString> TokenizerClass::getSentences() {
+    vector<UnicodeString> sentences;
     if  (tokDebug > 0) {
       LOG << "[getSentences()] before countSent " << endl;
     }
@@ -1782,7 +1782,7 @@ namespace Tokenizer {
     }
     for (int i = 0; i < numS; i++) {
       vector<Token> v = popSentence( );
-      string tmp = getString( v );
+      UnicodeString tmp = getString( v );
       sentences.push_back( tmp );
     }
     return sentences;
