@@ -323,7 +323,8 @@ namespace Tokenizer {
     int flushSentences( int, const std::string& = "default" );
     //Flush n sentences from buffer (does some extra validation as well)
 
-    void outputTokens( std::ostream&, const std::vector<Token>& ,const bool continued=false) const; //continued should be set to true when outputTokens is invoked multiple times and it is not the first invokation
+    icu::UnicodeString outputTokens( const std::vector<Token>&,
+				     const bool=false ) const;
     void add_rule( const UnicodeString&,
 		   const std::vector<UnicodeString>& );
     void tokenizeWord( const UnicodeString&,

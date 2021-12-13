@@ -130,7 +130,6 @@ namespace Tokenizer {
 		const UnicodeString& _s,
 		TokenRole _role, const string& _lang_code ):
     type(_type), us(_s), role(_role), lang_code(_lang_code) {
-    //    cerr << "Created " << *this << endl;
   }
 
 
@@ -142,13 +141,31 @@ namespace Tokenizer {
     return os;
   }
 
+  UnicodeString toUString( const TokenRole& tok ){
+    UnicodeString result;
+    if ( tok & NOSPACE){
+      result += "NOSPACE ";
+    }
+    if ( tok & BEGINOFSENTENCE) {
+      result += "BEGINOFSENTENCE ";
+    }
+    if ( tok & ENDOFSENTENCE) {
+      result += "ENDOFSENTENCE ";
+    }
+    if ( tok & NEWPARAGRAPH) {
+      result += "NEWPARAGRAPH ";
+    }
+    if ( tok & BEGINQUOTE) {
+      result += "BEGINQUOTE ";
+    }
+    if ( tok & ENDQUOTE) {
+      result += "ENDQUOTE ";
+    }
+    return result;
+  }
+
   ostream& operator<<( ostream& os, const TokenRole& tok ){
-    if ( tok & NOSPACE) os << "NOSPACE ";
-    if ( tok & BEGINOFSENTENCE) os << "BEGINOFSENTENCE ";
-    if ( tok & ENDOFSENTENCE) os << "ENDOFSENTENCE ";
-    if ( tok & NEWPARAGRAPH) os << "NEWPARAGRAPH ";
-    if ( tok & BEGINQUOTE) os << "BEGINQUOTE ";
-    if ( tok & ENDQUOTE) os << "ENDQUOTE ";
+    os << toUString( tok );
     return os;
   }
 
@@ -741,7 +758,8 @@ namespace Tokenizer {
 	  // extract sentence from Token vector until done
 	  vector<Token> v = popSentence();
 	  while( !v.empty() ){
-	    outputTokens( OUT, v , (i>0) );
+	    UnicodeString res = outputTokens( v , (i>0) );
+	    OUT << res;
 	    ++i;
 	    v = popSentence();
 	  }
@@ -759,7 +777,8 @@ namespace Tokenizer {
 	}
 	vector<Token> v = tokenizeOneSentence( IN );
 	while( !v.empty() ){
-	  outputTokens( OUT, v , (i>0) );
+	  UnicodeString res = outputTokens( v , (i>0) );
+	  OUT << res;
 	  ++i;
 	  v = tokenizeOneSentence( IN );
 	}
@@ -1532,14 +1551,21 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::outputTokens( ostream& OUT,
-				     const vector<Token>& tokens,
-				     const bool continued ) const {
-    // continued should be set to true when outputTokens is invoked multiple
-    // times and it is not the first invokation
-    // this makes paragraph boundaries work over multiple calls
+  UnicodeString TokenizerClass::outputTokens( const vector<Token>& tokens,
+					      const bool continued ) const {
+    /*!
+      \param tokens A list of Token's to display
+      \param continued Set to true when outputTokens is invoked multiple
+      times and it is not the first invokation
+
+      this makes paragraph boundaries work over multiple calls
+      \return A UnicodeString representing tokenized lines, including token
+      information, when verbose mode is on.
+    */
     short quotelevel = 0;
+    UnicodeString result;
     for ( const auto& token : tokens ) {
+      UnicodeString outline;
       if (tokDebug >= 5){
 	LOG << "outputTokens: token=" << token << endl;
       }
@@ -1548,56 +1574,56 @@ namespace Tokenizer {
 	   && !verbose
 	   && continued ) {
 	//output paragraph separator
-	if (sentenceperlineoutput) {
-	  OUT << endl;
+	if ( sentenceperlineoutput ) {
+	  outline += "\n";
 	}
 	else {
-	  OUT << endl << endl;
+	  outline += "\n\n";
 	}
       }
       UnicodeString s = token.us;
       if (lowercase) {
 	s = s.toLower();
       }
-      else if (uppercase) {
+      else if ( uppercase ) {
 	s = s.toUpper();
       }
-      OUT << s;
-      if ( token.role & NEWPARAGRAPH) {
+      outline += s;
+      if ( token.role & NEWPARAGRAPH ) {
 	quotelevel = 0;
       }
-      if ( token.role & BEGINQUOTE) {
+      if ( token.role & BEGINQUOTE ) {
 	++quotelevel;
       }
-      if (verbose) {
-	OUT << "\t" << token.type << "\t" << token.role << endl;
+      if ( verbose ) {
+	outline += "\t" + token.type + "\t" + toUString(token.role) + "\n";
       }
-      if ( token.role & ENDQUOTE) {
+      if ( token.role & ENDQUOTE ) {
 	--quotelevel;
       }
 
-      if ( token.role & ENDOFSENTENCE) {
+      if ( token.role & ENDOFSENTENCE ) {
 	if ( verbose ) {
 	  if ( !(token.role & NOSPACE ) ){
-	    OUT << endl;
+	    outline += "\n";
 	  }
 	}
 	else {
 	  if ( quotelevel == 0 ) {
-	    if (sentenceperlineoutput) {
-	      OUT << endl;
+	    if ( sentenceperlineoutput ) {
+	      outline += "\n";
 	    }
 	    else {
-	      OUT << " " + eosmark + " ";
+	      outline += " " + eosmark + " ";
 	    }
 	    if ( splitOnly ){
-	      OUT << endl;
+	      outline += "\n";
 	    }
 	  }
 	  else { //inside quotation
 	    if ( splitOnly
 		 && !(token.role & NOSPACE ) ){
-	      OUT << " ";
+	      outline += " ";
 	    }
 	  }
 	}
@@ -1612,17 +1638,22 @@ namespace Tokenizer {
 		 && (token.role & NOSPACE) ){
 	    }
 	    else {
-	      OUT << " ";
+	      outline += " ";
 	    }
 	  }
 	}
 	else if ( (quotelevel > 0)
 		  && sentenceperlineoutput ) {
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
-	  OUT << " ";
+	  outline += " ";
 	}
       }
+      if (tokDebug >= 5){
+	LOG << "outputTokens: outline=" << outline << endl;
+      }
+      result += outline;
     }
+    return result;
   }
 
   int TokenizerClass::countSentences( bool forceentirebuffer ) {
@@ -1731,12 +1762,11 @@ namespace Tokenizer {
   string TokenizerClass::getString( const vector<Token>& v ){
     if ( !v.empty() ){
       //This only makes sense in non-verbose mode, force verbose=false
-      stringstream TMPOUT;
       const bool tv = verbose;
       verbose = false;
-      outputTokens( TMPOUT, v );
+      UnicodeString res = outputTokens( v );
       verbose = tv;
-      return TMPOUT.str();
+      return TiCC::UnicodeToUTF8(res);
     }
     return "";
   }
