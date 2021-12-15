@@ -1,3 +1,12 @@
+0.24 2021-12-15
+[Ko vd Sloot]
+* fix for https://github.com/LanguageMachines/ucto/issues/84
+* added a solution for https://github.com/LanguageMachines/ucto/issues/53
+  (only partly)
+* added some UnicodeString members to the API
+* bumped library version to 6.0, because of API changes
+* code cleanup and refactoring
+
 0.23 2021-07-12
 [Ko vd Sloot]
 * added support for the new 'tag' feature in FoLiA, only for tag="token"
