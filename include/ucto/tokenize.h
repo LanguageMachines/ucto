@@ -146,11 +146,16 @@ namespace Tokenizer {
     // extract 1 sentence from Token vector;
     std::vector<Token> popSentence();
 
-    // convert the sentence in a token vector to a string (UTF-8 encoded)
+    // convert the sentence in a token vector to a UnicodeString
     icu::UnicodeString getString( const std::vector<Token>& );
+    // convert the sentence in a token vector to a string (UTF-8 encoded)
+    std::string getUTF8String( const std::vector<Token>& );
+
+    // extract all sentences as a vector of UnicodeStrings
+    std::vector<icu::UnicodeString> getSentences();
 
     // extract all sentences as a vector of strings (UTF-8 encoded)
-    std::vector<icu::UnicodeString> getSentences();
+    std::vector<std::string> getUTF8Sentences();
 
     //Enable verbose mode
     bool setVerbose( bool b=true ) { bool t = verbose; verbose = b; return t; };

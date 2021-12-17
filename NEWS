@@ -1,3 +1,9 @@
+0.24.1 2021-12-17
+[Ko van der Sloot]
+* added UTF8 members to the API, to replace the variants that were
+  converted to UnicodeString
+  This should help fixing https://github.com/proycon/python-ucto/issues/11
+
 0.24 2021-12-15
 [Ko vd Sloot]
 * fix for https://github.com/LanguageMachines/ucto/issues/84

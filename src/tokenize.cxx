@@ -1771,6 +1771,11 @@ namespace Tokenizer {
     return "";
   }
 
+  string TokenizerClass::getUTF8String( const vector<Token>& v ){
+    UnicodeString result = getString( v );
+    return TiCC::UnicodeToUTF8( result );
+  }
+
   vector<UnicodeString> TokenizerClass::getSentences() {
     vector<UnicodeString> sentences;
     if  (tokDebug > 0) {
@@ -1786,6 +1791,15 @@ namespace Tokenizer {
       sentences.push_back( tmp );
     }
     return sentences;
+  }
+
+  vector<string> TokenizerClass::getUTF8Sentences() {
+    vector<UnicodeString> uv = getSentences();
+    vector<string> result;
+    for ( const auto& us : uv ){
+      result.push_back( TiCC::UnicodeToUTF8(us) );
+    }
+    return result;
   }
 
   // FBK: return true if character is a quote.
