@@ -116,7 +116,7 @@ namespace Tokenizer {
     return result;
   }
 
-  const UnicodeString type_space = "SPACE";
+  const UnicodeString type_separator = "SPACE";
   const UnicodeString type_currency = "CURRENCY";
   const UnicodeString type_emoticon = "EMOTICON";
   const UnicodeString type_picto = "PICTOGRAM";
@@ -172,6 +172,7 @@ namespace Tokenizer {
   TokenizerClass::TokenizerClass():
     linenum(0),
     inputEncoding( "UTF-8" ),
+    space_separated(true),
     eosmark("<utt>"),
     tokDebug(0),
     verbose(false),
@@ -275,6 +276,26 @@ namespace Tokenizer {
     string old = inputEncoding;
     inputEncoding = enc;
     return old;
+  }
+
+  string TokenizerClass::setSeparators( const std::string& seps ){
+    UnicodeString old;
+    if ( space_separated ){
+      old = "+";
+    }
+    for ( const auto& c : separators ){
+      old += c;
+    }
+    UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
+    for ( int i=0; i < u_seps.length(); ++i ) {
+      if ( u_seps[i] == '+' ){
+	space_separated = true;
+      }
+      else {
+	separators.insert( u_seps[i] );
+      }
+    }
+    return TiCC::UnicodeToUTF8(old);
   }
 
   string TokenizerClass::setTextRedundancy( const std::string& tr ){
@@ -1653,6 +1674,9 @@ namespace Tokenizer {
       }
       result += outline;
     }
+    if (tokDebug >= 5){
+      LOG << "outputTokens: result= '" << result << "'" << endl;
+    }
     return result;
   }
 
@@ -2155,6 +2179,15 @@ namespace Tokenizer {
     }
   }
 
+  bool TokenizerClass::is_separator( UChar32 c ){
+    bool result = false;
+    if ( space_separated ){
+      result = u_isspace( c );
+    }
+    result |= ( separators.find( c ) != separators.end() );
+    return result;
+  }
+
   void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
     if (tokDebug) {
       LOG << "[passthruLine] input: line=[" << input << "]" << endl;
@@ -2169,7 +2202,7 @@ namespace Tokenizer {
 	sit.next32();
 	continue;
       }
-      if ( u_isspace(c) ) {
+      if ( is_separator(c) ) {
 	if ( word.isEmpty() ){
 	  // a leading space. Don't waste time on it. SKIP
 	  sit.next32();
@@ -2360,9 +2393,9 @@ namespace Tokenizer {
       || u_charType( c ) == U_OTHER_SYMBOL;
   }
 
-  const UnicodeString& detect_type( UChar32 c ){
-    if ( u_isspace(c)) {
-      return type_space;
+  const UnicodeString& TokenizerClass::detect_type( UChar32 c ){
+    if ( is_separator(c)) {
+      return type_separator;
     }
     else if ( u_iscurrency(c)) {
       return type_currency;
@@ -2518,7 +2551,7 @@ namespace Tokenizer {
       if (reset) { //reset values for new word
 	reset = false;
 	tok_size = 0;
-	if ( !joiner && !u_isspace(c) ){
+	if ( !joiner && !is_separator(c) ){
 	  word = c;
 	}
 	else {
@@ -2526,17 +2559,17 @@ namespace Tokenizer {
 	}
 	tokenizeword = false;
       }
-      else if ( !joiner && !u_isspace(c) ){
+      else if ( !joiner && !is_separator(c) ){
 	word += c;
       }
       if ( joiner && sit.hasNext() ){
 	UChar32 peek = sit.next32();
-	if ( u_isspace(peek) ){
+	if ( is_separator(peek) ){
 	  joiner = false;
 	}
 	sit.previous32();
       }
-      if ( u_isspace(c) || joiner || i == len-1 ){
+      if ( is_separator(c) || joiner || i == len-1 ){
 	if (tokDebug){
 	  LOG << "[tokenizeLine] space detected, word=[" << word << "]" << endl;
 	}
@@ -2692,7 +2725,7 @@ namespace Tokenizer {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
-      if ( type == type_space ){
+      if ( type == type_separator ){
 	return;
       }
       if ( doPunctFilter

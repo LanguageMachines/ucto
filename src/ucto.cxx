@@ -171,12 +171,18 @@ int main( int argc, char *argv[] ){
   string norm_set_string;
   string add_tokens;
   string command_line = "ucto";
+  string separators = "+";
   for ( int i=1; i < argc; ++i ){
     command_line += " " + string(argv[i]);
   }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,inputclass:,outputclass:,normalize:,id:,version,help,detectlanguages:,uselanguages:,textredundancy:,add-tokens:,split,allow-word-corrections,ignore-tag-hints");
+			   "filter:,filterpunct,passthru,textclass:,"
+			   "inputclass:,outputclass:,normalize:,id:,version,"
+			   "help,detectlanguages:,uselanguages:,"
+			   "textredundancy:,add-tokens:,split,"
+			   "allow-word-corrections,ignore-tag-hints,"
+			   "separators:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -286,6 +292,10 @@ int main( int argc, char *argv[] ){
     }
     ignore_tags = Opts.extract( "ignore-tag-hints" );
     pass_thru = Opts.extract( "passthru" );
+    Opts.extract( "separators", value );
+    if ( !value.empty() ){
+      separators = value;
+    }
     bool use_lang = Opts.is_present( "uselanguages" );
     bool detect_lang = Opts.is_present( "detectlanguages" );
     if ( detect_lang && use_lang ){
@@ -495,6 +505,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
+    tokenizer.setSeparators(separators);
     if ( ignore_tags ){
       tokenizer.setNoTags( true );
     }

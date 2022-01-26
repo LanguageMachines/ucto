@@ -225,6 +225,9 @@ namespace Tokenizer {
 
     std::string setTextRedundancy( const std::string& );
 
+    // set the desired separators.
+    std::string setSeparators( const std::string& );
+
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
       return normalizer.setMode( s );
@@ -359,6 +362,11 @@ namespace Tokenizer {
 
     TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
+
+    const UnicodeString& detect_type( UChar32 );
+    bool is_separator( UChar32 );
+    std::set<UChar32> separators;
+    bool space_separated;
 
     UnicodeString eosmark;
     std::vector<Token> tokens;
