@@ -286,18 +286,30 @@ namespace Tokenizer {
     for ( const auto& c : separators ){
       old += c;
     }
-    if ( seps == "+" ){
-      space_separated = true;
-    }
-    else {
-      UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
-      UnicodeString norm = normalizer.normalize( u_seps );
-      for ( int i=0; i < norm.length(); ++i ) {
-	if ( norm[i] == '+' ){
-	  space_separated = true;
-	}
-	else {
-	  separators.insert( norm[i] );
+    if ( !seps.empty() ){
+      cerr << "seps = '" << seps << "'" << endl;
+      if ( seps == "+" ){
+	// just use spacing characters as separators
+	space_separated = true;
+      }
+      else if ( seps == "-+" ){
+	// special case, to set ONLY a '+' as separator
+	space_separated = false;
+	separators.insert( seps[1] );
+      }
+      else {
+	UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
+	UnicodeString norm = normalizer.normalize( u_seps );
+	for ( int i=0; i < norm.length(); ++i ) {
+	  if ( norm[i] == '+' && i == 0 ){
+	    // a '+' in the first position means use spacing separators
+	    // AND all following.
+	    space_separated = true;
+	  }
+	  else {
+	    // add the character as a separator
+	    separators.insert( norm[i] );
+	  }
 	}
       }
     }
