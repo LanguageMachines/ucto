@@ -292,10 +292,7 @@ int main( int argc, char *argv[] ){
     }
     ignore_tags = Opts.extract( "ignore-tag-hints" );
     pass_thru = Opts.extract( "passthru" );
-    Opts.extract( "separators", value );
-    if ( !value.empty() ){
-      separators = value;
-    }
+    Opts.extract( "separators", separators );
     bool use_lang = Opts.is_present( "uselanguages" );
     bool detect_lang = Opts.is_present( "detectlanguages" );
     if ( detect_lang && use_lang ){
@@ -505,7 +502,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
-    tokenizer.setSeparators(separators);
+    tokenizer.setSeparators(separators); // IMPORTANT: AFTER setNormalization
     if ( ignore_tags ){
       tokenizer.setNoTags( true );
     }

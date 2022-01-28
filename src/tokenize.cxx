@@ -286,13 +286,19 @@ namespace Tokenizer {
     for ( const auto& c : separators ){
       old += c;
     }
-    UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
-    for ( int i=0; i < u_seps.length(); ++i ) {
-      if ( u_seps[i] == '+' ){
-	space_separated = true;
-      }
-      else {
-	separators.insert( u_seps[i] );
+    if ( seps == "+" ){
+      space_separated = true;
+    }
+    else {
+      UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
+      UnicodeString norm = normalizer.normalize( u_seps );
+      for ( int i=0; i < norm.length(); ++i ) {
+	if ( norm[i] == '+' ){
+	  space_separated = true;
+	}
+	else {
+	  separators.insert( norm[i] );
+	}
       }
     }
     return TiCC::UnicodeToUTF8(old);
