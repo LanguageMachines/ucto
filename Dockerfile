@@ -21,7 +21,7 @@ RUN if [ "$VERSION" = "stable" ]; then \
         git clone https://github.com/LanguageMachines/libfolia && cd libfolia && sh ./bootstrap.sh && ./configure && make && make install && cd .. &&\
         git clone https://github.com/LanguageMachines/uctodata && cd uctodata && sh ./bootstrap.sh && ./configure && make && make install && cd .. &&\
         git clone https://github.com/LanguageMachines/ucto && cd ucto && sh ./bootstrap.sh && ./configure && make && make install && cd .. &&\
-        cd ucto && ./configure && make && make install; \
+        cd ucto && sh ./bootstrap.sh && ./configure && make && make install; \
     fi
 
 WORKDIR /
