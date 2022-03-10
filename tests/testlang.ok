@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.11" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -10,8 +10,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-21T15:18:02" command="ucto -L nl -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
+      <processor xml:id="ucto.1" begindatetime="2022-03-10T15:23:19" command="ucto -L nl -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
         </processor>
@@ -102,7 +102,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.11" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -113,8 +113,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-21T15:18:02" command="ucto -L en -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
+      <processor xml:id="ucto.1" begindatetime="2022-03-10T15:23:19" command="ucto -L en -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
         </processor>
@@ -220,7 +220,7 @@
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.2" version="0.8">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.11" version="0.8">
   <metadata type="native">
     <annotations>
       <division-annotation annotator="ucto" set="div"/>
@@ -234,8 +234,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-21T15:18:02" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
+      <processor xml:id="ucto.1" begindatetime="2022-03-10T15:23:19" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -371,7 +371,7 @@
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.2" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.11" version="2.5.1">
   <metadata type="native">
     <annotations>
       <token-annotation alias="tokconfig-deu" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-deu.foliaset.ttl">
@@ -389,6 +389,9 @@
       <token-annotation alias="tokconfig-spa" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-spa.foliaset.ttl">
         <annotator processor="ucto.1"/>
       </token-annotation>
+      <token-annotation alias="tokconfig-swe" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-swe.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
       <paragraph-annotation>
         <annotator processor="ucto.1"/>
       </paragraph-annotation>
@@ -401,14 +404,15 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-21T15:18:02" command="ucto --detectlanguages=nld,eng,deu,spa,fra -X --id=ml multilang.txt ml.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
+      <processor xml:id="ucto.1" begindatetime="2022-03-10T15:23:19" command="ucto --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-eng" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.3" name="tokconfig-fra" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.4" name="tokconfig-nld" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.5" name="tokconfig-spa" type="datasource" version="0.2"/>
+          <processor xml:id="uctodata.1.6" name="tokconfig-swe" type="datasource" version="0.2"/>
         </processor>
       </processor>
     </provenance>
@@ -1101,11 +1105,51 @@
         </w>
       </s>
     </p>
+    <p xml:id="ml.p.7">
+      <s xml:id="ml.p.7.s.1">
+        <lang class="swe"/>
+        <w xml:id="ml.p.7.s.1.w.1" class="WORD" set="tokconfig-swe">
+          <t>Religionen</t>
+        </w>
+        <w xml:id="ml.p.7.s.1.w.2" class="WORD" set="tokconfig-swe">
+          <t>och</t>
+        </w>
+        <w xml:id="ml.p.7.s.1.w.3" class="WORD" set="tokconfig-swe" space="no">
+          <t>sanningskravet</t>
+        </w>
+        <w xml:id="ml.p.7.s.1.w.4" class="PUNCTUATION" set="tokconfig-swe">
+          <t>.</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="ml.p.8">
+      <s xml:id="ml.p.8.s.1">
+        <lang class="swe"/>
+        <w xml:id="ml.p.8.s.1.w.1" class="WORD" set="tokconfig-swe">
+          <t>KAN</t>
+        </w>
+        <w xml:id="ml.p.8.s.1.w.2" class="WORD" set="tokconfig-swe">
+          <t>KRISTENDOMEN</t>
+        </w>
+        <w xml:id="ml.p.8.s.1.w.3" class="WORD" set="tokconfig-swe">
+          <t>BOTA</t>
+        </w>
+        <w xml:id="ml.p.8.s.1.w.4" class="WORD" set="tokconfig-swe">
+          <t>VÄRLDENS</t>
+        </w>
+        <w xml:id="ml.p.8.s.1.w.5" class="WORD" set="tokconfig-swe" space="no">
+          <t>BEKYMMER</t>
+        </w>
+        <w xml:id="ml.p.8.s.1.w.6" class="PUNCTUATION" set="tokconfig-swe">
+          <t>?</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
 <?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet type="text/xsl" href="folia.xsl"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.2" version="2.1.0">
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.11" version="2.5.1">
   <metadata type="native">
     <annotations>
       <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
@@ -1126,8 +1170,8 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2019-06-21T15:18:02" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.1.0" host="kokos" name="ucto" user="sloot" version="0.18">
-        <processor xml:id="ucto.1.generator" folia_version="2.1.0" name="libfolia" type="generator" version="2.2"/>
+      <processor xml:id="ucto.1" begindatetime="2022-03-10T15:23:19" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
           <processor xml:id="uctodata.1.2" name="tokconfig-nld" type="datasource" version="0.2"/>
