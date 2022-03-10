@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python
 #-*- coding:utf-8 -*-
 
 import glob
@@ -37,9 +37,9 @@ def checkVGsummary( id, lang ):
                 ERRORS = int( s[num].replace(',','') )
                 break
     if ( LOST != 0 or ERRORS != 0 ):
-        print color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True)
+        print( color_text( "OK, but valgrind says:" + str(ERRORS) + " errors, " + str(LOST) + " bytes lost", 'BLUE', True) )
     else:
-        print color_text("OK", 'GREEN', True)
+        print( color_text("OK", 'GREEN', True) )
 
 if len(sys.argv) == 2:
     mask = sys.argv[1]
@@ -55,7 +55,7 @@ log = ""
 
 if "VG" in os.environ and os.environ["VG"]:
     VG=os.environ["VG"] + " "
-    print "testing with '" + VG + "'. This is slow!"
+    print( "testing with '" + VG + "'. This is slow!",end='' )
 else:
     VG=""
 
@@ -69,7 +69,7 @@ for f in glob.glob(mask):
 
     msg = "Testing: " + id + " (" + lang + ")"
     spaces = " " * (50 - len(msg) )
-    print msg + spaces,
+    print( msg + spaces, end='' )
     if os.path.isfile(id + '.' + lang + '.tok.V'):
         reffile = id + '.' + lang + '.tok.V'
         outputfile = 'testoutput/' + id + '.' + lang + '.tok.V'
@@ -83,14 +83,14 @@ for f in glob.glob(mask):
         outputfile = 'testoutput/' + id + '.' + lang + '.xml'
         cmd = VG+'../src/.libs/ucto --id="test" -Q -X -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err'
     else:
-        print color_text("MISSING", 'RED', True)
+        print( color_text("MISSING", 'RED', True) )
         exitcode += 1
         continue
 
     #print cmd
     retcode = os.system(cmd)
     if retcode != 0:
-        print color_text("CRASHED!!!", 'RED', True)
+        print( color_text("CRASHED!!!", 'RED', True) )
         if retcode == 2: # lame attempt to bail out on ^C
             break
         exitcode += 1
@@ -106,10 +106,10 @@ for f in glob.glob(mask):
             if VG:
                 checkVGsummary( id, lang )
             else:
-                print color_text("OK", 'GREEN', True)
+                print( color_text("OK", 'GREEN', True) )
                 os.system('rm testoutput/' + id + '.' + lang + '.diff')
         else:
-            print color_text("FAILED", 'RED', True)
+            print( color_text("FAILED", 'RED', True) )
             exitcode += 1
             log += "testoutput/" + id + '.' + lang + '.diff\n'
             log += "testoutput/" + id + '.' + lang + '.err\n'
@@ -119,7 +119,7 @@ for f in glob.glob(mask):
                 os.system('../src/.libs/ucto --id="test" -X -Q -d ' + str(DEBUGLEVEL) + ' -v -L' + lang + ' ' + f + ' ' + outputfile + ' 2> testoutput/' + id + '.' + lang + '.err')
 
 if log:
-    print "--------------------------"
-    print "Files to inspect:"
-    print log
+    print( "--------------------------" )
+    print( "Files to inspect:" )
+    print( log )
 sys.exit(exitcode)

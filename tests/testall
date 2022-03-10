@@ -25,7 +25,7 @@ do
    fi
 done
 
-python2 test.py
+python3 test.py
 erc=$?
 if [ $erc -ne 0 ]; then
    sum=$(($sum + $erc))
