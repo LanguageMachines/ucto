@@ -10,3 +10,5 @@ $exe --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml
 cat ml.xml
 $exe --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml
 cat ml2.xml
+$exe --detectlanguages=unk,nld -n --id=ml multilang2.txt ml3.xml
+cat ml3.xml

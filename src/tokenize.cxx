@@ -565,6 +565,34 @@ namespace Tokenizer {
     return doc;
   }
 
+  string TokenizerClass::detect( UnicodeString& temp ){
+    string result;
+    temp.findAndReplace( eosmark, "" );
+    temp.toLower();
+    if ( tokDebug > 3 ){
+      LOG << "use textCat to guess language from: "
+	  << temp << endl;
+    }
+    string language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
+    if ( settings.find( language ) != settings.end() ){
+      if ( tokDebug > 3 ){
+	LOG << "found a supported language: " << language << endl;
+      }
+    }
+    else {
+      if ( tokDebug > 3 ){
+	LOG << "found an unsupported language: " << language << endl;
+      }
+      if ( unk_language ){
+	result = "unk";
+      }
+      else {
+	result = "default";
+      }
+    }
+    return result;
+  }
+
   void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
 					  bool& bos,
 					  const string& lang ){
@@ -579,35 +607,33 @@ namespace Tokenizer {
 	      << (text_cat && doDetectLang) << endl;
 	}
 	if ( text_cat && doDetectLang ){
-	  UnicodeString temp = input_line;
-	  temp.findAndReplace( eosmark, "" );
-	  temp.toLower();
-	  if ( tokDebug > 3 ){
-	    LOG << "use textCat to guess language from: "
-		<< temp << endl;
-	  }
-	  language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
-	  if ( settings.find( language ) != settings.end() ){
-	    if ( tokDebug > 3 ){
-	      LOG << "found a supported language: " << language << endl;
+	  if ( unk_language ){
+	    // hack into parts
+	    cerr << "INPUT: " << input_line << endl;
+	    vector<UnicodeString> parts = TiCC::split_at_first_of( input_line,
+								    ".?!" );
+	    for ( const auto& part : parts ){
+	      UnicodeString tmp = part;
+	      cerr << "BEKIjK: " << part << endl;
+	      string lan = detect( tmp );
+	      if ( lan == "unk" ){
+		passthru = true;
+		cerr << "passthruline UNk:" << part << endl;
+		bool beg = true;
+		passthruLine( part, beg );
+		cerr << "passthruline Done UNk" << endl;
+		passthru = false;
+	      }
+	      else {
+		UnicodeString tmp = part + eosmark;
+		internal_tokenize_line( part, lan );
+	      }
 	    }
+	    return;
 	  }
 	  else {
-	    if ( tokDebug > 3 ){
-	      LOG << "found an unsupported language: " << language << endl;
-	    }
-	    if ( unk_language ){
-	      language = "unk";
-	      passthru = true;
-	      cerr << "passthrueline UNk" << endl;
-	      passthruLine( input_line, bos );
-	      cerr << "passthrueline Done UNk" << endl;
-	      passthru = false;
-	      return;
-	    }
-	    else {
-	      language = "default";
-	    }
+	    UnicodeString temp = input_line;
+	    language = detect( temp );
 	  }
 	}
       }
@@ -2127,6 +2153,9 @@ namespace Tokenizer {
     }
     const int size = tokens.size();
     for (int i = offset; i < size; i++) {
+      if ( unk_language ){
+	tokens[offset].role |= BEGINOFSENTENCE;
+      }
       if (tokDebug > 1 ){
 	LOG << method << " i="<< i << " word=[" << tokens[i].us
 	    << "] type=" << tokens[i].type
@@ -2198,7 +2227,7 @@ namespace Tokenizer {
 	}
       }
     }
-    for (int i = size-1; i > offset; --i ) {
+    for ( int i = size-1; i > offset; --i ) {
       // at the end of the buffer there may be some PUNCTUATION which
       // has spurious ENDOFSENTENCE and BEGINOFSENTENCE annotation
       // fix this up to avoid sentences containing only punctuation
@@ -2258,8 +2287,9 @@ namespace Tokenizer {
 	}
 	if ( word == eosmark ) {
 	  word = "";
-	  if (!tokens.empty())
+	  if ( !tokens.empty() ){
 	    tokens.back().role |= ENDOFSENTENCE;
+	  }
 	  bos = true;
 	}
 	else {
@@ -2291,7 +2321,10 @@ namespace Tokenizer {
 	    if ( norm_set.find( type ) != norm_set.end() ){
 	      word = "{{" + type + "}}";
 	    }
-	    if (bos) {
+	    if ( bos ) {
+	      if ( unk_language && !tokens.empty() ){
+		tokens.back().role |= ENDOFSENTENCE;
+	      }
 	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
 	      bos = false;
 	    }
@@ -2354,7 +2387,7 @@ namespace Tokenizer {
 	  if ( norm_set.find( type ) != norm_set.end() ){
 	    word = "{{" + type + "}}";
 	  }
-	  if (bos) {
+	  if ( bos ) {
 	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
 	    bos = false;
 	  }
@@ -2364,9 +2397,17 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( sentenceperlineinput && tokens.size() > 0 ) {
+    if ( unk_language
+	 || (sentenceperlineinput && tokens.size() > 0 ) ) {
       tokens[0].role |= BEGINOFSENTENCE;
       tokens.back().role |= ENDOFSENTENCE;
+    }
+    if ( tokDebug > 5 ){
+      LOG << "[passthruLine] END result:" << endl;
+      for ( const auto& tok : tokens ){
+	LOG << "\t[passthruLine] word=[" << tok.us
+	    << "] role=" << tok.role << endl;
+      }
     }
   }
 

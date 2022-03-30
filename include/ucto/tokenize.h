@@ -312,7 +312,7 @@ namespace Tokenizer {
 
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
-
+    std::string detect( icu::UnicodeString& );
     folia::Document *start_document( const std::string& ) const;
     folia::FoliaElement *append_to_folia( folia::FoliaElement *root,
 					  const std::vector<Token>& tv,
