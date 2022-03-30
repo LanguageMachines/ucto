@@ -95,6 +95,9 @@ namespace Tokenizer {
 	   const UnicodeString&,
 	   TokenRole role = NOROLE,
 	   const std::string& = "" );
+    Token( const UnicodeString&,
+	   const UnicodeString&,
+	   const std::string& = "" );
     std::string lang_code;                // ISO 639-3 language code
     std::string texttostring();
     std::string typetostring();
@@ -261,7 +264,7 @@ namespace Tokenizer {
 
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
     bool getXMLInput() const { return xmlin; }
-
+    bool setUnkLang( bool b ){ bool r = unk_language; unk_language = b; return r; };
 
     const std::string getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
@@ -373,6 +376,7 @@ namespace Tokenizer {
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
+    bool unk_language;
     std::string default_language;
     std::string document_language; // in case of an input FoLiA document
     std::map<std::string,Setting*> settings;

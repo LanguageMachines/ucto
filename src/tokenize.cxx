@@ -132,6 +132,12 @@ namespace Tokenizer {
     type(_type), us(_s), role(_role), lang_code(_lang_code) {
   }
 
+  Token::Token( const UnicodeString& _type,
+		const UnicodeString& _s,
+		const string& _lang_code ):
+    type(_type), us(_s), role(NOROLE), lang_code(_lang_code) {
+  }
+
 
   std::string Token::texttostring() { return TiCC::UnicodeToUTF8(us); }
   std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
@@ -174,6 +180,7 @@ namespace Tokenizer {
     inputEncoding( "UTF-8" ),
     space_separated(true),
     eosmark("<utt>"),
+    unk_language(false),
     tokDebug(0),
     verbose(false),
     detectQuotes(false),
@@ -547,6 +554,9 @@ namespace Tokenizer {
       add_provenance_passthru( doc );
     }
     else {
+      if ( unk_language ){
+	add_provenance_passthru( doc );
+      }
       add_provenance_setting( doc );
     }
     folia::KWargs args;
@@ -586,7 +596,18 @@ namespace Tokenizer {
 	    if ( tokDebug > 3 ){
 	      LOG << "found an unsupported language: " << language << endl;
 	    }
-	    language = "default";
+	    if ( unk_language ){
+	      language = "unk";
+	      passthru = true;
+	      cerr << "passthrueline UNk" << endl;
+	      passthruLine( input_line, bos );
+	      cerr << "passthrueline Done UNk" << endl;
+	      passthru = false;
+	      return;
+	    }
+	    else {
+	      language = "default";
+	    }
 	  }
 	}
       }
@@ -872,7 +893,10 @@ namespace Tokenizer {
     }
     else {
       string tc_lc = get_language( toks );
-      if ( tc_lc != "default" ){
+      if ( tc_lc == "unk" ){
+	tok_set = "passthru";
+      }
+      else if ( tc_lc != "default" ){
 	tok_set = "tokconfig-" + tc_lc;
 	set_language( sent, tc_lc );
       }
@@ -1789,8 +1813,10 @@ namespace Tokenizer {
 	  tokens.erase( tokens.begin(), tokens.begin()+end+1 );
 	  if ( !passthru ){
 	    string lang = get_language( outToks );
-	    if ( !settings[lang]->quotes.emptyStack() ) {
-	      settings[lang]->quotes.flushStack( end+1 );
+	    if ( lang != "unk" ){
+	      if ( !settings[lang]->quotes.emptyStack() ) {
+		settings[lang]->quotes.flushStack( end+1 );
+	      }
 	    }
 	  }
 	  // we are done...
@@ -2266,11 +2292,11 @@ namespace Tokenizer {
 	      word = "{{" + type + "}}";
 	    }
 	    if (bos) {
-	      tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
+	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
 	      bos = false;
 	    }
 	    else {
-	      tokens.push_back( Token( type, word ) );
+	      tokens.push_back( Token( type, word, "unk" ) );
 	    }
 	  }
 	  alpha = false;
@@ -2329,11 +2355,11 @@ namespace Tokenizer {
 	    word = "{{" + type + "}}";
 	  }
 	  if (bos) {
-	    tokens.push_back( Token( type, word , BEGINOFSENTENCE ) );
+	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
 	    bos = false;
 	  }
 	  else {
-	    tokens.push_back( Token( type, word ) );
+	    tokens.push_back( Token( type, word, "unk" ) );
 	  }
 	}
       }
@@ -2973,6 +2999,10 @@ namespace Tokenizer {
     data_version = get_data_version();
     Setting *default_set = 0;
     for ( const auto& lang : languages ){
+      if ( lang == "unk" ){
+	settings["unk"] = 0;
+	continue;
+      }
       if ( tokDebug > 0 ){
 	LOG << "init language=" << lang << endl;
       }

@@ -26,6 +26,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
+#include <algorithm>
 #include <vector>
 #include <map>
 #include <set>
@@ -158,6 +159,7 @@ int main( int argc, char *argv[] ){
   bool xmlout = false;
   bool verbose = false;
   bool docorrectwords = false;
+  bool do_unk_lang = false;
   string redundancy = "minimal";
   string eosmarker = "<utt>";
   string docid = "untitleddoc";
@@ -418,6 +420,13 @@ int main( int argc, char *argv[] ){
       return EXIT_FAILURE;
     }
     else {
+      auto it = std::find( language_list.begin(),
+			   language_list.end(),
+			   string("unk") );
+      if ( it != language_list.end() ){
+	language_list.erase( it );
+	do_unk_lang = true;
+      }
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
 	  cerr << "ucto: unsupported language '" << l << "'" << endl;
@@ -508,6 +517,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
     tokenizer.setSeparators(separators); // IMPORTANT: AFTER setNormalization
+    tokenizer.setUnkLang( do_unk_lang );
     if ( ignore_tags ){
       tokenizer.setNoTags( true );
     }
