@@ -578,6 +578,7 @@ namespace Tokenizer {
       if ( tokDebug > 3 ){
 	LOG << "found a supported language: " << language << endl;
       }
+      result = language;
     }
     else {
       if ( tokDebug > 3 ){
