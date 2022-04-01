@@ -294,7 +294,6 @@ namespace Tokenizer {
       old += c;
     }
     if ( !seps.empty() ){
-      cerr << "seps = '" << seps << "'" << endl;
       if ( seps == "+" ){
 	// just use spacing characters as separators
 	space_separated = true;
@@ -565,8 +564,8 @@ namespace Tokenizer {
     return doc;
   }
 
-  string TokenizerClass::detect( UnicodeString& temp ){
-    string result;
+  string TokenizerClass::detect( const UnicodeString& line ) const{
+    UnicodeString temp = line;
     temp.findAndReplace( eosmark, "" );
     temp.toLower();
     if ( tokDebug > 3 ){
@@ -574,6 +573,7 @@ namespace Tokenizer {
 	  << temp << endl;
     }
     string language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
+    string result;
     if ( settings.find( language ) != settings.end() ){
       if ( tokDebug > 3 ){
 	LOG << "found a supported language: " << language << endl;
@@ -581,9 +581,9 @@ namespace Tokenizer {
       result = language;
     }
     else {
-      if ( tokDebug > 3 ){
+      //      if ( tokDebug > 3 ){
 	LOG << "found an unsupported language: " << language << endl;
-      }
+	//      }
       if ( unk_language ){
 	result = "unk";
       }
@@ -594,10 +594,80 @@ namespace Tokenizer {
     return result;
   }
 
+  vector<UnicodeString> TokenizerClass::sentence_split( const UnicodeString& in ){
+    set<int> eos_posses;
+    for ( const auto& eom : ".?!" ){
+      int pos = in.indexOf( eom );
+      while( pos >= 0 ){
+	eos_posses.insert( pos );
+	pos = in.indexOf( eom, pos+1 );
+      }
+    }
+    vector<UnicodeString> result;
+    int prev = -1;
+    for ( const auto& pos : eos_posses ){
+      UnicodeString tmp = UnicodeString( in, prev+1, pos+1-prev );
+      result.push_back( tmp );
+      prev = pos+1;
+    }
+    cerr << "\nRESULT: " << endl;
+    for ( const auto& it : result ){
+      cerr << "[" << it << "]" << endl;
+    }
+    return result;
+  }
+
   void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
 					  bool& bos,
 					  const string& lang ){
-    if ( passthru ){
+    if ( unk_language ){
+      // hack into parts
+      vector<UnicodeString> parts = sentence_split( input_line );
+      vector<pair<string,UnicodeString>> lang_parts;
+      string cur_lang = "unk";
+      UnicodeString line;
+      for ( const auto& part : parts ){
+	string part_lang;
+	vector<UnicodeString> tmp_v = TiCC::split( part );
+	if ( tmp_v.size() > 4 ){
+	  part_lang = detect( part );
+	}
+	else {
+	  part_lang = cur_lang;
+	}
+	if ( part_lang != cur_lang ){
+	  if ( !line.isEmpty() ){
+	    lang_parts.push_back( make_pair(cur_lang, line) );
+	    line.remove();
+	  }
+	  cur_lang = part_lang;
+	}
+	line += part;
+      }
+      if ( !line.isEmpty() ){
+	lang_parts.push_back( make_pair(cur_lang,line) );
+      }
+
+      cerr << "\nlang_parts RESULT: " << endl;
+      for ( const auto& it : lang_parts ){
+	cerr << "[" << it << "]" << endl;
+      }
+
+      for ( const auto& part : lang_parts ){
+	string lan = part.first;
+	if ( lan == "unk" ){
+	  passthru = true;
+	  bool beg = true;
+	  passthruLine( part.second, beg );
+	  passthru = false;
+	}
+	else {
+	  internal_tokenize_line( part.second, part.first );
+	}
+      }
+      return;
+    }
+    else if ( passthru ){
       passthruLine( input_line, bos );
     }
     else {
@@ -605,37 +675,10 @@ namespace Tokenizer {
       if ( language.empty() ){
 	if ( tokDebug > 3 ){
 	  LOG << "should we guess the language? "
-	      << (text_cat && doDetectLang) << endl;
+	      << TiCC::toString((text_cat && doDetectLang)) << endl;
 	}
 	if ( text_cat && doDetectLang ){
-	  if ( unk_language ){
-	    // hack into parts
-	    cerr << "INPUT: " << input_line << endl;
-	    vector<UnicodeString> parts = TiCC::split_at_first_of( input_line,
-								    ".?!" );
-	    for ( const auto& part : parts ){
-	      UnicodeString tmp = part;
-	      cerr << "BEKIjK: " << part << endl;
-	      string lan = detect( tmp );
-	      if ( lan == "unk" ){
-		passthru = true;
-		cerr << "passthruline UNk:" << part << endl;
-		bool beg = true;
-		passthruLine( part, beg );
-		cerr << "passthruline Done UNk" << endl;
-		passthru = false;
-	      }
-	      else {
-		UnicodeString tmp = part + eosmark;
-		internal_tokenize_line( part, lan );
-	      }
-	    }
-	    return;
-	  }
-	  else {
-	    UnicodeString temp = input_line;
-	    language = detect( temp );
-	  }
+	  language = detect( input_line );
 	}
       }
       internal_tokenize_line( input_line, language );
