@@ -4,3 +4,5 @@ Dit is een nederlandse test.
 What happens with this input?
 Dutch or English, that's the question.
 Ik ben benieuwd naar de uitkomst.
+
+Wat gebeurt hier mee? Dat is de vraag! voor jou en mij.

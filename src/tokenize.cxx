@@ -575,15 +575,15 @@ namespace Tokenizer {
     string language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
     string result;
     if ( settings.find( language ) != settings.end() ){
-      if ( tokDebug > 3 ){
+      if ( tokDebug > 4 ){
 	LOG << "found a supported language: " << language << endl;
       }
       result = language;
     }
     else {
-      //      if ( tokDebug > 3 ){
+      if ( tokDebug > 3 ){
 	LOG << "found an unsupported language: " << language << endl;
-	//      }
+      }
       if ( unk_language ){
 	result = "unk";
       }
@@ -610,10 +610,6 @@ namespace Tokenizer {
       result.push_back( tmp );
       prev = pos+1;
     }
-    cerr << "\nRESULT: " << endl;
-    for ( const auto& it : result ){
-      cerr << "[" << it << "]" << endl;
-    }
     return result;
   }
 
@@ -623,13 +619,19 @@ namespace Tokenizer {
     if ( unk_language ){
       // hack into parts
       vector<UnicodeString> parts = sentence_split( input_line );
+      if ( tokDebug > 3 ){
+	cerr << "\nsplit RESULT: " << endl;
+	for ( const auto& it : parts ){
+	  cerr << "[" << it << "]" << endl;
+	}
+      }
       vector<pair<string,UnicodeString>> lang_parts;
       string cur_lang = "unk";
       UnicodeString line;
       for ( const auto& part : parts ){
 	string part_lang;
 	vector<UnicodeString> tmp_v = TiCC::split( part );
-	if ( tmp_v.size() > 4 ){
+	if ( tmp_v.size() > 3 ){
 	  part_lang = detect( part );
 	}
 	else {
@@ -643,16 +645,25 @@ namespace Tokenizer {
 	  cur_lang = part_lang;
 	}
 	line += part;
+	if ( part_lang == "unk"
+	     && ( ( part.lastIndexOf("?") == part.length()-2
+		    || part.lastIndexOf("!") == part.length()-2 )
+		  && part[part.length()-1] == ' ' ) ){
+	  if ( !line.isEmpty() ){
+	    lang_parts.push_back( make_pair(cur_lang, line) );
+	    line.remove();
+	  }
+	}
       }
       if ( !line.isEmpty() ){
 	lang_parts.push_back( make_pair(cur_lang,line) );
       }
-
-      cerr << "\nlang_parts RESULT: " << endl;
-      for ( const auto& it : lang_parts ){
-	cerr << "[" << it << "]" << endl;
+      if ( tokDebug > 3 ){
+	cerr << "\nlang_parts RESULT: " << endl;
+	for ( const auto& it : lang_parts ){
+	  cerr << "[" << it << "]" << endl;
+	}
       }
-
       for ( const auto& part : lang_parts ){
 	string lan = part.first;
 	if ( lan == "unk" ){
