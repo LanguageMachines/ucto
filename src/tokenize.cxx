@@ -585,7 +585,7 @@ namespace Tokenizer {
 	LOG << "found an unsupported language: " << language << endl;
       }
       if ( unk_language ){
-	result = "unk";
+	result = "und";
       }
       else {
 	result = "default";
@@ -626,7 +626,7 @@ namespace Tokenizer {
 	}
       }
       vector<pair<string,UnicodeString>> lang_parts;
-      string cur_lang = "unk";
+      string cur_lang = "und";
       UnicodeString line;
       for ( const auto& part : parts ){
 	string part_lang;
@@ -645,7 +645,7 @@ namespace Tokenizer {
 	  cur_lang = part_lang;
 	}
 	line += part;
-	if ( part_lang == "unk"
+	if ( part_lang == "und"
 	     && ( ( part.lastIndexOf("?") == part.length()-2
 		    || part.lastIndexOf("!") == part.length()-2 )
 		  && part[part.length()-1] == ' ' ) ){
@@ -666,7 +666,7 @@ namespace Tokenizer {
       }
       for ( const auto& part : lang_parts ){
 	string lan = part.first;
-	if ( lan == "unk" ){
+	if ( lan == "und" ){
 	  passthru = true;
 	  bool beg = true;
 	  passthruLine( part.second, beg );
@@ -971,10 +971,13 @@ namespace Tokenizer {
     string tok_set;
     if ( passthru ){
       tok_set = "passthru";
+      if ( unk_language ){
+	set_language( sent, "und" );
+      }
     }
     else {
       string tc_lc = get_language( toks );
-      if ( tc_lc == "unk" ){
+      if ( tc_lc == "und" ){
 	tok_set = "passthru";
       }
       else if ( tc_lc != "default" ){
@@ -1894,7 +1897,7 @@ namespace Tokenizer {
 	  tokens.erase( tokens.begin(), tokens.begin()+end+1 );
 	  if ( !passthru ){
 	    string lang = get_language( outToks );
-	    if ( lang != "unk" ){
+	    if ( lang != "und" ){
 	      if ( !settings[lang]->quotes.emptyStack() ) {
 		settings[lang]->quotes.flushStack( end+1 );
 	      }
@@ -2380,11 +2383,11 @@ namespace Tokenizer {
 	      if ( unk_language && !tokens.empty() ){
 		tokens.back().role |= ENDOFSENTENCE;
 	      }
-	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
+	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "und" ) );
 	      bos = false;
 	    }
 	    else {
-	      tokens.push_back( Token( type, word, "unk" ) );
+	      tokens.push_back( Token( type, word, "und" ) );
 	    }
 	  }
 	  alpha = false;
@@ -2443,11 +2446,11 @@ namespace Tokenizer {
 	    word = "{{" + type + "}}";
 	  }
 	  if ( bos ) {
-	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "unk" ) );
+	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "und" ) );
 	    bos = false;
 	  }
 	  else {
-	    tokens.push_back( Token( type, word, "unk" ) );
+	    tokens.push_back( Token( type, word, "und" ) );
 	  }
 	}
       }
@@ -3095,8 +3098,8 @@ namespace Tokenizer {
     data_version = get_data_version();
     Setting *default_set = 0;
     for ( const auto& lang : languages ){
-      if ( lang == "unk" ){
-	settings["unk"] = 0;
+      if ( lang == "und" ){
+	settings["und"] = 0;
 	continue;
       }
       if ( tokDebug > 0 ){

@@ -422,7 +422,7 @@ int main( int argc, char *argv[] ){
     else {
       auto it = std::find( language_list.begin(),
 			   language_list.end(),
-			   string("unk") );
+			   "und" );
       if ( it != language_list.end() ){
 	language_list.erase( it );
 	do_unk_lang = true;
