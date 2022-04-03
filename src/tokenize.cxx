@@ -125,6 +125,7 @@ namespace Tokenizer {
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_unknown = "UNKNOWN";
+  const UnicodeString type_unanalyzed = "UNANALYZED";
 
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
@@ -596,11 +597,12 @@ namespace Tokenizer {
 
   vector<UnicodeString> TokenizerClass::sentence_split( const UnicodeString& in ){
     set<int> eos_posses;
-    for ( const auto& eom : ".?!" ){
-      int pos = in.indexOf( eom );
+    UnicodeString EOSM = settings["default"]->eosmarkers;
+    for ( int i=0; i < EOSM.length(); ++i ){
+      int pos = in.indexOf( EOSM[i] );
       while( pos >= 0 ){
 	eos_posses.insert( pos );
-	pos = in.indexOf( eom, pos+1 );
+	pos = in.indexOf( EOSM[i], pos+1 );
       }
     }
     vector<UnicodeString> result;
@@ -638,6 +640,7 @@ namespace Tokenizer {
 	  part_lang = cur_lang;
 	}
 	if ( part_lang != cur_lang ){
+	  // language switch, so push old part
 	  if ( !line.isEmpty() ){
 	    lang_parts.push_back( make_pair(cur_lang, line) );
 	    line.remove();
@@ -667,7 +670,7 @@ namespace Tokenizer {
       for ( const auto& part : lang_parts ){
 	string lan = part.first;
 	if ( lan == "und" ){
-	  tokens.push_back( Token( type_word, part.second, "und" ) );
+	  tokens.push_back( Token( type_unanalyzed, part.second, "und" ) );
 	  tokens.back().role |= BEGINOFSENTENCE;
 	  tokens.back().role |= ENDOFSENTENCE;
 	}
