@@ -667,10 +667,9 @@ namespace Tokenizer {
       for ( const auto& part : lang_parts ){
 	string lan = part.first;
 	if ( lan == "und" ){
-	  passthru = true;
-	  bool beg = true;
-	  passthruLine( part.second, beg );
-	  passthru = false;
+	  tokens.push_back( Token( type_word, part.second, "und" ) );
+	  tokens.back().role |= BEGINOFSENTENCE;
+	  tokens.back().role |= ENDOFSENTENCE;
 	}
 	else {
 	  internal_tokenize_line( part.second, part.first );
@@ -975,8 +974,6 @@ namespace Tokenizer {
     else {
       string tc_lc = get_language( toks );
       if ( tc_lc == "und" ){
-	tok_set = "passthru";
-	set_language( sent, "und" );
 	UnicodeString line;
 	for ( const auto& tok : toks ){
 	  line += tok.us;
@@ -984,7 +981,7 @@ namespace Tokenizer {
 	    line += " ";
 	  }
 	}
-	cerr << "LINE: " << line << endl;
+	set_language( sent, "und" );
 	sent->setutext( line, outputclass );
 	return result;
       }
@@ -2219,9 +2216,6 @@ namespace Tokenizer {
     }
     const int size = tokens.size();
     for (int i = offset; i < size; i++) {
-      if ( unk_language ){
-	tokens[offset].role |= BEGINOFSENTENCE;
-      }
       if (tokDebug > 1 ){
 	LOG << method << " i="<< i << " word=[" << tokens[i].us
 	    << "] type=" << tokens[i].type
@@ -2388,9 +2382,6 @@ namespace Tokenizer {
 	      word = "{{" + type + "}}";
 	    }
 	    if ( bos ) {
-	      if ( unk_language && !tokens.empty() ){
-		tokens.back().role |= ENDOFSENTENCE;
-	      }
 	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "und" ) );
 	      bos = false;
 	    }
