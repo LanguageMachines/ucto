@@ -971,14 +971,22 @@ namespace Tokenizer {
     string tok_set;
     if ( passthru ){
       tok_set = "passthru";
-      if ( unk_language ){
-	set_language( sent, "und" );
-      }
     }
     else {
       string tc_lc = get_language( toks );
       if ( tc_lc == "und" ){
 	tok_set = "passthru";
+	set_language( sent, "und" );
+	UnicodeString line;
+	for ( const auto& tok : toks ){
+	  line += tok.us;
+	  if ( &tok != &toks.back() ){
+	    line += " ";
+	  }
+	}
+	cerr << "LINE: " << line << endl;
+	sent->setutext( line, outputclass );
+	return result;
       }
       else if ( tc_lc != "default" ){
 	tok_set = "tokconfig-" + tc_lc;
@@ -2643,13 +2651,14 @@ namespace Tokenizer {
     else {
       auto const it = settings.find( lang );
       if ( it == settings.end() ){
-	LOG << "tokenizeLine: no settings found for language=" + lang << endl
+	LOG << "[internal_tokenize_line]: no settings found for language="
+	    << lang << endl
 	    << "using the default language instead:" << default_language << endl;
 	lang = "default";
       }
     }
     if (tokDebug){
-      LOG << "[tokenizeLine] input: line=["
+      LOG << "[internal_tokenize_line] input: line=["
 	  << originput << "] (language= " << lang << ")" << endl;
     }
     UnicodeString input = normalizer.normalize( originput );
@@ -2663,13 +2672,14 @@ namespace Tokenizer {
     }
     int32_t len = input.countChar32();
     if (tokDebug){
-      LOG << "[tokenizeLine] filtered input: line=["
-		      << input << "] (" << len
-		      << " unicode characters)" << endl;
+      LOG << "[internal_tokenize_line] filtered input: line=["
+	  << input << "] (" << len
+	  << " unicode characters)" << endl;
     }
     const int begintokencount = tokens.size();
     if (tokDebug) {
-      LOG << "[tokenizeLine] Tokens still in buffer: " << begintokencount << endl;
+      LOG << "[internal_tokenize_line] Tokens still in buffer: "
+	  << begintokencount << endl;
     }
 
     bool tokenizeword = false;
@@ -2714,7 +2724,8 @@ namespace Tokenizer {
       }
       if ( is_separator(c) || joiner || i == len-1 ){
 	if (tokDebug){
-	  LOG << "[tokenizeLine] space detected, word=[" << word << "]" << endl;
+	  LOG << "[internal_tokenize_line] space detected, word=["
+	      << word << "]" << endl;
 	}
 	if ( i == len-1 ) {
 	  if ( joiner
@@ -2727,7 +2738,7 @@ namespace Tokenizer {
 	}
 	if ( c == '\n' && word.isEmpty() ){
 	  if (tokDebug){
-	    LOG << "[tokenizeLine] NEW PARAGRAPH upcoming " << endl;
+	    LOG << "[internal_tokenize_ine] NEW PARAGRAPH upcoming " << endl;
 	  }
 	  // signal that the next word starts a new Paragraph. (if its there)
 	  paragraphsignal_next = true;
@@ -2738,15 +2749,16 @@ namespace Tokenizer {
 
 	  if (expliciteosfound != -1) { // word contains eosmark
 	    if ( tokDebug >= 2){
-	      LOG << "[tokenizeLine] Found explicit EOS marker @"<<expliciteosfound << endl;
+	      LOG << "[internal_tokenize_line] Found explicit EOS marker @"
+		  << expliciteosfound << endl;
 	    }
 	    int eospos = tokens.size()-1;
 	    if (expliciteosfound > 0) {
 	      UnicodeString realword;
 	      word.extract(0,expliciteosfound,realword);
 	      if (tokDebug >= 2) {
-		LOG << "[tokenizeLine] Prefix before EOS: "
-				<< realword << endl;
+		LOG << "[internal_tokenize_line] Prefix before EOS: "
+		    << realword << endl;
 	      }
 	      tokenizeWord( realword, false, lang );
 	      eospos++;
@@ -2757,14 +2769,14 @@ namespace Tokenizer {
 			    word.length() - expliciteosfound - eosmark.length(),
 			    realword );
 	      if (tokDebug >= 2){
-		LOG << "[tokenizeLine] postfix after EOS: "
-				<< realword << endl;
+		LOG << "[internal_tokenize_line] postfix after EOS: "
+		    << realword << endl;
 	      }
 	      tokenizeWord( realword, true, lang );
 	    }
 	    if ( !tokens.empty() && eospos >= 0 ) {
 	      if (tokDebug >= 2){
-		LOG << "[tokenizeLine] Assigned EOS" << endl;
+		LOG << "[internal_tokenize_line] Assigned EOS" << endl;
 	      }
 	      tokens[eospos].role |= ENDOFSENTENCE;
 	    }
@@ -2773,7 +2785,7 @@ namespace Tokenizer {
 	if ( word.length() > 0
 	     && expliciteosfound == -1 ) {
 	  if (tokDebug >= 2){
-	    LOG << "[tokenizeLine] Further tokenization necessary for: ["
+	    LOG << "[internal_tokenize_line] Further tokenization necessary for: ["
 			    << word << "]" << endl;
 	  }
 	  if ( tokenizeword ) {
@@ -2791,8 +2803,8 @@ namespace Tokenizer {
 		|| u_isquote( c, settings[lang]->quotes )
 		|| u_isemo(c) ){
 	if (tokDebug){
-	  LOG << "[tokenizeLine] punctuation or digit detected, word=["
-			  << word << "]" << endl;
+	  LOG << "[internal_tokenize_line] punctuation or digit detected, word=["
+	      << word << "]" << endl;
 	}
 	//there is punctuation or digits in this word, mark to run through tokenizer
 	tokenizeword = true;

@@ -10,7 +10,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto -L nl -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto -L nl -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -113,7 +113,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto -L en -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto -L en -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -234,7 +234,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -404,7 +404,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
@@ -1170,7 +1170,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -1458,7 +1458,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-01T18:10:33" command="ucto --detectlanguages=und,nld -n --id=ml multilang2.txt ml3.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-04-03T10:22:37" command="ucto --detectlanguages=und,nld -n --id=ml multilang2.txt ml3.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -1491,43 +1491,12 @@
         </w>
       </s>
       <s xml:id="ml.p.1.s.2">
+        <t>What happens with this input?</t>
         <lang class="und"/>
-        <w xml:id="ml.p.1.s.2.w.1" class="WORD" set="passthru">
-          <t>What</t>
-        </w>
-        <w xml:id="ml.p.1.s.2.w.2" class="WORD" set="passthru">
-          <t>happens</t>
-        </w>
-        <w xml:id="ml.p.1.s.2.w.3" class="WORD" set="passthru">
-          <t>with</t>
-        </w>
-        <w xml:id="ml.p.1.s.2.w.4" class="WORD" set="passthru">
-          <t>this</t>
-        </w>
-        <w xml:id="ml.p.1.s.2.w.5" class="UNKNOWN" set="passthru">
-          <t>input?</t>
-        </w>
       </s>
       <s xml:id="ml.p.1.s.3">
+        <t>Dutch or English, that's the question.</t>
         <lang class="und"/>
-        <w xml:id="ml.p.1.s.3.w.1" class="WORD" set="passthru">
-          <t>Dutch</t>
-        </w>
-        <w xml:id="ml.p.1.s.3.w.2" class="WORD" set="passthru">
-          <t>or</t>
-        </w>
-        <w xml:id="ml.p.1.s.3.w.3" class="UNKNOWN" set="passthru">
-          <t>English,</t>
-        </w>
-        <w xml:id="ml.p.1.s.3.w.4" class="UNKNOWN" set="passthru">
-          <t>that's</t>
-        </w>
-        <w xml:id="ml.p.1.s.3.w.5" class="WORD" set="passthru">
-          <t>the</t>
-        </w>
-        <w xml:id="ml.p.1.s.3.w.6" class="UNKNOWN" set="passthru">
-          <t>question.</t>
-        </w>
       </s>
       <s xml:id="ml.p.1.s.4">
         <lang class="nld"/>
@@ -1577,43 +1546,12 @@
         </w>
       </s>
       <s xml:id="ml.p.2.s.2">
+        <t>What happens with this input?</t>
         <lang class="und"/>
-        <w xml:id="ml.p.2.s.2.w.1" class="WORD" set="passthru">
-          <t>What</t>
-        </w>
-        <w xml:id="ml.p.2.s.2.w.2" class="WORD" set="passthru">
-          <t>happens</t>
-        </w>
-        <w xml:id="ml.p.2.s.2.w.3" class="WORD" set="passthru">
-          <t>with</t>
-        </w>
-        <w xml:id="ml.p.2.s.2.w.4" class="WORD" set="passthru">
-          <t>this</t>
-        </w>
-        <w xml:id="ml.p.2.s.2.w.5" class="UNKNOWN" set="passthru">
-          <t>input?</t>
-        </w>
       </s>
       <s xml:id="ml.p.2.s.3">
+        <t>Dutch or English, that's the question.</t>
         <lang class="und"/>
-        <w xml:id="ml.p.2.s.3.w.1" class="WORD" set="passthru">
-          <t>Dutch</t>
-        </w>
-        <w xml:id="ml.p.2.s.3.w.2" class="WORD" set="passthru">
-          <t>or</t>
-        </w>
-        <w xml:id="ml.p.2.s.3.w.3" class="UNKNOWN" set="passthru">
-          <t>English,</t>
-        </w>
-        <w xml:id="ml.p.2.s.3.w.4" class="UNKNOWN" set="passthru">
-          <t>that's</t>
-        </w>
-        <w xml:id="ml.p.2.s.3.w.5" class="WORD" set="passthru">
-          <t>the</t>
-        </w>
-        <w xml:id="ml.p.2.s.3.w.6" class="UNKNOWN" set="passthru">
-          <t>question.</t>
-        </w>
       </s>
       <s xml:id="ml.p.2.s.4">
         <lang class="nld"/>
