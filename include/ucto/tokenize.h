@@ -244,9 +244,12 @@ namespace Tokenizer {
     void setLanguage( const std::string& l ){ default_language = l; };
     std::string getLanguage() const { return default_language; };
 
-    // set eos marker
-    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = eosmark; eosmark = TiCC::UnicodeFromUTF8(s); return t; };
-    UnicodeString getEosMarker( ) const { return eosmark; }
+    // set eos marker: for Comptability. UttMarker variants are preferred
+    UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = utt_mark; utt_mark = TiCC::UnicodeFromUTF8(s); return t; };
+    UnicodeString getEosMarker( ) const { return utt_mark; }
+
+    UnicodeString setUttMarker( const std::string& s = "<utt>") { UnicodeString t = utt_mark; utt_mark = TiCC::UnicodeFromUTF8(s); return t; };
+    UnicodeString getUttMarker( ) const { return utt_mark; }
 
     bool setNormSet( const std::string& );
 
@@ -372,7 +375,7 @@ namespace Tokenizer {
     std::set<UChar32> separators;
     bool space_separated;
 
-    UnicodeString eosmark;
+    UnicodeString utt_mark;
     std::vector<Token> tokens;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;

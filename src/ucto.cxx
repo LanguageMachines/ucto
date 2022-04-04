@@ -161,7 +161,7 @@ int main( int argc, char *argv[] ){
   bool docorrectwords = false;
   bool do_unk_lang = false;
   string redundancy = "minimal";
-  string eosmarker = "<utt>";
+  string utt_marker = "<utt>";
   string docid = "untitleddoc";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
@@ -211,7 +211,7 @@ int main( int argc, char *argv[] ){
     paragraphdetection = !Opts.extract( 'P' );
     xmlin = Opts.extract( 'F' );
     quotedetection = Opts.extract( 'Q' );
-    Opts.extract( 's', eosmarker );
+    Opts.extract( 's', utt_marker );
     touppercase = Opts.extract( 'u' );
     tolowercase = Opts.extract( 'l' );
     sentencesplit = Opts.extract( "split" );
@@ -495,7 +495,7 @@ int main( int argc, char *argv[] ){
     // set debug first, so init() can be debugged too
     tokenizer.setDebug( debug );
     tokenizer.set_command( command_line );
-    tokenizer.setEosMarker( eosmarker );
+    tokenizer.setUttMarker( utt_marker );
     tokenizer.setVerbose( verbose );
     tokenizer.setSentenceSplit(sentencesplit);
     tokenizer.setSentencePerLineOutput(sentenceperlineoutput);

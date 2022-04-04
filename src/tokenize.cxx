@@ -180,7 +180,7 @@ namespace Tokenizer {
     linenum(0),
     inputEncoding( "UTF-8" ),
     space_separated(true),
-    eosmark("<utt>"),
+    utt_mark("<utt>"),
     unk_language(false),
     tokDebug(0),
     verbose(false),
@@ -567,7 +567,7 @@ namespace Tokenizer {
 
   string TokenizerClass::detect( const UnicodeString& line ) const{
     UnicodeString temp = line;
-    temp.findAndReplace( eosmark, "" );
+    temp.findAndReplace( utt_mark, "" );
     temp.toLower();
     if ( tokDebug > 3 ){
       LOG << "use textCat to guess language from: "
@@ -734,7 +734,7 @@ namespace Tokenizer {
 	}
 	input_line = convert( tmp_line, inputEncoding );
 	if ( sentenceperlineinput ){
-	  input_line += " " + eosmark;
+	  input_line += " " + utt_mark;
 	}
       }
       if  (tokDebug > 0) {
@@ -1769,7 +1769,7 @@ namespace Tokenizer {
 	      outline += "\n";
 	    }
 	    else {
-	      outline += " " + eosmark + " ";
+	      outline += " " + utt_mark + " ";
 	    }
 	    if ( splitOnly ){
 	      outline += "\n";
@@ -2348,7 +2348,7 @@ namespace Tokenizer {
 	if (tokDebug){
 	  LOG << "[passthruLine] word=[" << word << "]" << endl;
 	}
-	if ( word == eosmark ) {
+	if ( word == utt_mark ) {
 	  word = "";
 	  if ( !tokens.empty() ){
 	    tokens.back().role |= ENDOFSENTENCE;
@@ -2413,7 +2413,7 @@ namespace Tokenizer {
       sit.next32();
     }
     if (word != "") {
-      if ( word == eosmark ) {
+      if ( word == utt_mark ) {
 	word = "";
 	if (!tokens.empty())
 	  tokens.back().role |= ENDOFSENTENCE;
@@ -2457,8 +2457,7 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( unk_language
-	 || (sentenceperlineinput && tokens.size() > 0 ) ) {
+    if ( sentenceperlineinput && tokens.size() > 0 ) {
       tokens[0].role |= BEGINOFSENTENCE;
       tokens.back().role |= ENDOFSENTENCE;
     }
@@ -2738,10 +2737,10 @@ namespace Tokenizer {
 	  paragraphsignal_next = true;
 	}
 	int expliciteosfound = -1;
-	if ( word.length() >= eosmark.length() ) {
-	  expliciteosfound = word.lastIndexOf(eosmark);
+	if ( word.length() >= utt_mark.length() ) {
+	  expliciteosfound = word.lastIndexOf(utt_mark);
 
-	  if (expliciteosfound != -1) { // word contains eosmark
+	  if (expliciteosfound != -1) { // word contains utt_mark
 	    if ( tokDebug >= 2){
 	      LOG << "[internal_tokenize_line] Found explicit EOS marker @"
 		  << expliciteosfound << endl;
@@ -2757,10 +2756,10 @@ namespace Tokenizer {
 	      tokenizeWord( realword, false, lang );
 	      eospos++;
 	    }
-	    if ( expliciteosfound + eosmark.length() < word.length() ){
+	    if ( expliciteosfound + utt_mark.length() < word.length() ){
 	      UnicodeString realword;
-	      word.extract( expliciteosfound+eosmark.length(),
-			    word.length() - expliciteosfound - eosmark.length(),
+	      word.extract( expliciteosfound+utt_mark.length(),
+			    word.length() - expliciteosfound - utt_mark.length(),
 			    realword );
 	      if (tokDebug >= 2){
 		LOG << "[internal_tokenize_line] postfix after EOS: "
@@ -2854,7 +2853,7 @@ namespace Tokenizer {
 	    << "word=[" << input << "]"
 	    << " Space=" << (space?"TRUE":"FALSE") << endl;      }
     }
-    if ( input == eosmark ) {
+    if ( input == utt_mark ) {
       if (tokDebug >= 2){
 	LOG << "   [tokenizeWord] Found explicit EOS marker" << endl;
       }
