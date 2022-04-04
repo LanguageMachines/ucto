@@ -122,6 +122,9 @@ void usage(){
        << "\t--filterpunct      - remove all punctuation from the output" << endl
        << "\t--uselanguages=<lang1,lang2,..langn> - Using FoLiA input, only tokenize strings in these languages. Default = 'lang1'" << endl
        << "\t--detectlanguages=<lang1,lang2,..langn> - try to assign a language to each line of text input. Default = 'lang1'" << endl
+       << "\t\tFor both uselanguages and detectlanguages, you can use the special" << endl
+       << "\t\tlanguage code `und`. This ensures there is NO default language, but" << endl
+       << "\t\tany language that is NOT in the list will remain unanalyzed." << endl
        << "\t--add-tokens='file' - add additional tokens to the [TOKENS] of the" << endl
        << "\t                    default language. TOKENS are always kept intact." << endl
        << "\t-P                - Disable paragraph detection" << endl

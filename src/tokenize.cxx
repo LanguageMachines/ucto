@@ -1401,6 +1401,9 @@ namespace Tokenizer {
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
 	append_to_sentence( s, sent );
+	if  (tokDebug > 0){
+	  LOG << "created a new sentence: " << s << endl;
+	}
 	++sentence_done;
 	sent = popSentence();
       }
@@ -1457,6 +1460,9 @@ namespace Tokenizer {
 	  folia::Sentence *s = new folia::Sentence( args, p->doc() );
 	  p->append( s );
 	  append_to_sentence( s, toks );
+	  if  (tokDebug > 0){
+	    LOG << "created a new sentence: " << s << endl;
+	  }
 	  ++sentence_done;
 	  toks = popSentence();
 	}
