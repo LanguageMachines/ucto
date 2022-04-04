@@ -2,6 +2,8 @@
 
 exe=../src/ucto
 
+rm ml*.xml
+
 $exe -L nl -F folia-lang.xml
 $exe -L en -F folia-lang.xml
 #$exe --uselanguages=eng -F folia-lang-2.xml
