@@ -267,7 +267,7 @@ namespace Tokenizer {
 
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
     bool getXMLInput() const { return xmlin; }
-    bool setUnkLang( bool b ){ bool r = unk_language; unk_language = b; return r; };
+    bool setUndLang( bool b ){ bool r = und_language; und_language = b; return r; };
 
     const std::string getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
@@ -295,6 +295,8 @@ namespace Tokenizer {
 				       folia::processor * =0 ) const;
     folia::processor *add_provenance_passthru( folia::Document *,
 					       folia::processor * =0 ) const;
+    folia::processor *add_provenance_undetermined( folia::Document *,
+						   folia::processor * =0 ) const;
     folia::processor *add_provenance_data( folia::Document *,
 					   folia::processor * =0 ) const;
     folia::processor *add_provenance_setting( folia::Document *,
@@ -380,7 +382,7 @@ namespace Tokenizer {
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
 
-    bool unk_language;
+    bool und_language;
     std::string default_language;
     std::string document_language; // in case of an input FoLiA document
     std::map<std::string,Setting*> settings;

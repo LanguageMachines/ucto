@@ -159,7 +159,7 @@ int main( int argc, char *argv[] ){
   bool xmlout = false;
   bool verbose = false;
   bool docorrectwords = false;
-  bool do_unk_lang = false;
+  bool do_und_lang = false;
   string redundancy = "minimal";
   string utt_marker = "<utt>";
   string docid = "untitleddoc";
@@ -425,7 +425,7 @@ int main( int argc, char *argv[] ){
 			   "und" );
       if ( it != language_list.end() ){
 	language_list.erase( it );
-	do_unk_lang = true;
+	do_und_lang = true;
       }
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
@@ -517,7 +517,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
     tokenizer.setSeparators(separators); // IMPORTANT: AFTER setNormalization
-    tokenizer.setUnkLang( do_unk_lang );
+    tokenizer.setUndLang( do_und_lang );
     if ( ignore_tags ){
       tokenizer.setNoTags( true );
     }

@@ -181,7 +181,7 @@ namespace Tokenizer {
     inputEncoding( "UTF-8" ),
     space_separated(true),
     utt_mark("<utt>"),
-    unk_language(false),
+    und_language(false),
     tokDebug(0),
     verbose(false),
     detectQuotes(false),
@@ -425,6 +425,17 @@ namespace Tokenizer {
     return proc;
   }
 
+  folia::processor *TokenizerClass::add_provenance_undetermined( folia::Document *doc,
+								 folia::processor *parent ) const {
+    folia::processor *proc = init_provenance( doc, parent );
+    if ( proc ){
+      folia::KWargs args;
+      args["processor"] = proc->id();
+      doc->declare( folia::AnnotationType::TOKEN, "undetermined", args );
+    }
+    return proc;
+  }
+
   folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
 							 folia::processor* parent ) const {
     folia::processor *proc = init_provenance( doc, parent );
@@ -554,8 +565,8 @@ namespace Tokenizer {
       add_provenance_passthru( doc );
     }
     else {
-      if ( unk_language ){
-	add_provenance_passthru( doc );
+      if ( und_language ){
+	add_provenance_undetermined( doc );
       }
       add_provenance_setting( doc );
     }
@@ -585,7 +596,7 @@ namespace Tokenizer {
       if ( tokDebug > 3 ){
 	LOG << "found an unsupported language: " << language << endl;
       }
-      if ( unk_language ){
+      if ( und_language ){
 	result = "und";
       }
       else {
@@ -618,7 +629,7 @@ namespace Tokenizer {
   void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
 					  bool& bos,
 					  const string& lang ){
-    if ( unk_language ){
+    if ( und_language ){
       // hack into parts
       vector<UnicodeString> parts = sentence_split( input_line );
       if ( tokDebug > 3 ){
