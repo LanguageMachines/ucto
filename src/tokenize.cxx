@@ -517,7 +517,8 @@ namespace Tokenizer {
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc && !ucto_re_run() ){
       folia::processor *data_proc = add_provenance_data( doc, parent );
-      if ( doc->metadata_type() == "native" ){
+      if ( !und_language
+	   && doc->metadata_type() == "native" ){
 	doc->set_metadata( "language", default_language );
       }
       for ( const auto& s : settings ){
