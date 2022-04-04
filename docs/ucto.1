@@ -55,7 +55,16 @@ For example, 'fra' will select the file tokconfig\(hyfra from the installation d
 .BR \-\-detectlanguages =<lang1,lang2,..langn>
 .RS
 try to detect all the specified languages. The default language will be 'lang1'.
-(only useful for FoLiA output)
+(only useful for FoLiA output).
+
+All language codes must be iso-639-3.
+
+You can use the special language code `und`. This ensures there is NO default
+language, but any language that is NOT in the list will remain unanalyzed.
+
+Warning: To be able to handle utterances of mixed language, Ucto uses a simple
+sentence splitter based on the markers '.' '?' and '!'.
+This may occasionally lead to surprising results.
 .RE
 
 .BR \-l
