@@ -571,10 +571,12 @@ int main( int argc, char *argv[] ){
     }
     else {
       tokenizer.tokenize( *IN, *OUT );
-      if ( OUT != &cout )
+      if ( OUT != &cout ){
 	delete OUT;
-      if ( IN != &cin )
+      }
+      if ( IN != &cin ){
 	delete IN;
+      }
     }
   }
   catch ( exception &e ){
