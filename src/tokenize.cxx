@@ -608,8 +608,11 @@ namespace Tokenizer {
   }
 
   vector<UnicodeString> TokenizerClass::sentence_split( const UnicodeString& in ){
+    /// split a UnicodeString on the standard EOS markers,
+    //  but ONLY when followed by a space. otherwise keep together
     set<int> eos_posses;
     UnicodeString EOSM = settings["default"]->eosmarkers;
+    // first we collect al the positions of EOS markers
     for ( int i=0; i < EOSM.length(); ++i ){
       int pos = in.indexOf( EOSM[i] );
       while( pos >= 0 ){
@@ -617,11 +620,24 @@ namespace Tokenizer {
 	pos = in.indexOf( EOSM[i], pos+1 );
       }
     }
+    // just in case ther is no EOS marker at the the end
+    eos_posses.insert( in.length() -1 );
+    // now we gather the results
     vector<UnicodeString> result;
     int prev = -1;
+    bool last_had_space = true;
     for ( const auto& pos : eos_posses ){
       UnicodeString tmp = UnicodeString( in, prev+1, pos+1-prev );
-      result.push_back( tmp );
+      //      cerr << "TMP=" << tmp << endl;
+      if ( last_had_space ){
+	// new entry
+	result.push_back( tmp );
+      }
+      else {
+	// so no new entry but append
+	result.back() += tmp;
+      }
+      last_had_space = u_isspace( tmp[tmp.length()-1] );
       prev = pos+1;
     }
     return result;
@@ -796,7 +812,7 @@ namespace Tokenizer {
     }
     UnicodeString utxt = root->text( outputclass );
     // so get Untokenized text from the children, and set it
-    root->settext( TiCC::UnicodeToUTF8(utxt), outputclass );
+    root->setutext( utxt, outputclass );
   }
 
   void removeText( folia::FoliaElement *root,
@@ -2328,8 +2344,21 @@ namespace Tokenizer {
 	  }
 	}
       }
-      else
+      else {
+	if ( i == size-1 && und_language ){
+  // when processing with "und" language, EVERY token sequence is a Sentence
+	  tokens[i].role |= ENDOFSENTENCE;
+	}
 	break;
+      }
+    }
+    if (tokDebug > 6 ){
+      LOG << "After Fixup" << endl;
+      for (int i = offset; i < size; i++) {
+	LOG << method << " i="<< i << " word=[" << tokens[i].us
+	    << "] type=" << tokens[i].type
+	    << ", role=" << tokens[i].role << endl;
+      }
     }
   }
 
