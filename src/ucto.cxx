@@ -552,7 +552,11 @@ int main( int argc, char *argv[] ){
 	cerr << "ucto: configured from file: " << cfile << endl;
       }
       else {
-	cerr << "ucto: configured for languages: " << language_list << endl;
+	cerr << "ucto: configured for languages: " << language_list;
+	if ( do_und_lang ) {
+	  cerr << ", also the  UND flag is set";
+	}
+	cerr << endl;
       }
     }
 
