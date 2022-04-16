@@ -2432,11 +2432,11 @@ namespace Tokenizer {
 	      word = "{{" + type + "}}";
 	    }
 	    if ( bos ) {
-	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "und" ) );
+	      tokens.push_back( Token( type, word , BEGINOFSENTENCE, "default" ) );
 	      bos = false;
 	    }
 	    else {
-	      tokens.push_back( Token( type, word, "und" ) );
+	      tokens.push_back( Token( type, word, "default" ) );
 	    }
 	  }
 	  alpha = false;
@@ -2495,11 +2495,11 @@ namespace Tokenizer {
 	    word = "{{" + type + "}}";
 	  }
 	  if ( bos ) {
-	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "und" ) );
+	    tokens.push_back( Token( type, word , BEGINOFSENTENCE, "default" ) );
 	    bos = false;
 	  }
 	  else {
-	    tokens.push_back( Token( type, word, "und" ) );
+	    tokens.push_back( Token( type, word, "default" ) );
 	  }
 	}
       }
