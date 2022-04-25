@@ -378,6 +378,9 @@ namespace Tokenizer {
       }
       return ucto_processor;
     }
+    if ( tokDebug > 0 ){
+      cerr << "Init provenance" << endl;
+    }
     vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
     if ( !procs.empty() ){
       if ( procs.size() > 1 ){
@@ -420,6 +423,9 @@ namespace Tokenizer {
     if ( proc ){
       folia::KWargs args;
       args["processor"] = proc->id();
+      if ( tokDebug > 0 ){
+	cerr << "declare( TOKEN, passthru, " << args << ")" << endl;
+      }
       doc->declare( folia::AnnotationType::TOKEN, "passthru", args );
     }
     return proc;
@@ -431,6 +437,9 @@ namespace Tokenizer {
     if ( proc ){
       folia::KWargs args;
       args["processor"] = proc->id();
+      if ( tokDebug > 0 ){
+	cerr << "declare( TOKEN, undetermined, " << args << ")" << endl;
+      }
       doc->declare( folia::AnnotationType::TOKEN, "undetermined", args );
     }
     return proc;
@@ -471,6 +480,9 @@ namespace Tokenizer {
 	// we can declare it
 	folia::KWargs args;
 	args["processor"] = proc->id();
+	if ( tokDebug > 0 ){
+	  cerr << "declare( " << type << ", None, " << args << ")" << endl;
+	}
 	doc->declare( type, "None", args );
 	if ( tokDebug > 3 ){
 	  LOG << "added " << folia::toString(type) << "-annotation for: '"
@@ -542,6 +554,9 @@ namespace Tokenizer {
 	if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
 	  // we assume that an old-style declaration is present
 	  doc->un_declare( folia::AnnotationType::TOKEN, alias );
+	}
+	if ( tokDebug > 0 ){
+	  cerr << "declare( TOKEN, " << ucto_set << ", " << args << ")" << endl;
 	}
 	doc->declare( folia::AnnotationType::TOKEN, ucto_set, args );
 	if ( tokDebug > 3 ){
