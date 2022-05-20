@@ -10,7 +10,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto -L nl -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:06" command="ucto -L nl -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -113,7 +113,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto -L en -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:06" command="ucto -L en -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -234,7 +234,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:06" command="ucto --detectlanguages=nld,eng -F folia-lang.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -404,7 +404,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:06" command="ucto --detectlanguages=nld,eng,deu,spa,fra,swe -X --id=ml multilang.txt ml.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
@@ -1170,7 +1170,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:06" command="ucto --detectlanguages=nld,eng -X --id=ml multilang2.txt ml2.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
@@ -1458,7 +1458,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto --detectlanguages=und,nld -n --id=ml multilang2.txt ml3.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:07" command="ucto --detectlanguages=und,nld -n --id=ml multilang2.txt ml3.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -1661,7 +1661,7 @@
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2022-04-04T12:57:20" command="ucto --detectlanguages=und,deu,nld, --id=ml multilang.txt ml4.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:07" command="ucto --detectlanguages=und,deu,nld, --id=ml multilang.txt ml4.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
         <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
           <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
@@ -1982,6 +1982,129 @@
       <s xml:id="ml.p.2.s.12">
         <t>KAN KRISTENDOMEN BOTA VÄRLDENS BEKYMMER?</t>
         <lang class="und"/>
+      </s>
+    </p>
+  </text>
+</FoLiA>
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="folia.xsl"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="ml" generator="libfolia-v2.11" version="2.5.1">
+  <metadata type="native">
+    <annotations>
+      <token-annotation set="undetermined">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
+      <lang-annotation set="http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </lang-annotation>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation>
+        <annotator processor="ucto.1"/>
+      </paragraph-annotation>
+    </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2022-05-21T00:46:07" command="ucto --detectlanguages=und,eng, --id=ml multilang3.txt ml5.xml" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.25">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.11"/>
+        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.8">
+          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
+  </metadata>
+  <text xml:id="ml.text">
+    <s xml:id="ml.text.s.1">
+      <t>Dit is een test.</t>
+      <lang class="und"/>
+    </s>
+    <p xml:id="ml.p.1">
+      <s xml:id="ml.p.1.s.1">
+        <lang class="eng"/>
+        <w xml:id="ml.p.1.s.1.w.1" class="WORD" set="tokconfig-eng">
+          <t>This</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.2" class="WORD" set="tokconfig-eng">
+          <t>is</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.3" class="WORD" set="tokconfig-eng">
+          <t>a</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.4" class="WORD" set="tokconfig-eng">
+          <t>test</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.5" class="WORD" set="tokconfig-eng">
+          <t>with</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.6" class="WORD" set="tokconfig-eng">
+          <t>some</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.7" class="WORD" set="tokconfig-eng">
+          <t>words</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.8" class="WORD" set="tokconfig-eng">
+          <t>to</t>
+        </w>
+        <w xml:id="ml.p.1.s.1.w.9" class="WORD" set="tokconfig-eng">
+          <t>handle</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.1.s.2">
+        <t>een nederlands intermezzo staat hier</t>
+        <lang class="und"/>
+      </s>
+      <s xml:id="ml.p.1.s.3">
+        <lang class="eng"/>
+        <w xml:id="ml.p.1.s.3.w.1" class="WORD" set="tokconfig-eng" space="no">
+          <t>what</t>
+        </w>
+        <w xml:id="ml.p.1.s.3.w.2" class="SUFFIX" set="tokconfig-eng">
+          <t>'s</t>
+        </w>
+        <w xml:id="ml.p.1.s.3.w.3" class="WORD" set="tokconfig-eng">
+          <t>wrong</t>
+        </w>
+        <w xml:id="ml.p.1.s.3.w.4" class="WORD" set="tokconfig-eng">
+          <t>with</t>
+        </w>
+        <w xml:id="ml.p.1.s.3.w.5" class="WORD" set="tokconfig-eng" space="no">
+          <t>this</t>
+        </w>
+        <w xml:id="ml.p.1.s.3.w.6" class="PUNCTUATION" set="tokconfig-eng">
+          <t>?</t>
+        </w>
+      </s>
+      <s xml:id="ml.p.1.s.4">
+        <t>dit niet,</t>
+        <lang class="und"/>
+      </s>
+      <s xml:id="ml.p.1.s.5">
+        <t>want nederlands.</t>
+        <lang class="und"/>
+      </s>
+    </p>
+    <p xml:id="ml.p.2">
+      <s xml:id="ml.p.2.s.1">
+        <lang class="eng"/>
+        <w xml:id="ml.p.2.s.1.w.1" class="WORD" set="tokconfig-eng">
+          <t>But</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.2" class="WORD" set="tokconfig-eng">
+          <t>this</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.3" class="WORD" set="tokconfig-eng">
+          <t>is</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.4" class="WORD" set="tokconfig-eng">
+          <t>english</t>
+        </w>
+        <w xml:id="ml.p.2.s.1.w.5" class="WORD" set="tokconfig-eng">
+          <t>again</t>
+        </w>
       </s>
     </p>
   </text>
