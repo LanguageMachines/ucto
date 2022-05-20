@@ -2360,10 +2360,6 @@ namespace Tokenizer {
 	}
       }
       else {
-	if ( i == size-1 && und_language ){
-  // when processing with "und" language, EVERY token sequence is a Sentence
-	  tokens[i].role |= ENDOFSENTENCE;
-	}
 	break;
       }
     }
