@@ -1874,12 +1874,21 @@ namespace Tokenizer {
     int count = 0;
     const int size = tokens.size();
     int begin = 0;
-    int i = 0;
+    string cur_lang;
+    int tok_cnt = 0;
     for ( auto& token : tokens ) {
+      if ( cur_lang.empty() ){
+	cur_lang = token.lang_code;
+      }
+      else if ( token.lang_code != cur_lang ){
+	tokens[tok_cnt-1].role |= ENDOFSENTENCE;
+	cur_lang = token.lang_code;
+      }
       if (tokDebug >= 5){
-	LOG << "[countSentences] buffer#" <<i
+	LOG << "[countSentences] buffer#" << tok_cnt
 			<< " word=[" << token.us
 			<< "] role=" << token.role
+			<< ", lang=" << token.lang_code
 			<< ", quotelevel="<< quotelevel << endl;
       }
       if (token.role & NEWPARAGRAPH) quotelevel = 0;
@@ -1896,14 +1905,14 @@ namespace Tokenizer {
       tokens[begin].role |= BEGINOFSENTENCE;  //sanity check
       if ( (token.role & ENDOFSENTENCE)
 	   && (quotelevel == 0) ) {
-	begin = i + 1;
+	begin = tok_cnt + 1;
 	count++;
 	if (tokDebug >= 5){
 	  LOG << "[countSentences] SENTENCE #" << count << " found" << endl;
 	}
       }
       if ( forceentirebuffer
-	   && ( i == size - 1)
+	   && ( tok_cnt == size - 1)
 	   && !(token.role & ENDOFSENTENCE) )  {
 	//last token of buffer
 	count++;
@@ -1912,7 +1921,7 @@ namespace Tokenizer {
 	  LOG << "[countSentences] SENTENCE #" << count << " *FORCIBLY* ended" << endl;
 	}
       }
-      ++i;
+      ++tok_cnt;
     }
     if (tokDebug >= 5){
       LOG << "[countSentences] end of loop: returns " << count << endl;
