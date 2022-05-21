@@ -1886,10 +1886,7 @@ namespace Tokenizer {
       }
       if (tokDebug >= 5){
 	LOG << "[countSentences] buffer#" << tok_cnt
-			<< " word=[" << token.us
-			<< "] role=" << token.role
-			<< ", lang=" << token.lang_code
-			<< ", quotelevel="<< quotelevel << endl;
+	    << " token=[ " << token << " ], quotelevel="<< quotelevel << endl;
       }
       if (token.role & NEWPARAGRAPH) quotelevel = 0;
       if (token.role & BEGINQUOTE) quotelevel++;
@@ -2278,9 +2275,7 @@ namespace Tokenizer {
     const int size = tokens.size();
     for (int i = offset; i < size; i++) {
       if (tokDebug > 1 ){
-	LOG << method << " i="<< i << " word=[" << tokens[i].us
-	    << "] type=" << tokens[i].type
-	    << ", role=" << tokens[i].role << endl;
+	LOG << method << " i="<< i << " token=[ " << tokens[i] << " ]" << endl;
       }
       if ( tokens[i].type.startsWith("PUNCTUATION") ){
 	if ((tokDebug > 1 )){
@@ -2354,10 +2349,8 @@ namespace Tokenizer {
       // fix this up to avoid sentences containing only punctuation
       // also we don't want a BEGINQUOTE to be an ENDOFSENTENCE
       if ( tokDebug > 2 ){
-	LOG << method << " fixup-end i="<< i << " word=["
-	    << tokens[i].us
-	    << "] type=" << tokens[i].type
-	    << ", role=" << tokens[i].role << endl;
+	LOG << method << " fixup-end i="<< i << " token=[ " << tokens[i]
+	    << " ]" << endl;
       }
       if ( tokens[i].type.startsWith("PUNCTUATION") ) {
 	tokens[i].role &= ~BEGINOFSENTENCE;
@@ -2375,9 +2368,7 @@ namespace Tokenizer {
     if (tokDebug > 6 ){
       LOG << "After Fixup" << endl;
       for (int i = offset; i < size; i++) {
-	LOG << method << " i="<< i << " word=[" << tokens[i].us
-	    << "] type=" << tokens[i].type
-	    << ", role=" << tokens[i].role << endl;
+	LOG << method << " i="<< i << " token=[ " << tokens[i] << " ]" << endl;
       }
     }
   }
@@ -2531,8 +2522,7 @@ namespace Tokenizer {
     if ( tokDebug > 5 ){
       LOG << "[passthruLine] END result:" << endl;
       for ( const auto& tok : tokens ){
-	LOG << "\t[passthruLine] word=[" << tok.us
-	    << "] role=" << tok.role << endl;
+	LOG << "\t[passthruLine] token=[" << tok << "]" << endl;
       }
     }
   }
