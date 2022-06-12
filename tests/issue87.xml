@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="bug87" version="2.5.1" generator="foliapy-v2.5.7">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">
+        <annotator processor="proc.tei2folia.xsl"/>
+      </text-annotation>
+      <division-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/tei2folia/divisions.foliaset.ttl">
+        <annotator processor="proc.tei2folia.xsl"/>
+      </division-annotation>
+      <paragraph-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/tei2folia/paragraphs.foliaset.ttl">
+        <annotator processor="proc.tei2folia.xsl"/>
+      </paragraph-annotation>
+    </annotations>
+    <provenance>
+      <processor xml:id="proc.tei2folia" name="tei2folia" type="auto" version="2.5.4" folia_version="2.5.1" command="tei2folia -i -o - bug87-V0.xml" host="violet.uvt.nl" user="reynaert" begindatetime="2022-03-25T13:04:14" enddatetime="2022-03-25T13:04:17" src="https://github.com/proycon/foliatools">
+        <processor xml:id="proc.tei2folia.xsl" name="tei2folia.xsl" type="auto"/>
+      </processor>
+    </provenance>
+  </metadata>
+  <text xml:id="bug87.text">
+    <div xml:id="bug87.text.div.1" class="frontmatter">
+      <p xml:id="bug87.text.div.1.p.1" class="p">
+        <t>Mozart's opera </t>
+      </p>
+    </div>
+  </text>
+</FoLiA>
