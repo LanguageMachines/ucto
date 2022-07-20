@@ -29,6 +29,7 @@
 
 #include <cassert>
 #include <unistd.h>
+#include <pwd.h>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -39,6 +40,7 @@
 #include "ticcutils/PrettyPrint.h"
 #include "ticcutils/Unicode.h"
 #include "ticcutils/Timer.h"
+#include "ticcutils/FileUtils.h"
 #include "ucto/my_textcat.h"
 
 #define DO_READLINE
@@ -211,10 +213,24 @@ namespace Tokenizer {
     theErrLog = new TiCC::LogStream(cerr, "ucto" );
     theErrLog->setstamp( StampMessage );
 #ifdef HAVE_TEXTCAT
-    string textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-    text_cat = new TextCat( textcat_cfg, theErrLog );
+    const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
+    const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
+    const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
+    //check local first
+    string textcat_cfg = localConfigDir + "textcat.cfg";
+    if (!TiCC::isFile(textcat_cfg)) {
+        //check global second
+        textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
+        if (!TiCC::isFile(textcat_cfg)) {
+            LOG << "NO TEXTCAT SUPPORT DUE TO MISSING textcat.cfg!" << endl;
+            textcat_cfg = "";
+        }
+    }
+    if (!textcat_cfg.empty()) {
+        text_cat = new TextCat( textcat_cfg, theErrLog );
+        LOG << " textcat configured from: " << textcat_cfg << endl;
+    }
     //    text_cat->set_debug( true );
-    LOG << " textcat configured from: " << textcat_cfg << endl;
     // ifstream is( textcat_cfg );
     // string line;
     // while ( getline( is, line ) ){
