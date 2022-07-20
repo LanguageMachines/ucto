@@ -9,3 +9,10 @@ pkgconfig_DATA = ucto.pc
 
 ChangeLog: NEWS
 	git pull; git2cl > ChangeLog
+
+docker:
+	docker build -t ucto:latest .
+
+docker-dev:
+	docker build -t ucto:dev --build-arg VERSION=development .
+
