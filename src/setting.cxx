@@ -26,6 +26,7 @@
 */
 
 #include <unistd.h>
+#include <pwd.h>
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
@@ -50,6 +51,10 @@ using TiCC::operator<<;
 #ifndef UCTODATA_DIR
 #define UCTODATA_DIR string(SYSCONF_PATH) + "/ucto/"
 #endif
+
+const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
+const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
+const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
 
 namespace Tokenizer {
 
@@ -248,7 +253,15 @@ namespace Tokenizer {
   set<string> Setting::installed_languages() {
     // we only return 'languages' which are installed as 'tokconfig-*'
     //
-    vector<string> files = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
+    vector<string> files;
+    if (TiCC::isDir(localConfigDir)) {
+        vector<string> localfiles= TiCC::searchFilesMatch( localConfigDir, "tokconfig-*" );
+        files.insert(files.end(), localfiles.begin(), localfiles.end());
+    }
+    if (TiCC::isDir(defaultConfigDir)) {
+        vector<string> globalfiles = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
+        files.insert(files.end(), globalfiles.begin(), globalfiles.end());
+    }
     set<string> result;
     for ( auto const& f : files ){
       string base = TiCC::basename(f);
@@ -485,9 +498,12 @@ namespace Tokenizer {
       result = name;
     }
     else {
-      result = defaultConfigDir + name;
+      result = localConfigDir + name;
       if ( !TiCC::isFile( result ) ){
-	result.clear();
+          result = defaultConfigDir + name;
+          if ( !TiCC::isFile( result ) ){
+            result.clear();
+          }
       }
     }
     return result;
