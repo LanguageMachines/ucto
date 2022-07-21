@@ -95,7 +95,6 @@ void usage(){
        << "\t-e <string>       - set input encoding (default UTF8)" << endl
        << "\t-N <string>       - set output normalization (default NFC)" << endl
        << "\t--filter=[YES|NO] - Disable filtering of special characters" << endl
-       << "\t-f                - OBSOLETE. use --filter=NO" << endl
        << "\t-h or --help      - this message" << endl
        << "\t-L <language>     - Automatically selects a configuration file by language code." << endl
        << "\t                  - Available Languages:" << endl
@@ -130,7 +129,6 @@ void usage(){
        << "\t-P                - Disable paragraph detection" << endl
        << "\t-Q                - Enable quote detection (experimental)" << endl
        << "\t-V or --version   - Show version information" << endl
-       << "\t-x <DocID>        - Output FoLiA XML, use the specified Document ID (obsolete)" << endl
        << "\t-F                - Input file is in FoLiA XML. All untokenized sentences will be tokenized." << endl
        << "\t                    -F is automatically set when inputfile has extension '.xml'" << endl
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
