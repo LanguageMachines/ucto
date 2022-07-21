@@ -16,3 +16,6 @@ docker:
 docker-dev:
 	docker build -t ucto:dev --build-arg VERSION=development .
 
+deps:
+	./build-deps.sh
+
