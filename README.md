@@ -128,3 +128,6 @@ Run the frog container interactively as follows, you can pass any additional arg
 
 Add the ``-v /path/to/your/data:/data`` parameter (before `-t`) if you want to mount your data volume into the container at `/data`.
 
+## Webservice
+
+If you are looking to run Ucto as a webservice yourself,  please see https://github.com/proycon/ucto_webservice . It is not included in this repository.
