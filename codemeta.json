@@ -2,39 +2,29 @@
     "@context": [
         "https://doi.org/10.5063/schema/codemeta-2.0",
         "http://schema.org",
-        {
-            "entryPoints": { "@reverse": "schema:actionApplication" },
-            "interfaceType": { "@id": "codemeta:interfaceType" }
-        }
+        "https://w3id.org/software-types"
     ],
     "@type": "SoftwareSourceCode",
     "identifier": "ucto",
     "name": "ucto",
     "version": "0.25",
     "description": "Ucto tokenizes text files: it separates words from punctuation, and splits sentences. This is one of the first tasks for almost any Natural Language Processing application. Ucto offers several other basic preprocessing steps such as changing case that you can all use to make your text suited for further processing such as indexing, part-of-speech tagging, or machine translation.",
-    "license": "https://spdx.org/licenses/GPL-3.0",
+    "license": "https://spdx.org/licenses/GPL-3.0-only",
 	"url": "https://languagemachines.github.io/ucto",
     "producer": {
-        "@id": "https://www.ru.nl/clst",
+        "@id": "https://huc.knaw.nl",
         "@type": "Organization",
-        "name": "Centre for Language and Speech Technology",
-        "url": "https://www.ru.nl/clst",
+        "name": "KNAW Humanities Cluster",
+        "url": "https://huc.knaw.nl",
         "parentOrganization": {
-            "@id": "https://www.ru.nl/cls",
+            "@id": "https://knaw.nl",
             "@type": "Organization",
-            "name": "Centre for Language Studies",
-            "url": "https://www.ru.nl/cls",
-            "parentOrganization": {
-                "@id": "https://www.ru.nl",
-                "name": "Radboud University",
-                "@type": "Organization",
-                "url": "https://www.ru.nl",
-                "location": {
-                    "@type": "Place",
-                    "name": "Nijmegen"
-                }
+            "name": "KNAW",
+            "url": "https://knaw.nl",
+            "location": {
+                "@type": "Place",
+                "name": "Amsterdam"
             }
-
         }
     },
     "author": [
@@ -44,23 +34,43 @@
 			"givenName": "Maarten",
 			"familyName": "van Gompel",
 			"email": "proycon@anaproy.nl",
-			"affiliation": { "@id": "https://www.ru.nl/clst" }
+			"affiliation": { "@id": "https://huc.knaw.nl" }
 		},
 		{
 			"@type": "Person",
 			"givenName": "Ko",
 			"familyName": "van der Sloot",
 			"email": "ko.vandersloot@let.ru.nl",
-			"affiliation": { "@id": "https://www.ru.nl/clst" }
+			"affiliation": { 
+                "@id": "https://www.ru.nl/clst", 
+                "@type": "Organization",
+                "name": "Centre for Language and Speech Technology",
+                "url": "https://www.ru.nl/clst",
+                "parentOrganization": {
+                    "@id": "https://www.ru.nl/cls",
+                    "@type": "Organization",
+                    "name": "Centre for Language Studies",
+                    "url": "https://www.ru.nl/cls",
+                    "parentOrganization": {
+                        "@id": "https://www.ru.nl",
+                        "name": "Radboud University",
+                        "@type": "Organization",
+                        "url": "https://www.ru.nl",
+                        "location": {
+                            "@type": "Place",
+                            "name": "Nijmegen"
+                        }
+                    }
+                }
+            }
 		}
 	],
-	"sourceOrganization": { "@id": "https://www.ru.nl/clst" },
 	"programmingLanguage": {
 		"@type": "ComputerLanguage",
 		"identifier": "c++",
 		"name": "C++"
 	},
-	"operatingSystem": "POSIX",
+	"operatingSystem": [ "Linux", "BSD", "macOS" ],
 	"codeRepository": "https://github.com/LanguageMachines/ucto",
     "softwareRequirements": [
         {
@@ -96,19 +106,162 @@
 		}
 	],
 	"readme": "https://github.com/LanguageMachines/ucto/blob/master/README.md",
+    "softwareHelp": [
+        {
+            "@id": "https://ucto.readthedocs.io",
+            "@type": "WebSite",
+            "name": "Ucto documentation",
+            "url": "https://ucto.readthedocs.io"
+        }
+    ],
 	"issueTracker": "https://github.com/LanguageMachines/ucto/issues",
 	"contIntegration": "https://travis-ci.org/LanguageMachines/ucto",
 	"releaseNotes": "https://github.com/LanguageMachines/ucto/releases",
-	"developmentStatus": "active",
+	"developmentStatus": "https://www.repostatus.org/#active",
 	"keywords":  [ "nlp", "natural language processing", "tokenization", "tokenizer" ],
 	"dateCreated": "2011-03-27",
-    "entryPoints": [
+    "dateModified": "2022-07-21T13:17:06Z+0200",
+    "targetProduct": [
         {
-            "@type": "EntryPoint",
+            "@type": "SoftwareLibrary",
+            "executableName": "libucto",
+            "name": "libucto",
+            "runtimePlatform": [ "Linux", "BSD", "macOS" ],
+            "description": "Ucto Library with API for C++"
+        },
+        {
+            "@type": "CommandLineApplication",
+            "executableName": "ucto",
             "name": "ucto",
-            "urlTemplate": "file:///ucto",
-            "description": "Ucto tokeniser, full command line interface",
-            "interfaceType": "CLI"
+            "runtimePlatform": [ "Linux", "BSD", "macOS" ],
+            "description": "Command-line interface to the tokenizer",
+            "consumesData": [ 
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        {
+                            "@id": "https://iso639-3.sil.org/code/nld",
+                            "@type": "Language",
+                            "name": "Dutch",
+                            "identifier": "nld"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/eng",
+                            "@type": "Language",
+                            "name": "English",
+                            "identifier": "eng"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/ita",
+                            "@type": "Language",
+                            "name": "Italian",
+                            "identifier": "ita"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/fra",
+                            "@type": "Language",
+                            "name": "French",
+                            "identifier": "fra"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/spa",
+                            "@type": "Language",
+                            "name": "Spanish",
+                            "identifier": "spa"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/por",
+                            "@type": "Language",
+                            "name": "Portuguese",
+                            "identifier": "por"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/deu",
+                            "@type": "Language",
+                            "name": "German",
+                            "identifier": "deu"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/fry",
+                            "@type": "Language",
+                            "name": "Frisian",
+                            "identifier": "fry"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/swe",
+                            "@type": "Language",
+                            "name": "Swedish",
+                            "identifier": "swe"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/rus",
+                            "@type": "Language",
+                            "name": "Russian",
+                            "identifier": "rus"
+                        },
+                        {
+                            "@id": "https://iso639-3.sil.org/code/tur",
+                            "@type": "Language",
+                            "name": "Turkish",
+                            "identifier": "tur"
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/nld" },
+                        { "@id": "https://iso639-3.sil.org/code/eng" },
+                        { "@id": "https://iso639-3.sil.org/code/ita" },
+                        { "@id": "https://iso639-3.sil.org/code/fra" },
+                        { "@id": "https://iso639-3.sil.org/code/spa" },
+                        { "@id": "https://iso639-3.sil.org/code/por" },
+                        { "@id": "https://iso639-3.sil.org/code/deu" },
+                        { "@id": "https://iso639-3.sil.org/code/fry" },
+                        { "@id": "https://iso639-3.sil.org/code/swe" },
+                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/tur" }
+                    ]
+                }
+            ],
+            "producesData": [ 
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/nld" },
+                        { "@id": "https://iso639-3.sil.org/code/eng" },
+                        { "@id": "https://iso639-3.sil.org/code/ita" },
+                        { "@id": "https://iso639-3.sil.org/code/fra" },
+                        { "@id": "https://iso639-3.sil.org/code/spa" },
+                        { "@id": "https://iso639-3.sil.org/code/por" },
+                        { "@id": "https://iso639-3.sil.org/code/deu" },
+                        { "@id": "https://iso639-3.sil.org/code/fry" },
+                        { "@id": "https://iso639-3.sil.org/code/swe" },
+                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/tur" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/nld" },
+                        { "@id": "https://iso639-3.sil.org/code/eng" },
+                        { "@id": "https://iso639-3.sil.org/code/ita" },
+                        { "@id": "https://iso639-3.sil.org/code/fra" },
+                        { "@id": "https://iso639-3.sil.org/code/spa" },
+                        { "@id": "https://iso639-3.sil.org/code/por" },
+                        { "@id": "https://iso639-3.sil.org/code/deu" },
+                        { "@id": "https://iso639-3.sil.org/code/fry" },
+                        { "@id": "https://iso639-3.sil.org/code/swe" },
+                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/tur" }
+                    ]
+                }
+            ]
         }
     ]
 }
