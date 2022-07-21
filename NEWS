@@ -1,4 +1,4 @@
-0.25 2022-07-21
+0.25 2022-07-22
 [Ko van der Sloot]
 * Added a test for https://github.com/LanguageMachines/ucto/issues/87
 * Adapted to latest update in tokconfig-fra (uctodata 0.9)
