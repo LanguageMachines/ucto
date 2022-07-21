@@ -54,26 +54,30 @@ To install ucto, first consult whether your distribution's package manager has a
 Alternatively, you can build an OCI container image using the provided `Dockerfile` in
 this repository, or obtain a pre-made container image from Docker Hub using `docker pull proycon/ucto`.
 
-To compile and install manually from source, provided you have all the
-dependencies installed:
+To compile and install manually from source: 
 
     $ bash bootstrap.sh
+    $ sudo make deps PREFIX=/usr/local/
     $ ./configure
     $ make
     $ sudo make install
 
-You will need current versions of the following dependencies of our software:
+The second step will automatically download and install (in $PREFIX) the latest stable versions of the following dependencies of our software:
 
 * [ticcutils](https://github.com/LanguageMachine/ticcutils) - A shared utility library
 * [libfolia](https://github.com/LanguageMachines/libfolia)  - A library for the FoLiA format.
 * [uctodata](https://github.com/LanguageMachines/uctodata)  - Data files for ucto, packaged separately
 
-As well as the following 3rd party dependencies:
+If you already have these dependencies, e.g. through a package manager or manually installed, then you should skip this step. 
+
+You will still need to take care to install the following 3rd party
+dependencies through your distribution's package manager, as they are not
+provided by our script:
 
 * ``icu`` - A C++ library for Unicode and Globalization support. On Debian/Ubuntu systems, install the package libicu-dev.
 * ``libxml2`` - An XML library. On Debian/Ubuntu systems install the package libxml2-dev.
-* ``libtextcat`` - A language detection package. On Debian/Ubuntu systems it is called libexttextcat-dev.
-* A sane build environment with a C++ compiler (e.g. gcc 4.9 or above or clang), autotools, libtool, pkg-config
+* ``libexttextcat`` - A language detection package. 
+* A sane build environment with a C++ compiler (e.g. gcc 4.9 or above or clang), make, autotools, libtool, pkg-config
 
 ## Usage
 
