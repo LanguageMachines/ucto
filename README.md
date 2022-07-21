@@ -6,6 +6,7 @@
 
 # Ucto - A rule-based tokeniser
 
+    KNAW Humanities Cluster
     Centre for Language and Speech technology, Radboud University Nijmegen
     Induction of Linguistic Knowledge Research Group, Tilburg University
 
