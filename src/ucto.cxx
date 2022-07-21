@@ -136,10 +136,10 @@ void usage(){
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "                      -X is automatically set when inputfile has extension '.xml'" << endl
-       << "\t--inputclass <class>  - use the specified class to search text in the FoLia doc.(default is 'current')" << endl
-       << "\t--outputclass <class> - use the specified class to output text in the FoLia doc. (default is 'current')" << endl
-       << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLia doc. (default is 'current'). Implies --filter=NO." << endl
        << "\t                  (-x and -F disable usage of most other options: -nPQVs)" << endl
+       << "\t--inputclass <class>  - use the specified class to search text in the FoLiA doc.(default is 'current')" << endl
+       << "\t--outputclass <class> - use the specified class to output text in the FoLiA doc. (default is 'current')" << endl
+       << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLiA doc. (default is 'current'). Implies --filter=NO." << endl
        << "\t--separators=\"seps\" - use the specified 'seps` as the main separators. (default is '+', maining ALL spacing)" << endl
        << "\t                    '+' : the default, ALL spacing characters" << endl
        << "\t                    '+<UTF8-string>' : use ALL spacing PLUS all characters from the UTF8 string" << endl
@@ -230,6 +230,7 @@ int main( int argc, char *argv[] ){
     Opts.extract( 'N', normalization );
     verbose = Opts.extract( 'v' );
     if ( Opts.extract( 'x', docid ) ){
+      cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
       xmlout = true;
       if ( Opts.is_present( 'X' ) ){
 	throw TiCC::OptionError( "conflicting options -x and -X" );
@@ -263,7 +264,7 @@ int main( int argc, char *argv[] ){
       outputclass = textclass;
     }
     if ( Opts.extract( 'f' ) ){
-      cerr << "ucto: The -f option is used.  Please consider using --filter=NO" << endl;
+      cerr << "ucto: The -f option is deprecated and will be removed in a later version.  Please use --filter=NO instead" << endl;
       dofiltering = false;
     }
     Opts.extract( "add-tokens", add_tokens );
