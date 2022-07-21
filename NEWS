@@ -10,7 +10,9 @@
 * migrated test wrapper to Python 3 (was still on 2.7)
 
 [Maarten van Gompel]
-* Set up a Dockerfile
+* Set up a Dockerfile 
+* Added build-deps.sh to automatically download, build and install dependencies
+* Updated software metadata (codemeta.json) to latest requirements as proposed in CLARIAH
 * deprecated options -f and -x, still works but no longer advertised and gives a deprecation notice  (https://github.com/LanguageMachines/ucto/issues/88)
 * textcat.cfg is now searched for in user config dir as well as global config; also allow running without textcat if the config is missing entirely (same as if not compiled in)
 * added support for user-based configuration dirs ($XDG_CONFIG_HOME/ucto), takes precedence over global data dirs
