@@ -51,9 +51,8 @@ COPYING).
 ## Installation
 
 To install ucto, first consult whether your distribution's package manager has an up-to-date package for it.
-If not, for easy installation of ucto and all dependencies, it is included as part of our software
-distribution [LaMachine](https://proycon.github.io/LaMachine). Alternatively, you can build a container image using the provided `Dockerfile` in
-this repository.
+Alternatively, you can build an OCI container image using the provided `Dockerfile` in
+this repository, or obtain a pre-made container image from Docker Hub using `docker pull proycon/ucto`.
 
 To compile and install manually from source, provided you have all the
 dependencies installed:
@@ -110,18 +109,22 @@ documentation](https://ucto.readthedocs.io/en/latest/).
 
 ## Container Usage
 
+A pre-made container image can be obtained from Docker Hub as follows:
+
+``docker pull proycon/ucto``
+
 You can build a docker container as follows, make sure you are in the root of this repository:
 
-``docker build -t LanguageMachines/ucto .``
+``docker build -t proycon/ucto .``
 
 This builds the latest stable release as packaged for [Alpine Linux](https://pkgs.alpinelinux.org/packages?name=frog), if you want to use the latest development version
 from the git repository instead, do:
 
-``docker build -t LanguageMachines/ucto --build-arg VERSION=development .``
+``docker build -t proycon/ucto --build-arg VERSION=development .``
 
 Run the frog container interactively as follows, you can pass any additional arguments that ``ucto`` takes.
 
-``docker run -t -i LanguageMachines/ucto``
+``docker run -t -i proycon/ucto``
 
 Add the ``-v /path/to/your/data:/data`` parameter (before `-t`) if you want to mount your data volume into the container at `/data`.
 
