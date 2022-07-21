@@ -1,3 +1,20 @@
+0.25 2022-07-21
+[Ko van der Sloot]
+* Added a test for https://github.com/LanguageMachines/ucto/issues/87
+* Adapted to latest update in tokconfig-fra (uctodata 0.9)
+* Deal with unknown languages (as detected by ucto), using iso-639-3 'und' (https://github.com/LanguageMachines/ucto/issues/86)
+    * don't tokenize unknown languages
+    * configurable sentence splitter for "und" text
+    * added tests
+* added code to set the separator (--seperators), so ucto can split on more than just spaces
+* migrated test wrapper to Python 3 (was still on 2.7)
+
+[Maarten van Gompel]
+* Set up a Dockerfile
+* deprecated options -f and -x, still works but no longer advertised and gives a deprecation notice  (https://github.com/LanguageMachines/ucto/issues/88)
+* textcat.cfg is now searched for in user config dir as well as global config; also allow running without textcat if the config is missing entirely (same as if not compiled in)
+* added support for user-based configuration dirs ($XDG_CONFIG_HOME/ucto), takes precedence over global data dirs
+
 0.24.1 2021-12-17
 [Ko van der Sloot]
 * added UTF8 members to the API, to replace the variants that were

@@ -138,7 +138,7 @@ void usage(){
        << "\t--inputclass <class>  - use the specified class to search text in the FoLiA doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLiA doc. (default is 'current')" << endl
        << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLiA doc. (default is 'current'). Implies --filter=NO." << endl
-       << "\t--separators=\"seps\" - use the specified 'seps` as the main separators. (default is '+', maining ALL spacing)" << endl
+       << "\t--separators=\"seps\" - use the specified 'seps` as the main separators. (default is '+', meaning ALL spacing)" << endl
        << "\t                    '+' : the default, ALL spacing characters" << endl
        << "\t                    '+<UTF8-string>' : use ALL spacing PLUS all characters from the UTF8 string" << endl
        << "\t                      that string may again include a '+', to add it too" << endl
