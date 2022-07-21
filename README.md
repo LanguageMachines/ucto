@@ -57,12 +57,14 @@ this repository, or obtain a pre-made container image from Docker Hub using `doc
 To compile and install manually from source: 
 
     $ bash bootstrap.sh
-    $ sudo make deps PREFIX=/usr/local/
     $ ./configure
     $ make
     $ sudo make install
 
-The second step will automatically download and install (in $PREFIX) the latest stable versions of the following dependencies of our software:
+If you want to *automatically* download, compile and install the latest stable versions of
+the required dependencies, then run `./build-deps.sh` prior to the above. You
+can pass a target directory prefix as first argument and you may need to
+prepend `sudo` to ensure you can install there. The dependencies are:
 
 * [ticcutils](https://github.com/LanguageMachine/ticcutils) - A shared utility library
 * [libfolia](https://github.com/LanguageMachines/libfolia)  - A library for the FoLiA format.
