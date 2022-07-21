@@ -123,7 +123,7 @@ You can build a docker container as follows, make sure you are in the root of th
 
 ``docker build -t proycon/ucto .``
 
-This builds the latest stable release as packaged for [Alpine Linux](https://pkgs.alpinelinux.org/packages?name=frog), if you want to use the latest development version
+This builds the latest stable release, if you want to use the latest development version
 from the git repository instead, do:
 
 ``docker build -t proycon/ucto --build-arg VERSION=development .``
