@@ -109,7 +109,7 @@ PKG_CHECK_MODULES(
 	[uctodata],
 	[PKG_CHECK_MODULES(
 		[uctodata],
-		[uctodata >= 0.8],
+		[uctodata >= 0.9],
 		[],
 		[AC_MSG_NOTICE([ATTENTION:
 	Your ucto datafiles are are outdated
