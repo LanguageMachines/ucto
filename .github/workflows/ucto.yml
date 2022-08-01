@@ -8,6 +8,8 @@ on:
       - 'include/**'
       - '.github/**'
       - 'tests/**'
+      - configure.ac
+      - Makefile.am
 
   pull_request:
     branches: [master]
