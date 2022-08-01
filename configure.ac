@@ -23,10 +23,6 @@ AC_LANG([C++])
 
 # Checks for libraries.
 
-if test $prefix = "NONE"; then
-   prefix="$ac_default_prefix"
-fi
-
 # Checks for header files.
 AC_HEADER_STDBOOL
 
