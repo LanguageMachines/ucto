@@ -556,7 +556,7 @@ namespace Tokenizer {
 	sub = parts[1];
       }
     }
-    else if ( num > 2 ){
+    else { // num > 2
       if ( !TiCC::stringTo( parts[0], major ) ){
 	sub = version;
       }
@@ -596,7 +596,6 @@ namespace Tokenizer {
 						{ ATTACHEDSUFFIXES, "" },
 						{ UNITS, "" },
 						{ ORDINALS, "" } };
-    vector<UnicodeString> rules_order;
     vector<string> meta_rules;
     string conffile = get_filename( settings_name );
 
@@ -610,6 +609,7 @@ namespace Tokenizer {
     }
     ifstream f( conffile );
     if ( f ){
+      vector<UnicodeString> rules_order;
       ConfigMode mode = NONE;
       set_file = settings_name;
       if ( tokDebug ){
@@ -915,8 +915,8 @@ namespace Tokenizer {
     }
     int major = -1;
     int minor = -1;
-    string sub;
     if ( !version.empty() ){
+      string sub;
       split( version, major, minor, sub );
       if ( tokDebug ){
 	LOG << set_file << ": version=" << version << endl;
