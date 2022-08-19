@@ -2,7 +2,8 @@
     "@context": [
         "https://doi.org/10.5063/schema/codemeta-2.0",
         "http://schema.org",
-        "https://w3id.org/software-types"
+        "https://w3id.org/software-types",
+        "https://w3id.org/software-iodata"
     ],
     "@type": "SoftwareSourceCode",
     "identifier": "ucto",
@@ -145,61 +146,121 @@
                             "@type": "Language",
                             "name": "Dutch",
                             "identifier": "nld"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/eng",
                             "@type": "Language",
                             "name": "English",
                             "identifier": "eng"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/ita",
                             "@type": "Language",
                             "name": "Italian",
                             "identifier": "ita"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/fra",
                             "@type": "Language",
                             "name": "French",
                             "identifier": "fra"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/spa",
                             "@type": "Language",
                             "name": "Spanish",
                             "identifier": "spa"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/por",
                             "@type": "Language",
                             "name": "Portuguese",
                             "identifier": "por"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/deu",
                             "@type": "Language",
                             "name": "German",
                             "identifier": "deu"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/fry",
                             "@type": "Language",
                             "name": "Frisian",
                             "identifier": "fry"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/swe",
                             "@type": "Language",
                             "name": "Swedish",
                             "identifier": "swe"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/rus",
                             "@type": "Language",
                             "name": "Russian",
                             "identifier": "rus"
-                        },
+                        }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         {
                             "@id": "https://iso639-3.sil.org/code/tur",
                             "@type": "Language",
@@ -212,16 +273,76 @@
                     "@type": "TextDigitalDocument",
                     "encodingFormat": "application/folia+xml",
                     "inLanguage": [ 
-                        { "@id": "https://iso639-3.sil.org/code/nld" },
-                        { "@id": "https://iso639-3.sil.org/code/eng" },
-                        { "@id": "https://iso639-3.sil.org/code/ita" },
-                        { "@id": "https://iso639-3.sil.org/code/fra" },
-                        { "@id": "https://iso639-3.sil.org/code/spa" },
-                        { "@id": "https://iso639-3.sil.org/code/por" },
-                        { "@id": "https://iso639-3.sil.org/code/deu" },
-                        { "@id": "https://iso639-3.sil.org/code/fry" },
-                        { "@id": "https://iso639-3.sil.org/code/swe" },
-                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/nld" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/eng" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/ita" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fra" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/spa" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/por" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/deu" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fry" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/swe" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/rus" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
                         { "@id": "https://iso639-3.sil.org/code/tur" }
                     ]
                 }
@@ -231,16 +352,76 @@
                     "@type": "TextDigitalDocument",
                     "encodingFormat": "text/plain",
                     "inLanguage": [ 
-                        { "@id": "https://iso639-3.sil.org/code/nld" },
-                        { "@id": "https://iso639-3.sil.org/code/eng" },
-                        { "@id": "https://iso639-3.sil.org/code/ita" },
-                        { "@id": "https://iso639-3.sil.org/code/fra" },
-                        { "@id": "https://iso639-3.sil.org/code/spa" },
-                        { "@id": "https://iso639-3.sil.org/code/por" },
-                        { "@id": "https://iso639-3.sil.org/code/deu" },
-                        { "@id": "https://iso639-3.sil.org/code/fry" },
-                        { "@id": "https://iso639-3.sil.org/code/swe" },
-                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/nld" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/eng" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/ita" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fra" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/spa" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/por" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/deu" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fry" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/swe" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/rus" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "text/plain",
+                    "inLanguage": [ 
                         { "@id": "https://iso639-3.sil.org/code/tur" }
                     ]
                 },
@@ -248,16 +429,76 @@
                     "@type": "TextDigitalDocument",
                     "encodingFormat": "application/folia+xml",
                     "inLanguage": [ 
-                        { "@id": "https://iso639-3.sil.org/code/nld" },
-                        { "@id": "https://iso639-3.sil.org/code/eng" },
-                        { "@id": "https://iso639-3.sil.org/code/ita" },
-                        { "@id": "https://iso639-3.sil.org/code/fra" },
-                        { "@id": "https://iso639-3.sil.org/code/spa" },
-                        { "@id": "https://iso639-3.sil.org/code/por" },
-                        { "@id": "https://iso639-3.sil.org/code/deu" },
-                        { "@id": "https://iso639-3.sil.org/code/fry" },
-                        { "@id": "https://iso639-3.sil.org/code/swe" },
-                        { "@id": "https://iso639-3.sil.org/code/rus" },
+                        { "@id": "https://iso639-3.sil.org/code/nld" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/eng" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/ita" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fra" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia+xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/spa" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/por" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/deu" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/fry" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/swe" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
+                        { "@id": "https://iso639-3.sil.org/code/rus" }
+                    ]
+                },
+                {
+                    "@type": "TextDigitalDocument",
+                    "encodingFormat": "application/folia.xml",
+                    "inLanguage": [ 
                         { "@id": "https://iso639-3.sil.org/code/tur" }
                     ]
                 }
