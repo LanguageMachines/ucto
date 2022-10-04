@@ -134,7 +134,7 @@ from the git repository instead, do:
 
 ``docker build -t proycon/ucto --build-arg VERSION=development .``
 
-Run the frog container interactively as follows, you can pass any additional arguments that ``ucto`` takes.
+Run the container interactively as follows, you can pass any additional arguments that ``ucto`` takes.
 
 ``docker run -t -i proycon/ucto``
 

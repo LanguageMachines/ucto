@@ -24,6 +24,7 @@ RUN if [ "$VERSION" = "distro" ]; then \
         apk del $BUILD_PACKAGES && rm -Rf /usr/src; \
     fi
 
-WORKDIR /
+WORKDIR /data
+VOLUME /data
 
 ENTRYPOINT [ "ucto" ]
