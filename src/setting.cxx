@@ -596,7 +596,6 @@ namespace Tokenizer {
 						{ ATTACHEDSUFFIXES, "" },
 						{ UNITS, "" },
 						{ ORDINALS, "" } };
-    vector<string> meta_rules;
     string conffile = get_filename( settings_name );
 
     if ( !TiCC::isFile( conffile ) ){
@@ -608,7 +607,11 @@ namespace Tokenizer {
       return false;
     }
     ifstream f( conffile );
-    if ( f ){
+    if ( !f ){
+      return false;
+    }
+    else {
+      vector<string> meta_rules;
       vector<UnicodeString> rules_order;
       ConfigMode mode = NONE;
       set_file = settings_name;
@@ -909,9 +912,6 @@ namespace Tokenizer {
 	}
       }
       sort_rules( rulesmap, rules_order );
-    }
-    else {
-      return false;
     }
     int major = -1;
     int minor = -1;

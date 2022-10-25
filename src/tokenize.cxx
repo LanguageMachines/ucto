@@ -936,7 +936,6 @@ namespace Tokenizer {
     else if ( &IN == &cin && isatty(0) ){
       // interactive use on a terminal (quite a hack..)
       const char *prompt = "ucto> ";
-      string line;
       int i = 0;
       while ( true ){
 	string data;
@@ -944,7 +943,7 @@ namespace Tokenizer {
 	if ( !input ){
 	  break;
 	}
-	line = input;
+	string line = input;
 	sentenceperlineinput = true;
 	if ( line.empty() ){
 	  free( input );
