@@ -146,7 +146,7 @@ namespace Tokenizer {
   std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
-    os << t.type << " : " << t.role  << ":" << t.us << " (" << t.lang_code << ")";
+    os << t.type << " : " << t.role  << ": '" << t.us << "' (" << t.lang_code << ")";
     return os;
   }
 
@@ -2945,7 +2945,8 @@ namespace Tokenizer {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
-      if ( type == type_separator ){
+      if ( type == type_separator
+	   || type == type_unknown ){
 	return;
       }
       if ( doPunctFilter
@@ -2994,7 +2995,7 @@ namespace Tokenizer {
 	    LOG << "\tpost= '" << post << "'" << endl;
 	    int cnt = 0;
 	    for ( const auto& m : matches ){
-	      LOG << "\tmatch[" << ++cnt << "]=" << m << endl;
+	      LOG << "\tmatch[" << ++cnt << "]='" << m << "'" << endl;
 	    }
 	  }
 	  if ( recurse
