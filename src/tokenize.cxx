@@ -351,6 +351,18 @@ namespace Tokenizer {
     }
   }
 
+  string TokenizerClass::setDocID( const string& id ) {
+    const std::string s = docid;
+    if ( folia::isNCName( id ) ){
+      docid = id;
+    }
+    else {
+      throw runtime_error( "can't set Document::id to: " + id
+			   + ". Not a valid NCname" );
+    }
+    return s;
+  }
+
   bool TokenizerClass::set_tc_debug( bool b ){
     if ( !text_cat ){
       throw logic_error( "attempt to set debug on uninitialized TextClass object" );

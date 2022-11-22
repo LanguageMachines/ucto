@@ -283,8 +283,7 @@ namespace Tokenizer {
     }
 
     std::string getDocID() const { return docid; }
-    std::string setDocID( const std::string& id ) {
-      const std::string s = docid; docid = id; return s; }
+    std::string setDocID( const std::string& );
 
     bool get_setting_info( const std::string&,
 			   std::string&,
