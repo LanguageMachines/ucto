@@ -108,7 +108,7 @@ PKG_CHECK_MODULES(
 		[uctodata >= 0.9],
 		[],
 		[AC_MSG_NOTICE([ATTENTION:
-	Your ucto datafiles are are outdated
+	Your ucto datafiles are outdated
 	You should consider installing a newer version of the uctodata package!])])
 
 	],
@@ -117,7 +117,9 @@ PKG_CHECK_MODULES(
 
 UCTODATA_PRE=`pkg-config --variable=prefix uctodata`
 UCTODATA_DIR=$UCTODATA_PRE/share/ucto
-AC_DEFINE_UNQUOTED([UCTODATA_DIR], ["$UCTODATA_DIR/"], [location of uctodata files])
+AC_DEFINE_UNQUOTED( [UCTODATA_DIR],
+		    ["$UCTODATA_DIR/"],
+		    [location of uctodata files])
 UCTODATA_VER=`pkg-config --modversion uctodata`
 AC_DEFINE_UNQUOTED( [UCTODATA_VERSION],
 	   	    ["${UCTODATA_VER}"],
