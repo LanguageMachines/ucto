@@ -34,7 +34,7 @@ jobs:
           message: >
             ${{ github.actor }} started a build of
             ${{ github.event.repository.name }}
-            [${{ needs.notification.outputs.branch }}]
+            [${{ steps.extract_branch.outputs.branch }}]
   build:
     runs-on: ${{ matrix.os }}
     needs: notification
