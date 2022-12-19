@@ -17,17 +17,24 @@ on:
 jobs:
   notification:
     runs-on: ubuntu-latest
-    name: Notify start to #gitlama
+    name: Notify start to IRC gitlama
+    outputs:
+      branch: ${{ steps.extract_branch.outputs.branch }}
     steps:
+      - name: Extract Branch name
+        id: extract_branch
+        shell: bash
+        run: echo "branch=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_OUTPUT
       - name: IRC notification
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GitHub
-          message: |-
-            ${{ github.actor }} started a build of ${{ github.event.repository.name }}
-
+          message: >
+            ${{ github.actor }} started a build of
+            ${{ github.event.repository.name }}
+            [${{ needs.notification.outputs.branch }}]
   build:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -37,7 +44,7 @@ jobs:
 
     steps:
       - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.9.0
+        uses: styfle/cancel-workflow-action@0.11.0
         with:
           access_token: ${{ github.token }}
 
@@ -123,25 +130,24 @@ jobs:
         continue-on-error: true
       - name: show log
         run: cat src/test-suite.log
-      - id: compiler
+      - name: get compiler ID
+        id: compiler
         run: |
           id=$(echo ${{matrix.compiler}} | cut -d\+ -f1)
-          echo "id=$id" >> GITHUB_OUTPUT
+          echo "id=$id" >> $GITHUB_OUTPUT
       - name: Notify IRC of failure
         if: ${{ steps.check.outcome != 'success' }}
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
-          message: |-
-            ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: FAILED
+          message: "ucto [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00034FAIL\u0003"
       - name: Notify IRC of succes
         if: ${{ steps.check.outcome == 'success' }}
-        uses: Gottox/irc-message-action@v1
+        uses: Gottox/irc-message-action@v2
         with:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
-          message: |-
-            ${{ github.event.repository.name }} with ${{ matrix.compiler }} build by ${{ github.actor }} on ${{ matrix.os }}: SUCCESS
+          message: "ucto [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00033SUCCESS\u0003"
