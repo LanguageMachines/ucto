@@ -37,6 +37,7 @@ jobs:
             [${{ needs.notification.outputs.branch }}]
   build:
     runs-on: ${{ matrix.os }}
+    needs: notification
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest]
