@@ -6,7 +6,7 @@ AC_INIT([ucto],[0.26],[lamasoftware@science.ru.nl]) #adapt version number in cod
 AM_INIT_AUTOMAKE([foreign])
 AC_CONFIG_SRCDIR([configure.ac])
 AC_CONFIG_MACRO_DIR([m4])
-AC_CONFIG_HEADER([config.h])
+AC_CONFIG_HEADERS([config.h])
 
 SYSCONFDIR=$sysconfdir
 AC_SUBST([SYSCONFDIR])
