@@ -1,3 +1,14 @@
+0.26 2023-01-02
+[Ko van der Sloot]
+* some code quality improvements
+* fix for https://github.com/LanguageMachines/ucto/issues/89
+* updated configure.ac
+* updated GitHub action
+[Maarten van Gompel]
+* Added MAINTAINERS
+* updated codemeta.json
+* fix for https://github.com/fbkarsdorp/homebrew-lamachine/issues/17
+
 0.25 2022-07-22
 [Ko van der Sloot]
 * Added a test for https://github.com/LanguageMachines/ucto/issues/87
@@ -10,7 +21,7 @@
 * migrated test wrapper to Python 3 (was still on 2.7)
 
 [Maarten van Gompel]
-* Set up a Dockerfile 
+* Set up a Dockerfile
 * Added build-deps.sh to automatically download, build and install dependencies
 * Updated software metadata (codemeta.json) to latest requirements as proposed in CLARIAH
 * deprecated options -f and -x, still works but no longer advertised and gives a deprecation notice  (https://github.com/LanguageMachines/ucto/issues/88)
