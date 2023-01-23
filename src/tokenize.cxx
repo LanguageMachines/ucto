@@ -267,7 +267,7 @@ namespace Tokenizer {
 
     }
     delete theErrLog;
-    delete text_cat;
+    if (text_cat != NULL) delete text_cat;
   }
 
   bool TokenizerClass::reset( const string& lang ){
@@ -289,7 +289,7 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
-    if ( theErrLog != os ){
+    if (( theErrLog != os ) && (text_cat != NULL)) {
       text_cat->set_debug_stream( os );
       delete theErrLog;
     }
@@ -704,7 +704,7 @@ namespace Tokenizer {
       for ( const auto& part : parts ){
 	string part_lang;
 	vector<UnicodeString> tmp_v = TiCC::split( part );
-	if ( tmp_v.size() > 3 ){
+	if (( tmp_v.size() > 3 ) && (text_cat != NULL)) {
 	  part_lang = detect( part );
 	}
 	else {
