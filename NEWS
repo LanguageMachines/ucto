@@ -1,3 +1,11 @@
+0.27 2023-01-23
+[Ko van der Sloot]
+* removed dependency on libtar
+* fixed build when HAVE_TEXTCAT was not set. Improved guards agains missing textcat support
+
+[Maarten van Gompel]
+* guard against uninitialized/missing textcat (https://github.com/proycon/python-frog#22)
+
 0.26 2023-01-02
 [Ko van der Sloot]
 * some code quality improvements
