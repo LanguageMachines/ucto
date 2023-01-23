@@ -267,7 +267,7 @@ namespace Tokenizer {
 
     }
     delete theErrLog;
-    if (text_cat != NULL) delete text_cat;
+    delete text_cat;
   }
 
   bool TokenizerClass::reset( const string& lang ){
@@ -289,8 +289,10 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
-    if (( theErrLog != os ) && (text_cat != NULL)) {
-      text_cat->set_debug_stream( os );
+    if ( theErrLog != os ){
+      if ( text_cat != NULL) {
+	text_cat->set_debug_stream( os );
+      }
       delete theErrLog;
     }
     theErrLog = os;
@@ -620,6 +622,7 @@ namespace Tokenizer {
     return doc;
   }
 
+#ifdef HAVE_TEXTCAT
   string TokenizerClass::detect( const UnicodeString& line ) const{
     UnicodeString temp = line;
     temp.findAndReplace( utt_mark, "" );
@@ -649,6 +652,12 @@ namespace Tokenizer {
     }
     return result;
   }
+#else
+  string TokenizerClass::detect( const UnicodeString& line ) const {
+    LOG << "No TextCat support available" << endl;
+    return "default";
+  }
+#endif
 
   vector<UnicodeString> TokenizerClass::sentence_split( const UnicodeString& in ){
     /// split a UnicodeString on the standard EOS markers,
@@ -689,7 +698,8 @@ namespace Tokenizer {
   void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
 					  bool& bos,
 					  const string& lang ){
-    if ( und_language ){
+    if ( und_language
+	 && text_cat ){
       // hack into parts
       vector<UnicodeString> parts = sentence_split( input_line );
       if ( tokDebug > 3 ){
@@ -704,7 +714,7 @@ namespace Tokenizer {
       for ( const auto& part : parts ){
 	string part_lang;
 	vector<UnicodeString> tmp_v = TiCC::split( part );
-	if (( tmp_v.size() > 3 ) && (text_cat != NULL)) {
+	if ( tmp_v.size() > 3 ) {
 	  part_lang = detect( part );
 	}
 	else {

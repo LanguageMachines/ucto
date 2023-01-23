@@ -112,19 +112,23 @@ string TextCat::get_language( const string& in ) const {
 #else
 TextCat::~TextCat() {}
 
-TextCat::TextCat( const std::string& cf ): TC(0) {
+TextCat::TextCat( const std::string& cf, TiCC::LogStream* ): TC(0) {
   throw runtime_error( "TextCat::TextCat(" + cf + "): TextCat Support not available" );
 }
 
-TextCat::TextCat( const TextCat& in ): TC(0) {
+TextCat::TextCat( const TextCat& ): TC(0) {
   throw runtime_error( "TextCat::TextCat(): TextCat Support not available" );
 }
 
-vector<string> TextCat::get_languages( const string& in ) const {
+bool TextCat::set_debug( bool ){
+  throw logic_error( "TextCat:set_debug(): TextCay Support not available" );
+}
+
+vector<string> TextCat::get_languages( const string& ) const {
   throw runtime_error( "TextCat::get_languages(): TextCat Support not available" );
 }
 
-string TextCat::get_language( const string& in ) const {
+string TextCat::get_language( const string& ) const {
   throw runtime_error( "TextCat::get_language(): TextCat Support not available" );
 }
 
