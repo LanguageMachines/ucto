@@ -115,6 +115,7 @@ namespace Tokenizer {
 	       const std::string& ="" ); // init 1 or more languages
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
+    void setDebugLog( TiCC::LogStream *os );
 
     // Tokenize from input stream with text OR FoLiA to a FoLiA document
     folia::Document *tokenize_folia( const std::string& );
@@ -380,6 +381,7 @@ namespace Tokenizer {
     std::vector<Token> tokens;
     std::set<UnicodeString> norm_set;
     TiCC::LogStream *theErrLog;
+    TiCC::LogStream *theDbgLog;
 
     bool und_language;
     std::string default_language;

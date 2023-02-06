@@ -89,7 +89,11 @@ namespace Tokenizer {
   class Setting {
   public:
     ~Setting();
-    bool read( const std::string&, const std::string&, int, TiCC::LogStream* );
+    bool read( const std::string&,
+	       const std::string&,
+	       int,
+	       TiCC::LogStream*,
+	       TiCC::LogStream* );
     bool read_rules( const std::string& );
     bool read_filters( const std::string& );
     bool read_quotes( const std::string& );
@@ -112,6 +116,7 @@ namespace Tokenizer {
     std::string version;  // the version of the datafile
     int tokDebug;
     TiCC::LogStream *theErrLog;
+    TiCC::LogStream *theDbgLog;
   };
 
 } // namespace Tokenizer

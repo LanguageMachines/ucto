@@ -47,6 +47,7 @@ using namespace std;
 using TiCC::operator<<;
 
 #define LOG *TiCC::Log(theErrLog)
+#define DBG *TiCC::Log(theDbgLog)
 
 #ifndef UCTODATA_DIR
 #define UCTODATA_DIR string(SYSCONF_PATH) + "/ucto/"
@@ -276,7 +277,7 @@ namespace Tokenizer {
 
   bool Setting::read_rules( const string& fname ){
     if ( tokDebug > 0 ){
-      LOG << "%include " << fname << endl;
+      DBG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -289,7 +290,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    LOG << "include line = " << rawline << endl;
+	    DBG << "include line = " << rawline << endl;
 	  }
 	  const int splitpoint = line.indexOf("=");
 	  if ( splitpoint < 0 ){
@@ -307,14 +308,14 @@ namespace Tokenizer {
 
   bool Setting::read_filters( const string& fname ){
     if ( tokDebug > 0 ){
-      LOG << "%include " << fname << endl;
+      DBG << "%include " << fname << endl;
     }
     return filter.fill( fname );
   }
 
   bool Setting::read_quotes( const string& fname ){
     if ( tokDebug > 0 ){
-      LOG << "%include " << fname << endl;
+      DBG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -327,7 +328,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    LOG << "include line = " << rawline << endl;
+	    DBG << "include line = " << rawline << endl;
 	  }
 	  int splitpoint = line.indexOf(" ");
 	  if ( splitpoint == -1 ){
@@ -356,7 +357,7 @@ namespace Tokenizer {
 
   bool Setting::read_eosmarkers( const string& fname ){
     if ( tokDebug > 0 ){
-      LOG << "%include " << fname << endl;
+      DBG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -369,7 +370,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    LOG << "include line = " << rawline << endl;
+	    DBG << "include line = " << rawline << endl;
 	  }
 	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
 	       ( line.startsWith("\\U") && line.length() == 10 ) ){
@@ -418,7 +419,7 @@ namespace Tokenizer {
   bool Setting::read_abbreviations( const string& fname,
 				    UnicodeString& abbreviations ){
     if ( tokDebug > 0 ){
-      LOG << "%include " << fname << endl;
+      DBG << "%include " << fname << endl;
     }
     ifstream f( fname );
     if ( !f ){
@@ -431,7 +432,7 @@ namespace Tokenizer {
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    LOG << "include line = " << rawline << endl;
+	    DBG << "include line = " << rawline << endl;
 	  }
 	  line = escape_regex( line );
 	  if ( !abbreviations.isEmpty()){
@@ -455,9 +456,9 @@ namespace Tokenizer {
 
   void Setting::sort_rules( map<UnicodeString, Rule *>& rulesmap,
 			    const vector<UnicodeString>& sort ){
-    // LOG << "rules voor sort : " << endl;
+    // DBG << "rules voor sort : " << endl;
     // for ( size_t i=0; i < rules.size(); ++i ){
-    //   LOG << "rule " << i << " " << *rules[i] << endl;
+    //   DBG << "rule " << i << " " << *rules[i] << endl;
     // }
     int index = 0;
     if ( !sort.empty() ){
@@ -486,9 +487,9 @@ namespace Tokenizer {
 	rules_index[it.first] = ++index;
       }
     }
-    // LOG << "rules NA sort : " << endl;
+    // DBG << "rules NA sort : " << endl;
     // for ( size_t i=0; i < result.size(); ++i ){
-    //   LOG << "rule " << i << " " << *result[i] << endl;
+    //   DBG << "rule " << i << " " << *result[i] << endl;
     // }
   }
 
@@ -584,9 +585,12 @@ namespace Tokenizer {
 
   bool Setting::read( const string& settings_name,
 		      const string& add_tokens,
-		      int dbg, TiCC::LogStream* ls ) {
+		      int dbg,
+		      TiCC::LogStream* ls,
+		      TiCC::LogStream* ds ) {
     tokDebug = dbg;
     theErrLog = ls;
+    theDbgLog = ds;
     splitter = "%";
     map<ConfigMode, UnicodeString> patterns = { { ABBREVIATIONS, "" },
 						{ TOKENS, "" },
@@ -616,7 +620,7 @@ namespace Tokenizer {
       ConfigMode mode = NONE;
       set_file = settings_name;
       if ( tokDebug ){
-	LOG << "config file=" << conffile << endl;
+	DBG << "config file=" << conffile << endl;
       }
       int rule_count = 0;
       string rawline;
@@ -702,10 +706,10 @@ namespace Tokenizer {
 	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
 	  }
 	  if ( tokDebug > 5 ){
-	    LOG << "SET SPLITTER: '" << local_splitter << "'" << endl;
+	    DBG << "SET SPLITTER: '" << local_splitter << "'" << endl;
 	  }
 	  if ( local_splitter != splitter ){
-	    LOG << "updating splitter to: '" << local_splitter << "'" << endl;
+	    DBG << "updating splitter to: '" << local_splitter << "'" << endl;
 	  }
 	  splitter = local_splitter;
 	  continue;
@@ -851,7 +855,7 @@ namespace Tokenizer {
 	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
 	  }
 	  if ( tokDebug > 5 ){
-	    LOG << "SET SPLITTER: '" << local_splitter << "'" << endl;
+	    DBG << "SET SPLITTER: '" << local_splitter << "'" << endl;
 	  }
 	  if ( local_splitter != splitter ){
 	    LOG << "updating splitter to: '" << local_splitter << "'" << endl;
@@ -862,7 +866,7 @@ namespace Tokenizer {
 	UnicodeString name = TiCC::UnicodeFromUTF8( nam );
 	string rule = mr.substr( pos+1 );
 	if ( tokDebug > 5 ){
-	  LOG << "SPLIT using: '" << splitter << "'" << endl;
+	  DBG << "SPLIT using: '" << splitter << "'" << endl;
 	}
 	vector<string> parts = TiCC::split_at( rule, splitter );
 	for ( auto& str : parts ){
@@ -919,7 +923,7 @@ namespace Tokenizer {
       string sub;
       split( version, major, minor, sub );
       if ( tokDebug ){
-	LOG << set_file << ": version=" << version << endl;
+	DBG << set_file << ": version=" << version << endl;
       }
     }
     if ( major < 0 || minor < 2 ){
@@ -936,14 +940,14 @@ namespace Tokenizer {
       }
     }
     if ( tokDebug ){
-      LOG << "effective rules: " << endl;
+      DBG << "effective rules: " << endl;
       for ( size_t i=0; i < rules.size(); ++i ){
-	LOG << "rule " << i << " " << *rules[i] << endl;
+	DBG << "rule " << i << " " << *rules[i] << endl;
       }
-      LOG << "EOS markers: " << eosmarkers << endl;
-      LOG << "Quotations: " << quotes << endl;
+      DBG << "EOS markers: " << eosmarkers << endl;
+      DBG << "Quotations: " << quotes << endl;
       try {
-	LOG << "Filter: " << filter << endl;
+	DBG << "Filter: " << filter << endl;
       }
       catch (...){
       }

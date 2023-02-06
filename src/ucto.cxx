@@ -527,7 +527,7 @@ int main( int argc, char *argv[] ){
       tokenizer.setPassThru( true );
     }
     else {
-      // init exept for passthru mode
+      // init from config file
       if ( !cfile.empty()
 	   && !tokenizer.init( cfile, add_tokens ) ){
 	if ( IN != &cin ){
