@@ -582,8 +582,11 @@ namespace Tokenizer {
 	if ( tokDebug > 3 ){
 	  DBG << "language: " << s.first << endl;
 	}
-	if ( s.first == "default"
-	     || s.first == "und" ){
+	if ( s.first == "default" ){
+	  continue;
+	}
+	if ( s.first == "und" ){
+	  add_provenance_undetermined( doc, parent );
 	  continue;
 	}
 	folia::KWargs args;
