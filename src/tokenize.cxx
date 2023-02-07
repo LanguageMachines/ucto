@@ -3214,6 +3214,24 @@ namespace Tokenizer {
       DBG << "Initiating tokenizer from language list..." << endl;
     }
     data_version = get_data_version();
+    // first a quick check
+    set<string> available = Setting::installed_languages();
+    set<string> rejected;
+    for ( const auto& lang : languages ){
+      if ( lang == "und" ){
+	und_language = true;
+	continue;
+      }
+      if ( available.find( lang ) == available.end() ){
+	rejected.insert(lang);
+      }
+    }
+    if ( !rejected.empty() ){
+      LOG << "Unsupported languages: " << rejected << endl;
+      LOG << "(Did you install the uctodata package?)" << endl;
+      LOG << "terminating..." << endl;
+      return false;
+    }
     Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( lang == "und" ){
@@ -3231,8 +3249,6 @@ namespace Tokenizer {
       }
       if ( !set->read( fname, add, tokDebug, theErrLog, theDbgLog ) ){
 	LOG << "problem reading datafile for language: " << lang << endl;
-	LOG << "Unsupported language (Did you install the uctodata package?)"
-	    << endl;
       }
       else {
 	if ( default_set == 0 ){
