@@ -582,7 +582,8 @@ namespace Tokenizer {
 	if ( tokDebug > 3 ){
 	  DBG << "language: " << s.first << endl;
 	}
-	if ( s.first == "default" ){
+	if ( s.first == "default"
+	     || s.first == "und" ){
 	  continue;
 	}
 	folia::KWargs args;
@@ -1367,7 +1368,8 @@ namespace Tokenizer {
 	  new_elt->setAttributes( args );
 	}
 	catch ( const exception& e ){
-	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
+	  cerr << orig->tag() << "(" << args << ") creation failed: "
+	       << e.what() << endl;
 	  exit(EXIT_FAILURE);
 	}
 	new_elt->setutext( ws, outputclass );
@@ -3219,7 +3221,6 @@ namespace Tokenizer {
     set<string> rejected;
     for ( const auto& lang : languages ){
       if ( lang == "und" ){
-	und_language = true;
 	continue;
       }
       if ( available.find( lang ) == available.end() ){
@@ -3236,6 +3237,7 @@ namespace Tokenizer {
     for ( const auto& lang : languages ){
       if ( lang == "und" ){
 	settings["und"] = 0;
+	und_language = true;
 	continue;
       }
       if ( tokDebug > 0 ){

@@ -269,6 +269,7 @@ namespace Tokenizer {
     bool setXMLInput( bool b ) { bool t = xmlin; xmlin = b; return t; }
     bool getXMLInput() const { return xmlin; }
     bool setUndLang( bool b ){ bool r = und_language; und_language = b; return r; };
+    bool getUndLang(){ return und_language; };
 
     const std::string getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
