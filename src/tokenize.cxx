@@ -179,6 +179,52 @@ namespace Tokenizer {
     return os;
   }
 
+  bool TokenizerClass::initialize_textcat(){
+#ifdef HAVE_TEXTCAT
+    const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
+    const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
+    const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
+    //check local first
+    string textcat_cfg = localConfigDir + "textcat.cfg";
+    if (!TiCC::isFile(textcat_cfg)) {
+        //check global second
+        textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
+        if (!TiCC::isFile(textcat_cfg)) {
+	  LOG << "NO TEXTCAT SUPPORT DUE TO MISSING textcat.cfg!" << endl;
+	  textcat_cfg = "";
+        }
+    }
+    if (!textcat_cfg.empty()) {
+      text_cat = new TextCat( textcat_cfg, theErrLog );
+      LOG << " textcat configured from: " << textcat_cfg << endl;
+    }
+    else {
+      return false;
+    }
+    //    text_cat->set_debug( true );
+    // ifstream is( textcat_cfg );
+    // string line;
+    // while ( getline( is, line ) ){
+    //   LOG << line << endl;
+    //   vector<string> v = TiCC::split( line );
+    //   if ( v.size()==2 && v[1] == "nld" ){
+    // 	LOG << "voor nederlands: " << endl;
+    //     ifstream is2( v[0] );
+    // 	string line2;
+    // 	while ( getline( is2, line2 ) ){
+    // 	  LOG << line2 << endl;
+    // 	  break;
+    // 	}
+    // 	LOG << "   done with nederlands" << endl;
+    //   }
+    // }
+    return true;
+#else
+    LOG << "NO TEXTCAT SUPPORT!" << endl;
+    return false;
+#endif
+  }
+
   TokenizerClass::TokenizerClass():
     linenum(0),
     inputEncoding( "UTF-8" ),
@@ -205,6 +251,7 @@ namespace Tokenizer {
     xmlin(false),
     passthru(false),
     ignore_tag_hints(false),
+    textcat_not_found(false),
     ucto_processor(0),
     already_tokenized(false),
     inputclass("current"),
@@ -214,44 +261,6 @@ namespace Tokenizer {
     theErrLog = new TiCC::LogStream(cerr, "ucto" );
     theDbgLog = theErrLog;
     theErrLog->setstamp( StampMessage );
-#ifdef HAVE_TEXTCAT
-    const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
-    const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
-    const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
-    //check local first
-    string textcat_cfg = localConfigDir + "textcat.cfg";
-    if (!TiCC::isFile(textcat_cfg)) {
-        //check global second
-        textcat_cfg = string(SYSCONF_PATH) + "/ucto/textcat.cfg";
-        if (!TiCC::isFile(textcat_cfg)) {
-            LOG << "NO TEXTCAT SUPPORT DUE TO MISSING textcat.cfg!" << endl;
-            textcat_cfg = "";
-        }
-    }
-    if (!textcat_cfg.empty()) {
-        text_cat = new TextCat( textcat_cfg, theErrLog );
-        LOG << " textcat configured from: " << textcat_cfg << endl;
-    }
-    //    text_cat->set_debug( true );
-    // ifstream is( textcat_cfg );
-    // string line;
-    // while ( getline( is, line ) ){
-    //   LOG << line << endl;
-    //   vector<string> v = TiCC::split( line );
-    //   if ( v.size()==2 && v[1] == "nld" ){
-    // 	LOG << "voor nederlands: " << endl;
-    //     ifstream is2( v[0] );
-    // 	string line2;
-    // 	while ( getline( is2, line2 ) ){
-    // 	  LOG << line2 << endl;
-    // 	  break;
-    // 	}
-    // 	LOG << "   done with nederlands" << endl;
-    //   }
-    // }
-#else
-    LOG << "NO TEXTCAT SUPPORT!" << endl;
-#endif
   }
 
   TokenizerClass::~TokenizerClass(){
@@ -642,7 +651,14 @@ namespace Tokenizer {
   }
 
 #ifdef HAVE_TEXTCAT
-  string TokenizerClass::detect( const UnicodeString& line ) const{
+  string TokenizerClass::detect( const UnicodeString& line ) {
+    if ( text_cat == 0
+	 && !textcat_not_found ){
+      textcat_not_found = initialize_textcat();
+    }
+    if ( text_cat == 0 ){
+      return "";
+    }
     UnicodeString temp = line;
     temp.findAndReplace( utt_mark, "" );
     temp.toLower();
@@ -736,7 +752,7 @@ namespace Tokenizer {
 	if ( tmp_v.size() > 3 ) {
 	  part_lang = detect( part );
 	}
-	else {
+	if ( part_lang.empty() ){
 	  part_lang = cur_lang;
 	}
 	if ( part_lang != cur_lang ){
@@ -788,13 +804,13 @@ namespace Tokenizer {
       if ( language.empty() ){
 	if ( tokDebug > 3 ){
 	  DBG << "should we guess the language? "
-	      << TiCC::toString((text_cat && doDetectLang)) << endl;
+	      << TiCC::toString(doDetectLang) << endl;
 	}
-	if ( text_cat && doDetectLang ){
+	if ( doDetectLang ){
 	  language = detect( input_line );
 	  if ( tokDebug > 3 ){
 	    DBG << "guessed language = '" << language << "'" << endl;
-	}
+	  }
 	}
       }
       internal_tokenize_line( input_line, language );
@@ -3210,6 +3226,9 @@ namespace Tokenizer {
       catch (...){
       }
     }
+    if ( doDetectLang ){
+      textcat_not_found = !initialize_textcat();
+    }
     return true;
   }
 
@@ -3267,6 +3286,9 @@ namespace Tokenizer {
     if ( settings.empty() ){
       cerr << "ucto: No useful settingsfile(s) could be found (initiating from language list: " << languages << ")" << endl;
       return false;
+    }
+    if ( doDetectLang ){
+      textcat_not_found = !initialize_textcat();
     }
     return true;
   }

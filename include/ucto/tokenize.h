@@ -113,6 +113,7 @@ namespace Tokenizer {
 	       const std::string& ="" ); // init from a configfile
     bool init( const std::vector<std::string>&,
 	       const std::string& ="" ); // init 1 or more languages
+    bool initialize_textcat();
     bool reset( const std::string& = "default" );
     void setErrorLog( TiCC::LogStream *os );
     void setDebugLog( TiCC::LogStream *os );
@@ -319,7 +320,7 @@ namespace Tokenizer {
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
     std::vector<icu::UnicodeString> sentence_split( const icu::UnicodeString& );
-    std::string detect( const icu::UnicodeString& ) const;
+    std::string detect( const icu::UnicodeString& );
     folia::Document *start_document( const std::string& ) const;
     folia::FoliaElement *append_to_folia( folia::FoliaElement *root,
 					  const std::vector<Token>& tv,
@@ -435,6 +436,7 @@ namespace Tokenizer {
     bool xmlin;
     bool passthru;
     bool ignore_tag_hints;
+    bool textcat_not_found;
     mutable folia::processor *ucto_processor;
     mutable bool already_tokenized; // set when ucto is called again on tokenized FoLiA
     std::string docid; //document ID (UTF-8), necessary for XML output

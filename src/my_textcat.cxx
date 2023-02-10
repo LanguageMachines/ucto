@@ -47,7 +47,7 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
   //
   // we would like to do this, to get the same default everywhere
   // but the SetProperty API is not always available
-  // MAYBE it is related to the HAVE_OLD_TEXTCAT property form config.h
+  // MAYBE it is related to the HAVE_OLD_TEXTCAT property from config.h
   // should be examined....
   //
   // textcat_SetProperty( TC, TCPROP_MINIMUM_DOCUMENT_SIZE, 25 );
@@ -62,8 +62,8 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
 TextCat::TextCat( const TextCat& in ) {
   debug = false;
   dbg = in.dbg;
-  TC = textcat_Init( in.cfName.c_str() );
   cfName = in.cfName;
+  TC = textcat_Init( cfName.c_str() );
 }
 
 bool TextCat::set_debug( bool b ){
