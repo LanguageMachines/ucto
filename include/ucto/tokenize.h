@@ -206,8 +206,9 @@ namespace Tokenizer {
     bool setQuoteDetection( bool b=true ) { bool t = detectQuotes; detectQuotes = b; return t; }
     bool getQuoteDetection() const { return detectQuotes; }
 
-    //Enable language detection
-    bool setLangDetection( bool b=true ) { bool t = doDetectLang; doDetectLang = b; return t; }
+    //Enable language detection returns false on failure!
+    bool setLangDetection( bool b=true );
+    // check language detection return true when set AND availabe!
     bool getLangDetection() const { return doDetectLang; }
 
     //Enable filtering
@@ -320,7 +321,7 @@ namespace Tokenizer {
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
     std::vector<icu::UnicodeString> sentence_split( const icu::UnicodeString& );
-    std::string detect( const icu::UnicodeString& );
+    std::string detect( const icu::UnicodeString& ) const;
     folia::Document *start_document( const std::string& ) const;
     folia::FoliaElement *append_to_folia( folia::FoliaElement *root,
 					  const std::vector<Token>& tv,
@@ -436,7 +437,6 @@ namespace Tokenizer {
     bool xmlin;
     bool passthru;
     bool ignore_tag_hints;
-    bool textcat_not_found;
     mutable folia::processor *ucto_processor;
     mutable bool already_tokenized; // set when ucto is called again on tokenized FoLiA
     std::string docid; //document ID (UTF-8), necessary for XML output

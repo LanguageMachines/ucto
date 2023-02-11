@@ -81,6 +81,8 @@ namespace Tokenizer {
   const std::string Version() { return VERSION; }
   const std::string VersionName() { return PACKAGE_STRING; }
 
+  TextCat *NEVERLAND = static_cast<TextCat*>((void*)0xABCD);
+
   class uRangeError: public std::out_of_range {
   public:
     explicit uRangeError( const string& s ): out_of_range( "ucto: out of range:" + s ){};
@@ -96,6 +98,13 @@ namespace Tokenizer {
     explicit uCodingError( const string& s ): runtime_error( "ucto: coding problem:" + s ){};
   };
 
+  bool TokenizerClass::setLangDetection( bool what ){
+    doDetectLang = what;
+    if ( what ){
+      doDetectLang = initialize_textcat();
+    }
+    return doDetectLang;
+  }
 
   UnicodeString convert( const string& line,
 			 const string& inputEncoding ){
@@ -181,6 +190,9 @@ namespace Tokenizer {
 
   bool TokenizerClass::initialize_textcat(){
 #ifdef HAVE_TEXTCAT
+    if ( text_cat ){
+      return text_cat != NEVERLAND;
+    }
     const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
     const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
     const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
@@ -199,6 +211,7 @@ namespace Tokenizer {
       LOG << " textcat configured from: " << textcat_cfg << endl;
     }
     else {
+      text_cat = NEVERLAND; // signal invalidity
       return false;
     }
     //    text_cat->set_debug( true );
@@ -251,7 +264,6 @@ namespace Tokenizer {
     xmlin(false),
     passthru(false),
     ignore_tag_hints(false),
-    textcat_not_found(false),
     ucto_processor(0),
     already_tokenized(false),
     inputclass("current"),
@@ -281,7 +293,9 @@ namespace Tokenizer {
       delete theDbgLog;
     }
     delete theErrLog;
-    delete text_cat;
+    if ( text_cat != NEVERLAND ){
+      delete text_cat;
+    }
   }
 
   bool TokenizerClass::reset( const string& lang ){
@@ -312,7 +326,8 @@ namespace Tokenizer {
 
   void TokenizerClass::setDebugLog( TiCC::LogStream *os ) {
     if ( theDbgLog != os ){
-      if ( text_cat != NULL) {
+      if ( text_cat != 0
+	   && text_cat != NEVERLAND ) {
 	text_cat->set_debug_stream( os );
       }
       if ( theDbgLog != theErrLog ){
@@ -391,6 +406,9 @@ namespace Tokenizer {
 
   bool TokenizerClass::set_tc_debug( bool b ){
     if ( !text_cat ){
+      initialize_textcat();
+    }
+    if ( text_cat == NEVERLAND ){
       throw logic_error( "attempt to set debug on uninitialized TextClass object" );
     }
     else {
@@ -652,11 +670,10 @@ namespace Tokenizer {
 
 #ifdef HAVE_TEXTCAT
   string TokenizerClass::detect( const UnicodeString& line ) {
-    if ( text_cat == 0
-	 && !textcat_not_found ){
-      textcat_not_found = initialize_textcat();
-    }
     if ( text_cat == 0 ){
+      initialize_textcat();
+    }
+    if ( text_cat == NEVERLAND ){
       return "";
     }
     UnicodeString temp = line;
@@ -688,7 +705,7 @@ namespace Tokenizer {
     return result;
   }
 #else
-  string TokenizerClass::detect( const UnicodeString& line ) const {
+  string TokenizerClass::detect( const UnicodeString& ) const {
     LOG << "No TextCat support available" << endl;
     return "default";
   }
@@ -734,7 +751,7 @@ namespace Tokenizer {
 					  bool& bos,
 					  const string& lang ){
     if ( und_language
-	 && text_cat ){
+	 && doDetectLang ){
       // hack into parts
       vector<UnicodeString> parts = sentence_split( input_line );
       if ( tokDebug > 3 ){
@@ -3227,7 +3244,7 @@ namespace Tokenizer {
       }
     }
     if ( doDetectLang ){
-      textcat_not_found = !initialize_textcat();
+      return initialize_textcat();
     }
     return true;
   }
@@ -3288,7 +3305,7 @@ namespace Tokenizer {
       return false;
     }
     if ( doDetectLang ){
-      textcat_not_found = !initialize_textcat();
+      return initialize_textcat();
     }
     return true;
   }
