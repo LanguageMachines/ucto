@@ -705,7 +705,7 @@ namespace Tokenizer {
     return result;
   }
 #else
-  string TokenizerClass::detect( const UnicodeString& ) const {
+  string TokenizerClass::detect( const UnicodeString& ) {
     LOG << "No TextCat support available" << endl;
     return "default";
   }
