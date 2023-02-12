@@ -1155,28 +1155,26 @@ namespace Tokenizer {
 	  args["processor"] = proc->id();
 	}
 	args["set"] = doc->default_set( folia::AnnotationType::QUOTE );
-	folia::FoliaElement *q = new folia::Quote( args, doc );
-	root->append( q );
+	folia::FoliaElement *quote = root->add_child<folia::Quote>( args );
+	string quote_id = quote->id();
 	// might need a new Sentence
 	if ( i+1 < toks.size()
 	     && toks[i+1].role & BEGINOFSENTENCE ){
 	  folia::processor *proc2 = add_provenance_structure( doc,
-							     folia::AnnotationType::SENTENCE );
+							      folia::AnnotationType::SENTENCE );
 	  folia::KWargs args2;
-	  string pid = get_parent_id(root);
-	  if ( !pid.empty() ){
-	    args2["generate_id"] = pid;
+	  if ( !quote_id.empty() ){
+	    args2["generate_id"] = quote_id;
 	  }
 	  if ( proc2 ){
 	    args2["processor"] = proc2->id();
 	  }
 	  args2["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *ns = new folia::Sentence( args2, doc );
-	  q->append( ns );
+	  folia::Sentence *ns = quote->add_child<folia::Sentence>( args2 );
 	  root = ns;
 	}
 	else {
-	  root = q;
+	  root = quote;
 	}
       }
       else if ( (tok.role & BEGINOFSENTENCE)
@@ -1208,8 +1206,7 @@ namespace Tokenizer {
 	    args["processor"] = proc->id();
 	  }
 	  args["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *ns = new folia::Sentence( args, doc );
-	  root->append( ns );
+	  folia::Sentence *ns = root->add_child<folia::Sentence>( args );
 	  root = ns;
 	}
       }
@@ -1333,8 +1330,7 @@ namespace Tokenizer {
     }
     args["set"] = root->doc()->default_set( folia::AnnotationType::SENTENCE );
     args["generate_id"] = root->id();
-    folia::Sentence *s = new folia::Sentence( args, root->doc() );
-    root->append( s );
+    folia::Sentence *s = root->add_child<folia::Sentence>( args );
     if  ( tokDebug > 5 ){
       DBG << "append_to_folia, created Sentence" << s << endl;
     }
@@ -1581,8 +1577,7 @@ namespace Tokenizer {
 	  if ( !p_id.empty() ){
 	    args["generate_id"] = p_id;
 	  }
-	  folia::Sentence *s = new folia::Sentence( args, p->doc() );
-	  p->append( s );
+	  folia::Sentence *s = p->add_child<folia::Sentence>( args );
 	  append_to_sentence( s, toks );
 	  if  (tokDebug > 0){
 	    DBG << "created a new sentence: " << s << endl;
@@ -1683,8 +1678,7 @@ namespace Tokenizer {
 	      args["processor"] = proc->id();
 	    }
 	    args["set"] = e->doc()->default_set( folia::AnnotationType::PARAGRAPH );
-	    folia::Paragraph *p = new folia::Paragraph( args, e->doc() );
-	    e->append( p );
+	    folia::Paragraph *p = e->add_child<folia::Paragraph>( args );
 	    rt = p;
 	  }
 	  else {
@@ -1702,13 +1696,12 @@ namespace Tokenizer {
 	      args["processor"] =  proc->id();
 	    }
 	    args["set"] = e->doc()->default_set( folia::AnnotationType::SENTENCE );
-	    folia::Sentence *s = new folia::Sentence( args, e->doc() );
+	    folia::Sentence *s = rt->add_child<folia::Sentence>( args );
 	    append_to_sentence( s, sent );
 	    ++sentence_done;
 	    if  (tokDebug > 0){
 	      DBG << "created a new sentence: " << s << endl;
 	    }
-	    rt->append( s );
 	  }
 	}
 	else {
@@ -1728,13 +1721,12 @@ namespace Tokenizer {
 	    args["processor"] =  proc->id();
 	  }
 	  args["set"] = e->doc()->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *s = new folia::Sentence( args, e->doc() );
+	  folia::Sentence *s = e->add_child<folia::Sentence>( args );
 	  append_to_sentence( s, sents[0] );
 	  ++sentence_done;
 	  if  (tokDebug > 0){
 	    DBG << "created a new sentence: " << s << endl;
 	  }
-	  e->append( s );
 	}
       }
       else if ( !pv.empty() ){
