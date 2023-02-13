@@ -59,10 +59,11 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
 
 }
 
-TextCat::TextCat( const TextCat& in ) {
-  debug = false;
-  dbg = in.dbg;
-  cfName = in.cfName;
+TextCat::TextCat( const TextCat& in ):
+  debug(false),
+  dbg(in.dbg),
+  cfName(in.cfName)
+{
   TC = textcat_Init( cfName.c_str() );
 }
 

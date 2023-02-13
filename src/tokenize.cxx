@@ -3207,6 +3207,7 @@ namespace Tokenizer {
       LOG << "Cannot read Tokenizer settingsfile " << fname << endl;
       LOG << "Unsupported language? (Did you install the uctodata package?)"
 	  << endl;
+      delete set;
       return false;
     }
     else {
