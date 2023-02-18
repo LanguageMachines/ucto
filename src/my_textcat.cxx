@@ -56,13 +56,12 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
     throw runtime_error( "TextCat init failed: " + cf );
   }
   cfName = cf;
-
 }
 
 TextCat::TextCat( const TextCat& in ):
+  cfName(in.cfName),
   debug(false),
-  dbg(in.dbg),
-  cfName(in.cfName)
+  dbg(in.dbg)
 {
   TC = textcat_Init( cfName.c_str() );
 }
@@ -113,11 +112,17 @@ string TextCat::get_language( const string& in ) const {
 #else
 TextCat::~TextCat() {}
 
-TextCat::TextCat( const std::string& cf, TiCC::LogStream* ): TC(0) {
+TextCat::TextCat( const std::string& cf, TiCC::LogStream* ):
+  TC(0),
+  dbg(0)
+{
   throw runtime_error( "TextCat::TextCat(" + cf + "): TextCat Support not available" );
 }
 
-TextCat::TextCat( const TextCat& ): TC(0) {
+TextCat::TextCat( const TextCat& ):
+  TC(0),
+  dbg(0)
+{
   throw runtime_error( "TextCat::TextCat(): TextCat Support not available" );
 }
 
