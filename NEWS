@@ -1,3 +1,10 @@
+0.28 2023-02-21
+[Ko van der Sloot]
+* Made sure that TextCat is not initialized when not needed
+* Sentences inside quotes got a inconsistemt xml:id (Not invalid though)
+* Separated Debug en Log streams.
+* C++ Code quality imprpved
+
 0.27 2023-01-23
 [Ko van der Sloot]
 * removed dependency on libtar
