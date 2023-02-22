@@ -1,3 +1,7 @@
+0.28.1 2023-02-22
+[Maarten van Gompel]
+* Software metadata update only, no functional changes
+
 0.28 2023-02-21
 [Ko van der Sloot]
 * Made sure that TextCat is not initialized when not needed
