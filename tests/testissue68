@@ -1,0 +1,8 @@
+#/bin/sh
+
+
+exe=../src/ucto
+
+$exe issue068.xml -L deu --inputclass=OCR --textredundancy=full
+
+$exe issue068.xml -L deu --inputclass=OCR --textredundancy=full --copyclass
