@@ -258,6 +258,7 @@ namespace Tokenizer {
     text_redundancy("minimal"),
     sentenceperlineoutput(false),
     sentenceperlineinput(false),
+    copyclass(false),
     lowercase(false),
     uppercase(false),
     xmlout(false),
@@ -904,23 +905,47 @@ namespace Tokenizer {
     return result;
   }
 
-  void appendText( folia::FoliaElement *root,
-		   const string& outputclass  ){
+  void TokenizerClass::appendText( folia::FoliaElement *root ) const {
     // set the textcontent of root to that of it's children
     if ( !root ){
       throw logic_error( "appendText() on empty root" );
     }
     if ( root->hastext( outputclass ) ){
-      // there is already text, bail out.
+      // there is already text at thus level, bail out.
       return;
     }
     if ( root->isSubClass( folia::Linebreak_t ) ){
       // exception
       return;
     }
-    UnicodeString utxt = root->text( outputclass );
-    // so get Untokenized text from the children, and set it
-    root->setutext( utxt, outputclass );
+    UnicodeString utxt;
+    try {
+      // so get Untokenized text from the children
+      utxt = root->text( outputclass );
+    }
+    catch (...){
+    }
+    if ( !utxt.isEmpty() ){
+      root->setutext( utxt, outputclass );
+    }
+    else if ( copyclass ){
+      utxt = root->text( inputclass );
+      if ( !utxt.isEmpty() ){
+	root->setutext( utxt, outputclass );
+      }
+      else {
+	throw logic_error( "still unable to set outputclass" );
+      }
+    }
+    else {
+      LOG << "unable to set text on node <" << root->xmltag() << " id='"
+	  << root->id() << "'>. No text with outputclass= '" << outputclass
+	  << "'" << endl;
+      LOG << "maybe the inputfile is already tokenized, for inputclass='"
+	  << inputclass << "' ?" << endl;
+      LOG << "As a final resort you might try the --copyclass option." << endl;
+      throw logic_error( "unable to set outputclass" );
+    }
   }
 
   void removeText( folia::FoliaElement *root,
@@ -962,7 +987,7 @@ namespace Tokenizer {
     }
     // make sure to set the text on the last root created
     if ( text_redundancy == "full" ){
-      appendText( root, outputclass );
+      appendText( root );
     }
     else if ( text_redundancy == "none" ){
       removeText( root, outputclass );
@@ -1189,7 +1214,7 @@ namespace Tokenizer {
 	  }
 	  // honour text_redundancy on the Sentence
 	  if ( text_redundancy == "full" ){
-	    appendText( root, outputclass );
+	    appendText( root );
 	  }
 	  else if ( text_redundancy == "none" ){
 	    removeText( root, outputclass );
@@ -1259,7 +1284,7 @@ namespace Tokenizer {
 	  }
 	  // honour text_redundancy on the Sentence
 	  if ( text_redundancy == "full" ){
-	    appendText( root->parent(), outputclass );
+	    appendText( root->parent() );
 	  }
 	  else if ( text_redundancy == "none" ){
 	    removeText( root->parent(), outputclass );
@@ -1272,7 +1297,7 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( sent, outputclass );
+      appendText( sent );
     }
     else if ( text_redundancy == "none" ){
       removeText( sent, outputclass );
@@ -1503,7 +1528,8 @@ namespace Tokenizer {
       if ( s->has_annotation<folia::LangAnnotation>() ){
 	s_la = s->annotation<folia::LangAnnotation>()->cls();
       }
-      if ( !s_la.empty() && settings.find(s_la) == settings.end() ){
+      if ( !s_la.empty()
+	   && settings.find(s_la) == settings.end() ){
 	// the Sentence already has a language code, and it
 	// is NOT what we search for.
 	// just ignore it
@@ -1529,7 +1555,7 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( s, outputclass );
+      appendText( s );
     }
     else if ( text_redundancy == "none" ){
       removeText( s, outputclass );
@@ -1597,7 +1623,7 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( p, outputclass );
+      appendText( p );
     }
     else if ( text_redundancy == "none" ){
       removeText( p, outputclass );
@@ -1750,7 +1776,7 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( e, outputclass );
+      appendText( e );
     }
     else if ( text_redundancy == "none" ){
       removeText( e, outputclass );
@@ -1806,7 +1832,7 @@ namespace Tokenizer {
       }
     }
     if ( text_redundancy == "full" ){
-      appendText( parent, outputclass );
+      appendText( parent );
     }
     else if ( text_redundancy == "none" ){
       removeText( parent, outputclass );

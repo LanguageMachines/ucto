@@ -138,6 +138,7 @@ void usage(){
        << "\t--inputclass <class>  - use the specified class to search text in the FoLiA doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLiA doc. (default is 'current')" << endl
        << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLiA doc. (default is 'current'). Implies --filter=NO." << endl
+       << "\t--copyclass           - when no new tokens are added, copy the text in the inputclass to the outputclass (default=NO)" << endl
        << "\t--separators=\"seps\" - use the specified 'seps` as the main separators. (default is '+', meaning ALL spacing)" << endl
        << "\t                    '+' : the default, ALL spacing characters" << endl
        << "\t                    '+<UTF8-string>' : use ALL spacing PLUS all characters from the UTF8 string" << endl
@@ -176,6 +177,7 @@ int main( int argc, char *argv[] ){
   bool pass_thru = false;
   bool ignore_tags = false;
   bool sentencesplit = false;
+  bool copyclass = false;
   string norm_set_string;
   string add_tokens;
   string command_line = "ucto";
@@ -185,7 +187,7 @@ int main( int argc, char *argv[] ){
   }
   try {
     TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
-			   "filter:,filterpunct,passthru,textclass:,"
+			   "filter:,filterpunct,passthru,textclass:,copyclass,"
 			   "inputclass:,outputclass:,normalize:,id:,version,"
 			   "help,detectlanguages:,uselanguages:,"
 			   "textredundancy:,add-tokens:,split,"
@@ -260,6 +262,11 @@ int main( int argc, char *argv[] ){
       }
       inputclass = textclass;
       outputclass = textclass;
+    }
+    copyclass = Opts.extract( "copyclass" );
+    if ( copyclass
+	 && inputclass == outputclass ){
+      copyclass = false;
     }
     if ( Opts.extract( 'f' ) ){
       cerr << "ucto: The -f option is deprecated and will be removed in a later version.  Please use --filter=NO instead" << endl;
@@ -515,6 +522,7 @@ int main( int argc, char *argv[] ){
     tokenizer.setPunctFilter(dopunctfilter);
     tokenizer.setInputClass(inputclass);
     tokenizer.setOutputClass(outputclass);
+    tokenizer.setCopyClass(copyclass);
     tokenizer.setXMLOutput(xmlout, docid);
     tokenizer.setXMLInput(xmlin);
     tokenizer.setTextRedundancy(redundancy);
