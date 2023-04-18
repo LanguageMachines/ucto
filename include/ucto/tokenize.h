@@ -285,7 +285,11 @@ namespace Tokenizer {
       outputclass = cls;
       return res;
     }
-
+    bool setCopyClass( bool b ){
+      bool ret = copyclass;
+      copyclass = b;
+      return ret;
+    }
     std::string getDocID() const { return docid; }
     std::string setDocID( const std::string& );
 
@@ -372,6 +376,8 @@ namespace Tokenizer {
     std::string checkBOM( std::istream& );
     void outputTokensDoc_init( folia::Document& ) const;
 
+    void appendText( folia::FoliaElement * ) const;
+
     TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
@@ -430,7 +436,7 @@ namespace Tokenizer {
     bool sentenceperlineoutput;
     bool sentenceperlineinput;
 
-
+    bool copyclass;
     bool lowercase;
     bool uppercase;
     bool xmlout;
