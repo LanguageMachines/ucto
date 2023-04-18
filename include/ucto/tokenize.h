@@ -207,7 +207,7 @@ namespace Tokenizer {
     bool getQuoteDetection() const { return detectQuotes; }
 
     //Enable language detection returns false on failure!
-    bool setLangDetection( bool b=true );
+    bool setLangDetection( bool=true );
     // check language detection return true when set AND availabe!
     bool getLangDetection() const { return doDetectLang; }
 

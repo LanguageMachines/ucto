@@ -99,6 +99,15 @@ namespace Tokenizer {
   };
 
   bool TokenizerClass::setLangDetection( bool what ){
+    /// set the doDetectLang option
+    /*!
+      \param what The new value.
+      \return the old value
+
+      When we set doDetectLang to true, we must assure that TextCat is
+      initialized. So we attemp to initialize, which may fail if TextCat
+      support is not available. In that case doDetectLang stays false
+    */
     doDetectLang = what;
     if ( what ){
       doDetectLang = initialize_textcat();
@@ -310,6 +319,12 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::setNormSet( const std::string& values ){
+    /// set the normalization values
+    /*!
+      \param values The new stream
+      \return true on succes
+
+    */
     vector<string> parts = TiCC::split_at( values, "," );
     for ( const auto& val : parts ){
       norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
@@ -318,6 +333,12 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
+    /// set the theErrLog stream
+    /*!
+      \param os The new stream
+
+      Cleans up the old ErrLog stream, except when still in use
+    */
     if ( theErrLog != os
 	 && theErrLog != theDbgLog ){
       delete theErrLog;
@@ -326,6 +347,13 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::setDebugLog( TiCC::LogStream *os ) {
+    /// set the theDbgLog stream
+    /*!
+      \param os The new stream
+
+      Cleans up the old DbgLog stream, except when still in use
+      May also set the debug_stream for TextCat, if applicable
+    */
     if ( theDbgLog != os ){
       if ( text_cat != 0
 	   && text_cat != NEVERLAND ) {
@@ -339,12 +367,27 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::setInputEncoding( const std::string& enc ){
+    /// set the encoding
+    /*!
+      \param enc The desired encoding. Should be supported bu ICU
+      \return the old value
+    */
     string old = inputEncoding;
     inputEncoding = enc;
     return old;
   }
 
   string TokenizerClass::setSeparators( const std::string& seps ){
+    /// set the separators used to 'split' inputlines
+    /*!
+      \param seps A list of separator characters
+      \return the old value
+
+      A '+' signals that space-like characters are to be used as separators
+      A "-+" value of seps signals ONLY a '+' will separate
+      Otherwise a \e seps line starting with '+' means that space-like
+      characters, ans all the following are separators
+    */
     UnicodeString old;
     if ( space_separated ){
       old = "+";
@@ -382,6 +425,13 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::setTextRedundancy( const std::string& tr ){
+    /// set the text_redundancy value
+    /*!
+      \param tr The desired text_redundancy
+      \return the old value
+
+      Valid values for \e tr are: "full", "minimal" and "none"
+    */
     if ( tr == "none" || tr == "minimal" || tr == "full" ){
       string s = text_redundancy;
       text_redundancy = tr;
@@ -394,6 +444,11 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::setDocID( const string& id ) {
+    /// set the docid value for FoLiA output
+    /*!
+      \param id The desired docid. Should be a valid NCName.
+      \return the old value
+    */
     const std::string s = docid;
     if ( folia::isNCName( id ) ){
       docid = id;
@@ -406,6 +461,13 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::set_tc_debug( bool b ){
+    /// set/unset the TexCat debug stream
+    /*!
+      \param b a boolean used to signal set/unset
+      \return the old value
+
+      Also makes sure TextCat is initialized
+    */
     if ( !text_cat ){
       initialize_textcat();
     }
