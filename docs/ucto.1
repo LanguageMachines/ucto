@@ -1,4 +1,4 @@
-.TH ucto 1 "2018 nov 13"
+.TH ucto 1 "2023 apr 21"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -92,6 +92,17 @@ Assume one sentence per line on input
 map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
 .RE
 
+.BR \-T\  value
+or
+.BR \-\-textredundancy =value
+.RS
+set text redundancy level for text nodes in FoLiA output:
+ 'full'    - add text to all levels: <p> <s> <w> etc.
+ 'minimal' - don't introduce text on higher levels, but retain what is already
+ there.
+ 'none'    - only introduce text on <w>, AND remove all text from higher levels
+.RE
+
 .BR \-\-add\-tokens ="file"
 .RS
 Add additional tokens to the [TOKENS] block of the default language.
@@ -125,6 +136,8 @@ Set End\(hyof\(hysentence marker. (Default <utt>)
 .RE
 
 .B \-V
+or
+.B \-\- version
 .RS
 Show version information
 .RE
@@ -158,6 +171,15 @@ It is recommended to have different classes for input and output.
 use 'cls' for input and output of text from FoLiA. Equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
 
 This option is obsolete and NOT recommended. Please use the separate \-\-inputclass= and \-\-outputclass options.
+.RE
+
+.BR \-\-copyclass
+.RS
+when ucto is used on FoLiA with fully tokenized text in inputclass='inputclass',
+no text in textclass 'outputclass' is produced. (A warning will be given).
+To circumvent this. Add the
+.B \-\-copyclass
+option. Which assures that text will be emitted in that class
 .RE
 
 .B \-X
