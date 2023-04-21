@@ -573,6 +573,9 @@ int main( int argc, char *argv[] ){
 	OUT->flush();
 	delete doc;
       }
+      if ( OUT != &cout ){
+	delete OUT;
+      }
     }
     else {
       tokenizer.tokenize( *IN, *OUT );
