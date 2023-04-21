@@ -1847,6 +1847,7 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize_folia( const string& infile_name ){
+    reset(); // when starting a new inputfile, we must reset provenance et.al.
     if ( inputclass == outputclass
 	 && !doWordCorrection ){
       DBG << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
