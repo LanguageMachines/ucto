@@ -103,6 +103,19 @@ set text redundancy level for text nodes in FoLiA output:
  'none'    - only introduce text on <w>, AND remove all text from higher levels
 .RE
 
+.BR \-\-allow-word-correction
+.RS
+Allow ucto to tokenize inside FoLiA Word elements, creating FoLiA Corrections
+.RE
+
+.BR \-\-ignore-tag-hints
+.RS
+Skip all
+.B tag=token
+hints from the FoLiA input. These hints can be used to signal text markup like
+subscript and superscript
+.RE
+
 .BR \-\-add\-tokens ="file"
 .RS
 Add additional tokens to the [TOKENS] block of the default language.
