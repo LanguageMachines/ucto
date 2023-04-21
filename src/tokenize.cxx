@@ -795,7 +795,6 @@ namespace Tokenizer {
     bool last_had_space = true;
     for ( const auto& pos : eos_posses ){
       UnicodeString tmp = UnicodeString( in, prev+1, pos+1-prev );
-      //      cerr << "TMP=" << tmp << endl;
       if ( last_had_space ){
 	// new entry
 	result.push_back( tmp );
@@ -1020,6 +1019,7 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
+    reset(); // when starting a new inputfile, we must reset provenance et.al.
     inputEncoding = checkBOM( IN );
     folia::Document *doc = start_document( docid );
     folia::FoliaElement *root = doc->doc()->index(0);
@@ -1073,8 +1073,9 @@ namespace Tokenizer {
       delete doc;
     }
     else {
-      if ( ifile.empty() )
+      if ( ifile.empty() ){
 	IN = &cin;
+      }
       else {
 	IN = new ifstream( ifile );
 	if ( !IN || !IN->good() ){
@@ -2924,7 +2925,7 @@ namespace Tokenizer {
 	DBG << "examine character: " << s << " type= "
 	    << toString( charT  ) << endl;
       }
-      if (reset) { //reset values for new word
+      if ( reset ) { //reset values for new word
 	reset = false;
 	tok_size = 0;
 	if ( !joiner && !is_separator(c) ){

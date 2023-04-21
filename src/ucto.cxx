@@ -566,8 +566,6 @@ int main( int argc, char *argv[] ){
 	cerr << endl;
       }
     }
-
-
     if (xmlin) {
       folia::Document *doc = tokenizer.tokenize_folia( ifile );
       if ( doc ){
