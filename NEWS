@@ -1,3 +1,10 @@
+0.29 2023-04-22
+[Ko van der Sloot]
+* fixes for https://github.com/proycon/python-ucto/issues/16
+* added a new --copyclass option, (see comments in
+  https://github.com/LanguageMachines/ucto/issues/68)
+* updated man page
+
 0.28.1 2023-02-22
 [Maarten van Gompel]
 * Software metadata update only, no functional changes
