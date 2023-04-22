@@ -8,11 +8,11 @@
     "@type": "SoftwareSourceCode",
     "identifier": "ucto",
     "name": "ucto",
-    "version": "0.29",
+    "version": "0.30",
     "description": "Ucto tokenizes text files: it separates words from punctuation, and splits sentences. This is one of the first tasks for almost any Natural Language Processing application. Ucto offers several other basic preprocessing steps such as changing case that you can all use to make your text suited for further processing such as indexing, part-of-speech tagging, or machine translation.",
     "license": "https://spdx.org/licenses/GPL-3.0-only",
 	"url": "https://languagemachines.github.io/ucto",
-    "thumbnailUrl": "https://raw.githubusercontent.com/LanguageMachines/ucto/master/logo.svg", 
+    "thumbnailUrl": "https://raw.githubusercontent.com/LanguageMachines/ucto/master/logo.svg",
     "producer": {
         "@id": "https://huc.knaw.nl",
         "@type": "Organization",
@@ -103,7 +103,7 @@
 			"url": "https://www.clariah.nl",
             "funder": {
                 "@type": "Organization",
-                "name": "NWO", 
+                "name": "NWO",
                 "url": "https://www.nwo.nl"
             }
 		},
@@ -113,7 +113,7 @@
 			"url": "https://www.clariah.nl",
             "funder": {
                 "@type": "Organization",
-                "name": "NWO", 
+                "name": "NWO",
                 "url": "https://www.nwo.nl"
             }
         },
@@ -122,7 +122,7 @@
             "name": "CLARIAH-PLUS (NWO grant 184.034.023)",
             "funder": {
                 "@type": "Organization",
-                "name": "NWO", 
+                "name": "NWO",
                 "url": "https://www.nwo.nl"
             }
         }
