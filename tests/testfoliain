@@ -2,24 +2,44 @@
 
 exe=../src/ucto
 
+echo "start"
 $exe -L nl -F folia1.xml
+echo "step 1"
 $exe -L nl --outputclass=ligafilter folia1.xml
+echo "step 2"
 $exe -L nl --filterpunct --outputclass=FILTER -F folia2.xml
+echo "step 3"
 $exe -L nl -u --outputclass=UPP -F folia3.xml
+echo "step 4"
 $exe -L nl -F folia4.xml
+echo "step 5"
 $exe -L nl -F empty.xml
+echo "step 6"
 $exe -L nl --inputclass OCR -F folia5.xml
+echo "step 7"
 $exe -L nl --inputclass OCR --outputclass=AHA -F folia5.xml
+echo "step 8"
 $exe -L nl --inputclass OCR -F folia6.xml
+echo "step 9"
 $exe -L nl -F folia7.xml
+echo "step 10"
 $exe -L nl --textredundancy none folia7.xml
+echo "step 11"
 $exe -L nl --textredundancy minimal folia7.xml
+echo "step 12"
 $exe -L nl --textredundancy full folia7.xml
+echo "step 13"
 $exe -L nl -F folia8.xml
+echo "step 14"
 $exe -L nl -F folia9a.xml
+echo "step 15"
 $exe -L nl -F folia9b.xml foliatmp.xml
+echo "step 16"
 cat < foliatmp.xml
+echo "step 17"
 $exe -L nl -Tfull textproblem.xml foliatmp2.xml
 cat < foliatmp2.xml
+echo "step 18"
 $exe -L nl cell.xml cellout.xml
 cat < cellout.xml
+echo "done"
