@@ -1513,6 +1513,8 @@ namespace Tokenizer {
 
   vector<Token> TokenizerClass::correct_elements( folia::FoliaElement *e,
 						  const vector<folia::FoliaElement*>& wv ) {
+    // correct_elements may be called directly from Frog, so make sure to set TP
+    text_policy.set_class( inputclass );
     vector<Token> result;
     // correct only when the sentence is in the desired language
     string s_la;
