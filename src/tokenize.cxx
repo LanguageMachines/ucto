@@ -30,6 +30,8 @@
 #include <cassert>
 #include <unistd.h>
 #include <pwd.h>
+#include <algorithm>
+#include <numeric>
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -2188,9 +2190,9 @@ namespace Tokenizer {
   vector<string> TokenizerClass::getUTF8Sentences() {
     vector<UnicodeString> uv = getSentences();
     vector<string> result;
-    for ( const auto& us : uv ){
-      result.push_back( TiCC::UnicodeToUTF8(us) );
-    }
+    std::transform( uv.begin(), uv.end(),
+		    result.begin(),
+		    []( UnicodeString& us ){ return TiCC::UnicodeToUTF8(us); });
     return result;
   }
 
