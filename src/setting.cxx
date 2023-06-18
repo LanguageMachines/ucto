@@ -34,6 +34,8 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <functional>  // for std::plus
+#include <numeric>     // for std::accumulate
 #include "config.h"
 #include "ticcutils/StringOps.h"
 #include "ticcutils/FileUtils.h"
@@ -447,10 +449,9 @@ namespace Tokenizer {
 
   void Setting::add_rule( const UnicodeString& name,
 			  const vector<UnicodeString>& parts ){
-    UnicodeString pat;
-    for ( auto const& part : parts ){
-      pat += part;
-    }
+    UnicodeString pat = std::accumulate( parts.begin(), parts.end(),
+					 UnicodeString(),
+					 std::plus<UnicodeString>() );
     rulesmap[name] = new Rule( name, pat );
   }
 
