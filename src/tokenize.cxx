@@ -31,8 +31,8 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <algorithm>
-#include <functional>
-#include <numeric>
+#include <functional>  // for std::plus
+#include <numeric>     // for std::accumulate
 #include <iostream>
 #include <fstream>
 #include <vector>
@@ -402,7 +402,7 @@ namespace Tokenizer {
       prev = "+";
     }
     prev = std::accumulate( separators.begin(), separators.end(),
-		     prev, std::plus<UnicodeString>() );
+			    prev, std::plus<UnicodeString>() );
     if ( !seps.empty() ){
       if ( seps == "+" ){
 	// just use spacing characters as separators
