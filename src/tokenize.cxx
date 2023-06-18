@@ -31,6 +31,7 @@
 #include <unistd.h>
 #include <pwd.h>
 #include <algorithm>
+#include <functional>
 #include <numeric>
 #include <iostream>
 #include <fstream>
@@ -382,21 +383,26 @@ namespace Tokenizer {
   string TokenizerClass::setSeparators( const std::string& seps ){
     /// set the separators used to 'split' inputlines
     /*!
-      \param seps A list of separator characters
-      \return the old value
+      \param seps A list of separator characters, will be added to
+      the already known ones (if any)
+      \return the previous value
 
       A '+' signals that space-like characters are to be used as separators
       A "-+" value of seps signals ONLY a '+' will separate
       Otherwise a \e seps line starting with '+' means that space-like
-      characters, ans all the following are separators
+      characters, and all the following are separators
+
+      e.g.:
+      seps="+" means split on spaces (the default)
+      seps="|[]" means only split on '|', '[' and ']'
+      seps="+|" means split on spaces AND '|'
     */
-    UnicodeString old;
+    UnicodeString prev;
     if ( space_separated ){
-      old = "+";
+      prev = "+";
     }
-    for ( const auto& c : separators ){
-      old += c;
-    }
+    prev = std::accumulate( separators.begin(), separators.end(),
+		     prev, std::plus<UnicodeString>() );
     if ( !seps.empty() ){
       if ( seps == "+" ){
 	// just use spacing characters as separators
@@ -423,7 +429,7 @@ namespace Tokenizer {
 	}
       }
     }
-    return TiCC::UnicodeToUTF8(old);
+    return TiCC::UnicodeToUTF8(prev);
   }
 
   string TokenizerClass::setTextRedundancy( const std::string& tr ){
