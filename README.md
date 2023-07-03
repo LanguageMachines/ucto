@@ -49,6 +49,10 @@ Implicit Linguistics project, the CLARIN-NL program, and the CLARIAH project.
 This software is available under the GNU Public License v3 (see the file
 COPYING).
 
+## Demo
+
+![Ucto demo](https://raw.githubusercontent.com/CLARIAH/wp3-demos/master/ucto.gif)
+
 ## Installation
 
 To install Ucto, first consult whether your distribution's package manager has
