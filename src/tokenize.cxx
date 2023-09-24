@@ -77,6 +77,8 @@ namespace Tokenizer {
   using namespace icu;
   using TiCC::operator<<;
 
+  const UChar32 ZWJ = u'\u200D';
+
   const string ISO_SET = "http://raw.github.com/proycon/folia/master/setdefinitions/iso639_3.foliaset.ttl";
 
   const string UCTO_SET_PREFIX = "https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/";
@@ -1450,8 +1452,8 @@ namespace Tokenizer {
       It has to be registered in \em tp
      */
     UnicodeString tmp_result = text( d, tp );
-    tmp_result = u'\u200D' + tmp_result;
-    tmp_result += u'\u200D';
+    tmp_result = ZWJ + tmp_result;
+    tmp_result += ZWJ;
     return tmp_result;
   }
 
@@ -2198,7 +2200,7 @@ namespace Tokenizer {
     vector<string> result;
     std::transform( uv.begin(), uv.end(),
 		    result.begin(),
-		    []( UnicodeString& us ){ return TiCC::UnicodeToUTF8(us); });
+		    []( const UnicodeString& us ){ return TiCC::UnicodeToUTF8(us); });
     return result;
   }
 
@@ -2576,7 +2578,7 @@ namespace Tokenizer {
     StringCharacterIterator sit(input);
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
-      if ( c == u'\u200D' ){
+      if ( c == ZWJ ){
 	// a joiner. just ignore
 	sit.next32();
 	continue;
@@ -2927,7 +2929,7 @@ namespace Tokenizer {
     while ( sit.hasNext() ){
       UChar32 c = sit.current32();
       bool joiner = false;
-      if ( c == u'\u200D' ){
+      if ( c == ZWJ ){
 	joiner = true;
       }
       if ( tokDebug > 8 ){
