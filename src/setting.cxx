@@ -254,16 +254,19 @@ namespace Tokenizer {
   }
 
   set<string> Setting::installed_languages() {
+    // static function
     // we only return 'languages' which are installed as 'tokconfig-*'
     //
     vector<string> files;
-    if (TiCC::isDir(localConfigDir)) {
-        vector<string> localfiles= TiCC::searchFilesMatch( localConfigDir, "tokconfig-*" );
-        files.insert(files.end(), localfiles.begin(), localfiles.end());
+    if ( TiCC::isDir(localConfigDir) ) {
+      auto const localfiles= TiCC::searchFilesMatch( localConfigDir,
+						     "tokconfig-*" );
+      files.insert(files.end(), localfiles.begin(), localfiles.end());
     }
-    if (TiCC::isDir(defaultConfigDir)) {
-        vector<string> globalfiles = TiCC::searchFilesMatch( defaultConfigDir, "tokconfig-*" );
-        files.insert(files.end(), globalfiles.begin(), globalfiles.end());
+    if ( TiCC::isDir(defaultConfigDir) ) {
+      auto const globalfiles = TiCC::searchFilesMatch( defaultConfigDir,
+						       "tokconfig-*" );
+      files.insert(files.end(), globalfiles.begin(), globalfiles.end());
     }
     set<string> result;
     for ( auto const& f : files ){
