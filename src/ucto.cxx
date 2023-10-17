@@ -410,22 +410,19 @@ int main( int argc, char *argv[] ){
     if ( !c_file.empty() ){
       cfile = c_file;
     }
-    else if ( language_list.empty() ){
+    else if ( available_languages.empty() ){
+      cerr << "ucto: The uctodata package seems not to be installed." << endl;
+      cerr << "ucto: Installing uctodata is a prerequisite." << endl;
+      return EXIT_FAILURE;
+    }
+    else if ( language_list.empty()
+	      && !do_language_detect ){
       cerr << "ucto: missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
-      if ( available_languages.size() == 1
-	   && *available_languages.begin() == "generic" ){
-	cerr << "ucto: The uctodata package seems not to be installed." << endl;
-	cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
-	     << endl;
-	cerr << "ucto: Installing uctodata is highly recommended." << endl;
+      cerr << "ucto: Available Languages: ";
+      for( const auto& l : available_languages ){
+	cerr << l << ",";
       }
-      else {
-	cerr << "ucto: Available Languages: ";
-	for( const auto& l : available_languages ){
-	  cerr << l << ",";
-	}
-	cerr << endl;
-      }
+      cerr << endl;
       return EXIT_FAILURE;
     }
     else {
@@ -439,26 +436,16 @@ int main( int argc, char *argv[] ){
       for ( const auto& l : language_list ){
 	if ( available_languages.find(l) == available_languages.end() ){
 	  cerr << "ucto: unsupported language '" << l << "'" << endl;
-	  if ( available_languages.size() == 1
-	       && *available_languages.begin() == "generic" ){
-	    cerr << "ucto: The uctodata package seems not to be installed." << endl;
-	    cerr << "ucto: You can use '-L generic' to run a simple default tokenizer."
-		 << endl;
-	    cerr << "ucto: Installing uctodata is highly recommended." << endl;
+	  cerr << "ucto: Available Languages: ";
+	  for( const auto& lang : available_languages ){
+	    cerr << lang << ",";
 	  }
-	  else {
-	    cerr << "ucto: Available Languages: ";
-	    for( const auto& lang : available_languages ){
-	      cerr << lang << ",";
-	    }
-	    cerr << endl;
-	  }
+	  cerr << endl;
 	  return EXIT_FAILURE;
 	}
       }
     }
   }
-
   if ((!ifile.empty()) && (ifile == ofile)) {
     cerr << "ucto: Output file equals input file! Courageously refusing to start..."  << endl;
     return EXIT_FAILURE;
