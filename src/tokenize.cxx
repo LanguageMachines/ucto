@@ -417,16 +417,15 @@ namespace Tokenizer {
       }
       else {
 	UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
-	UnicodeString norm = normalizer.normalize( u_seps );
-	for ( int i=0; i < norm.length(); ++i ) {
-	  if ( norm[i] == '+' && i == 0 ){
+	for ( int i=0; i < u_seps.length(); ++i ) {
+	  if ( u_seps[i] == '+' && i == 0 ){
 	    // a '+' in the first position means use spacing separators
 	    // AND all following.
 	    space_separated = true;
 	  }
 	  else {
 	    // add the character as a separator
-	    separators.insert( norm[i] );
+	    separators.insert( u_seps[i] );
 	  }
 	}
       }

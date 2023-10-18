@@ -96,7 +96,7 @@ PKG_CHECK_MODULES([folia], [folia >= 2.13] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
-PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.31] )
+PKG_CHECK_MODULES([ticcutils], [ticcutils >= 0.34] )
 CXXFLAGS="$CXXFLAGS $ticcutils_CFLAGS"
 LIBS="$LIBS $ticcutils_LIBS"
 
