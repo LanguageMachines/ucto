@@ -64,8 +64,8 @@ namespace Tokenizer {
   using namespace icu;
   using TiCC::operator<<;
 
-  const string _config_prefix = "tokconfig-";
-  const string config_prefix() { return _config_prefix; };
+  const string _config_prefix = "tokconfig-"; // the prefix we use for all configfiles
+  const std::string config_prefix() { return _config_prefix; };
   string defaultConfigDir = UCTODATA_DIR;
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
@@ -262,18 +262,18 @@ namespace Tokenizer {
     vector<string> files;
     if ( TiCC::isDir(localConfigDir) ) {
       auto const localfiles= TiCC::searchFilesMatch( localConfigDir,
-						     _config_prefix+"*" );
+						     config_prefix()+"*" );
       files.insert(files.end(), localfiles.begin(), localfiles.end());
     }
     if ( TiCC::isDir(defaultConfigDir) ) {
       auto const globalfiles = TiCC::searchFilesMatch( defaultConfigDir,
-						       _config_prefix+"*" );
+						       config_prefix()+"*" );
       files.insert(files.end(), globalfiles.begin(), globalfiles.end());
     }
     set<string> result;
     for ( auto const& f : files ){
       string base = TiCC::basename(f);
-      size_t pos = base.find(_config_prefix);
+      size_t pos = base.find(config_prefix());
       if ( pos == 0 ){
 	string lang = base.substr( 10 );
 	result.insert( lang );

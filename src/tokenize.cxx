@@ -697,7 +697,7 @@ namespace Tokenizer {
 	doc->add_processor( args, data_proc );
 	args.clear();
 	args["processor"] = proc->id();
-	string alias = _config_prefix + s.first;
+	string alias = config_prefix() + s.first;
 	string ucto_set = UCTO_SET_PREFIX + alias + ".foliaset.ttl";
 	args["alias"] = alias;
 	if ( doc->declared( folia::AnnotationType::TOKEN, alias ) ){
@@ -1222,11 +1222,11 @@ namespace Tokenizer {
 	return result;
       }
       else if ( tc_lc != "default" ){
-	tok_set = _config_prefix + tc_lc;
+	tok_set = config_prefix() + tc_lc;
 	set_language( sent, tc_lc );
       }
       else {
-	tok_set = _config_prefix + default_language;
+	tok_set = config_prefix() + default_language;
       }
     }
     folia::FoliaElement *root = sent;
@@ -1543,10 +1543,10 @@ namespace Tokenizer {
     }
     string tok_set;
     if ( !s_la.empty() ){
-      tok_set = _config_prefix + s_la;
+      tok_set = config_prefix() + s_la;
     }
     else {
-      tok_set = _config_prefix + default_language;
+      tok_set = config_prefix() + default_language;
     }
     folia::KWargs args;
     args["processor"] = ucto_processor->id();
@@ -3315,7 +3315,7 @@ namespace Tokenizer {
     else {
       settings["default"] = set;
       default_language = "default";
-      auto pos = fname.find(_config_prefix);
+      auto pos = fname.find(config_prefix());
       if ( pos != string::npos ){
 	default_language = fname.substr(pos+10);
 	settings[default_language] = set;
@@ -3377,7 +3377,7 @@ namespace Tokenizer {
       if ( tokDebug > 0 ){
 	DBG << "init language=" << lang << endl;
       }
-      string fname = _config_prefix + lang;
+      string fname = config_prefix() + lang;
       Setting *set = new Setting();
       string add;
       if ( default_set == 0 ){

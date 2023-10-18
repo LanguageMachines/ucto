@@ -37,7 +37,7 @@ namespace Tokenizer {
 
   using namespace icu;
 
-  extern const std::string _config_prefix; // the prefix we use for all configfiles
+  extern const std::string config_prefix();
 
   class Rule {
     friend std::ostream& operator<< (std::ostream&, const Rule& );
