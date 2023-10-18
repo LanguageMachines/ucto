@@ -64,7 +64,8 @@ namespace Tokenizer {
   using namespace icu;
   using TiCC::operator<<;
 
-  const std::string _config_prefix = "tokconfig-";
+  const string _config_prefix = "tokconfig-";
+  const string config_prefix() { return _config_prefix; };
   string defaultConfigDir = UCTODATA_DIR;
 
   enum ConfigMode { NONE, RULES, ABBREVIATIONS, ATTACHEDPREFIXES,
