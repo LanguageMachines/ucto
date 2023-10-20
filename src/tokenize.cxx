@@ -1409,7 +1409,7 @@ namespace Tokenizer {
       else {
 	// root is a paragraph, which is done now.
 	if ( text_redundancy == "full" ){
-	  root->settext( root->str(outputclass), outputclass);
+	  root->setutext( root->unicode(outputclass), outputclass);
 	}
 	if  ( tokDebug > 5 ){
 	  DBG << "append_to_folia, add paragraph to parent of " << root << endl;
@@ -1551,7 +1551,7 @@ namespace Tokenizer {
     args["processor"] = ucto_processor->id();
     e->doc()->declare( folia::AnnotationType::CORRECTION, tok_set, args );
     for ( auto w : wv ){
-      string text = w->str( text_policy );
+      UnicodeString text = w->unicode( text_policy );
       if ( tokDebug > 0 ){
 	DBG << "correct_elements() text='" << text << "'" << endl;
       }
@@ -1613,7 +1613,7 @@ namespace Tokenizer {
 	}
 	return;
       }
-      string text = s->str( text_policy );
+      UnicodeString text = s->unicode( text_policy );
       if ( tokDebug > 0 ){
 	DBG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
@@ -1656,7 +1656,7 @@ namespace Tokenizer {
       }
       else {
 	// No Words too, handle text, if any
-	string text = p->str( text_policy );
+	UnicodeString text = p->unicode( text_policy );
 	if ( tokDebug > 0 ){
 	  DBG << "handle_one_paragraph:" << text << endl;
 	}
@@ -1747,7 +1747,7 @@ namespace Tokenizer {
       vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
       if ( pv.empty() && sv.empty() ){
 	// just words or text
-	string text = e->str( text_policy );
+	UnicodeString text = e->unicode( text_policy );
 	if ( tokDebug > 1 ){
 	  DBG << "tok-" << e->xmltag() << ":" << text << endl;
 	}
