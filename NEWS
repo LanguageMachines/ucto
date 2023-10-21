@@ -1,3 +1,16 @@
+0.30 2023-10-21
+[Ko van der Sloot]
+* using ticcutils >- 0.34. All Unicode id NFC normalized now
+* normalization performed for passthru too.
+  All output should be in the same encoding (NFC)
+* fixed a problem when using the API form Frog
+* improving code quality
+* added (dangerous, and compiletime only) option to change the magic
+  'tokconfig-' value.
+
+[Maarten van Gompel[
+* README.md: README: added demo screencast
+
 0.29 2023-04-22
 [Ko van der Sloot]
 * fixes for https://github.com/proycon/python-ucto/issues/16
