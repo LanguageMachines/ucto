@@ -1946,7 +1946,7 @@ namespace Tokenizer {
       DBG << "[tokenize_folia] (" << infile_name << ","
 	  << outfile_name << ")" << endl;
     }
-    folia::Document *doc = tokenize_folia( infile_name );
+    const folia::Document *doc = tokenize_folia( infile_name );
     if ( doc ){
       doc->save( outfile_name, false );
       if ( tokDebug > 0 ){
@@ -2051,8 +2051,7 @@ namespace Tokenizer {
 	    }
 	  }
 	}
-	else if ( (quotelevel > 0)
-		  && sentenceperlineoutput ) {
+	else if ( quotelevel > 0 ) {
 	  //FBK: ADD SPACE WITHIN QUOTE CONTEXT IN ANY CASE
 	  outline += " ";
 	}
