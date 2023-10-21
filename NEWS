@@ -8,7 +8,7 @@
 * added (dangerous, and compiletime only) option to change the magic
   'tokconfig-' value.
 
-[Maarten van Gompel[
+[Maarten van Gompel]
 * README.md: README: added demo screencast
 
 0.29 2023-04-22
