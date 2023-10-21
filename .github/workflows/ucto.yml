@@ -117,7 +117,7 @@ jobs:
           CXX: ${{ matrix.compiler }}
         run: ./configure
       - name: Static Code-check
-        run: cppcheck --enable=all --quiet --error-exitcode=0 .
+        run: cppcheck --enable=all -I include/ -I /usr/local/include --quiet --error-exitcode=0 .
       - name: make
         run: make
       - name: install
