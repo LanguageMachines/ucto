@@ -818,9 +818,23 @@ namespace Tokenizer {
     return result;
   }
 
-  void TokenizerClass::tokenize_one_line( const UnicodeString& input_line,
+  void TokenizerClass::tokenize_one_line( const UnicodeString& _input,
 					  bool& bos,
 					  const string& lang ){
+    /// tokenize a UnicodeString into Token's
+    /*!
+      \param _input A UnicodeString
+      \param bos An indicator that we know we are at a Begin Of Sentence
+      \param lang the language to use for tokenizing
+
+      As the Unicodestring can be of dubious heritage, we normalize
+      it before further use
+    */
+    UnicodeString input_line = normalizer.normalize( _input );
+    if ( passthru ){
+      passthruLine( input_line, bos );
+      return;
+    }
     if ( und_language
 	 && doDetectLang ){
       // hack into parts
@@ -883,9 +897,6 @@ namespace Tokenizer {
 	}
       }
       return;
-    }
-    else if ( passthru ){
-      passthruLine( input_line, bos );
     }
     else {
       string language = lang;
@@ -2888,6 +2899,11 @@ namespace Tokenizer {
 
   int TokenizerClass::internal_tokenize_line( const UnicodeString& originput,
 					      const string& _lang ){
+    if ( originput.isBogus() ){ //only tokenize valid input
+      LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
+	  << "   '" << originput << "'" << endl;
+      return 0;
+    }
     string lang = _lang;
     if ( lang.empty() ){
       lang = "default";
@@ -2905,14 +2921,9 @@ namespace Tokenizer {
       DBG << "[internal_tokenize_line] input: line=["
 	  << originput << "] (language= " << lang << ")" << endl;
     }
-    UnicodeString input = normalizer.normalize( originput );
+    UnicodeString input = originput;
     if ( doFilter ){
       input = settings[lang]->filter.filter( input );
-    }
-    if ( input.isBogus() ){ //only tokenize valid input
-      LOG << "ERROR: Invalid UTF-8 in line:" << linenum << endl
-	  << "   '" << input << "'" << endl;
-      return 0;
     }
     int32_t len = input.countChar32();
     if (tokDebug){
