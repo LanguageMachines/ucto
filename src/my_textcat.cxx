@@ -40,9 +40,11 @@ using TiCC::operator<<;
 #ifdef HAVE_TEXTCAT
 TextCat::~TextCat() { textcat_Done( TC ); }
 
-TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
-  debug = false;
-  dbg = log;
+TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ):
+  cfName(cf),
+  debug(false),
+  dbg(log)
+{
   TC = textcat_Init( cf.c_str() );
   //
   // we would like to do this, to get the same default everywhere
@@ -55,7 +57,6 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream *log ) {
   if ( TC == 0 ){
     throw runtime_error( "TextCat init failed: " + cf );
   }
-  cfName = cf;
 }
 
 TextCat::TextCat( const TextCat& in ):
@@ -114,6 +115,7 @@ TextCat::~TextCat() {}
 
 TextCat::TextCat( const std::string& cf, TiCC::LogStream* ):
   TC(0),
+  debug(0),
   dbg(0)
 {
   throw runtime_error( "TextCat::TextCat(" + cf + "): TextCat Support not available" );
@@ -121,6 +123,7 @@ TextCat::TextCat( const std::string& cf, TiCC::LogStream* ):
 
 TextCat::TextCat( const TextCat& ):
   TC(0),
+  debug(0),
   dbg(0)
 {
   throw runtime_error( "TextCat::TextCat(): TextCat Support not available" );
