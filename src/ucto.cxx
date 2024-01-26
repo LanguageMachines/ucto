@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2023
+  Copyright (c) 2006 - 2024
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -202,7 +202,7 @@ int main( int argc, char *argv[] ){
     if ( Opts.extract( 'V' ) ||
 	 Opts.extract( "version" ) ){
       cout << "Ucto - Unicode Tokenizer - version " << Version() << endl
-	   << "(c) CLST 2015 - 2023, Centre for Language and Speech Technology, Radboud University Nijmegen" << endl
+	   << "(c) CLST 2015 - 2024, Centre for Language and Speech Technology, Radboud University Nijmegen" << endl
 	   << "(c) ILK 2009 - 2015, Induction of Linguistic Knowledge Research Group, Tilburg University" << endl
 	   << "Licensed under the GNU General Public License v3" << endl;
       cout << "based on [" << folia::VersionName() << "]" << endl;
