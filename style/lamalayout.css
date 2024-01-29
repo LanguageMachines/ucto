@@ -77,6 +77,7 @@ a:hover {
 h1#title  {
 	font-size: 500%;
 	font-weight: bold;
+    clear: both;
 }
 
 
@@ -115,6 +116,16 @@ h1#title  {
 	min-width: 384px;
 	min-height: 87px;
     margin-top: -30px;
+}
+#huclogo {
+    display: block;
+	background: url(logo-knaw-huc.png);
+    background-size: 113px 90px;
+	width: 113px;
+	height: 90px;
+	min-width: 113px;
+	min-height: 90px;
+    margin-left: auto;
 }
 #lamalogo {
     position: absolute;
@@ -234,4 +245,9 @@ img.big {
     margin-left: auto;
     margin-right: auto;
     width: 60%;
+}
+img.full {
+    margin-left: auto;
+    margin-right: auto;
+    width: 90%;
 }

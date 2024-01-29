@@ -28,9 +28,8 @@ extracredit: Cover photo by Jay Mantri
 
 	<p><strong>Ucto</strong> was written by Maarten van Gompel and Ko van der
 	Sloot. Work on <strong>Ucto</strong> was funded by NWO, the Netherlands
-	Organisation for Scientific Research, under the <a
-	href="http://ilk.uvt.nl/il">Implicit Linguistics</a> project and the <a
-	href="http://www.clarin.nl">CLARIN-NL</a> program.</p>
+	Organisation for Scientific Research, under the Implicit Linguistics project, the <a
+    href="http://www.clarin.nl">CLARIN-NL</a> project, and the <a href="https://www.clariah.nl">CLARIAH</a> project.</p>
 
 </section>
 
@@ -61,13 +60,12 @@ Foundation</a>.
 <ol>
 <li>First check if there are up-to-date packages
 included in your distribution's package manager. There are packages for
-<strong>Arch Linux</strong>, <strong>Debian</strong>, <strong>FreeBSD</strong>
+<strong>Alpine Linux</strong>, <strong>Arch Linux</strong> (AUR), <strong>macOS</strong> (homebrew), <strong>Debian</strong>, <strong>FreeBSD</strong>
 and <strong>Ubuntu</strong>.</li>
-<li>If not, we <strong>strongly recommend</strong> you use our <a
-href="https://proycon.github.io/LaMachine">LaMachine</a> software distribution,
-which includes Ucto and all necessary dependencies, and runs on Linux, BSD and
-Mac OS X. It can also run as a <em>virtual machine</em> under any host OS.</li>
-<li>Alternatively, you can always download, compile and install Ucto manually, as shown next.</li>
+<li>If you're only interested in the Ucto Python binding, then a simple <tt>pip install python-ucto</tt> suffices.</li>
+<li>If not, we <strong>recommend</strong> you use our docker container via <tt>docker pull proycon/ucto</tt>. It includes ucto and all necessary dependencies
+</li>
+<li>Alternatively, you can always download, compile and install ucto manually, as shown next.</li>
 </ol>
 
 <h3>Manual installation</h3>
@@ -107,8 +105,19 @@ The ucto documentation can be found <a href="https://ucto.readthedocs.io/en/late
 
 <p>Ucto can be used from Python through the <a
 href="https://github.com/proycon/python-ucto">python-ucto</a> binding, which
-has to be obtained separately unless you are using <a
-href="https://proycon.github.io/LaMachine">LaMachine</a>.</p>
+can be downloaded and installed with <tt>pip install python-ucto</tt>.</p>
+</section>
+
+<section>
+
+<h2>Demo</h2>
+
+<img class="full" src="style/uctodemo.gif" alt="ucto demo" />
+
+<br />
+
+<img class="full" src="style/pythonuctodemo.gif" alt="python-ucto demo" />
+
 </section>
 
 <a href="http://applejack.science.ru.nl/languagemachines" style="display: block"><img src="http://applejack.science.ru.nl/lamabadge.php/ucto" alt="badge" /></a>
