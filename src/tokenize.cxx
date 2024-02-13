@@ -2937,7 +2937,7 @@ namespace Tokenizer {
     }
 
     bool tokenizeword = false;
-    bool reset = false;
+    bool reset_token = false;
     //iterate over all characters
     UnicodeString word;
     StringCharacterIterator sit(input);
@@ -2955,8 +2955,8 @@ namespace Tokenizer {
 	DBG << "examine character: " << s << " type= "
 	    << toString( charT  ) << endl;
       }
-      if ( reset ) { //reset values for new word
-	reset = false;
+      if ( reset_token ) { //reset values for new word
+	reset_token = false;
 	tok_size = 0;
 	if ( !joiner && !is_separator(c) ){
 	  word = c;
@@ -3050,7 +3050,7 @@ namespace Tokenizer {
 	  }
 	}
 	//reset values for new word
-	reset = true;
+	reset_token = true;
       }
       else if ( u_ispunct(c)
 		|| u_isdigit(c)
