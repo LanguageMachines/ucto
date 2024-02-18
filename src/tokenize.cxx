@@ -208,6 +208,7 @@ namespace Tokenizer {
       return text_cat != NEVERLAND;
     }
     const char *homedir = getenv("HOME") ? getenv("HOME") : getpwuid(getuid())->pw_dir; //never NULL
+    assert( homedir != NULL );
     const char *xdgconfighome = getenv("XDG_CONFIG_HOME"); //may be NULL
     const string localConfigDir = ((xdgconfighome != NULL) ? string(xdgconfighome) : string(homedir) + "/.config") + "/ucto/";
     //check local first
