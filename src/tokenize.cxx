@@ -943,13 +943,13 @@ namespace Tokenizer {
 	++linenum;
 	if (tokDebug > 0) {
 	  DBG << "[tokenize] Read input line " << linenum
-	      << "-: '" << TiCC::format_nonascii( line ) << "'" << endl;
+	      << "-: '" << TiCC::format_non_printable( line ) << "'" << endl;
 	}
 	string tmp_line = fixup_UTF16( line, inputEncoding );
 	if ( tokDebug > 0
 	     && tmp_line != line ){
 	  DBG << "After fixup, input_line= '"
-	      << TiCC::format_nonascii( tmp_line ) << "'" << endl;
+	      << TiCC::format_non_printable( tmp_line ) << "'" << endl;
 	}
 	input_line = convert( tmp_line, inputEncoding );
 	if ( sentenceperlineinput ){
