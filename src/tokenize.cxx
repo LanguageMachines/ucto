@@ -2783,6 +2783,10 @@ namespace Tokenizer {
     return s == UBLOCK_EMOTICONS;
   }
 
+  bool u_isothernumber( UChar32 c ){
+    return u_charType( c ) == U_OTHER_NUMBER;
+  }
+
   bool u_ispicto( UChar32 c ){
     UBlockCode s = ublock_getCode(c);
     return s == UBLOCK_MISCELLANEOUS_SYMBOLS_AND_PICTOGRAPHS ;
@@ -2819,6 +2823,9 @@ namespace Tokenizer {
       return type_word;
     }
     else if ( u_isdigit(c)) {
+      return type_number;
+    }
+    else if ( u_isothernumber(c)) {
       return type_number;
     }
     else if ( u_issymbol(c)) {
@@ -2954,7 +2961,8 @@ namespace Tokenizer {
 	UnicodeString s = c;
 	int8_t charT = u_charType( c );
 	DBG << "examine character: " << s << " type= "
-	    << toString( charT  ) << endl;
+	    << toString( charT  )
+	    << " [" << TiCC::format_non_printable(s) << "]" << endl;
       }
       if ( reset_token ) { //reset values for new word
 	reset_token = false;
@@ -3135,6 +3143,9 @@ namespace Tokenizer {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
+      DBG << "AHA examine character: " << UnicodeString(c) << " type= "
+	  << type
+	  << " [" << TiCC::format_non_printable(UnicodeString(c)) << "]" << endl;
       if ( type == type_separator
 	   || type == type_unknown ){
 	return;
