@@ -3143,11 +3143,19 @@ namespace Tokenizer {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
-      DBG << "AHA examine character: " << UnicodeString(c) << " type= "
-	  << type
-	  << " [" << TiCC::format_non_printable(UnicodeString(c)) << "]" << endl;
-      if ( type == type_separator
-	   || type == type_unknown ){
+      if ( tokDebug >= 8 ){
+	DBG << " a single character: " << UnicodeString(c) << " type= "
+	    << type << " [" << TiCC::format_non_printable(UnicodeString(c))
+	    << "]" << endl;
+      }
+      if ( type == type_separator ){
+	return;
+      }
+      else if ( type == type_unknown ){
+	DBG << " Problematic character: " << UnicodeString(c)
+	    << " type= " << type
+	    << " value=" << TiCC::format_non_printable(UnicodeString(c))
+	    << " ?" << endl;
 	return;
       }
       if ( doPunctFilter
