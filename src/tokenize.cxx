@@ -3152,11 +3152,11 @@ namespace Tokenizer {
 	return;
       }
       else if ( type == type_unknown ){
-	DBG << " Problematic character: " << UnicodeString(c)
-	    << " type= " << type
-	    << " value=" << TiCC::format_non_printable(UnicodeString(c))
-	    << " ?" << endl;
-	return;
+	DBG << "Warning: Problematic character encountered:"
+	    << " type=UNKNOWN value="
+	    << showbase << hex << c << " ( "
+	    << TiCC::format_non_printable(UnicodeString(c))
+	    << ")" << endl;
       }
       if ( doPunctFilter
 	   && ( type == type_punctuation || type == type_currency ||
