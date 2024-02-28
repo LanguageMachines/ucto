@@ -1,3 +1,9 @@
+0.31 2023-10-21
+[Ko van der Sloot]
+* fixed handling of the rare cases of Unidentifiable Characters
+  They were ignored, which lead to incompatible text elements in FoLiA
+* some small refactoring, rooting out CppCheck warnings
+
 0.30 2023-10-21
 [Ko van der Sloot]
 * using ticcutils >- 0.34. All Unicode id NFC normalized now
