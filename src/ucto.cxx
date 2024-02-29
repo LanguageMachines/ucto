@@ -164,7 +164,7 @@ int main( int argc, char *argv[] ){
   bool do_und_lang = false;
   string redundancy = "minimal";
   string utt_marker = "<utt>";
-  string docid = "untitleddoc";
+  string docid;// = "untitleddoc";
   string normalization = "NFC";
   string inputEncoding = "UTF-8";
   string inputclass  = "current";
@@ -453,6 +453,15 @@ int main( int argc, char *argv[] ){
 
   cerr << "ucto: inputfile = "  << ifile << endl;
   cerr << "ucto: outputfile = " << ofile << endl;
+  if ( docid.empty() ) {
+    string first_part = ifile.substr( 0, ifile.find(".") );
+    if ( folia::isNCName( first_part ) ){ // to be sure
+      docid = first_part;
+    }
+    else {
+      docid = "untitleddoc";
+    }
+  }
 
   istream *IN = 0;
   if (!xmlin) {
