@@ -16,8 +16,8 @@ RUN if [ "$VERSION" = "distro" ]; then \
         echo -e "----------------------------------------------------------\nNOTE: Installing latest release as provided by Alpine package manager.\nThis version may diverge from the one in the git master tree or even from the latest release on github!\nFor development, build with --build-arg VERSION=development.\n----------------------------------------------------------\n" &&\
         apk update && apk add ucto; \
     else \
-        PACKAGES="libtar libbz2 icu-libs libxml2 libexttextcat libgomp libstdc++" &&\
-        BUILD_PACKAGES="build-base autoconf-archive autoconf automake libtool libtar-dev bzip2-dev icu-dev libxml2-dev libexttextcat-dev git" &&\
+        PACKAGES="libbz2 icu-libs libxml2 libexttextcat libgomp libstdc++" &&\
+        BUILD_PACKAGES="build-base autoconf-archive autoconf automake libtool bzip2-dev icu-dev libxml2-dev libexttextcat-dev git" &&\
         apk add $PACKAGES $BUILD_PACKAGES &&\ 
         cd /usr/src/ && ./ucto/build-deps.sh &&\
         cd ucto && sh ./bootstrap.sh && ./configure && make && make install &&\
