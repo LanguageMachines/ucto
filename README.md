@@ -129,7 +129,7 @@ A pre-made container image can be obtained from Docker Hub as follows:
 
 ``docker pull proycon/ucto``
 
-You can build a docker container as follows, make sure you are in the root of this repository:
+Alternatively, you can build a docker container as follows, make sure you are in the root of this repository:
 
 ``docker build -t proycon/ucto .``
 
