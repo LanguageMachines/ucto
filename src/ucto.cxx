@@ -36,6 +36,7 @@
 #include "libfolia/folia.h"
 #include "ticcutils/CommandLine.h"
 #include "ticcutils/PrettyPrint.h"
+#include "ticcutils/FileUtils.h"
 #include "ticcutils/Unicode.h"
 #include "ucto/my_textcat.h"
 #include "ucto/setting.h"
@@ -91,6 +92,8 @@ void usage(){
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
        << "\t-c <configfile>   - Explicitly specify a configuration file" << endl
+       << "\t-I <indir>        - use this intput directory. " << endl
+       << "\t-O <outdir>       - set the output directory, results are stored there." << endl
        << "\t-d <value>        - set debug level" << endl
        << "\t-e <string>       - set input encoding (default UTF8)" << endl
        << "\t-N <string>       - set output normalization (default NFC)" << endl
@@ -173,6 +176,8 @@ int main( int argc, char *argv[] ){
   string cfile;
   string ifile;
   string ofile;
+  string input_dir;
+  string output_dir;
   string c_file;
   bool pass_thru = false;
   bool ignore_tags = false;
@@ -186,7 +191,7 @@ int main( int argc, char *argv[] ){
     command_line += " " + string(argv[i]);
   }
   try {
-    TiCC::CL_Options Opts( "d:e:fhlPQunmN:vVL:c:s:x:FXT:",
+    TiCC::CL_Options Opts( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,copyclass,"
 			   "inputclass:,outputclass:,normalize:,id:,version,"
 			   "help,detectlanguages:,uselanguages:,"
@@ -243,6 +248,24 @@ int main( int argc, char *argv[] ){
       xmlout = Opts.extract( 'X' );
       Opts.extract( "id", docid );
     }
+    Opts.extract( 'I', input_dir );
+    if ( !input_dir.empty()
+	 && input_dir.back() != '/' ){
+      input_dir += "/";
+      if ( !TiCC::isDir(input_dir) ){
+	throw TiCC::OptionError( "unable to access '"+input_dir+"'" );
+      }
+    }
+    cerr << "INPUT DIR = " << input_dir << endl;
+    Opts.extract( 'O', output_dir );
+    if ( !output_dir.empty()
+	 && output_dir.back() != '/' ){
+      output_dir += "/";
+      if ( !TiCC::createPath(output_dir) ){
+	throw TiCC::OptionError( "unable to write '"+output_dir+"'" );
+      }
+    }
+    cerr << "OUTPUT DIR = " << output_dir << endl;
     if ( sentencesplit ){
       if ( xmlout ){
 	throw TiCC::OptionError( "conflicting options --split and -x or -X" );
@@ -378,6 +401,9 @@ int main( int argc, char *argv[] ){
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
       ifile = files[0];
+      if ( !input_dir.empty() ){
+	ifile = input_dir + ifile;
+      }
       if ( TiCC::match_back( ifile, ".xml" ) ){
 	xmlin = true;
       }
@@ -392,6 +418,9 @@ int main( int argc, char *argv[] ){
       ofile = files[1];
       if ( TiCC::match_back( ofile, ".xml" ) ){
 	xmlout = true;
+      }
+      if ( !output_dir.empty() ){
+	ofile = output_dir + ofile;
       }
     }
     if ( files.size() > 2 ){
