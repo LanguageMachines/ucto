@@ -1,7 +1,7 @@
 #/bin/sh -x
 exe=../src/ucto
 \rm -f folia2a.xml folia2b.xml
-$exe -Q -x folia2 -T none -L nl folia2.txt folia2a.xml
+$exe -Q -X -T none -L nl folia2.txt folia2a.xml
 cat < folia2a.xml
-$exe -Q -x folia2 -L nl folia2.txt folia2b.xml
+$exe -Q -L nl folia2.txt folia2b.xml
 cat < folia2b.xml

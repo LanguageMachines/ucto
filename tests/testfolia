@@ -1,7 +1,12 @@
+
+
+
+
+
 #/bin/sh
 
 
 exe=../src/ucto
 
-$exe -Q -x foliatest -L nld folia.txt
-$exe -Q -T none -x foliatest -L nld folia.txt
+$exe -Q -X --id=foliatest -L nld folia.txt
+$exe -Q -T none -X --id=foliatest -L nld folia.txt
