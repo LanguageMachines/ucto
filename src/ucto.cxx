@@ -440,26 +440,17 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
 }
 
 int main( int argc, char *argv[] ){
-  int debug = 0;
-  bool do_language_detect = false;
-  bool do_und_lang = false;
-  string redundancy = "minimal";
-  string utt_marker = "<utt>";
   string docid;// = "untitleddoc";
-  vector<string> language_list;
   string cfile;
   string ifile;
   string ofile;
   string input_dir;
   string output_dir;
-  string c_file;
   bool pass_thru = false;
-  string add_tokens;
-  string command_line = "ucto";
-  for ( int i=1; i < argc; ++i ){
-    command_line += " " + string(argv[i]);
-  }
   runtime_opts my_options;
+  for ( int i=1; i < argc; ++i ){
+    my_options.command_line += " " + string(argv[i]);
+  }
   try {
     TiCC::CL_Options Opts( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,copyclass,"
@@ -492,8 +483,6 @@ int main( int argc, char *argv[] ){
       return EXIT_SUCCESS;
     }
     my_options.fill( opts_copy );
-    Opts.extract( 's', utt_marker );
-    Opts.extract( 'T', redundancy );
     if ( Opts.extract( 'x', docid ) ){
       cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
       if ( Opts.is_present( 'X' ) ){
@@ -524,25 +513,8 @@ int main( int argc, char *argv[] ){
       }
     }
     cerr << "OUTPUT DIR = " << output_dir << endl;
-    Opts.extract( "add-tokens", add_tokens );
-    string value;
-    if ( Opts.extract('d', value ) ){
-      if ( !TiCC::stringTo(value,debug) ){
-	throw TiCC::OptionError( "invalid value for -d: " + value );
-      }
-    }
     pass_thru = Opts.extract( "passthru" );
     bool use_lang = Opts.is_present( "uselanguages" );
-    bool detect_lang = Opts.is_present( "detectlanguages" );
-    if ( detect_lang && use_lang ){
-      throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
-    }
-    if ( use_lang && pass_thru ){
-      throw TiCC::OptionError( "--passtru an --uselanguages options conflict. Use only one of these." );
-    }
-    if ( detect_lang && pass_thru ){
-      throw TiCC::OptionError( "--passtru an --detectlanguages options conflict. Use only one of these." );
-    }
     if ( Opts.is_present('L') ) {
       if ( pass_thru ){
 	throw TiCC::OptionError( "--passtru an -L options conflict. Use only one of these." );
@@ -550,48 +522,11 @@ int main( int argc, char *argv[] ){
       if ( Opts.is_present('c') ){
 	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
       }
-      else if ( detect_lang ){
-	throw TiCC::OptionError( "-L and --detectlanguages options conflict. Use only one of these." );
-      }
       else if ( use_lang ) {
 	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
       }
     }
     else if ( Opts.is_present( 'c' ) ){
-      if ( detect_lang ){
-	throw TiCC::OptionError( "-c and --detectlanguages options conflict. Use only one of these" );
-      }
-      else if ( use_lang ){
-	throw TiCC::OptionError( "-c and --uselanguages options conflict. Use only one of these." );
-      }
-    }
-    Opts.extract( 'c', c_file );
-
-    if ( !pass_thru ){
-      string languages;
-      Opts.extract( "detectlanguages", languages );
-      if ( languages.empty() ){
-	Opts.extract( "uselanguages", languages );
-      }
-      else {
-	do_language_detect = true;
-      }
-      if ( !languages.empty() ){
-	language_list = TiCC::split_at( languages, "," );
-	if ( language_list.empty() ){
-	  throw TiCC::OptionError( "invalid language list: " + languages );
-	}
-      }
-      else {
-	// so NOT --detectlanguages or --uselanguages
-	string language;
-	if ( Opts.extract('L', language ) ){
-	  language = fix_639_1( language );
-	}
-	if ( !language.empty() ){
-	  language_list.push_back( language );
-	}
-      }
     }
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
@@ -619,43 +554,13 @@ int main( int argc, char *argv[] ){
   }
   if ( !pass_thru ){
     set<string> available_languages = Setting::installed_languages();
-    if ( !c_file.empty() ){
-      cfile = c_file;
+    if ( !my_options.c_file.empty() ){
+      cfile = my_options.c_file;
     }
     else if ( available_languages.empty() ){
       cerr << "ucto: The uctodata package seems not to be installed." << endl;
       cerr << "ucto: Installing uctodata is a prerequisite." << endl;
       return EXIT_FAILURE;
-    }
-    else if ( language_list.empty()
-	      && !do_language_detect ){
-      cerr << "ucto: missing a language specification (-L or --detectlanguages or --uselanguages option)" << endl;
-      cerr << "ucto: Available Languages: ";
-      for( const auto& l : available_languages ){
-	cerr << l << ",";
-      }
-      cerr << endl;
-      return EXIT_FAILURE;
-    }
-    else {
-      auto it = std::find( language_list.begin(),
-			   language_list.end(),
-			   "und" );
-      if ( it != language_list.end() ){
-	language_list.erase( it );
-	do_und_lang = true;
-      }
-      for ( const auto& l : language_list ){
-	if ( available_languages.find(l) == available_languages.end() ){
-	  cerr << "ucto: unsupported language '" << l << "'" << endl;
-	  cerr << "ucto: Available Languages: ";
-	  for( const auto& lang : available_languages ){
-	    cerr << lang << ",";
-	  }
-	  cerr << endl;
-	  return EXIT_FAILURE;
-	}
-      }
     }
   }
   if ((!ifile.empty()) && (ifile == ofile)) {
@@ -745,7 +650,7 @@ int main( int argc, char *argv[] ){
     else {
       // init from config file
       if ( !cfile.empty()
-	   && !tokenizer.init( cfile, add_tokens ) ){
+	   && !tokenizer.init( cfile, my_options.add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -754,7 +659,8 @@ int main( int argc, char *argv[] ){
 	}
 	return EXIT_FAILURE;
       }
-      else if ( !tokenizer.init( my_options.language_list, add_tokens ) ){
+      else if ( !tokenizer.init( my_options.language_list,
+				 my_options.add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -768,7 +674,7 @@ int main( int argc, char *argv[] ){
       }
       else {
 	cerr << "ucto: configured for languages: " << my_options.language_list;
-	if ( do_und_lang ) {
+	if ( my_options.do_und_lang ) {
 	  cerr << ", also the  UND flag is set";
 	}
 	cerr << endl;
