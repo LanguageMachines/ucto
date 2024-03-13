@@ -294,7 +294,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     copyclass = false;
   }
   if ( Opts.extract( 'f' ) ){
-    throw TiCC::OptionError( "ucto: The -f option is deprecated "
+    throw TiCC::OptionError( "ucto: The -f option not supported "
 			     "Please use --filter=NO instead" );
   }
   Opts.extract( "add-tokens", add_tokens );
