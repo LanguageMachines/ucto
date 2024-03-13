@@ -437,16 +437,39 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       + files[2] + "....";
     throw TiCC::OptionError( mess );
   }
+  if ( !pass_thru ){
+    set<string> available_languages = Setting::installed_languages();
+    if ( !c_file.empty() ){
+      cfile = c_file;
+    }
+    else if ( available_languages.empty() ){
+      string mess = "ucto: The uctodata package seems not to be installed.\n"
+	"ucto: Installing uctodata is a prerequisite.";
+      throw TiCC::OptionError( mess );
+    }
+  }
+  if ( !ifile.empty()
+       && ifile == ofile ) {
+    throw TiCC::OptionError( "ucto: Output file equals input file! "
+			     "Courageously refusing to start..." );
+  }
+
+  cerr << "ucto: inputfile = "  << ifile << endl;
+  cerr << "ucto: outputfile = " << ofile << endl;
+  if ( docid.empty() ) {
+    string first_part = ifile.substr( 0, ifile.find(".") );
+    if ( folia::isNCName( first_part ) ){ // to be sure
+      docid = first_part;
+    }
+    else {
+      docid = "untitleddoc";
+    }
+  }
+
+
 }
 
 int main( int argc, char *argv[] ){
-  string docid;// = "untitleddoc";
-  string cfile;
-  string ifile;
-  string ofile;
-  string input_dir;
-  string output_dir;
-  bool pass_thru = false;
   runtime_opts my_options;
   for ( int i=1; i < argc; ++i ){
     my_options.command_line += " " + string(argv[i]);
@@ -459,14 +482,6 @@ int main( int argc, char *argv[] ){
 			   "textredundancy:,add-tokens:,split,"
 			   "allow-word-corrections,ignore-tag-hints,"
 			   "separators:");
-    TiCC::CL_Options opts_copy( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
-				"filter:,filterpunct,passthru,textclass:,copyclass,"
-				"inputclass:,outputclass:,normalize:,id:,version,"
-				"help,detectlanguages:,uselanguages:,"
-				"textredundancy:,add-tokens:,split,"
-				"allow-word-corrections,ignore-tag-hints,"
-				"separators:");
-    opts_copy.init(argc, argv );
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -482,113 +497,22 @@ int main( int argc, char *argv[] ){
       cout << "based on [" << folia::VersionName() << "]" << endl;
       return EXIT_SUCCESS;
     }
-    my_options.fill( opts_copy );
-    if ( Opts.extract( 'x', docid ) ){
-      cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
-      if ( Opts.is_present( 'X' ) ){
-	throw TiCC::OptionError( "conflicting options -x and -X" );
-      }
-      if ( Opts.is_present( "id" ) ){
-	throw TiCC::OptionError( "conflicting options -x and --id" );
-      }
-    }
-    else {
-      Opts.extract( "id", docid );
-    }
-    Opts.extract( 'I', input_dir );
-    if ( !input_dir.empty()
-	 && input_dir.back() != '/' ){
-      input_dir += "/";
-      if ( !TiCC::isDir(input_dir) ){
-	throw TiCC::OptionError( "unable to access '" + input_dir + "'" );
-      }
-    }
-    cerr << "INPUT DIR = " << input_dir << endl;
-    Opts.extract( 'O', output_dir );
-    if ( !output_dir.empty()
-	 && output_dir.back() != '/' ){
-      output_dir += "/";
-      if ( !TiCC::createPath(output_dir) ){
-	throw TiCC::OptionError( "unable to write '" + output_dir + "'" );
-      }
-    }
-    cerr << "OUTPUT DIR = " << output_dir << endl;
-    pass_thru = Opts.extract( "passthru" );
-    bool use_lang = Opts.is_present( "uselanguages" );
-    if ( Opts.is_present('L') ) {
-      if ( pass_thru ){
-	throw TiCC::OptionError( "--passtru an -L options conflict. Use only one of these." );
-      }
-      if ( Opts.is_present('c') ){
-	throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
-      }
-      else if ( use_lang ) {
-	throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
-      }
-    }
-    else if ( Opts.is_present( 'c' ) ){
-    }
-    vector<string> files = Opts.getMassOpts();
-    if ( files.size() > 0 ){
-      ifile = files[0];
-      if ( !input_dir.empty() ){
-	ifile = input_dir + ifile;
-      }
-    }
-    if ( files.size() == 2 ){
-      ofile = files[1];
-      if ( !output_dir.empty() ){
-	ofile = output_dir + ofile;
-      }
-    }
-    if ( files.size() > 2 ){
-      cerr << "found additional arguments on the commandline: " << files[2]
-	   << "...." << endl;
-      return EXIT_FAILURE;
-    }
+    my_options.fill( Opts );
   }
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
     usage();
     return EXIT_FAILURE;
   }
-  if ( !pass_thru ){
-    set<string> available_languages = Setting::installed_languages();
-    if ( !my_options.c_file.empty() ){
-      cfile = my_options.c_file;
-    }
-    else if ( available_languages.empty() ){
-      cerr << "ucto: The uctodata package seems not to be installed." << endl;
-      cerr << "ucto: Installing uctodata is a prerequisite." << endl;
-      return EXIT_FAILURE;
-    }
-  }
-  if ((!ifile.empty()) && (ifile == ofile)) {
-    cerr << "ucto: Output file equals input file! Courageously refusing to start..."  << endl;
-    return EXIT_FAILURE;
-  }
-
-  cerr << "ucto: inputfile = "  << ifile << endl;
-  cerr << "ucto: outputfile = " << ofile << endl;
-  if ( docid.empty() ) {
-    string first_part = ifile.substr( 0, ifile.find(".") );
-    if ( folia::isNCName( first_part ) ){ // to be sure
-      docid = first_part;
-    }
-    else {
-      docid = "untitleddoc";
-    }
-  }
-
   istream *IN = 0;
   if (!my_options.xmlin) {
-    if ( ifile.empty() ){
+    if ( my_options.ifile.empty() ){
       IN = &cin;
     }
     else {
-      IN = new ifstream( ifile );
+      IN = new ifstream( my_options.ifile );
       if ( !IN || !IN->good() ){
-	cerr << "ucto: problems opening inputfile " << ifile << endl;
+	cerr << "ucto: problems opening inputfile " << my_options.ifile << endl;
 	cerr << "ucto: Courageously refusing to start..."  << endl;
 	delete IN;
 	return EXIT_FAILURE;
@@ -597,13 +521,13 @@ int main( int argc, char *argv[] ){
   }
 
   ostream *OUT = 0;
-  if ( ofile.empty() ){
+  if ( my_options.ofile.empty() ){
     OUT = &cout;
   }
   else {
-    OUT = new ofstream( ofile );
+    OUT = new ofstream( my_options.ofile );
     if ( !OUT || !OUT->good() ){
-      cerr << "ucto: problems opening outputfile " << ofile << endl;
+      cerr << "ucto: problems opening outputfile " << my_options.ofile << endl;
       cerr << "ucto: Courageously refusing to start..."  << endl;
       delete OUT;
       if ( IN != &cin ){
@@ -636,21 +560,17 @@ int main( int argc, char *argv[] ){
     tokenizer.setInputClass( my_options.inputclass );
     tokenizer.setOutputClass( my_options.outputclass );
     tokenizer.setCopyClass( my_options.copyclass );
-    tokenizer.setXMLOutput( my_options.xmlout, docid );
+    tokenizer.setXMLOutput( my_options.xmlout, my_options.docid );
     tokenizer.setXMLInput( my_options.xmlin );
     tokenizer.setTextRedundancy( my_options.redundancy );
     tokenizer.setSeparators( my_options.separators ); // IMPORTANT: AFTER setNormalization
     tokenizer.setUndLang( my_options.do_und_lang );
-    if ( my_options.ignore_tags ){
-      tokenizer.setNoTags( true );
-    }
-    if ( my_options.pass_thru ){
-      tokenizer.setPassThru( true );
-    }
-    else {
+    tokenizer.setNoTags( my_options.ignore_tags );
+    tokenizer.setPassThru( my_options.pass_thru );
+    if ( !my_options.pass_thru ){
       // init from config file
-      if ( !cfile.empty()
-	   && !tokenizer.init( cfile, my_options.add_tokens ) ){
+      if ( !my_options.cfile.empty()
+	   && !tokenizer.init( my_options.cfile, my_options.add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -669,8 +589,8 @@ int main( int argc, char *argv[] ){
 	}
 	return EXIT_FAILURE;
       }
-      if ( !cfile.empty() ){
-	cerr << "ucto: configured from file: " << cfile << endl;
+      if ( !my_options.cfile.empty() ){
+	cerr << "ucto: configured from file: " << my_options.cfile << endl;
       }
       else {
 	cerr << "ucto: configured for languages: " << my_options.language_list;
@@ -681,7 +601,7 @@ int main( int argc, char *argv[] ){
       }
     }
     if ( my_options.xmlin) {
-      folia::Document *doc = tokenizer.tokenize_folia( ifile );
+      folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
       if ( doc ){
 	*OUT << doc;
 	OUT->flush();
