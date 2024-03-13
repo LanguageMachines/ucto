@@ -136,8 +136,8 @@ void usage(){
        << "\t                    -F is automatically set when inputfile has extension '.xml'" << endl
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
-       << "                      -X is automatically set when inputfile has extension '.xml'" << endl
-       << "\t                  (-x and -F disable usage of most other options: -nPQVs)" << endl
+       << "\t                    -X is automatically set when inputfile has extension '.xml'" << endl
+       << "\t                    (-x and -F disable usage of most other options: -nPQVs)" << endl
        << "\t--inputclass <class>  - use the specified class to search text in the FoLiA doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLiA doc. (default is 'current')" << endl
        << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLiA doc. (default is 'current'). Implies --filter=NO." << endl
@@ -154,6 +154,7 @@ public:
   runtime_opts();
   void fill( TiCC::CL_Options& Opts );
   int debug;
+  bool batchmode;
   bool tolowercase;
   bool touppercase;
   bool sentenceperlineoutput;
@@ -190,10 +191,12 @@ public:
   string command_line;
   string separators;
   vector<string> language_list;
+  vector<string> input_files;
 };
 
 runtime_opts::runtime_opts():
   debug(0),
+  batchmode(false),
   tolowercase(false),
   touppercase(false),
   sentenceperlineoutput(false),
@@ -224,6 +227,7 @@ runtime_opts::runtime_opts():
 
 void runtime_opts::fill( TiCC::CL_Options& Opts ){
   Opts.extract('e', inputEncoding );
+  batchmode = Opts.extract( "batch" );
   dopunctfilter = Opts.extract( "filterpunct" );
   docorrectwords = Opts.extract( "allow-word-corrections" );
   paragraphdetection = !Opts.extract( 'P' );
@@ -245,14 +249,8 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   Opts.extract( 'N', normalization );
   verbose = Opts.extract( 'v' );
   if ( Opts.extract( 'x', docid ) ){
-    cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
-    xmlout = true;
-    if ( Opts.is_present( 'X' ) ){
-      throw TiCC::OptionError( "conflicting options -x and -X" );
-    }
-    if ( Opts.is_present( "id" ) ){
-      throw TiCC::OptionError( "conflicting options -x and --id" );
-    }
+    throw TiCC::OptionError( "ucto: The option '-x ID' is removed. "
+			     "Please use '-X' and '--id=ID' instead" );
   }
   else {
     xmlout = Opts.extract( 'X' );
@@ -407,9 +405,9 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     string tomany = Opts.toString();
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
   }
-  vector<string> files = Opts.getMassOpts();
-  if ( files.size() > 0 ){
-    ifile = files[0];
+  input_files = Opts.getMassOpts();
+  if ( input_files.size() > 0 ){
+    ifile = input_files[0];
     if ( !input_dir.empty() ){
       ifile = input_dir + ifile;
     }
@@ -423,8 +421,8 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   if ( docorrectwords && !xmlin ){
     throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
   }
-  if ( files.size() == 2 ){
-    ofile = files[1];
+  if ( input_files.size() == 2 ){
+    ofile = input_files[1];
     if ( TiCC::match_back( ofile, ".xml" ) ){
       xmlout = true;
     }
@@ -432,9 +430,9 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       ofile = output_dir + ofile;
     }
   }
-  if ( files.size() > 2 ){
+  if ( input_files.size() > 2 ){
     string mess = "found additional arguments on the commandline: "
-      + files[2] + "....";
+      + input_files[2] + " ....";
     throw TiCC::OptionError( mess );
   }
   if ( !pass_thru ){
@@ -465,8 +463,39 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       docid = "untitleddoc";
     }
   }
+}
 
-
+void init( TokenizerClass& tokenizer,
+	   const runtime_opts& my_options ){
+  // set debug first, so init() can be debugged too
+  tokenizer.setDebug( my_options.debug );
+  tokenizer.set_command( my_options.command_line );
+  tokenizer.setUttMarker( my_options.utt_marker );
+  tokenizer.setVerbose( my_options.verbose );
+  tokenizer.setSentenceSplit( my_options.sentencesplit );
+  tokenizer.setSentencePerLineOutput( my_options.sentenceperlineoutput );
+  tokenizer.setSentencePerLineInput( my_options.sentenceperlineinput );
+  tokenizer.setLowercase( my_options.tolowercase );
+  tokenizer.setUppercase( my_options.touppercase );
+  tokenizer.setNormSet( my_options.norm_set_string );
+  tokenizer.setParagraphDetection( my_options.paragraphdetection);
+  tokenizer.setQuoteDetection( my_options.quotedetection);
+  tokenizer.setNormalization( my_options.normalization );
+  tokenizer.setInputEncoding( my_options.inputEncoding );
+  tokenizer.setFiltering( my_options.dofiltering );
+  tokenizer.setWordCorrection( my_options.docorrectwords );
+  tokenizer.setLangDetection( my_options.do_language_detect );
+  tokenizer.setPunctFilter( my_options.dopunctfilter );
+  tokenizer.setInputClass( my_options.inputclass );
+  tokenizer.setOutputClass( my_options.outputclass );
+  tokenizer.setCopyClass( my_options.copyclass );
+  tokenizer.setXMLOutput( my_options.xmlout, my_options.docid );
+  tokenizer.setXMLInput( my_options.xmlin );
+  tokenizer.setTextRedundancy( my_options.redundancy );
+  tokenizer.setSeparators( my_options.separators ); // IMPORTANT: AFTER setNormalization
+  tokenizer.setUndLang( my_options.do_und_lang );
+  tokenizer.setNoTags( my_options.ignore_tags );
+  tokenizer.setPassThru( my_options.pass_thru );
 }
 
 int main( int argc, char *argv[] ){
@@ -478,7 +507,7 @@ int main( int argc, char *argv[] ){
     TiCC::CL_Options Opts( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,copyclass,"
 			   "inputclass:,outputclass:,normalize:,id:,version,"
-			   "help,detectlanguages:,uselanguages:,"
+			   "batch,help,detectlanguages:,uselanguages:,"
 			   "textredundancy:,add-tokens:,split,"
 			   "allow-word-corrections,ignore-tag-hints,"
 			   "separators:");
@@ -538,35 +567,8 @@ int main( int argc, char *argv[] ){
   }
   try {
     TokenizerClass tokenizer;
-    // set debug first, so init() can be debugged too
-    tokenizer.setDebug( my_options.debug );
-    tokenizer.set_command( my_options.command_line );
-    tokenizer.setUttMarker( my_options.utt_marker );
-    tokenizer.setVerbose( my_options.verbose );
-    tokenizer.setSentenceSplit( my_options.sentencesplit );
-    tokenizer.setSentencePerLineOutput( my_options.sentenceperlineoutput );
-    tokenizer.setSentencePerLineInput( my_options.sentenceperlineinput );
-    tokenizer.setLowercase( my_options.tolowercase );
-    tokenizer.setUppercase( my_options.touppercase );
-    tokenizer.setNormSet( my_options.norm_set_string );
-    tokenizer.setParagraphDetection( my_options.paragraphdetection);
-    tokenizer.setQuoteDetection( my_options.quotedetection);
-    tokenizer.setNormalization( my_options.normalization );
-    tokenizer.setInputEncoding( my_options.inputEncoding );
-    tokenizer.setFiltering( my_options.dofiltering );
-    tokenizer.setWordCorrection( my_options.docorrectwords );
-    tokenizer.setLangDetection( my_options.do_language_detect );
-    tokenizer.setPunctFilter( my_options.dopunctfilter );
-    tokenizer.setInputClass( my_options.inputclass );
-    tokenizer.setOutputClass( my_options.outputclass );
-    tokenizer.setCopyClass( my_options.copyclass );
-    tokenizer.setXMLOutput( my_options.xmlout, my_options.docid );
-    tokenizer.setXMLInput( my_options.xmlin );
-    tokenizer.setTextRedundancy( my_options.redundancy );
-    tokenizer.setSeparators( my_options.separators ); // IMPORTANT: AFTER setNormalization
-    tokenizer.setUndLang( my_options.do_und_lang );
-    tokenizer.setNoTags( my_options.ignore_tags );
-    tokenizer.setPassThru( my_options.pass_thru );
+    init( tokenizer, my_options );
+
     if ( !my_options.pass_thru ){
       // init from config file
       if ( !my_options.cfile.empty()
