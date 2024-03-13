@@ -149,29 +149,303 @@ void usage(){
        << "\t                    '-+' : special case to use only the '+' as separator" << endl;
 }
 
+class runtime_opts {
+public:
+  runtime_opts();
+  void fill( TiCC::CL_Options& Opts );
+  int debug;
+  bool tolowercase;
+  bool touppercase;
+  bool sentenceperlineoutput;
+  bool sentenceperlineinput;
+  bool paragraphdetection;
+  bool quotedetection;
+  bool do_language_detect;
+  bool dofiltering;
+  bool dopunctfilter;
+  bool xmlin;
+  bool xmlout;
+  bool verbose;
+  bool docorrectwords;
+  bool do_und_lang;
+  bool pass_thru;
+  bool ignore_tags;
+  bool sentencesplit;
+  bool copyclass;
+  string redundancy;
+  string utt_marker;
+  string docid;
+  string normalization;
+  string inputEncoding;
+  string inputclass;
+  string outputclass;
+  string cfile;
+  string ifile;
+  string ofile;
+  string input_dir;
+  string output_dir;
+  string c_file;
+  string norm_set_string;
+  string add_tokens;
+  string command_line;
+  string separators;
+  vector<string> language_list;
+};
+
+runtime_opts::runtime_opts():
+  debug(0),
+  tolowercase(false),
+  touppercase(false),
+  sentenceperlineoutput(false),
+  sentenceperlineinput(false),
+  paragraphdetection(true),
+  quotedetection(false),
+  do_language_detect(false),
+  dofiltering(true),
+  dopunctfilter(false),
+  xmlin(false),
+  xmlout(false),
+  verbose(false),
+  docorrectwords(false),
+  do_und_lang(false),
+  pass_thru(false),
+  ignore_tags(false),
+  sentencesplit(false),
+  copyclass(false),
+  redundancy("minimal"),
+  utt_marker("<utt>"),
+  normalization("NFC"),
+  inputEncoding("UTF-8"),
+  inputclass ("current"),
+  outputclass("current"),
+  command_line("ucto"),
+  separators("+")
+{}
+
+void runtime_opts::fill( TiCC::CL_Options& Opts ){
+  Opts.extract('e', inputEncoding );
+  dopunctfilter = Opts.extract( "filterpunct" );
+  docorrectwords = Opts.extract( "allow-word-corrections" );
+  paragraphdetection = !Opts.extract( 'P' );
+  xmlin = Opts.extract( 'F' );
+  quotedetection = Opts.extract( 'Q' );
+  Opts.extract( 's', utt_marker );
+  touppercase = Opts.extract( 'u' );
+  tolowercase = Opts.extract( 'l' );
+  sentencesplit = Opts.extract( "split" );
+  sentenceperlineoutput = Opts.extract( 'n' );
+  sentenceperlineinput = Opts.extract( 'm' );
+  Opts.extract( 'T', redundancy );
+  Opts.extract( "textredundancy", redundancy );
+  if ( redundancy != "full"
+       && redundancy != "minimal"
+       && redundancy != "none" ){
+    throw TiCC::OptionError( "unknown textredundancy level: " + redundancy );
+  }
+  Opts.extract( 'N', normalization );
+  verbose = Opts.extract( 'v' );
+  if ( Opts.extract( 'x', docid ) ){
+    cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
+    xmlout = true;
+    if ( Opts.is_present( 'X' ) ){
+      throw TiCC::OptionError( "conflicting options -x and -X" );
+    }
+    if ( Opts.is_present( "id" ) ){
+      throw TiCC::OptionError( "conflicting options -x and --id" );
+    }
+  }
+  else {
+    xmlout = Opts.extract( 'X' );
+    Opts.extract( "id", docid );
+  }
+  Opts.extract( 'I', input_dir );
+  if ( !input_dir.empty()
+       && input_dir.back() != '/' ){
+    input_dir += "/";
+    if ( !TiCC::isDir(input_dir) ){
+      throw TiCC::OptionError( "unable to access '" + input_dir + "'" );
+    }
+  }
+  cerr << "INPUT DIR = " << input_dir << endl;
+  Opts.extract( 'O', output_dir );
+  if ( !output_dir.empty()
+       && output_dir.back() != '/' ){
+    output_dir += "/";
+    if ( !TiCC::createPath(output_dir) ){
+      throw TiCC::OptionError( "unable to write '" + output_dir + "'" );
+    }
+  }
+  cerr << "OUTPUT DIR = " << output_dir << endl;
+  string textclass;
+  Opts.extract( "textclass", textclass );
+  Opts.extract( "inputclass", inputclass );
+  Opts.extract( "outputclass", outputclass );
+  if ( !textclass.empty() ){
+    if ( inputclass != "current" ){
+      throw TiCC::OptionError( "--textclass conflicts with --inputclass" );
+    }
+    if ( outputclass != "current" ){
+      throw TiCC::OptionError( "--textclass conflicts with --outputclass");
+    }
+    inputclass = textclass;
+    outputclass = textclass;
+  }
+  copyclass = Opts.extract( "copyclass" );
+  if ( copyclass
+       && inputclass == outputclass ){
+    copyclass = false;
+  }
+  if ( Opts.extract( 'f' ) ){
+    cerr << "ucto: The -f option is deprecated and will be removed in a later version.  Please use --filter=NO instead" << endl;
+    dofiltering = false;
+  }
+  Opts.extract( "add-tokens", add_tokens );
+  string value;
+  if ( Opts.extract( "filter", value ) ){
+    bool result;
+    if ( !TiCC::stringTo( value, result ) ){
+      throw TiCC::OptionError( "illegal value for '--filter' option. (boolean expected)" );
+    }
+    dofiltering = result;
+  }
+  if ( dofiltering
+       && xmlin
+       && outputclass == inputclass
+       && !docorrectwords ){
+    // we cannot mangle the original inputclass, so disable filtering
+    cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
+	 << endl;
+    dofiltering = false;
+  }
+  if ( sentencesplit ){
+    if ( xmlout ){
+      throw TiCC::OptionError( "conflicting options --split and -x or -X" );
+    }
+  }
+  if ( xmlin && outputclass.empty() ){
+    if ( dopunctfilter ){
+      throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
+    }
+    if ( touppercase ){
+      throw TiCC::OptionError( "--outputclass required for -u on FoLiA input ");
+    }
+    if ( tolowercase ){
+      throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
+    }
+  }
+  if ( Opts.extract('d', value ) ){
+    if ( !TiCC::stringTo(value,debug) ){
+      throw TiCC::OptionError( "invalid value for -d: " + value );
+    }
+  }
+  ignore_tags = Opts.extract( "ignore-tag-hints" );
+  pass_thru = Opts.extract( "passthru" );
+  Opts.extract( "separators", separators );
+  bool use_lang = Opts.is_present( "uselanguages" );
+  bool detect_lang = Opts.is_present( "detectlanguages" );
+  if ( detect_lang && use_lang ){
+    throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
+  }
+  if ( use_lang && pass_thru ){
+    throw TiCC::OptionError( "--passtru an --uselanguages options conflict. Use only one of these." );
+  }
+  if ( detect_lang && pass_thru ){
+    throw TiCC::OptionError( "--passtru an --detectlanguages options conflict. Use only one of these." );
+  }
+  if ( Opts.is_present('L') ) {
+    if ( pass_thru ){
+      throw TiCC::OptionError( "--passtru an -L options conflict. Use only one of these." );
+    }
+    if ( Opts.is_present('c') ){
+      throw TiCC::OptionError( "-L and -c options conflict. Use only one of these." );
+    }
+    else if ( detect_lang ){
+      throw TiCC::OptionError( "-L and --detectlanguages options conflict. Use only one of these." );
+    }
+    else if ( use_lang ) {
+      throw TiCC::OptionError( "-L and --uselanguages options conflict. Use only one of these." );
+    }
+  }
+  else if ( Opts.is_present( 'c' ) ){
+    if ( detect_lang ){
+      throw TiCC::OptionError( "-c and --detectlanguages options conflict. Use only one of these" );
+    }
+    else if ( use_lang ){
+      throw TiCC::OptionError( "-c and --uselanguages options conflict. Use only one of these." );
+    }
+  }
+  Opts.extract( 'c', c_file );
+
+  if ( !pass_thru ){
+    string languages;
+    Opts.extract( "detectlanguages", languages );
+    if ( languages.empty() ){
+      Opts.extract( "uselanguages", languages );
+    }
+    else {
+      do_language_detect = true;
+    }
+    if ( !languages.empty() ){
+      language_list = TiCC::split_at( languages, "," );
+      if ( language_list.empty() ){
+	throw TiCC::OptionError( "invalid language list: " + languages );
+      }
+    }
+    else {
+      // so NOT --detectlanguages or --uselanguages
+      string language;
+      if ( Opts.extract('L', language ) ){
+	language = fix_639_1( language );
+      }
+      if ( !language.empty() ){
+	language_list.push_back( language );
+      }
+    }
+  }
+  Opts.extract("normalize", norm_set_string );
+  if ( !Opts.empty() ){
+    string tomany = Opts.toString();
+    throw TiCC::OptionError( "unhandled option(s): " + tomany );
+  }
+  vector<string> files = Opts.getMassOpts();
+  if ( files.size() > 0 ){
+    ifile = files[0];
+    if ( !input_dir.empty() ){
+      ifile = input_dir + ifile;
+    }
+    if ( TiCC::match_back( ifile, ".xml" ) ){
+      xmlin = true;
+    }
+  }
+  if ( use_lang && !xmlin ){
+    throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
+  }
+  if ( docorrectwords && !xmlin ){
+    throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
+  }
+  if ( files.size() == 2 ){
+    ofile = files[1];
+    if ( TiCC::match_back( ofile, ".xml" ) ){
+      xmlout = true;
+    }
+    if ( !output_dir.empty() ){
+      ofile = output_dir + ofile;
+    }
+  }
+  if ( files.size() > 2 ){
+    string mess = "found additional arguments on the commandline: "
+      + files[2] + "....";
+    throw TiCC::OptionError( mess );
+  }
+}
+
 int main( int argc, char *argv[] ){
   int debug = 0;
-  bool tolowercase = false;
-  bool touppercase = false;
-  bool sentenceperlineoutput = false;
-  bool sentenceperlineinput = false;
-  bool paragraphdetection = true;
-  bool quotedetection = false;
   bool do_language_detect = false;
-  bool dofiltering = true;
-  bool dopunctfilter = false;
-  bool xmlin = false;
-  bool xmlout = false;
-  bool verbose = false;
-  bool docorrectwords = false;
   bool do_und_lang = false;
   string redundancy = "minimal";
   string utt_marker = "<utt>";
   string docid;// = "untitleddoc";
-  string normalization = "NFC";
-  string inputEncoding = "UTF-8";
-  string inputclass  = "current";
-  string outputclass = "current";
   vector<string> language_list;
   string cfile;
   string ifile;
@@ -180,16 +454,12 @@ int main( int argc, char *argv[] ){
   string output_dir;
   string c_file;
   bool pass_thru = false;
-  bool ignore_tags = false;
-  bool sentencesplit = false;
-  bool copyclass = false;
-  string norm_set_string;
   string add_tokens;
   string command_line = "ucto";
-  string separators = "+";
   for ( int i=1; i < argc; ++i ){
     command_line += " " + string(argv[i]);
   }
+  runtime_opts my_options;
   try {
     TiCC::CL_Options Opts( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,copyclass,"
@@ -198,6 +468,14 @@ int main( int argc, char *argv[] ){
 			   "textredundancy:,add-tokens:,split,"
 			   "allow-word-corrections,ignore-tag-hints,"
 			   "separators:");
+    TiCC::CL_Options opts_copy( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
+				"filter:,filterpunct,passthru,textclass:,copyclass,"
+				"inputclass:,outputclass:,normalize:,id:,version,"
+				"help,detectlanguages:,uselanguages:,"
+				"textredundancy:,add-tokens:,split,"
+				"allow-word-corrections,ignore-tag-hints,"
+				"separators:");
+    opts_copy.init(argc, argv );
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )
 	 || Opts.extract( "help" ) ){
@@ -213,30 +491,11 @@ int main( int argc, char *argv[] ){
       cout << "based on [" << folia::VersionName() << "]" << endl;
       return EXIT_SUCCESS;
     }
-    Opts.extract('e', inputEncoding );
-    dopunctfilter = Opts.extract( "filterpunct" );
-    docorrectwords = Opts.extract( "allow-word-corrections" );
-    paragraphdetection = !Opts.extract( 'P' );
-    xmlin = Opts.extract( 'F' );
-    quotedetection = Opts.extract( 'Q' );
+    my_options.fill( opts_copy );
     Opts.extract( 's', utt_marker );
-    touppercase = Opts.extract( 'u' );
-    tolowercase = Opts.extract( 'l' );
-    sentencesplit = Opts.extract( "split" );
-    sentenceperlineoutput = Opts.extract( 'n' );
-    sentenceperlineinput = Opts.extract( 'm' );
     Opts.extract( 'T', redundancy );
-    Opts.extract( "textredundancy", redundancy );
-    if ( redundancy != "full"
-	 && redundancy != "minimal"
-	 && redundancy != "none" ){
-      throw TiCC::OptionError( "unknown textredundancy level: " + redundancy );
-    }
-    Opts.extract( 'N', normalization );
-    verbose = Opts.extract( 'v' );
     if ( Opts.extract( 'x', docid ) ){
       cerr << "ucto: The -x option is deprecated and will be removed in a later version.  Please use --id instead" << endl;
-      xmlout = true;
       if ( Opts.is_present( 'X' ) ){
 	throw TiCC::OptionError( "conflicting options -x and -X" );
       }
@@ -245,7 +504,6 @@ int main( int argc, char *argv[] ){
       }
     }
     else {
-      xmlout = Opts.extract( 'X' );
       Opts.extract( "id", docid );
     }
     Opts.extract( 'I', input_dir );
@@ -253,7 +511,7 @@ int main( int argc, char *argv[] ){
 	 && input_dir.back() != '/' ){
       input_dir += "/";
       if ( !TiCC::isDir(input_dir) ){
-	throw TiCC::OptionError( "unable to access '"+input_dir+"'" );
+	throw TiCC::OptionError( "unable to access '" + input_dir + "'" );
       }
     }
     cerr << "INPUT DIR = " << input_dir << endl;
@@ -262,76 +520,18 @@ int main( int argc, char *argv[] ){
 	 && output_dir.back() != '/' ){
       output_dir += "/";
       if ( !TiCC::createPath(output_dir) ){
-	throw TiCC::OptionError( "unable to write '"+output_dir+"'" );
+	throw TiCC::OptionError( "unable to write '" + output_dir + "'" );
       }
     }
     cerr << "OUTPUT DIR = " << output_dir << endl;
-    if ( sentencesplit ){
-      if ( xmlout ){
-	throw TiCC::OptionError( "conflicting options --split and -x or -X" );
-      }
-      //      sentenceperlineoutput = true;
-    }
-    string textclass;
-    Opts.extract( "textclass", textclass );
-    Opts.extract( "inputclass", inputclass );
-    Opts.extract( "outputclass", outputclass );
-    if ( !textclass.empty() ){
-      if ( inputclass != "current" ){
-	throw TiCC::OptionError( "--textclass conflicts with --inputclass" );
-      }
-      if ( outputclass != "current" ){
-	throw TiCC::OptionError( "--textclass conflicts with --outputclass");
-      }
-      inputclass = textclass;
-      outputclass = textclass;
-    }
-    copyclass = Opts.extract( "copyclass" );
-    if ( copyclass
-	 && inputclass == outputclass ){
-      copyclass = false;
-    }
-    if ( Opts.extract( 'f' ) ){
-      cerr << "ucto: The -f option is deprecated and will be removed in a later version.  Please use --filter=NO instead" << endl;
-      dofiltering = false;
-    }
     Opts.extract( "add-tokens", add_tokens );
     string value;
-    if ( Opts.extract( "filter", value ) ){
-      bool result;
-      if ( !TiCC::stringTo( value, result ) ){
-	throw TiCC::OptionError( "illegal value for '--filter' option. (boolean expected)" );
-      }
-      dofiltering = result;
-    }
-    if ( dofiltering
-	 && xmlin
-	 && outputclass == inputclass
-	 && !docorrectwords ){
-      // we cannot mangle the original inputclass, so disable filtering
-      cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
-	   << endl;
-      dofiltering = false;
-    }
-    if ( xmlin && outputclass.empty() ){
-      if ( dopunctfilter ){
-	throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
-      }
-      if ( touppercase ){
-	throw TiCC::OptionError( "--outputclass required for -u on FoLiA input ");
-      }
-      if ( tolowercase ){
-	throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
-      }
-    }
     if ( Opts.extract('d', value ) ){
       if ( !TiCC::stringTo(value,debug) ){
 	throw TiCC::OptionError( "invalid value for -d: " + value );
       }
     }
-    ignore_tags = Opts.extract( "ignore-tag-hints" );
     pass_thru = Opts.extract( "passthru" );
-    Opts.extract( "separators", separators );
     bool use_lang = Opts.is_present( "uselanguages" );
     bool detect_lang = Opts.is_present( "detectlanguages" );
     if ( detect_lang && use_lang ){
@@ -393,32 +593,15 @@ int main( int argc, char *argv[] ){
 	}
       }
     }
-    Opts.extract("normalize", norm_set_string );
-    if ( !Opts.empty() ){
-      string tomany = Opts.toString();
-      throw TiCC::OptionError( "unhandled option(s): " + tomany );
-    }
     vector<string> files = Opts.getMassOpts();
     if ( files.size() > 0 ){
       ifile = files[0];
       if ( !input_dir.empty() ){
 	ifile = input_dir + ifile;
       }
-      if ( TiCC::match_back( ifile, ".xml" ) ){
-	xmlin = true;
-      }
-    }
-    if ( use_lang && !xmlin ){
-      throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
-    }
-    if ( docorrectwords && !xmlin ){
-      throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
     }
     if ( files.size() == 2 ){
       ofile = files[1];
-      if ( TiCC::match_back( ofile, ".xml" ) ){
-	xmlout = true;
-      }
       if ( !output_dir.empty() ){
 	ofile = output_dir + ofile;
       }
@@ -493,7 +676,7 @@ int main( int argc, char *argv[] ){
   }
 
   istream *IN = 0;
-  if (!xmlin) {
+  if (!my_options.xmlin) {
     if ( ifile.empty() ){
       IN = &cin;
     }
@@ -527,36 +710,36 @@ int main( int argc, char *argv[] ){
   try {
     TokenizerClass tokenizer;
     // set debug first, so init() can be debugged too
-    tokenizer.setDebug( debug );
-    tokenizer.set_command( command_line );
-    tokenizer.setUttMarker( utt_marker );
-    tokenizer.setVerbose( verbose );
-    tokenizer.setSentenceSplit(sentencesplit);
-    tokenizer.setSentencePerLineOutput(sentenceperlineoutput);
-    tokenizer.setSentencePerLineInput(sentenceperlineinput);
-    tokenizer.setLowercase(tolowercase);
-    tokenizer.setUppercase(touppercase);
-    tokenizer.setNormSet(norm_set_string);
-    tokenizer.setParagraphDetection(paragraphdetection);
-    tokenizer.setQuoteDetection(quotedetection);
-    tokenizer.setNormalization( normalization );
-    tokenizer.setInputEncoding( inputEncoding );
-    tokenizer.setFiltering(dofiltering);
-    tokenizer.setWordCorrection(docorrectwords);
-    tokenizer.setLangDetection(do_language_detect);
-    tokenizer.setPunctFilter(dopunctfilter);
-    tokenizer.setInputClass(inputclass);
-    tokenizer.setOutputClass(outputclass);
-    tokenizer.setCopyClass(copyclass);
-    tokenizer.setXMLOutput(xmlout, docid);
-    tokenizer.setXMLInput(xmlin);
-    tokenizer.setTextRedundancy(redundancy);
-    tokenizer.setSeparators(separators); // IMPORTANT: AFTER setNormalization
-    tokenizer.setUndLang( do_und_lang );
-    if ( ignore_tags ){
+    tokenizer.setDebug( my_options.debug );
+    tokenizer.set_command( my_options.command_line );
+    tokenizer.setUttMarker( my_options.utt_marker );
+    tokenizer.setVerbose( my_options.verbose );
+    tokenizer.setSentenceSplit( my_options.sentencesplit );
+    tokenizer.setSentencePerLineOutput( my_options.sentenceperlineoutput );
+    tokenizer.setSentencePerLineInput( my_options.sentenceperlineinput );
+    tokenizer.setLowercase( my_options.tolowercase );
+    tokenizer.setUppercase( my_options.touppercase );
+    tokenizer.setNormSet( my_options.norm_set_string );
+    tokenizer.setParagraphDetection( my_options.paragraphdetection);
+    tokenizer.setQuoteDetection( my_options.quotedetection);
+    tokenizer.setNormalization( my_options.normalization );
+    tokenizer.setInputEncoding( my_options.inputEncoding );
+    tokenizer.setFiltering( my_options.dofiltering );
+    tokenizer.setWordCorrection( my_options.docorrectwords );
+    tokenizer.setLangDetection( my_options.do_language_detect );
+    tokenizer.setPunctFilter( my_options.dopunctfilter );
+    tokenizer.setInputClass( my_options.inputclass );
+    tokenizer.setOutputClass( my_options.outputclass );
+    tokenizer.setCopyClass( my_options.copyclass );
+    tokenizer.setXMLOutput( my_options.xmlout, docid );
+    tokenizer.setXMLInput( my_options.xmlin );
+    tokenizer.setTextRedundancy( my_options.redundancy );
+    tokenizer.setSeparators( my_options.separators ); // IMPORTANT: AFTER setNormalization
+    tokenizer.setUndLang( my_options.do_und_lang );
+    if ( my_options.ignore_tags ){
       tokenizer.setNoTags( true );
     }
-    if ( pass_thru ){
+    if ( my_options.pass_thru ){
       tokenizer.setPassThru( true );
     }
     else {
@@ -571,7 +754,7 @@ int main( int argc, char *argv[] ){
 	}
 	return EXIT_FAILURE;
       }
-      else if ( !tokenizer.init( language_list, add_tokens ) ){
+      else if ( !tokenizer.init( my_options.language_list, add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -584,14 +767,14 @@ int main( int argc, char *argv[] ){
 	cerr << "ucto: configured from file: " << cfile << endl;
       }
       else {
-	cerr << "ucto: configured for languages: " << language_list;
+	cerr << "ucto: configured for languages: " << my_options.language_list;
 	if ( do_und_lang ) {
 	  cerr << ", also the  UND flag is set";
 	}
 	cerr << endl;
       }
     }
-    if (xmlin) {
+    if ( my_options.xmlin) {
       folia::Document *doc = tokenizer.tokenize_folia( ifile );
       if ( doc ){
 	*OUT << doc;
