@@ -137,7 +137,7 @@ void usage(){
        << "\t-X                - Output FoLiA XML, use the Document ID specified with --id=" << endl
        << "\t--id <DocID>      - use the specified Document ID to label the FoLia doc." << endl
        << "\t                    -X is automatically set when inputfile has extension '.xml'" << endl
-       << "\t                    (-x and -F disable usage of most other options: -nPQVs)" << endl
+       << "\t                    (-F disables usage of most other options: -nPQVs)" << endl
        << "\t--inputclass <class>  - use the specified class to search text in the FoLiA doc.(default is 'current')" << endl
        << "\t--outputclass <class> - use the specified class to output text in the FoLiA doc. (default is 'current')" << endl
        << "\t--textclass <class>   - use the specified class for both input and output of text in the FoLiA doc. (default is 'current'). Implies --filter=NO." << endl
@@ -180,7 +180,6 @@ public:
   string inputEncoding;
   string inputclass;
   string outputclass;
-  string cfile;
   string ifile;
   string ofile;
   string input_dir;
@@ -317,7 +316,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   }
   if ( sentencesplit ){
     if ( xmlout ){
-      throw TiCC::OptionError( "conflicting options --split and -x or -X" );
+      throw TiCC::OptionError( "conflicting options --split and -X" );
     }
   }
   if ( xmlin && outputclass.empty() ){
@@ -373,8 +372,14 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     }
   }
   Opts.extract( 'c', c_file );
-
   if ( !pass_thru ){
+    set<string> available_languages = Setting::installed_languages();
+    if ( c_file.empty()
+	 && available_languages.empty() ){
+      string mess = "ucto: The uctodata package seems not to be installed.\n"
+	"ucto: Installing uctodata is a prerequisite.";
+      throw TiCC::OptionError( mess );
+    }
     string languages;
     Opts.extract( "detectlanguages", languages );
     if ( languages.empty() ){
@@ -386,7 +391,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     if ( !languages.empty() ){
       language_list = TiCC::split_at( languages, "," );
       if ( language_list.empty() ){
-	throw TiCC::OptionError( "invalid language list: " + languages );
+	throw TiCC::OptionError( "invalid languages parameter: " + languages );
       }
     }
     else {
@@ -400,6 +405,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       }
     }
   }
+
   Opts.extract("normalize", norm_set_string );
   if ( !Opts.empty() ){
     string tomany = Opts.toString();
@@ -434,17 +440,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     string mess = "found additional arguments on the commandline: "
       + input_files[2] + " ....";
     throw TiCC::OptionError( mess );
-  }
-  if ( !pass_thru ){
-    set<string> available_languages = Setting::installed_languages();
-    if ( !c_file.empty() ){
-      cfile = c_file;
-    }
-    else if ( available_languages.empty() ){
-      string mess = "ucto: The uctodata package seems not to be installed.\n"
-	"ucto: Installing uctodata is a prerequisite.";
-      throw TiCC::OptionError( mess );
-    }
   }
   if ( !ifile.empty()
        && ifile == ofile ) {
@@ -571,8 +566,8 @@ int main( int argc, char *argv[] ){
 
     if ( !my_options.pass_thru ){
       // init from config file
-      if ( !my_options.cfile.empty()
-	   && !tokenizer.init( my_options.cfile, my_options.add_tokens ) ){
+      if ( !my_options.c_file.empty()
+	   && !tokenizer.init( my_options.c_file, my_options.add_tokens ) ){
 	if ( IN != &cin ){
 	  delete IN;
 	}
@@ -591,8 +586,8 @@ int main( int argc, char *argv[] ){
 	}
 	return EXIT_FAILURE;
       }
-      if ( !my_options.cfile.empty() ){
-	cerr << "ucto: configured from file: " << my_options.cfile << endl;
+      if ( !my_options.c_file.empty() ){
+	cerr << "ucto: configured from file: " << my_options.c_file << endl;
       }
       else {
 	cerr << "ucto: configured for languages: " << my_options.language_list;
