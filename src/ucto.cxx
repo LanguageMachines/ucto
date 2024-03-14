@@ -247,14 +247,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   }
   Opts.extract( 'N', normalization );
   verbose = Opts.extract( 'v' );
-  if ( Opts.extract( 'x', docid ) ){
-    throw TiCC::OptionError( "ucto: The option '-x ID' is removed. "
-			     "Please use '-X' and '--id=ID' instead" );
-  }
-  else {
-    xmlout = Opts.extract( 'X' );
-    Opts.extract( "id", docid );
-  }
   Opts.extract( 'I', input_dir );
   if ( !input_dir.empty()
        && input_dir.back() != '/' ){
@@ -290,7 +282,8 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   copyclass = Opts.extract( "copyclass" );
   if ( copyclass
        && inputclass == outputclass ){
-    copyclass = false;
+    throw TiCC::OptionError( "--copyclass impossible. "
+			     "--inputclass equals --outputclass" );
   }
   if ( Opts.extract( 'f' ) ){
     throw TiCC::OptionError( "ucto: The -f option not supported "
@@ -313,6 +306,14 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     cerr << "ucto: --filter=NO is automatically set. inputclass equals outputclass!"
 	 << endl;
     dofiltering = false;
+  }
+  if ( Opts.extract( 'x', docid ) ){
+    throw TiCC::OptionError( "ucto: The option '-x ID' is removed. "
+			     "Please use '-X' and '--id=ID' instead" );
+  }
+  else {
+    xmlout = Opts.extract( 'X' );
+    Opts.extract( "id", docid );
   }
   if ( sentencesplit ){
     if ( xmlout ){
@@ -337,6 +338,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   }
   ignore_tags = Opts.extract( "ignore-tag-hints" );
   pass_thru = Opts.extract( "passthru" );
+  Opts.extract("normalize", norm_set_string );
   Opts.extract( "separators", separators );
   bool use_lang = Opts.is_present( "uselanguages" );
   bool detect_lang = Opts.is_present( "detectlanguages" );
@@ -406,7 +408,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     }
   }
 
-  Opts.extract("normalize", norm_set_string );
   if ( !Opts.empty() ){
     string tomany = Opts.toString();
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
