@@ -152,7 +152,9 @@ void usage(){
 class runtime_opts {
 public:
   runtime_opts();
-  void fill( TiCC::CL_Options& Opts );
+  void fill( TiCC::CL_Options& );
+  void check_xmlin_opt();
+  void check_xmlout_opt();
   int debug;
   bool batchmode;
   bool tolowercase;
@@ -162,6 +164,8 @@ public:
   bool paragraphdetection;
   bool quotedetection;
   bool do_language_detect;
+  bool use_lang;
+  bool detect_lang;
   bool dofiltering;
   bool dopunctfilter;
   bool xmlin;
@@ -223,6 +227,33 @@ runtime_opts::runtime_opts():
   command_line("ucto"),
   separators("+")
 {}
+
+void runtime_opts::check_xmlin_opt(){
+  if ( use_lang && !xmlin ){
+    throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
+  }
+  if ( docorrectwords && !xmlin ){
+    throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
+  }
+  if ( xmlin && outputclass.empty() ){
+    if ( dopunctfilter ){
+      throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
+    }
+    if ( touppercase ){
+      throw TiCC::OptionError( "--outputclass required for -u on FoLiA input ");
+    }
+    if ( tolowercase ){
+      throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
+    }
+  }
+}
+
+void runtime_opts::check_xmlout_opt(){
+  if ( sentencesplit
+       && xmlout ){
+    throw TiCC::OptionError( "conflicting options --split and -X" );
+  }
+}
 
 void runtime_opts::fill( TiCC::CL_Options& Opts ){
   Opts.extract('e', inputEncoding );
@@ -315,22 +346,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     xmlout = Opts.extract( 'X' );
     Opts.extract( "id", docid );
   }
-  if ( sentencesplit ){
-    if ( xmlout ){
-      throw TiCC::OptionError( "conflicting options --split and -X" );
-    }
-  }
-  if ( xmlin && outputclass.empty() ){
-    if ( dopunctfilter ){
-      throw TiCC::OptionError( "--outputclass required for --filterpunct on FoLiA input ");
-    }
-    if ( touppercase ){
-      throw TiCC::OptionError( "--outputclass required for -u on FoLiA input ");
-    }
-    if ( tolowercase ){
-      throw TiCC::OptionError( "--outputclass required for -l on FoLiA input ");
-    }
-  }
   if ( Opts.extract('d', value ) ){
     if ( !TiCC::stringTo(value,debug) ){
       throw TiCC::OptionError( "invalid value for -d: " + value );
@@ -340,8 +355,8 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   pass_thru = Opts.extract( "passthru" );
   Opts.extract("normalize", norm_set_string );
   Opts.extract( "separators", separators );
-  bool use_lang = Opts.is_present( "uselanguages" );
-  bool detect_lang = Opts.is_present( "detectlanguages" );
+  use_lang = Opts.is_present( "uselanguages" );
+  detect_lang = Opts.is_present( "detectlanguages" );
   if ( detect_lang && use_lang ){
     throw TiCC::OptionError( "--detectlanguages and --uselanguages options conflict. Use only one of these." );
   }
@@ -422,12 +437,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       xmlin = true;
     }
   }
-  if ( use_lang && !xmlin ){
-    throw TiCC::OptionError( "--uselanguages is only valid for FoLiA input" );
-  }
-  if ( docorrectwords && !xmlin ){
-    throw TiCC::OptionError( "--allow-word-corrections is only valid for FoLiA input" );
-  }
   if ( input_files.size() == 2 ){
     ofile = input_files[1];
     if ( TiCC::match_back( ofile, ".xml" ) ){
@@ -437,6 +446,8 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       ofile = output_dir + ofile;
     }
   }
+  check_xmlin_opt();
+  check_xmlout_opt();
   if ( input_files.size() > 2 ){
     string mess = "found additional arguments on the commandline: "
       + input_files[2] + " ....";
