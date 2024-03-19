@@ -30,7 +30,7 @@ course_title context_en context_CZH row_en row_CZH _ golden entity_en_gold entit
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-03-19T18:59:48" command="ucto -L nld multibom.txt -X mb.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-03-19T19:05:14" command="ucto -L nld multibom.txt -X mb.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.10">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -43,7 +43,7 @@ course_title context_en context_CZH row_en row_CZH _ golden entity_en_gold entit
     <p xml:id="multibom.p.1">
       <s xml:id="multibom.p.1.s.1">
         <w xml:id="multibom.p.1.s.1.w.1" class="WORD">
-          <t>in</t>
+          <t>aap</t>
         </w>
         <w xml:id="multibom.p.1.s.1.w.2" class="WORD">
           <t>the</t>
