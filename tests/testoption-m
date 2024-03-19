@@ -1,0 +1,9 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -Lnld lines.txt
+
+$exe -Lnld -m lines.txt
+
+$exe -Lnld -m -n lines.txt

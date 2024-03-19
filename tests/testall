@@ -18,7 +18,7 @@ for file in testusage testlanguage testconf1 testconf2 testinclude \
 	    testtokens testoption-P testoption-split testissue64 testissue66 \
 	    testissue71 testissue72 testissue70 testnbsp testcorrect \
 	    testtag testissue81 testissue83 testissue84 testissue87 \
-	    testissue68 testissue93
+	    testissue68 testissue93 testoption-m
 do
    ./testone $file
    if [ $? -ne 0 ]; then
