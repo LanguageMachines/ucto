@@ -150,6 +150,7 @@ namespace Tokenizer {
   const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
+  const UnicodeString type_BOM = "BOM";
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
@@ -2797,6 +2798,12 @@ namespace Tokenizer {
     return u_charType( c ) == U_CURRENCY_SYMBOL;
   }
 
+  bool u_isBOM( UChar32 c ){
+    return c == 0xfeff
+      || c == 0xfffe
+      || c == 0xefbbbf;
+  }
+
   bool u_issymbol( UChar32 c ){
     return u_charType( c ) == U_CURRENCY_SYMBOL
       || u_charType( c ) == U_MATH_SYMBOL
@@ -2831,6 +2838,9 @@ namespace Tokenizer {
     }
     else if ( u_issymbol(c)) {
       return type_symbol;
+    }
+    else if ( u_isBOM(c)) {
+      return type_BOM;
     }
     else {
       return type_unknown;
@@ -3150,6 +3160,13 @@ namespace Tokenizer {
 	    << "]" << endl;
       }
       if ( type == type_separator ){
+	return;
+      }
+      else if ( type == type_BOM ){
+	DBG << "Skipping embedded BOM value="
+	    << showbase << hex << c << " ( "
+	    << TiCC::format_non_printable(UnicodeString(c))
+	    << ")" << endl;
 	return;
       }
       else if ( type == type_unknown ){
