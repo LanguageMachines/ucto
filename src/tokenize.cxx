@@ -2490,7 +2490,8 @@ namespace Tokenizer {
 	bool is_eos = detectEos( i,
 				 settings[lang]->eosmarkers,
 				 settings[lang]->quotes );
-	if (is_eos) {
+	is_eos &= !sentenceperlineinput;
+	if ( is_eos) {
 	  // end of sentence found/ so wrap up
 	  if ( detectQuotes
 	       && !settings[lang]->quotes.emptyStack() ) {
