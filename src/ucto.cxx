@@ -338,6 +338,10 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
 	 << endl;
     dofiltering = false;
   }
+  ignore_tags = Opts.extract( "ignore-tag-hints" );
+  pass_thru = Opts.extract( "passthru" );
+  Opts.extract("normalize", norm_set_string );
+  Opts.extract( "separators", separators );
   if ( Opts.extract( 'x', docid ) ){
     throw TiCC::OptionError( "ucto: The option '-x ID' is removed. "
 			     "Please use '-X' and '--id=ID' instead" );
@@ -351,10 +355,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       throw TiCC::OptionError( "invalid value for -d: " + value );
     }
   }
-  ignore_tags = Opts.extract( "ignore-tag-hints" );
-  pass_thru = Opts.extract( "passthru" );
-  Opts.extract("normalize", norm_set_string );
-  Opts.extract( "separators", separators );
   use_lang = Opts.is_present( "uselanguages" );
   detect_lang = Opts.is_present( "detectlanguages" );
   if ( detect_lang && use_lang ){
