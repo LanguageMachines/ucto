@@ -11,3 +11,5 @@ $exe -L nl utf16bom.nl
 $exe -L nl -e WINDOWS-1258 W1258.nl
 $exe -L nl UTF16BE.nl
 $exe -L nl windows_cr_lf_utf16.czech
+$exe -L nld multibom.txt -X mb.xml
+cat < mb.xml
