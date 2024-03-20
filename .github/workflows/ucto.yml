@@ -79,7 +79,7 @@ jobs:
              if [ "$RUNNER_OS" == "Linux" ]; then
                 cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include --quiet --error-exitcode=0"
              else
-                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --quiet --error-exitcode=0"
+                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --suppress=missingInclude --suppress=dupInheritedMember --quiet --error-exitcode=0"
              fi
              echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
 
