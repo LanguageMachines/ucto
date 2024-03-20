@@ -1,4 +1,9 @@
+0.32.1 2024-03-20
+[Ko van der Sloot]
+* additional fix for https://github.com/LanguageMachines/ucto/issues/93
+
 0.32 2024-03-19
+[Ko van der Sloot]
 * fix for https://github.com/LanguageMachines/ucto/issues/95
 * automagicly geneate an xml:id when not provided
 
