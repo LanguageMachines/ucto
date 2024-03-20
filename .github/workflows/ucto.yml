@@ -77,9 +77,9 @@ jobs:
       - name: Configure CppCheck
         run: |
              if [ "$RUNNER_OS" == "Linux" ]; then
-                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include --suppress=dupInheritedMember:/usr/local/include/libfolia/folia_subclasses.h --quiet --error-exitcode=0"
+                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include --suppress=duplInheritedMember:/usr/local/include/libfolia/*.h --quiet --error-exitcode=0"
              else
-                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --suppress=missingInclude --suppress=dupInheritedMember --quiet --error-exitcode=0"
+                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --suppress=missingInclude --suppress=duplInheritedMember --quiet --error-exitcode=0"
              fi
              echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
 
