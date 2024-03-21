@@ -153,6 +153,7 @@ class runtime_opts {
 public:
   runtime_opts();
   void fill( TiCC::CL_Options& );
+  pair<istream *, ostream *> determine_io();
   void check_xmlin_opt();
   void check_xmlout_opt();
   int debug;
@@ -428,6 +429,9 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
   }
   input_files = Opts.getMassOpts();
+}
+
+pair<istream *,ostream *> runtime_opts::determine_io(){
   if ( input_files.size() > 0 ){
     ifile = input_files[0];
     if ( !input_dir.empty() ){
@@ -470,6 +474,39 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       docid = "untitleddoc";
     }
   }
+  istream *IN = 0;
+  if (!xmlin) {
+    if ( ifile.empty() ){
+      IN = &cin;
+    }
+    else {
+      IN = new ifstream( ifile );
+      if ( !IN || !IN->good() ){
+	delete IN;
+	string mess = "ucto: problems opening inputfile '" + ifile + "'\n"
+	  + "ucto: Courageously refusing to start...";
+	throw runtime_error( mess );
+      }
+    }
+  }
+
+  ostream *OUT = 0;
+  if ( ofile.empty() ){
+    OUT = &cout;
+  }
+  else {
+    OUT = new ofstream( ofile );
+    if ( !OUT || !OUT->good() ){
+      if ( IN != &cin ){
+	delete IN;
+      }
+      string mess  = "ucto: problems opening outputfile '" + ofile + "'\n"
+	+ "ucto: Courageously refusing to start...";
+      delete OUT;
+      throw runtime_error( mess );
+    }
+  }
+  return make_pair(IN,OUT);
 }
 
 void init( TokenizerClass& tokenizer,
@@ -540,38 +577,9 @@ int main( int argc, char *argv[] ){
     usage();
     return EXIT_FAILURE;
   }
-  istream *IN = 0;
-  if (!my_options.xmlin) {
-    if ( my_options.ifile.empty() ){
-      IN = &cin;
-    }
-    else {
-      IN = new ifstream( my_options.ifile );
-      if ( !IN || !IN->good() ){
-	cerr << "ucto: problems opening inputfile " << my_options.ifile << endl;
-	cerr << "ucto: Courageously refusing to start..."  << endl;
-	delete IN;
-	return EXIT_FAILURE;
-      }
-    }
-  }
-
-  ostream *OUT = 0;
-  if ( my_options.ofile.empty() ){
-    OUT = &cout;
-  }
-  else {
-    OUT = new ofstream( my_options.ofile );
-    if ( !OUT || !OUT->good() ){
-      cerr << "ucto: problems opening outputfile " << my_options.ofile << endl;
-      cerr << "ucto: Courageously refusing to start..."  << endl;
-      delete OUT;
-      if ( IN != &cin ){
-	delete IN;
-      }
-      return EXIT_FAILURE;
-    }
-  }
+  pair<istream *,ostream *> io_streams = my_options.determine_io();
+  istream *IN = io_streams.first;
+  ostream *OUT = io_streams.second;
   try {
     TokenizerClass tokenizer;
     init( tokenizer, my_options );
@@ -609,7 +617,7 @@ int main( int argc, char *argv[] ){
 	cerr << endl;
       }
     }
-    if ( my_options.xmlin) {
+    if ( my_options.xmlin ) {
       folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
       if ( doc ){
 	*OUT << doc;
