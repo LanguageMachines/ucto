@@ -540,6 +540,28 @@ void init( TokenizerClass& tokenizer,
   tokenizer.setUndLang( my_options.do_und_lang );
   tokenizer.setNoTags( my_options.ignore_tags );
   tokenizer.setPassThru( my_options.pass_thru );
+  if ( !my_options.pass_thru ){
+    // init from config file
+    if ( !my_options.c_file.empty()
+	 && !tokenizer.init( my_options.c_file, my_options.add_tokens ) ){
+      throw runtime_error( "ucto: initialize using '" + my_options.c_file
+			   + "' failed" );
+    }
+    else if ( !tokenizer.init( my_options.language_list,
+			       my_options.add_tokens ) ){
+      throw runtime_error( "ucto: initialize failed" );
+    }
+    if ( !my_options.c_file.empty() ){
+      cerr << "ucto: configured from file: " << my_options.c_file << endl;
+    }
+    else {
+      cerr << "ucto: configured for languages: " << my_options.language_list;
+      if ( my_options.do_und_lang ) {
+	cerr << ", also the  UND flag is set";
+      }
+      cerr << endl;
+    }
+  }
 }
 
 int main( int argc, char *argv[] ){
@@ -582,40 +604,17 @@ int main( int argc, char *argv[] ){
   ostream *OUT = io_streams.second;
   try {
     TokenizerClass tokenizer;
-    init( tokenizer, my_options );
-
-    if ( !my_options.pass_thru ){
-      // init from config file
-      if ( !my_options.c_file.empty()
-	   && !tokenizer.init( my_options.c_file, my_options.add_tokens ) ){
-	if ( IN != &cin ){
-	  delete IN;
-	}
-	if ( OUT != &cout ){
-	  delete OUT;
-	}
-	return EXIT_FAILURE;
+    try {
+      init( tokenizer, my_options );
+    }
+    catch ( ...){
+      if ( IN != &cin ){
+	delete IN;
       }
-      else if ( !tokenizer.init( my_options.language_list,
-				 my_options.add_tokens ) ){
-	if ( IN != &cin ){
-	  delete IN;
-	}
-	if ( OUT != &cout ){
-	  delete OUT;
-	}
-	return EXIT_FAILURE;
+      if ( OUT != &cout ){
+	delete OUT;
       }
-      if ( !my_options.c_file.empty() ){
-	cerr << "ucto: configured from file: " << my_options.c_file << endl;
-      }
-      else {
-	cerr << "ucto: configured for languages: " << my_options.language_list;
-	if ( my_options.do_und_lang ) {
-	  cerr << ", also the  UND flag is set";
-	}
-	cerr << endl;
-      }
+      return EXIT_FAILURE;
     }
     if ( my_options.xmlin ) {
       folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
