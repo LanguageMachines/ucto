@@ -2789,6 +2789,10 @@ namespace Tokenizer {
     return u_charType( c ) == U_OTHER_NUMBER;
   }
 
+  bool u_isnonspacemark( UChar32 c ){
+    return u_charType( c ) == U_NON_SPACING_MARK;
+  }
+
   bool u_ispicto( UChar32 c ){
     UBlockCode s = ublock_getCode(c);
     return s == UBLOCK_MISCELLANEOUS_SYMBOLS_AND_PICTOGRAPHS ;
@@ -2841,6 +2845,9 @@ namespace Tokenizer {
     }
     else if ( u_isBOM(c)) {
       return type_BOM;
+    }
+    else if ( u_isnonspacemark(c)) {
+      return type_symbol;
     }
     else {
       return type_unknown;
@@ -3149,8 +3156,18 @@ namespace Tokenizer {
       }
       return;
     }
-
-    if ( inpLen == 1) {
+    bool special=false;
+    if ( inpLen == 2 ){
+      if ( u_isnonspacemark( input.char32At(1) ) ){
+	// NO further processing!, belong together
+	if ( tokDebug >= 2 ){
+	  DBG << "single combining letter " << input << endl;
+	}
+	special = true;
+      }
+    }
+    if ( inpLen == 1
+	 || special ) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
