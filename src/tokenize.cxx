@@ -151,6 +151,7 @@ namespace Tokenizer {
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
   const UnicodeString type_BOM = "BOM";
+  const UnicodeString type_bidi = "BIDI";
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
@@ -2589,6 +2590,11 @@ namespace Tokenizer {
     return result;
   }
 
+  bool u_is_bidi( UChar32 c ){
+    return c == 0x202d   // Left To Right Override
+      || c == 0x202d;    // Right To Left Override
+  }
+
   void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
     if (tokDebug) {
       DBG << "[passthruLine] input: line=[" << input << "]" << endl;
@@ -2841,6 +2847,9 @@ namespace Tokenizer {
     }
     else if ( u_isBOM(c)) {
       return type_BOM;
+    }
+    if ( u_is_bidi(c) ){
+      return type_bidi;
     }
     else {
       return type_unknown;
@@ -3168,6 +3177,14 @@ namespace Tokenizer {
 	    << TiCC::format_non_printable(UnicodeString(c))
 	    << ")" << endl;
 	return;
+      }
+      else if ( type == type_bidi ){
+	if ( tokDebug >= 1 ){
+	  DBG << "Warning: keeping BIDI character:"
+	      << showbase << hex << c << " ( "
+	      << TiCC::format_non_printable(UnicodeString(c))
+	      << ")" << endl;
+	}
       }
       else if ( type == type_unknown ){
 	DBG << "Warning: Problematic character encountered:"
