@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="undefined" version="2.5.1" generator="foliapy-v2.5.8">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl">
+      </text-annotation>
+      <paragraph-annotation/>
+    </annotations>
+  </metadata>
+  <text xml:id="undefined.text">
+    <p xml:id="undefined.text.div.1.p.1" class="p">
+      <t> v̅ ∃ average velocity</t>
+    </p>
+    <p xml:id="undefined.text.div.1.p.2" class="p">
+      <t>5̇1</t>
+    </p>
+  </text>
+</FoLiA>
