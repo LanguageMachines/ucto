@@ -29,10 +29,10 @@
           <processor xml:id="proc.foliaid.1bb6d22d.generator" folia_version="2.5.1" name="foliapy" src="https://github.com/proycon/foliapy" type="generator" version="2.5.8"/>
         </processor>
       </processor>
-      <processor xml:id="ucto.1" begindatetime="2024-03-30T20:20:04" command="ucto -Leng -Tfull issue93.folia.xml issue93.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-02T13:26:58" command="ucto -Leng -Tfull issue93.folia.xml issue93.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.10">
-          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
+          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.3"/>
         </processor>
       </processor>
     </provenance>
@@ -74,14 +74,8 @@ aha 3̂14159</t>
           <w xml:id="undefined.text.div.1.p.2.s.1.w.1" class="WORD">
             <t>aha</t>
           </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.2" class="NUMBER" space="no">
-            <t>3</t>
-          </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.3" class="SYMBOL" space="no">
-            <t>̂</t>
-          </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.4" class="NUMBER">
-            <t>14159</t>
+          <w xml:id="undefined.text.div.1.p.2.s.1.w.2" class="NUMBER">
+            <t>3̂14159</t>
           </w>
         </s>
       </p>
@@ -102,10 +96,10 @@ aha 3̂14159</t>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-03-30T20:20:04" command="ucto -Leng -Tfull issue93b.folia.xml issue93b.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-02T13:26:58" command="ucto -Leng -Tfull issue93b.folia.xml issue93b.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.10">
-          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
+          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.3"/>
         </processor>
       </processor>
     </provenance>
@@ -137,14 +131,8 @@ aha 3̂14159</t>
       <t>5̇1</t>
       <s xml:id="undefined.text.div.1.p.2.s.1">
         <t>5̇1</t>
-        <w xml:id="undefined.text.div.1.p.2.s.1.w.1" class="NUMBER" space="no">
-          <t>5</t>
-        </w>
-        <w xml:id="undefined.text.div.1.p.2.s.1.w.2" class="SYMBOL" space="no">
-          <t>̇</t>
-        </w>
-        <w xml:id="undefined.text.div.1.p.2.s.1.w.3" class="NUMBER">
-          <t>1</t>
+        <w xml:id="undefined.text.div.1.p.2.s.1.w.1" class="NUMBER">
+          <t>5̇1</t>
         </w>
       </s>
     </p>
