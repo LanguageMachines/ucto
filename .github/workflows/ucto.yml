@@ -171,6 +171,7 @@ jobs:
           ./testaction.sh
           TEST_STAT=$(cat status.tmp)
           echo "test_status=$TEST_STAT" >> $GITHUB_ENV
+	  cat < testoutput/*.diff
         continue-on-error: true
 
       - name: Notify IRC of failure
