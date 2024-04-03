@@ -3439,7 +3439,7 @@ namespace Tokenizer {
       LOG << "terminating..." << endl;
       return false;
     }
-    Setting *default_set = 0;
+    const Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( lang == "und" ){
 	settings["und"] = 0;
