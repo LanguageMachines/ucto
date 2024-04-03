@@ -108,6 +108,7 @@ for f in glob.glob(mask):
             else:
                 print( color_text("OK", 'GREEN', True) )
                 os.system('rm testoutput/' + id + '.' + lang + '.diff')
+                os.system('rm testoutput/' + id + '.' + lang + '.err*')
         else:
             print( color_text("FAILED", 'RED', True) )
             exitcode += 1
