@@ -4,3 +4,6 @@ exe=../src/ucto
 
 $exe -Leng -Tfull issue93.folia.xml issue93.out.xml
 cat < issue93.out.xml
+
+$exe -Leng -Tfull issue93b.folia.xml issue93b.out.xml
+cat < issue93b.out.xml

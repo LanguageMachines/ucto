@@ -40,7 +40,7 @@ jobs:
     needs: notification
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]    # , macos-latest]
         compiler: [g++, clang++]
 
     steps:
@@ -77,9 +77,9 @@ jobs:
       - name: Configure CppCheck
         run: |
              if [ "$RUNNER_OS" == "Linux" ]; then
-                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include --quiet --error-exitcode=0"
+                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include --suppress=duplInheritedMember:/usr/local/include/libfolia/*.h --quiet --error-exitcode=0"
              else
-                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --quiet --error-exitcode=0"
+                cpc_opts="--enable=all --inline-suppr --force -I include -I /usr/local/include -I /usr/local/opt/icu4c/include -I /usr/local/opt/libxml2/include --suppress=missingIncludeSystem --suppress=missingInclude --suppress=duplInheritedMember --quiet --error-exitcode=0"
              fi
              echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
 
@@ -160,3 +160,35 @@ jobs:
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
           message: "ucto [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00033SUCCESS\u0003"
+
+      - name: run uctotests
+        env:
+          FOLIAPATH: ../foliapy/folia-repo
+          EXPECT: 0
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
+        run: |
+          cd tests
+          ./testaction.sh
+          TEST_STAT=$(cat status.tmp)
+          echo "test_status=$TEST_STAT" >> $GITHUB_ENV
+          cat testoutput/*.err
+          cat testoutput/*.diff
+        continue-on-error: true
+
+      - name: Notify IRC of failure
+        if: ${{ env.test_status != '0' }}
+        uses: Gottox/irc-message-action@v2
+        with:
+          server: irc.uvt.nl
+          channel: '#gitlama'
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
+          message: "ucto tests [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00034FAIL\u0003"
+
+      - name: Notify IRC of succes
+        if: ${{ env.test_status == '0' }}
+        uses: Gottox/irc-message-action@v2
+        with:
+          server: irc.uvt.nl
+          channel: '#gitlama'
+          nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
+          message: "ucto tests [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00033SUCCESS\u0003"

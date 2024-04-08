@@ -1,0 +1,15 @@
+#/bin/sh
+
+exe=../src/ucto
+
+$exe -Lnld lines.txt
+
+$exe -Lnld -m lines.txt
+
+$exe -Lnld -m -n lines.txt
+
+$exe -Lnld lines.txt -X > m1.xml
+cat < m1.xml
+
+$exe -Lnld lines.txt -m -X > m2.xml
+cat < m2.xml

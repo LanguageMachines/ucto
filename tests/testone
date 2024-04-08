@@ -16,24 +16,26 @@ if test -x $file
 	./$file > testoutput/$file.tmp 2> testoutput/$file.err.1
 	diff -wb --ignore-matching-lines=".?*-annotation .?*" --ignore-matching-lines=".http://www.w3.org/1999.?*" --ignore-matching-lines=".*generator=.*" --ignore-matching-lines=".*datetime=.*" --ignore-matching-lines=".*uctodata.*" --ignore-matching-lines=".*folia_version=.*" --ignore-matching-lines=".*libfolia.*" --ignore-matching-lines=".*local/share.*" testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
 	if [ $? -ne 0 ];
-	then sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
+	then
+	     sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
 	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
 	     if [ $? -ne 0 ];
 	     then
-            echo -e $FAIL;
+	        echo -e $FAIL;
 	     	echo "differences logged in testoutput/$file.diff";
 	     	echo "stderr messages logged in testoutput/$file.err";
-            exit 1
+                exit 1
 	     else
-            echo -e $OK
-	    if [ $keep == "" ];
-	    then
-              \rm -f testoutput/$file.diff
-              \rm -f testoutput/$file.err
-	    fi
-            exit 0
+               echo -e $OK $keep
+               if [ $keep != "" ];
+	       then
+                 \rm -f testoutput/$file.diff
+                 \rm -f testoutput/$file.err*
+	       fi
+               exit 0
 	    fi
 	else
+	    \rm -f testoutput/$file.err*
 	    \rm -f testoutput/$file.diff
 	    echo -e $OK
             exit 0

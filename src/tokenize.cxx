@@ -150,6 +150,7 @@ namespace Tokenizer {
   const UnicodeString type_symbol = "SYMBOL";
   const UnicodeString type_punctuation = "PUNCTUATION";
   const UnicodeString type_number = "NUMBER";
+  const UnicodeString type_BOM = "BOM";
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
@@ -2490,7 +2491,8 @@ namespace Tokenizer {
 	bool is_eos = detectEos( i,
 				 settings[lang]->eosmarkers,
 				 settings[lang]->quotes );
-	if (is_eos) {
+	is_eos &= !sentenceperlineinput;
+	if ( is_eos) {
 	  // end of sentence found/ so wrap up
 	  if ( detectQuotes
 	       && !settings[lang]->quotes.emptyStack() ) {
@@ -2787,6 +2789,10 @@ namespace Tokenizer {
     return u_charType( c ) == U_OTHER_NUMBER;
   }
 
+  bool u_isnonspacemark( UChar32 c ){
+    return u_charType( c ) == U_NON_SPACING_MARK;
+  }
+
   bool u_ispicto( UChar32 c ){
     UBlockCode s = ublock_getCode(c);
     return s == UBLOCK_MISCELLANEOUS_SYMBOLS_AND_PICTOGRAPHS ;
@@ -2794,6 +2800,12 @@ namespace Tokenizer {
 
   bool u_iscurrency( UChar32 c ){
     return u_charType( c ) == U_CURRENCY_SYMBOL;
+  }
+
+  bool u_isBOM( UChar32 c ){
+    return c == 0xfeff
+      || c == 0xfffe
+      || c == 0xefbbbf;
   }
 
   bool u_issymbol( UChar32 c ){
@@ -2829,6 +2841,12 @@ namespace Tokenizer {
       return type_number;
     }
     else if ( u_issymbol(c)) {
+      return type_symbol;
+    }
+    else if ( u_isBOM(c)) {
+      return type_BOM;
+    }
+    else if ( u_isnonspacemark(c)) {
       return type_symbol;
     }
     else {
@@ -3138,8 +3156,18 @@ namespace Tokenizer {
       }
       return;
     }
-
-    if ( inpLen == 1) {
+    bool special=false;
+    if ( inpLen == 2 ){
+      if ( u_isnonspacemark( input.char32At(1) ) ){
+	// NO further processing!, belong together
+	if ( tokDebug >= 2 ){
+	  DBG << "single combining letter " << input << endl;
+	}
+	special = true;
+      }
+    }
+    if ( inpLen == 1
+	 || special ) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       UnicodeString type = detect_type( c );
@@ -3149,6 +3177,13 @@ namespace Tokenizer {
 	    << "]" << endl;
       }
       if ( type == type_separator ){
+	return;
+      }
+      else if ( type == type_BOM ){
+	DBG << "Skipping embedded BOM value="
+	    << showbase << hex << c << " ( "
+	    << TiCC::format_non_printable(UnicodeString(c))
+	    << ")" << endl;
 	return;
       }
       else if ( type == type_unknown ){
@@ -3404,7 +3439,7 @@ namespace Tokenizer {
       LOG << "terminating..." << endl;
       return false;
     }
-    Setting *default_set = 0;
+    const Setting *default_set = 0;
     for ( const auto& lang : languages ){
       if ( lang == "und" ){
 	settings["und"] = 0;

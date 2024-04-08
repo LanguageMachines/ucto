@@ -1,0 +1,4 @@
+Dit is regel 1
+Dit is regel2. Met punt
+En dit is regel 3!
+Einde

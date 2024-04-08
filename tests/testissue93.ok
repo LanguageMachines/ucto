@@ -29,10 +29,10 @@
           <processor xml:id="proc.foliaid.1bb6d22d.generator" folia_version="2.5.1" name="foliapy" src="https://github.com/proycon/foliapy" type="generator" version="2.5.8"/>
         </processor>
       </processor>
-      <processor xml:id="ucto.1" begindatetime="2024-02-27T12:54:05" command="ucto -Leng -Tfull issue93.folia.xml issue93.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.31">
+      <processor xml:id="ucto.1" begindatetime="2024-04-02T13:26:58" command="ucto -Leng -Tfull issue93.folia.xml issue93.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.10">
-          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.2"/>
+          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.3"/>
         </processor>
       </processor>
     </provenance>
@@ -74,17 +74,67 @@ aha 3̂14159</t>
           <w xml:id="undefined.text.div.1.p.2.s.1.w.1" class="WORD">
             <t>aha</t>
           </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.2" class="NUMBER" space="no">
-            <t>3</t>
-          </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.3" class="UNKNOWN" space="no">
-            <t>̂</t>
-          </w>
-          <w xml:id="undefined.text.div.1.p.2.s.1.w.4" class="NUMBER">
-            <t>14159</t>
+          <w xml:id="undefined.text.div.1.p.2.s.1.w.2" class="NUMBER">
+            <t>3̂14159</t>
           </w>
         </s>
       </p>
     </div>
+  </text>
+</FoLiA>
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="undefined" generator="libfolia-v2.18" version="2.5.1">
+  <metadata type="native">
+    <annotations>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <paragraph-annotation/>
+      <token-annotation alias="tokconfig-eng" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-eng.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
+    </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2024-04-02T13:26:58" command="ucto -Leng -Tfull issue93b.folia.xml issue93b.out.xml" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
+        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.10">
+          <processor xml:id="uctodata.1.1" name="tokconfig-eng" type="datasource" version="0.3"/>
+        </processor>
+      </processor>
+    </provenance>
+    <meta id="language">eng</meta>
+  </metadata>
+  <text xml:id="undefined.text">
+    <t>v̅ ∃ average velocity
+
+5̇1</t>
+    <p xml:id="undefined.text.div.1.p.1" class="p">
+      <t> v̅ ∃ average velocity</t>
+      <s xml:id="undefined.text.div.1.p.1.s.1">
+        <t>v̅ ∃ average velocity</t>
+        <w xml:id="undefined.text.div.1.p.1.s.1.w.1" class="WORD">
+          <t>v̅</t>
+        </w>
+        <w xml:id="undefined.text.div.1.p.1.s.1.w.2" class="SYMBOL">
+          <t>∃</t>
+        </w>
+        <w xml:id="undefined.text.div.1.p.1.s.1.w.3" class="WORD">
+          <t>average</t>
+        </w>
+        <w xml:id="undefined.text.div.1.p.1.s.1.w.4" class="WORD">
+          <t>velocity</t>
+        </w>
+      </s>
+    </p>
+    <p xml:id="undefined.text.div.1.p.2" class="p">
+      <t>5̇1</t>
+      <s xml:id="undefined.text.div.1.p.2.s.1">
+        <t>5̇1</t>
+        <w xml:id="undefined.text.div.1.p.2.s.1.w.1" class="NUMBER">
+          <t>5̇1</t>
+        </w>
+      </s>
+    </p>
   </text>
 </FoLiA>
