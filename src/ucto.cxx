@@ -92,7 +92,8 @@ void usage(){
   cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
        << "Options:" << endl
        << "\t-c <configfile>   - Explicitly specify a configuration file" << endl
-       << "\t-I <indir>        - use this intput directory. " << endl
+       << "\t-B or --batch     - Run in batch mode. Requires -O" << endl
+       << "\t-I <inpdir>       - use this input directory. " << endl
        << "\t-O <outdir>       - set the output directory, results are stored there." << endl
        << "\t-d <value>        - set debug level" << endl
        << "\t-e <string>       - set input encoding (default UTF8)" << endl
@@ -258,7 +259,7 @@ void runtime_opts::check_xmlout_opt(){
 
 void runtime_opts::fill( TiCC::CL_Options& Opts ){
   Opts.extract('e', inputEncoding );
-  batchmode = Opts.extract( "batch" );
+  batchmode = Opts.extract( 'B' ) || Opts.extract( "batch" );
   dopunctfilter = Opts.extract( "filterpunct" );
   docorrectwords = Opts.extract( "allow-word-corrections" );
   paragraphdetection = !Opts.extract( 'P' );
@@ -295,6 +296,10 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     if ( !TiCC::createPath(output_dir) ){
       throw TiCC::OptionError( "unable to write '" + output_dir + "'" );
     }
+  }
+  if ( batchmode
+       && output_dir.empty() ){
+    throw TiCC::OptionError( "batch mode requires an output dir (-O option)" );
   }
   cerr << "OUTPUT DIR = " << output_dir << endl;
   string textclass;
@@ -423,7 +428,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       }
     }
   }
-
   if ( !Opts.empty() ){
     string tomany = Opts.toString();
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
@@ -570,7 +574,7 @@ int main( int argc, char *argv[] ){
     my_options.command_line += " " + string(argv[i]);
   }
   try {
-    TiCC::CL_Options Opts( "d:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
+    TiCC::CL_Options Opts( "Bd:e:fhlI:O:PQunmN:vVL:c:s:x:FXT:",
 			   "filter:,filterpunct,passthru,textclass:,copyclass,"
 			   "inputclass:,outputclass:,normalize:,id:,version,"
 			   "batch,help,detectlanguages:,uselanguages:,"
