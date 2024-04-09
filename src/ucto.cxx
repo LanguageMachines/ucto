@@ -150,6 +150,12 @@ void usage(){
        << "\t                    '-+' : special case to use only the '+' as separator" << endl;
 }
 
+void usage_small(){
+  cerr << "Usage: " << endl;
+  cerr << "\tucto [[options]] [input-file] [[output-file]]"  << endl
+       << "\t -h or --help for more info" << endl;
+}
+
 class runtime_opts {
 public:
   runtime_opts();
@@ -291,7 +297,11 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       throw TiCC::OptionError( "unable to access '" + input_dir + "'" );
     }
   }
-  cerr << "INPUT DIR = " << input_dir << endl;
+  // cerr << "INPUT DIR = " << input_dir << endl;
+  if ( !batchmode
+       && !input_dir.empty() ){
+    throw TiCC::OptionError( "-I option requires batch option (-B) too." );
+  }
   Opts.extract( 'O', output_dir );
   if ( !output_dir.empty()
        && output_dir.back() != '/' ){
@@ -304,7 +314,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
        && output_dir.empty() ){
     throw TiCC::OptionError( "batch mode requires an output dir (-O option)" );
   }
-  cerr << "OUTPUT DIR = " << output_dir << endl;
+  //  cerr << "OUTPUT DIR = " << output_dir << endl;
   string textclass;
   Opts.extract( "textclass", textclass );
   Opts.extract( "inputclass", inputclass );
@@ -436,9 +446,16 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
   }
   input_files = Opts.getMassOpts();
+  if ( input_files.size() != 0
+       && !input_dir.empty() ){
+    throw TiCC::OptionError( "found both input files and -I option." );
+  }
   if ( batchmode
-       && input_files.size() == 0 ){
-    throw TiCC::OptionError( "using batchmode requires at least one inputfile" );
+       && input_files.size() == 0
+       && !input_dir.empty() ){
+    // get files from inputdir
+    input_files = TiCC::searchFiles( input_dir );
+    cerr << "search: " << input_files[0] << endl;
   }
   if ( !batchmode
        && input_files.size() > 2 ){
@@ -482,9 +499,9 @@ vector<pair<string,string>> runtime_opts::create_file_list() {
   }
   else {
     for ( const auto& in : input_files ){
-      string out = generate_outname( TiCC::basename(in) );
-      pair<string,string> p = create_io_pair( in, out );
-      cerr << "add to file_list: " << p << endl;
+      string bin = TiCC::basename(in);
+      string out = generate_outname( bin );
+      pair<string,string> p = create_io_pair( bin, out );
       result.push_back( p );
     }
   }
@@ -670,7 +687,7 @@ int main( int argc, char *argv[] ){
   }
   catch( const TiCC::OptionError& e ){
     cerr << "ucto: " << e.what() << endl;
-    usage();
+    usage_small();
     return EXIT_FAILURE;
   }
   for ( const auto& io_pair : my_options.file_list ){

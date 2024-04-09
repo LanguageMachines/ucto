@@ -10,3 +10,7 @@ $exe -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out
 cat < batch_out/folia1.ucto.xml
 cat < batch_out/test.nl.txt.ucto
 cat < batch_out/folia7.ucto.xml
+$exe -L nld -B -I batch_in -O batch_out
+cat < batch_out/folia4.ucto.xml
+cat < batch_out/testpunctuation.txt.ucto
+cat < batch_out/folia8.ucto.xml
