@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.18" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <division-annotation annotator="ucto" set="div"/>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+    </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2024-04-09T13:34:45" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
+        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
+          <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <div xml:id="WR-P-E-J-0000000001.div0.1" class="test">
+      <head xml:id="WR-P-E-J-0000000001.head.1">
+        <s xml:id="WR-P-E-J-0000000001.head.1.s.1">
+          <t>Dit is een ligatuur: æ.
+Gaat deze datum: 28-11-2011 goed?</t>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.4" class="WORD" space="no">
+            <t>ligatuur</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.5" class="PUNCTUATION">
+            <t>:</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.6" class="WORD" space="no">
+            <t>æ</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.7" class="PUNCTUATION">
+            <t>.</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.8" class="WORD">
+            <t>Gaat</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.9" class="WORD">
+            <t>deze</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.10" class="WORD" space="no">
+            <t>datum</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.11" class="PUNCTUATION">
+            <t>:</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.12" class="DATE">
+            <t>28-11-2011</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.13" class="WORD" space="no">
+            <t>goed</t>
+          </w>
+          <w xml:id="WR-P-E-J-0000000001.head.1.s.1.w.14" class="PUNCTUATION">
+            <t>?</t>
+          </w>
+        </s>
+      </head>
+    </div>
+  </text>
+</FoLiA>
+Dit is een test . <utt> Deze test bestaat uit meerdere zinnen , paragrafen , en woorden . <utt> De huidige paragraaf heeft drie zinnen . <utt> 
+
+Dit is de tweede paragraaf van de test . <utt> In deze paragraaf zijn de zinnen over meerdere regels gesplitst , maar daar merken we hopelijk niets van ! <utt> 
+
+Is dit de derde paragraaf ? <utt> Ja , dit is de derde paragraaf . <utt> Let a.u.b. goed op , want deze zin bevat een afkorting ! <utt> Deze zin heeft geen punt maar wordt expliciet afgekapt <utt> Op 15-12-1982 om 19:00 werd Dr. van Gompel geboren , het was een heuglijke dag , ik was slechts 30 cm groot in het begin van de jaren '80 , maar was toen al een groot D66 fan !!! <utt> 
+
+T.a.v van de lezer , geachte lezer , wilt u a.u.b. opmerken dat er hier afkortingen etc. .. inzitten maar dat dit toch één zin is ? <utt> 
+
+Op donderdag jl. heb ik o.a. rijst , pasta enz. gekocht . <utt> 
+
+FIRE !!! <utt> 
+
+De docent van de cursus scripting is Dhr. Paijmans , en dat is één zin ! <utt> 
+
+De vorige president van de V.S. is George W. Bush , maar gelukkig niet meer ! <utt> Laten we verder ook maar niet spreken over zijn I.Q. <utt> 
+
+Met www.google.com is mijn homepage is te vinden op http://proycon.anaproy.nl . <utt> 
+
+De (her)opvoeding van het kind door de (oud)-studente is mislukt ( maar dat is niet zo erg ) , want (oud)-studente(s) zijn altijd op zoek naar kamer(s) . <utt> 
+
+Een koninkrijk heeft een koning(in) . <utt> 
+
+Over 5s is het water precies 100C , en 's winters vriest het -30 C hier in mijn vader's huis . <utt> 
+
+Hij heeft vandaag , 27-11-2009 om 12:00 , precies $ 500,000.00 gewonnen in de lotterij . <utt> 
+
+In '92 is hij met een .22 pistool beschoten , in '93 - '94 verging het hem gelukkig beter ; hij won bij de 500 m elke keer de 2e prijs . <utt> Het jaar is '99 . <utt> 
+
+Caesar's laatste woorden waren : " Et tu ? <utt> Brute ? <utt> " , nadat hij verraden was . <utt> 
+
+Jeroen Bosch kwam uit 's-Hertogenbosch , niet uit 's Gravenhage . <utt> 
+
+De salsa is Zuid-Amerikaans . <utt> 
+
+Zo-even is nu goed , Vroeger was het zoëven . <utt> 
+
+Ik ben bereikbaar op (070)3469326 of (+32)25426511 . <utt> 
+
+Wie is verantwoordelijk voor het rekruterings- en retentiebeleid ? <utt> 
+
+Afvalvoorkoming en -beheer is belangrijk . <utt> 
+
+Er is een bouw-c.a.o. afgesloten . <utt> 
+
+We kijken er met een bird's-eye view naar . <utt> 
+
+Ik vind rock-'n-roll wel leuk . <utt> Ik ben een echt rock-'n-roll-beest . <utt> 
+
+We ontvangen de C.B.S.-gegevens . <utt> 
+
+De kosten zijn eur 10 , of € 10 of $ 11,15 . <utt> Vroeger was dat hfl 22 , om precies te zijn hfl 22,04 . <utt> 
+
+Ik ben geboren op 4-2-1954 of kortweg 04-02-'54 of ook wel 04.02.1954 of 4-2-'54 <utt> 
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="doc" generator="libfolia-v2.18" version="0.8">
+  <metadata type="native">
+    <annotations>
+      <token-annotation alias="tokconfig-nld" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-nld.foliaset.ttl">
+        <annotator processor="ucto.1"/>
+      </token-annotation>
+      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
+      <sentence-annotation>
+        <annotator processor="ucto.1"/>
+      </sentence-annotation>
+    </annotations>
+    <provenance>
+      <processor xml:id="ucto.1" begindatetime="2024-04-09T13:34:45" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+        <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
+        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
+          <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
+        </processor>
+      </processor>
+    </provenance>
+    <meta id="language">nld</meta>
+  </metadata>
+  <text xml:id="text">
+    <div>
+      <head xml:id="h.1">
+        <t>Dit is een tekst in een head</t>
+        <s xml:id="h.1.s.1">
+          <w xml:id="h.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="h.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="h.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="h.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="h.1.s.1.w.5" class="WORD">
+            <t>in</t>
+          </w>
+          <w xml:id="h.1.s.1.w.6" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="h.1.s.1.w.7" class="WORD">
+            <t>head</t>
+          </w>
+        </s>
+      </head>
+      <note xml:id="n.1">
+        <t>Dit is een tekst in een note</t>
+        <s xml:id="n.1.s.1">
+          <w xml:id="n.1.s.1.w.1" class="WORD">
+            <t>Dit</t>
+          </w>
+          <w xml:id="n.1.s.1.w.2" class="WORD">
+            <t>is</t>
+          </w>
+          <w xml:id="n.1.s.1.w.3" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.4" class="WORD">
+            <t>tekst</t>
+          </w>
+          <w xml:id="n.1.s.1.w.5" class="WORD">
+            <t>in</t>
+          </w>
+          <w xml:id="n.1.s.1.w.6" class="WORD">
+            <t>een</t>
+          </w>
+          <w xml:id="n.1.s.1.w.7" class="WORD">
+            <t>note</t>
+          </w>
+        </s>
+      </note>
+    </div>
+  </text>
+</FoLiA>
