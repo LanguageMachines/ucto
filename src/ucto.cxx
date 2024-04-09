@@ -448,7 +448,6 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     throw TiCC::OptionError( mess );
   }
   file_list = create_file_list();
-  cerr << file_list << endl;
 }
 
 string generate_outname( const string& in ){
@@ -485,6 +484,7 @@ vector<pair<string,string>> runtime_opts::create_file_list() {
     for ( const auto& in : input_files ){
       string out = generate_outname( TiCC::basename(in) );
       pair<string,string> p = create_io_pair( in, out );
+      cerr << "add to file_list: " << p << endl;
       result.push_back( p );
     }
   }
@@ -517,11 +517,17 @@ pair<istream *,ostream *> runtime_opts::determine_io( const pair<string,string>&
     if ( TiCC::match_back( ifile, ".xml" ) ){
       xmlin = true;
     }
+    else {
+      xmlin = false;
+    }
   }
   if ( !out.empty() ){
     ofile = out;
     if ( TiCC::match_back( ofile, ".xml" ) ){
       xmlout = true;
+    }
+    else {
+      xmlout = false;
     }
   }
   check_xmlin_opt();
