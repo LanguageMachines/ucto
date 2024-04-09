@@ -310,6 +310,10 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
       throw TiCC::OptionError( "unable to write '" + output_dir + "'" );
     }
   }
+  if ( !input_dir.empty()
+       && output_dir == input_dir ){
+    throw TiCC::OptionError( "input dir equals output dir, asking for trouble" );
+  }
   if ( batchmode
        && output_dir.empty() ){
     throw TiCC::OptionError( "batch mode requires an output dir (-O option)" );

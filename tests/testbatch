@@ -16,6 +16,8 @@ $exe -L nld -I batch_in -O batch_out folia1.xml >& uit2
 cat < uit2
 $exe -L nld -B -I batch_in -O batch_out folia1.xml >& uit3
 cat < uit3
+$exe -L nld -B -I batch_in -O batch_in >& uit4
+cat < uit4
 
 $exe -L nld -B -I batch_in -O batch_out
 cat < batch_out/folia4.ucto.xml
