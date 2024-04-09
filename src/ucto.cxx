@@ -154,7 +154,9 @@ class runtime_opts {
 public:
   runtime_opts();
   void fill( TiCC::CL_Options& );
-  pair<istream *, ostream *> determine_io();
+  pair<istream *, ostream *> determine_io( const pair<string,string>& );
+  vector<pair<string,string>> create_file_list();
+  pair<string,string> create_io_pair( const string&, const string& );
   void check_xmlin_opt();
   void check_xmlout_opt();
   int debug;
@@ -197,6 +199,7 @@ public:
   string separators;
   vector<string> language_list;
   vector<string> input_files;
+  vector<pair<string,string>> file_list;
 };
 
 runtime_opts::runtime_opts():
@@ -433,40 +436,101 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
   }
   input_files = Opts.getMassOpts();
+  if ( batchmode
+       && input_files.size() == 0 ){
+    throw TiCC::OptionError( "using batchmode requires at least one inputfile" );
+  }
+  if ( !batchmode
+       && input_files.size() > 2 ){
+    string mess = "found additional arguments on the commandline: "
+      + input_files[2] + " ....";
+    mess += "\n maybe you want to use batchmode? (option -B)";
+    throw TiCC::OptionError( mess );
+  }
+  file_list = create_file_list();
+  cerr << file_list << endl;
 }
 
-pair<istream *,ostream *> runtime_opts::determine_io(){
-  if ( input_files.size() > 0 ){
-    ifile = input_files[0];
-    if ( !input_dir.empty() ){
-      ifile = input_dir + ifile;
+string generate_outname( const string& in ){
+  string out;
+  if ( TiCC::match_back( in, ".xml" ) ){
+    out = in.substr( 0, in.length()-4 );
+    out += ".ucto.xml";
+  }
+  else {
+    out = in + ".ucto";
+  }
+  return out;
+}
+
+vector<pair<string,string>> runtime_opts::create_file_list() {
+  // create a list of pairs of input and output filenames
+  // adjusted for input and output directories
+  vector<pair<string,string>> result;
+  if ( !batchmode ){
+    if ( input_files.size() > 0 ){
+      string in = input_files[0];
+      string out;
+      if ( input_files.size() == 2 ){
+	out = input_files[1];
+      }
+      pair<string,string> p = create_io_pair( in, out );
+      result.push_back( p );
     }
+    else {
+      result.push_back( make_pair("","") );
+    }
+  }
+  else {
+    for ( const auto& in : input_files ){
+      string out = generate_outname( TiCC::basename(in) );
+      pair<string,string> p = create_io_pair( in, out );
+      result.push_back( p );
+    }
+  }
+  return result;
+}
+
+pair<string,string> runtime_opts::create_io_pair( const string& in,
+						  const string& out ) {
+  pair<string,string> result;
+  string in_f = in;
+  string out_f = out;
+  if ( !input_dir.empty() ){
+    in_f = input_dir + in_f;
+  }
+  if ( !out.empty() ){
+    out_f = out;
+    if ( !output_dir.empty() ){
+      out_f = output_dir + out_f;
+    }
+  }
+  result = make_pair( in_f, out_f );
+  return result;
+}
+
+pair<istream *,ostream *> runtime_opts::determine_io( const pair<string,string>& file_pair ){
+  string in = file_pair.first;
+  string out = file_pair.second;
+  if ( !in.empty() ){
+    ifile = in;
     if ( TiCC::match_back( ifile, ".xml" ) ){
       xmlin = true;
     }
   }
-  if ( input_files.size() == 2 ){
-    ofile = input_files[1];
+  if ( !out.empty() ){
+    ofile = out;
     if ( TiCC::match_back( ofile, ".xml" ) ){
       xmlout = true;
-    }
-    if ( !output_dir.empty() ){
-      ofile = output_dir + ofile;
     }
   }
   check_xmlin_opt();
   check_xmlout_opt();
-  if ( input_files.size() > 2 ){
-    string mess = "found additional arguments on the commandline: "
-      + input_files[2] + " ....";
-    throw TiCC::OptionError( mess );
-  }
   if ( !ifile.empty()
        && ifile == ofile ) {
-    throw TiCC::OptionError( "ucto: Output file equals input file! "
-			     "Courageously refusing to start..." );
+    throw runtime_error( "Output file equals input file! "
+			 "Courageously refusing to start..." );
   }
-
   cerr << "ucto: inputfile = "  << ifile << endl;
   cerr << "ucto: outputfile = " << ofile << endl;
   if ( docid.empty() ) {
@@ -603,47 +667,58 @@ int main( int argc, char *argv[] ){
     usage();
     return EXIT_FAILURE;
   }
-  pair<istream *,ostream *> io_streams = my_options.determine_io();
-  istream *IN = io_streams.first;
-  ostream *OUT = io_streams.second;
-  try {
-    TokenizerClass tokenizer;
+  for ( const auto& io_pair : my_options.file_list ){
+    pair<istream *,ostream *> io_streams;
     try {
-      init( tokenizer, my_options );
+      io_streams = my_options.determine_io( io_pair );
     }
-    catch ( ...){
-      if ( IN != &cin ){
-	delete IN;
+    catch ( const exception& e ){
+      cerr << "ucto: tokenizing '" << io_pair.first << "' to '"
+	   << io_pair.second << "' failed: " << e.what() << endl
+	   << "continue to next input." << endl;
+      continue;
+    }
+    istream *IN = io_streams.first;
+    ostream *OUT = io_streams.second;
+    try {
+      TokenizerClass tokenizer;
+      try {
+	init( tokenizer, my_options );
       }
-      if ( OUT != &cout ){
-	delete OUT;
+      catch ( ...){
+	if ( IN != &cin ){
+	  delete IN;
+	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	return EXIT_FAILURE;
       }
+      if ( my_options.xmlin ) {
+	folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
+	if ( doc ){
+	  *OUT << doc;
+	  OUT->flush();
+	  delete doc;
+	}
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+      }
+      else {
+	tokenizer.tokenize( *IN, *OUT );
+	if ( OUT != &cout ){
+	  delete OUT;
+	}
+	if ( IN != &cin ){
+	  delete IN;
+	}
+      }
+    }
+    catch ( exception &e ){
+      cerr << "ucto: " << e.what() << endl;
       return EXIT_FAILURE;
     }
-    if ( my_options.xmlin ) {
-      folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
-      if ( doc ){
-	*OUT << doc;
-	OUT->flush();
-	delete doc;
-      }
-      if ( OUT != &cout ){
-	delete OUT;
-      }
-    }
-    else {
-      tokenizer.tokenize( *IN, *OUT );
-      if ( OUT != &cout ){
-	delete OUT;
-      }
-      if ( IN != &cin ){
-	delete IN;
-      }
-    }
-  }
-  catch ( exception &e ){
-    cerr << "ucto: " << e.what() << endl;
-    return EXIT_FAILURE;
   }
 
 }
