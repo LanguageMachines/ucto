@@ -2,10 +2,7 @@
 
 exe=../src/ucto
 
-\rm -rf batch_out1
-\rm -rf batch_out2
-\rm -rf batch_out3
-\rm -rf batch_out4
+\rm -rf batch_out*
 
 $exe -L nld -B folia1.xml test.nl.txt >& uit1
 cat < uit1
@@ -25,6 +22,8 @@ $exe -L nld -B -I batch_in -O batch_out folia1.xml >& uit3
 cat < uit3
 $exe -L nld -B -I batch_in -O batch_in >& uit4
 cat < uit4
+$exe -L fra -B -F -X test.fr.txt multilang.txt -O batch_out5 >&uit5
+cat < uit5
 
 $exe -L nld -B -I batch_in -O batch_out3
 cat < batch_out3/folia4.ucto.xml

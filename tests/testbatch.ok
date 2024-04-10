@@ -13,7 +13,7 @@ Usage:
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out1" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:15" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out1" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -141,7 +141,7 @@ Ik ben geboren op 4-2-1954 of kortweg 04-02-'54 of ook wel 04.02.1954 of 4-2-'54
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out1" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out1" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -224,7 +224,7 @@ Ik ben geboren op 4-2-1954 of kortweg 04-02-'54 of ook wel 04.02.1954 of 4-2-'54
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L fra -B -X test.fr.txt multilang.txt -O batch_out2" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L fra -B -X test.fr.txt multilang.txt -O batch_out2" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-fra" type="datasource" version="0.2.2"/>
@@ -1091,7 +1091,7 @@ Ik ben geboren op 4-2-1954 of kortweg 04-02-'54 of ook wel 04.02.1954 of 4-2-'54
       <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L fra -B -X test.fr.txt multilang.txt -O batch_out2" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L fra -B -X test.fr.txt multilang.txt -O batch_out2" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-fra" type="datasource" version="0.2.2"/>
@@ -1869,6 +1869,11 @@ ucto: option-error: input dir equals output dir, asking for trouble
 Usage: 
 	ucto [[options]] [input-file] [[output-file]]
 	 -h or --help for more info
+ucto: --filter=NO is automatically set. inputclass equals outputclass!
+ucto: option-error: found both input files and -F option.
+Usage: 
+	ucto [[options]] [input-file] [[output-file]]
+	 -h or --help for more info
 <?xml version="1.0" encoding="UTF-8"?>
 <FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="WR-P-E-J-0000000001" generator="libfolia-v2.18" version="0.8">
   <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="external">
@@ -1883,7 +1888,7 @@ Usage:
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B -I batch_in -O batch_out3" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L nld -B -I batch_in -O batch_out3" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -1937,7 +1942,7 @@ De n°s 4 en 5 zijn aan de beurt , daarna de N°s. 6 en de n°s. 7 . <utt>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B -I batch_in -O batch_out3" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L nld -B -I batch_in -O batch_out3" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -2018,7 +2023,7 @@ De n°s 4 en 5 zijn aan de beurt , daarna de N°s. 6 en de n°s. 7 . <utt>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B -F -I batch_in -O batch_out4" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L nld -B -F -I batch_in -O batch_out4" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>
@@ -2053,7 +2058,7 @@ De n°s 4 en 5 zijn aan de beurt , daarna de N°s. 6 en de n°s. 7 . <utt>
       </sentence-annotation>
     </annotations>
     <provenance>
-      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:23:33" command="ucto -L nld -B -F -I batch_in -O batch_out4" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
+      <processor xml:id="ucto.1" begindatetime="2024-04-10T09:37:16" command="ucto -L nld -B -F -I batch_in -O batch_out4" folia_version="2.5.3" host="kobus" name="ucto" user="sloot" version="0.33">
         <processor xml:id="ucto.1.generator" folia_version="2.5.3" name="libfolia" type="generator" version="2.18"/>
         <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.11">
           <processor xml:id="uctodata.1.1" name="tokconfig-nld" type="datasource" version="0.2"/>

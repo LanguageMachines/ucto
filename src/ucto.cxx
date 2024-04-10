@@ -468,6 +468,12 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
        && !input_dir.empty() ){
     throw TiCC::OptionError( "found both input files and -I option." );
   }
+
+  if ( batchmode
+       && input_files.size() != 0
+       && force_xmlin ){
+    throw TiCC::OptionError( "found both input files and -F option." );
+  }
   if ( batchmode
        && input_files.size() == 0
        && !input_dir.empty() ){
