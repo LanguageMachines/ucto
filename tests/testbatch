@@ -2,15 +2,22 @@
 
 exe=../src/ucto
 
-\rm -rf batch_out
+\rm -rf batch_out1
+\rm -rf batch_out2
+\rm -rf batch_out3
+\rm -rf batch_out4
 
 $exe -L nld -B folia1.xml test.nl.txt >& uit1
 cat < uit1
 
-$exe -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out
-cat < batch_out/folia1.ucto.xml
-cat < batch_out/test.nl.txt.ucto
-cat < batch_out/folia7.ucto.xml
+$exe -L nld -B folia1.xml test.nl.txt folia7.xml -O batch_out1
+cat < batch_out1/folia1.ucto.xml
+cat < batch_out1/test.nl.ucto.txt
+cat < batch_out1/folia7.ucto.xml
+
+$exe -L fra -B -X test.fr.txt multilang.txt -O batch_out2
+cat < batch_out2/test.fr.txt.ucto.xml
+cat < batch_out2/multilang.txt.ucto.xml
 
 $exe -L nld -I batch_in -O batch_out folia1.xml >& uit2
 cat < uit2
@@ -19,7 +26,12 @@ cat < uit3
 $exe -L nld -B -I batch_in -O batch_in >& uit4
 cat < uit4
 
-$exe -L nld -B -I batch_in -O batch_out
-cat < batch_out/folia4.ucto.xml
-cat < batch_out/testpunctuation.txt.ucto
-cat < batch_out/folia8.ucto.xml
+$exe -L nld -B -I batch_in -O batch_out3
+cat < batch_out3/folia4.ucto.xml
+cat < batch_out3/testpunctuation.ucto.txt
+cat < batch_out3/folia8.ucto.xml
+
+$exe -L nld -B -F -I batch_in -O batch_out4 # force only .xml input
+cat < batch_out4/folia4.ucto.xml
+cat < batch_out4/testpunctuation.ucto.txt # must not be present!
+cat < batch_out4/folia8.ucto.xml
