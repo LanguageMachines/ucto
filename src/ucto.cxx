@@ -179,7 +179,9 @@ public:
   bool dofiltering;
   bool dopunctfilter;
   bool xmlin;
+  bool force_xmlin;
   bool xmlout;
+  bool force_xmlout;
   bool verbose;
   bool docorrectwords;
   bool do_und_lang;
@@ -221,7 +223,9 @@ runtime_opts::runtime_opts():
   dofiltering(true),
   dopunctfilter(false),
   xmlin(false),
+  force_xmlin(false),
   xmlout(false),
+  force_xmlout(false),
   verbose(false),
   docorrectwords(false),
   do_und_lang(false),
@@ -273,6 +277,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   docorrectwords = Opts.extract( "allow-word-corrections" );
   paragraphdetection = !Opts.extract( 'P' );
   xmlin = Opts.extract( 'F' );
+  force_xmlin = xmlin;
   quotedetection = Opts.extract( 'Q' );
   Opts.extract( 's', utt_marker );
   touppercase = Opts.extract( 'u' );
@@ -372,6 +377,15 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   else {
     xmlout = Opts.extract( 'X' );
     Opts.extract( "id", docid );
+    if ( batchmode ){
+      if ( !docid.empty() ){
+	throw TiCC::OptionError( "ucto: The option '--id' is not allowed "
+				 "in batchmode. Document id's are generated" );
+      }
+      else {
+	force_xmlout = xmlout;
+      }
+    }
   }
   if ( Opts.extract('d', value ) ){
     if ( !TiCC::stringTo(value,debug) ){
@@ -458,8 +472,15 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
        && input_files.size() == 0
        && !input_dir.empty() ){
     // get files from inputdir
-    input_files = TiCC::searchFiles( input_dir );
-    cerr << "search: " << input_files[0] << endl;
+    if ( force_xmlin ){
+      input_files = TiCC::searchFilesExt( input_dir, ".xml" );
+    }
+    else {
+      input_files = TiCC::searchFiles( input_dir );
+    }
+    // for ( const auto& bla : input_files ){
+    //   cerr << "search: " << bla << endl;
+    // }
   }
   if ( !batchmode
        && input_files.size() > 2 ){
@@ -471,14 +492,25 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   file_list = create_file_list();
 }
 
-string generate_outname( const string& in ){
+string generate_outname( const string& in, bool force_xmlout ){
   string out;
-  if ( TiCC::match_back( in, ".xml" ) ){
-    out = in.substr( 0, in.length()-4 );
-    out += ".ucto.xml";
+  auto pos = in.rfind(".xml");
+  if ( pos != string::npos ){
+    out = in.substr( 0, pos ) + ".ucto.xml";
   }
   else {
-    out = in + ".ucto";
+    if ( force_xmlout ){
+      out = in + ".ucto.xml";
+    }
+    else {
+      pos = in.rfind(".");
+      if ( pos != string::npos ){
+	out = in.substr( 0, pos ) + ".ucto" + in.substr(pos);
+      }
+      else {
+	out = in + ".ucto";
+      }
+    }
   }
   return out;
 }
@@ -504,7 +536,7 @@ vector<pair<string,string>> runtime_opts::create_file_list() {
   else {
     for ( const auto& in : input_files ){
       string bin = TiCC::basename(in);
-      string out = generate_outname( bin );
+      string out = generate_outname( bin, force_xmlout );
       pair<string,string> p = create_io_pair( bin, out );
       result.push_back( p );
     }
@@ -548,7 +580,7 @@ pair<istream *,ostream *> runtime_opts::determine_io( const pair<string,string>&
       xmlout = true;
     }
     else {
-      xmlout = false;
+      xmlout = force_xmlout;
     }
   }
   check_xmlin_opt();
