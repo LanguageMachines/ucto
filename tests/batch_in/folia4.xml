@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="WR-P-E-J-0000000001" version="0.8" generator="libfolia-v0.4">
+  <metadata src="WR-P-E-J-0000000001.cmdi.xml" type="cmdi">
+    <annotations>
+	<event-annotation set="hdl:1839/00-SCHM-0000-0000-000A-B"/>
+    </annotations>
+  </metadata>
+  <text xml:id="WR-P-E-J-0000000001.text">
+    <event xml:id="WR-P-E-J-0000000001.event.139" actor="chatter110" begindatetime="2004-04-09T13:21:54" class="message">
+      <t>tot zo</t>
+    </event>
+  </text>
+</FoLiA>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FoLiA xmlns="http://ilk.uvt.nl/folia" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="doc" version="0.8" generator="libfolia-v0.4">
+  <text xml:id="text">
+    <div>
+      <head xml:id="h.1">
+	<t>Dit is een tekst in een head</t><!--[/Lat]--></head>
+      <note xml:id="n.1">
+	<t>Dit is een tekst in een note<!--[/Lat]--></t>
+      </note>
+    </div>
+  </text>
+</FoLiA>
