@@ -137,7 +137,8 @@ jobs:
           CXX: ${{ matrix.compiler }}
         run: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
         continue-on-error: true
-      - name: show log
+      - name: show log on error
+        if: ${{ steps.check.outcome != 'success' }}
         run: cat src/test-suite.log
       - name: get compiler ID
         id: compiler
