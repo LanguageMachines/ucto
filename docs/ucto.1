@@ -1,4 +1,4 @@
-.TH ucto 1 "2024 apr 10"
+.TH ucto 1 "2024 apr 11"
 
 .SH NAME
 ucto \- Unicode Tokenizer
@@ -7,15 +7,18 @@ ucto [[options]] [input\(hyfile] [[output\(hyfile]]
 
 .SH DESCRIPTION
 .B ucto
-ucto tokenizes text files: it separates words from punctuation, splits
+tokenizes text files: it separates words from punctuation, splits
 sentences (and optionally paragraphs), and finds paired quotes.
 Ucto is preconfigured with tokenisation rules for several languages.
+
+Those rules are provided by
+.B uctodata
 
 .SH OPTIONS
 
 .BR \-c " configfile"
 .RS
-read settings from a file
+read settings from a 'configfile'
 .RE
 
 .BR \-B
@@ -60,7 +63,8 @@ configuration file.
 .RS
 Automatically selects a configuration file by language code.
 The language code is generally a three-letter iso-639-3 code.
-For example, 'fra' will select the file tokconfig\(hyfra from the installation directory
+For example, 'fra' will select the file tokconfig\(hyfra from the installation
+directory
 .RE
 
 .BR \-\-detectlanguages =<lang1,lang2,..langn>
@@ -68,24 +72,26 @@ For example, 'fra' will select the file tokconfig\(hyfra from the installation d
 try to detect all the specified languages. The default language will be 'lang1'.
 (only useful for FoLiA output).
 
-All language codes must be iso-639-3.
+All values must be iso-639-3 codes.
 
-You can use the special language code `und`. This ensures there is NO default
-language, but any language that is NOT in the list will remain unanalyzed.
+You can also use the special language code `und`. This ensures there is NO
+default language, and any language that is NOT in the list will remain
+unanalyzed.
 
-Warning: To be able to handle utterances of mixed language, Ucto uses a simple
+.B Warning:
+To be able to handle utterances of mixed language, Ucto uses a simple
 sentence splitter based on the markers '.' '?' and '!'.
 This may occasionally lead to surprising results.
 .RE
 
 .BR \-l
 .RS
-Convert to all lowercase
+Convert output text to all lowercase
 .RE
 
 .BR \-u
 .RS
-Convert to all uppercase
+Convert all input text to all uppercase
 .RE
 
 .BR \-n
@@ -100,7 +106,9 @@ Assume one sentence per line on input
 
 .BR \-\-normalize =class1,class2,..,classn
 .RS
-map all occurrences of tokens with class1,...class to their generic names. e.g \-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to normalize tokens like URL's, DATE's, E\-mail addresses and so on.
+map all occurrences of tokens with class1,...class to their generic names. e.g
+\-\-normalize=DATE will map all dates to the word {{DATE}}. Very useful to
+normalize tokens like URL's, DATE's, E\-mail addresses and so on.
 .RE
 
 .BR \-T\  value
@@ -140,7 +148,8 @@ Don't tokenize, but perform input decoding and simple token role detection
 
 .BR \-\-filterpunct
 .RS
-remove most of the punctuation from the output. (not from abreviations and embedded punctuation like John's)
+remove most of the punctuation from the output. (not from abreviations and
+embedded punctuation like John's)
 .RE
 
 .B \-P
@@ -150,7 +159,8 @@ Disable Paragraph Detection
 
 .B \-Q
 .RS
-Enable Quote Detection. (this is experimental and may lead to unexpected results)
+Enable Quote Detection. (this is experimental and may lead to unexpected
+results)
 .RE
 
 .B \-s
@@ -189,16 +199,18 @@ The default is "current".
 
 .BR \-\-outputclass ="cls"
 .RS
-When tokenizing a FoLiA XML document, output the tokenized text in text nodes with 'cls'.
-The default is "current".
+When tokenizing a FoLiA XML document, output the tokenized text in text nodes
+with 'cls'. The default is "current".
 It is recommended to have different classes for input and output.
 .RE
 
 .BR \-\-textclass ="cls" (obsolete)
 .RS
-use 'cls' for input and output of text from FoLiA. Equivalent to both \-\-inputclass='cls' and \-\-outputclass='cls')
+use 'cls' for input and output of text from FoLiA. Equivalent to both
+\-\-inputclass='cls' and \-\-outputclass='cls')
 
-This option is obsolete and NOT recommended. Please use the separate \-\-inputclass= and \-\-outputclass options.
+This option is obsolete and NOT recommended. Please use the separate
+\-\-inputclass= and \-\-outputclass options.
 .RE
 
 .BR \-\-copyclass
@@ -220,7 +232,9 @@ Works in batch mode too.
 .B \-\-id
 <DocId>
 .RS
-Use the specified Document ID for the FoLiA XML. (not in batch mode)
+Use the specified Document ID for the FoLiA XML. (not allowed in batch mode)
+When not provided, a document is is generated based on the nema of the input
+file.
 .RE
 
 .SH BUGS
