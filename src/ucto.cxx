@@ -221,6 +221,8 @@ runtime_opts::runtime_opts():
   paragraphdetection(true),
   quotedetection(false),
   do_language_detect(false),
+  use_lang(false),
+  detect_lang(false),
   dofiltering(true),
   dopunctfilter(false),
   xmlin(false),

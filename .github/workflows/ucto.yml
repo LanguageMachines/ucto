@@ -172,10 +172,12 @@ jobs:
           ./testaction.sh
           TEST_STAT=$(cat status.tmp)
           echo "test_status=$TEST_STAT" >> $GITHUB_ENV
+        continue-on-error: true
+      - name: show log on error
+        if: ${{ env.test_status != '0' }}
+        run: |
           cat testoutput/*.err
           cat testoutput/*.diff
-        continue-on-error: true
-
       - name: Notify IRC of failure
         if: ${{ env.test_status != '0' }}
         uses: Gottox/irc-message-action@v2
