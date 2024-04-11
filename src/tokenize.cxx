@@ -1207,7 +1207,14 @@ namespace Tokenizer {
       return el->id();
     }
     else {
-      return get_parent_id( el->parent() );
+      const folia::FoliaElement *par = el->parent();
+      if ( par->element_id() == folia::BASE ){
+	// we went all up without avail...
+	return "";
+      }
+      else {
+	return get_parent_id( par );
+      }
     }
   }
 

@@ -735,31 +735,23 @@ int main( int argc, char *argv[] ){
     return EXIT_FAILURE;
   }
   for ( const auto& io_pair : my_options.file_list ){
-    pair<istream *,ostream *> io_streams;
     try {
+      pair<istream *,ostream *> io_streams;
       io_streams = my_options.determine_io( io_pair );
-    }
-    catch ( const exception& e ){
-      cerr << "ucto: tokenizing '" << io_pair.first << "' to '"
-	   << io_pair.second << "' failed: " << e.what() << endl
-	   << "continue to next input." << endl;
-      continue;
-    }
-    istream *IN = io_streams.first;
-    ostream *OUT = io_streams.second;
-    try {
+      istream *IN = io_streams.first;
+      ostream *OUT = io_streams.second;
       TokenizerClass tokenizer;
       try {
 	init( tokenizer, my_options );
       }
-      catch ( ...){
+      catch (...){
 	if ( IN != &cin ){
 	  delete IN;
 	}
 	if ( OUT != &cout ){
 	  delete OUT;
 	}
-	return EXIT_FAILURE;
+	throw;
       }
       if ( my_options.xmlin ) {
 	folia::Document *doc = tokenizer.tokenize_folia( my_options.ifile );
@@ -783,8 +775,9 @@ int main( int argc, char *argv[] ){
       }
     }
     catch ( exception &e ){
-      cerr << "ucto: " << e.what() << endl;
-      return EXIT_FAILURE;
+      cerr << "ucto: tokenizing '" << io_pair.first << "' to '"
+	   << io_pair.second << "' failed: " << e.what() << endl
+	   << "continue to next input." << endl;
     }
   }
 
