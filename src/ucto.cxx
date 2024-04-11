@@ -465,6 +465,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
     throw TiCC::OptionError( "unhandled option(s): " + tomany );
   }
   input_files = Opts.getMassOpts();
+
   if ( input_files.size() != 0
        && !input_dir.empty() ){
     throw TiCC::OptionError( "found both input files and -I option." );
@@ -480,7 +481,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
        && !input_dir.empty() ){
     // get files from inputdir
     if ( force_xmlin ){
-      input_files = TiCC::searchFilesExt( input_dir, ".xml" );
+      input_files = TiCC::searchFilesExt( input_dir, ".xml", false );
     }
     else {
       input_files = TiCC::searchFiles( input_dir );
