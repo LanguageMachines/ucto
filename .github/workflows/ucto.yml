@@ -178,6 +178,7 @@ jobs:
         run: |
           cat testoutput/*.err
           cat testoutput/*.diff
+        continue-on-error: true
       - name: Notify IRC of failure
         if: ${{ env.test_status != '0' }}
         uses: Gottox/irc-message-action@v2
