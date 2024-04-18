@@ -40,7 +40,7 @@ jobs:
     needs: notification
     strategy:
       matrix:
-        os: [ubuntu-latest,macos-13]
+        os: [ubuntu-latest,macos-14]
         compiler: [g++, clang++]
 
     steps:
@@ -55,11 +55,12 @@ jobs:
              if [ "$RUNNER_OS" == "Linux" ]; then
                 sudo apt-get install pkg-config autoconf-archive
              else
-                brew upgrade;
-                brew install pkg-config;
-                brew install autoconf-archive;
-                brew install autoconf;
-                brew install automake;
+                brew upgrade
+                brew install pkg-config
+                brew install libtool
+                brew install autoconf-archive
+                brew install autoconf
+                brew install automake
              fi
       - name: Install Dependencies
         run: |
@@ -176,8 +177,8 @@ jobs:
       - name: show log on error
         if: ${{ env.test_status != '0' }}
         run: |
-          cat testoutput/*.err
           cat testoutput/*.diff
+          cat testoutput/*.err
         continue-on-error: true
       - name: Notify IRC of failure
         if: ${{ env.test_status != '0' }}
@@ -186,7 +187,7 @@ jobs:
           server: irc.uvt.nl
           channel: '#gitlama'
           nickname: GH-${{ runner.os }}-${{ steps.compiler.outputs.id }}
-          message: "ucto tests [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00034FAIL\u0003"
+          message: "ucto tests [${{ needs.notification.outputs.branch }}] build with ${{ matrix.compiler }} by ${{ github.actor }} on ${{ matrix.os }}: \u00034FAILED\u0003"
 
       - name: Notify IRC of succes
         if: ${{ env.test_status == '0' }}
