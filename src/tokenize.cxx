@@ -534,10 +534,13 @@ namespace Tokenizer {
 	    << "Multiple 'ucto' processors have already been run?" << endl;
 	exit( EXIT_FAILURE );
       }
-      // ucto has been used one before, we can't do it complettely over again!
-      LOG << "Difficult to tokenize '" << doc->filename()
-	  << "' again, already processed by ucto before!" << endl;
-      LOG << " The document will be copied as-is to the output file" << endl;
+      // ucto has been used one before, we can't do it completely over again!
+      if ( !passthru ){
+	// but we probably knew it
+	LOG << "Difficult to tokenize '" << doc->filename()
+	    << "' again, already processed by ucto before!" << endl;
+	LOG << " The document will be copied as-is to the output file" << endl;
+      }
       already_tokenized = true;
       return procs[0];
     }
