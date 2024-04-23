@@ -51,7 +51,7 @@ case ${host_os} in
 esac
 ])
 
-# AC_OSX_PKG_ALL([LIST_OF_PACKAGES])
+# AC_OSX_PKG([LIST_OF_PACKAGES])
 # fore every packake in LIST_OF_PACKAGES, add the /opt/{package} directory
 # to the PKG_CONFIG search path
 # ----------------------------------
