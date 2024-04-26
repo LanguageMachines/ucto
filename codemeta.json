@@ -8,7 +8,7 @@
     "@type": "SoftwareSourceCode",
     "identifier": "ucto",
     "name": "ucto",
-    "version": "0.33",
+    "version": "0.34",
     "description": "Ucto tokenizes text files: it separates words from punctuation, and splits sentences. This is one of the first tasks for almost any Natural Language Processing application. Ucto offers several other basic preprocessing steps such as changing case that you can all use to make your text suited for further processing such as indexing, part-of-speech tagging, or machine translation.",
     "license": "https://spdx.org/licenses/GPL-3.0-only",
 	"url": "https://languagemachines.github.io/ucto",
