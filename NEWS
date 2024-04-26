@@ -1,3 +1,10 @@
+0.33 2024-04-26
+[Ko van der Sloot]
+* added a batch mode: https://github.com/LanguageMachines/ucto/issues/94
+* improved handling of NonSpacing markers.
+* adapted some tests, based on the newest uctodata package (notably
+  French was not correct implemented)
+
 0.32.1 2024-03-20
 [Ko van der Sloot]
 * additional fix for https://github.com/LanguageMachines/ucto/issues/93
