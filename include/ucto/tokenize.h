@@ -242,14 +242,14 @@ namespace Tokenizer {
 
     // set input encoding
     std::string setInputEncoding( const std::string& );
-    std::string getInputEncoding() const { return inputEncoding; };
+    const std::string& getInputEncoding() const { return inputEncoding; };
 
     void setLanguage( const std::string& l ){ default_language = l; };
-    std::string getLanguage() const { return default_language; };
+    const std::string& getLanguage() const { return default_language; };
 
     // set eos marker: for Comptability. UttMarker variants are preferred
     UnicodeString setEosMarker( const std::string& s = "<utt>") { UnicodeString t = utt_mark; utt_mark = TiCC::UnicodeFromUTF8(s); return t; };
-    UnicodeString getEosMarker( ) const { return utt_mark; }
+    const UnicodeString& getEosMarker( ) const { return utt_mark; }
 
     UnicodeString setUttMarker( const std::string& s = "<utt>") { UnicodeString t = utt_mark; utt_mark = TiCC::UnicodeFromUTF8(s); return t; };
     UnicodeString getUttMarker( ) const { return utt_mark; }
@@ -273,13 +273,13 @@ namespace Tokenizer {
     bool setUndLang( bool b ){ bool r = und_language; und_language = b; return r; };
     bool getUndLang(){ return und_language; };
 
-    const std::string getInputClass( ) const { return inputclass; }
+    const std::string& getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
       std::string res = inputclass;
       inputclass = cls;
       return res;
     }
-    const std::string getOutputClass( ) const { return outputclass; }
+    const std::string& getOutputClass( ) const { return outputclass; }
     const std::string setOutputClass( const std::string& cls) {
       std::string res = outputclass;
       outputclass = cls;
@@ -290,7 +290,7 @@ namespace Tokenizer {
       copyclass = b;
       return ret;
     }
-    std::string getDocID() const { return docid; }
+    const std::string& getDocID() const { return docid; }
     std::string setDocID( const std::string& );
 
     bool get_setting_info( const std::string&,
