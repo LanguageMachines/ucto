@@ -3,6 +3,10 @@
 OK="\033[1;32m OK  \033[0m"
 FAIL="\033[1;31m  FAILED  \033[0m"
 
+export folialint="folialint"
+export foliadiff="foliadiff.sh"
+
+
 file=$1
 keep=$2
 
