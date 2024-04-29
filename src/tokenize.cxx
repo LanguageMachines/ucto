@@ -3403,7 +3403,8 @@ namespace Tokenizer {
 	settings[default_language] = set;
       }
       else if ( xmlout ){
-	LOG << " unable to determine a language. cannot proceed" << endl;
+	LOG << " cannot determine a language. Unable to create FoLiA output."
+	    << endl;
 	return false;
       }
     }

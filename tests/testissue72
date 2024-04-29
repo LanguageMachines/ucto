@@ -1,7 +1,5 @@
 #!/bin/bash
 
-exe=../src/ucto
-
 data_dir=/home/sloot/usr/local/share/ucto
 if [ ! -d $data_dir ]
 then
@@ -22,12 +20,12 @@ fi
 
 $exe -c $data_dir/tokconfig-nld datetime.nl.txt
 $exe -c $data_dir/tokconfig-nld datetime.nl.txt issue72_a.xml
-cat issue72_a.xml
+$folialint --nooutput issue72_a.xml 2>&1
 
 $exe -c small.cfg datetime.nl.txt
 $exe -c small.cfg datetime.nl.txt issue72_b.xml
-cat issue72_b.xml
+$folialint --nooutput issue72_b.xml 2>&1
 
 $exe -c small-tokconfig-nld datetime.nl.txt
 $exe -c small-tokconfig-nld datetime.nl.txt issue72_c.xml
-cat issue72_c.xml
+$folialint --nooutput issue72_c.xml 2>&1

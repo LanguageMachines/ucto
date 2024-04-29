@@ -5,7 +5,7 @@ FAIL="\033[1;31m  FAILED  \033[0m"
 
 export folialint="folialint"
 export foliadiff="foliadiff.sh"
-
+export exe=../src/ucto
 
 file=$1
 keep=$2
