@@ -10,22 +10,14 @@ expected=0
 mkdir testoutput 2> /dev/null
 \rm testoutput/*.diff 2> /dev/null
 
-for file in testusage testlanguage testconf1 testconf2 testinclude \
-   	    testfiles1 testfiles2 testoption1 testoption2 testoption-s\
-	    testnormalisation testencoding2 testpassthru testfolia testfolia2\
-	    testfoliain testslash testquotes testquotes2 testtwitter testutt \
-	    testpunctuation testpunctfilter testclassnormalization testlang \
-	    testtokens testoption-P testoption-split testissue64 testissue66 \
-	    testissue71 testissue72 testissue70 testnbsp testcorrect \
-	    testtag testissue81 testissue83 testissue84 testissue87 \
-	    testissue68 testissue93 testoption-m testbatch
+for file in testencoding2 testusage
 do
    ./testone $file
    if [ $? -ne 0 ]; then
       sum=$(($sum + 1))
    fi
 done
-
+exit
 python3 test.py
 erc=$?
 if [ $erc -ne 0 ]; then

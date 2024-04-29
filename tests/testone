@@ -25,9 +25,10 @@ if test -x $file
 	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
 	     if [ $? -ne 0 ];
 	     then
-	        echo -e $FAIL;
-	     	echo "differences logged in testoutput/$file.diff";
-	     	echo "stderr messages logged in testoutput/$file.err";
+	        echo -e $FAIL
+	     	echo "differences logged in testoutput/$file.diff"
+	     	echo "stderr messages logged in testoutput/$file.err"
+		cat < testoutput/$file.err
                 exit 1
 	     else
                echo -e $OK $keep
