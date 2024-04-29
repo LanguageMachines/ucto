@@ -168,7 +168,6 @@ jobs:
           FOLIAPATH: ../foliapy/folia-repo
           EXPECT: 0
           LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
-          PATH: $PATH:/usr/local/bin
         run: |
           cd tests
           ./testaction.sh
