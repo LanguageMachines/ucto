@@ -1,5 +1,5 @@
 #/bin/sh -x
-exe=../src/ucto
+
 \rm -f folia2a.xml folia2b.xml
 $exe -Q -X -T none -L nl folia2.txt folia2a.xml
 $folialint --nooutput folia2a.xml >> testoutput/testfolia2.tmp 2>&1

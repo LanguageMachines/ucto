@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -L nld -v tokens.txt
 
 $exe -L nld -v tokens.txt --add-tokens=tokens

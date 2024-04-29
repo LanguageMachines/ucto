@@ -1,6 +1,4 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -L nl -Tfull bug81.xml bug81.out.xml
-cat < bug81.out.xml
+$folialint --nooutput bug81.out.xml 2>&1

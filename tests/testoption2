@@ -1,5 +1,3 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -c tokconfig-deu -L nl datetime.nl.txt

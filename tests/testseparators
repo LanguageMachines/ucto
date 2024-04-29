@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -L nld separators.txt
 
 $exe -L nld --separators="+" separators.txt

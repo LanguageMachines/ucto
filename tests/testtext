@@ -1,4 +1,3 @@
 #/bin/sh
-exe=../src/ucto
 
 $exe -L nl --textclass="OCR" -F filter.xml

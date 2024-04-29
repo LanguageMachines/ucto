@@ -1,8 +1,7 @@
 #/bin/sh
 
-exe=../src/ucto
-
-$exe -L deu -Tfull shy.xml shy.out1.xml
-cat < shy.out1.xml
-$exe -L deu -Tfull --outputclass=SHY shy.xml shy.out2.xml
-cat < shy.out2.xml
+rm shy.out.*.xml
+$exe -L deu -Tfull shy.xml shy.out.1.xml
+$folialint --nooutput shy.out.1.xml 2>&1
+$exe -L deu -Tfull --outputclass=SHY shy.xml shy.out.2.xml
+$folialint --nooutput shy.out.2.xml 2>&1

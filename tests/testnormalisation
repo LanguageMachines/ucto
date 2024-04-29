@@ -1,8 +1,4 @@
 #/bin/sh
-# $Id$
-# $URL$
-
-exe=../src/ucto
 
 $exe -L nl -N NONE normalisation.nl.txt
 $exe -L nl -N NONE --filter=NO normalisation.nl.txt

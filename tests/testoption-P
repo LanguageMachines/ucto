@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -Lnld partest_folia.nl.txt
 
 $exe -Lnld -P partest_folia.nl.txt

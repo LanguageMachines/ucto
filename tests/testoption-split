@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -Lnld -n quotetest_folgert2.nl.txt
 
 $exe -Lnld -n --split quotetest_folgert2.nl.txt

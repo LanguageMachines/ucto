@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -v --passthru passthru.txt
 
 $exe -v --passthru passthru2.txt

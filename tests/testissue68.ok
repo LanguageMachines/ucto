@@ -1,44 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<FoLiA xmlns:xlink="http://www.w3.org/1999/xlink" xmlns="http://ilk.uvt.nl/folia" xml:id="bug" generator="libfolia-v2.15" version="2.5.1">
-  <metadata type="native">
-    <annotations>
-      <paragraph-annotation>
-        <annotator processor="FoLiA-page.1"/>
-      </paragraph-annotation>
-      <text-annotation set="https://raw.githubusercontent.com/proycon/folia/master/setdefinitions/text.foliaset.ttl"/>
-      <sentence-annotation>
-        <annotator processor="FoLiA-page.1"/>
-      </sentence-annotation>
-      <token-annotation>
-        <annotator processor="FoLiA-page.1"/>
-      </token-annotation>
-      <token-annotation alias="tokconfig-deu" set="https://raw.githubusercontent.com/LanguageMachines/uctodata/master/setdefinitions/tokconfig-deu.foliaset.ttl">
-        <annotator processor="ucto.1"/>
-      </token-annotation>
-    </annotations>
-    <provenance>
-      <processor xml:id="FoLiA-page.1" begindatetime="2023-04-12T08:35:19" command="FoLiA-page --trusttokens -O out/page" folia_version="2.5.1" host="kobus" name="FoLiA-page" user="sloot" version="0.21">
-        <processor xml:id="FoLiA-page.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.15"/>
-      </processor>
-      <processor xml:id="ucto.1" begindatetime="2023-04-18T12:03:55" command="ucto issue068.xml -L deu --inputclass=OCR --textredundancy=full --copyclass" folia_version="2.5.1" host="kobus" name="ucto" user="sloot" version="0.29">
-        <processor xml:id="ucto.1.generator" folia_version="2.5.1" name="libfolia" type="generator" version="2.15"/>
-        <processor xml:id="uctodata.1" name="uctodata" type="datasource" version="0.9.1">
-          <processor xml:id="uctodata.1.1" name="tokconfig-deu" type="datasource" version="0.2"/>
-        </processor>
-      </processor>
-    </provenance>
-    <meta id="language">deu</meta>
-  </metadata>
-  <text xml:id="text">
-    <p xml:id="text.p">
-      <t>Quellen</t>
-      <s xml:id="text.p.s">
-        <t>Quellen</t>
-        <t class="OCR">Quellen</t>
-        <w xml:id="p.text.w">
-          <t class="OCR">Quellen</t>
-        </w>
-      </s>
-    </p>
-  </text>
-</FoLiA>
+
+testissue68.out.1.xml:1: XML-error: Document is empty
+
+testissue68.out.1.xml failed: basic_string::_M_create
+Validated successfully: testissue68.out.2.xml

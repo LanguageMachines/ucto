@@ -1,7 +1,5 @@
 #/bin/sh -x
 
-exe=../src/ucto
-
 rm ml*.xml
 
 $exe -L nl -F folia-lang.xml ml01.xml

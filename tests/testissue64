@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe issue064a.xml -L nld outa.xml
 $folialint --nooutput outa.xml 2>&1
 $exe issue064b.xml -L nld outb.xml

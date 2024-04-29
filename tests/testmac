@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe="valgrind ../src/ucto"
-
 $exe -L nl -F folia1.xml
 $exe -L nl --outputclass=ligafilter folia1.xml
 $exe -L nl --filterpunct --outputclass=FILTER -F folia2.xml

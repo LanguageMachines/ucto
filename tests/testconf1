@@ -1,7 +1,3 @@
 #/bin/sh
-# $Id$
-# $URL$
-
-exe=../src/ucto
 
 $exe -c ./stuk1.cfg

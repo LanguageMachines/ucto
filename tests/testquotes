@@ -1,7 +1,5 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -L nl -Q -v qtest.nl
 
 $exe -L nl -Q -v qtest.spec

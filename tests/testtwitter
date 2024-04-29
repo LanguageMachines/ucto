@@ -1,5 +1,3 @@
 #/bin/sh
 
-exe=../src/ucto
-
 $exe -c ${confdir}/tokconfig-nld-twitter twitter.txt

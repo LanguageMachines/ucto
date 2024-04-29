@@ -1,8 +1,4 @@
 #/bin/sh
-# $Id: testoption1 8059 2011-01-27 16:18:49Z sloot $
-# $URL: https://ilk.uvt.nl/svn/sources/ucto/trunk/tests/testoption1 $
-
-exe=../src/ucto
 
 $exe -L nl utt.txt
 
