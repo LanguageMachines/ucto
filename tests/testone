@@ -29,6 +29,8 @@ if test -x $file
 	     	echo "differences logged in testoutput/$file.diff"
 	     	echo "stderr messages logged in testoutput/$file.err"
 		cat < testoutput/$file.err
+		cat < testoutput/$file.tmp
+		cat < testoutput/$file.diff
                 exit 1
 	     else
                echo -e $OK $keep
