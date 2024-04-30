@@ -20,7 +20,7 @@ for file in testusage testlanguage testconf1 testconf2 testinclude \
 	    testtag testissue81 testissue83 testissue84 testissue87 \
 	    testissue68 testissue93 testoption-m testbatch
 do
-   ./testone $file
+   ./testone.sh $file
    if [ $? -ne 0 ]; then
       sum=$(($sum + 1))
    fi
