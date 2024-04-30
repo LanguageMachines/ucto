@@ -22,7 +22,7 @@ then
     \rm -f testoutput/$file.err
     \rm -f testoutput/$file.diff
     echo -n "testing  $file "
-    ./$file > testoutput/$file.tmp 2> testoutput/$file.err
+    ./$file.sh > testoutput/$file.tmp 2> testoutput/$file.err
     diff -wb --ignore-matching-lines=".*getaddrinfo.*" testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
     if [ $? -ne 0 ];
     then
