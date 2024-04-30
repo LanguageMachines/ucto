@@ -7,7 +7,10 @@ export exe="$VG ../src/ucto"
 OK="\033[1;32m OK  \033[0m"
 FAIL="\033[1;31m  FAILED  \033[0m"
 
-file=$1
+inputparameter=$1
+inputparameter=$(basename -- "$inputparameter")
+file="${inputparameter%.*}"
+
 keep=""
 if [ "$2" != "" ]
 then
@@ -15,7 +18,7 @@ then
 fi
 
 mkdir testoutput 2> /dev/null
-if test -x $file
+if test -x $file.sh
 then
     \rm -f $file.diff
     \rm -f testoutput/$file.tmp
