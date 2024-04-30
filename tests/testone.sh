@@ -19,7 +19,7 @@ if test -x $file
 then
     \rm -f $file.diff
     \rm -f testoutput/$file.tmp
-    \rm -f testoutput/$file.err*
+    \rm -f testoutput/$file.err
     \rm -f testoutput/$file.diff
     echo -n "testing  $file "
     ./$file > testoutput/$file.tmp 2> testoutput/$file.err
@@ -32,10 +32,10 @@ then
       exit 1
     else
       echo -e $OK $keep
-      if [ "$keep" != "" ];
+      if [ "$keep" == "" ];
       then
         \rm -f testoutput/$file.diff
-        \rm -f testoutput/$file.err*
+        \rm -f testoutput/$file.err
         exit 0
       fi
     fi
