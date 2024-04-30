@@ -12,7 +12,7 @@ mkdir testoutput 2> /dev/null
 
 for file in testencoding2 testusage
 do
-   ./testone $file
+   sh -x ./testone $file
    if [ $? -ne 0 ]; then
       sum=$(($sum + 1))
    fi

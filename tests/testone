@@ -21,16 +21,16 @@ if test -x $file
 	diff -wb testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
 	if [ $? -ne 0 ];
 	then
+	     cat < testoutput/$file.tmp
+	     cat < testoutput/$file.diff
 	     sed 's/\/.*\///g' testoutput/$file.err.1 > testoutput/$file.err
-	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1;
+	     diff testoutput/$file.err $file.ok > testoutput/$file.diff 2>& 1
 	     if [ $? -ne 0 ];
 	     then
 	        echo -e $FAIL
 	     	echo "differences logged in testoutput/$file.diff"
 	     	echo "stderr messages logged in testoutput/$file.err"
-		cat < testoutput/$file.err
 		cat < testoutput/$file.tmp
-		cat < testoutput/$file.diff
                 exit 1
 	     else
                echo -e $OK $keep
