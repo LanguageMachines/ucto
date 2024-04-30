@@ -92,7 +92,7 @@ PKG_CHECK_MODULES([XML2], [libxml-2.0 >= 2.9.4] )
 CXXFLAGS="$CXXFLAGS $XML2_CFLAGS"
 LIBS="$LIBS $XML2_LIBS"
 
-PKG_CHECK_MODULES([folia], [folia >= 2.13] )
+PKG_CHECK_MODULES([folia], [folia >= 2.19] )
 CXXFLAGS="$folia_CFLAGS $CXXFLAGS"
 LIBS="$folia_LIBS $LIBS"
 
