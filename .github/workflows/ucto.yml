@@ -177,8 +177,8 @@ jobs:
       - name: show log on error
         if: ${{ env.test_status != '0' }}
         run: |
-          cat testoutput/*.err
-          cat testoutput/*.diff
+          cat tests/testoutput/*.err
+          cat tests/testoutput/*.diff
 
         continue-on-error: true
       - name: Notify IRC of failure
