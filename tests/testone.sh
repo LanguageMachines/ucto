@@ -14,6 +14,7 @@ then
   keep=$2
 fi
 
+mkdir testoutput
 if test -x $file
 then
     \rm -f $file.diff
