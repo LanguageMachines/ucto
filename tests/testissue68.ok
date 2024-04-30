@@ -1,5 +1,5 @@
 
 testissue68.out.1.xml:1: XML-error: Document is empty
 
-testissue68.out.1.xml failed: basic_string::_M_create
+testissue68.out.1.xml failed: testissue68.out.1.xml: No valid FoLiA read
 Validated successfully: testissue68.out.2.xml
