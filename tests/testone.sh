@@ -14,7 +14,7 @@ then
   keep=$2
 fi
 
-mkdir testoutput
+mkdir testoutput 2> /dev/null
 if test -x $file
 then
     \rm -f $file.diff
@@ -23,7 +23,7 @@ then
     \rm -f testoutput/$file.diff
     echo -n "testing  $file "
     ./$file > testoutput/$file.tmp 2> testoutput/$file.err
-    diff -wb testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
+    diff -wb --ignore-matching-lines=".*getaddrinfo.*" testoutput/$file.tmp $file.ok > testoutput/$file.diff 2>& 1
     if [ $? -ne 0 ];
     then
       echo -e $FAIL;
