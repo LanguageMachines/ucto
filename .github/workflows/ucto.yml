@@ -78,11 +78,11 @@ jobs:
       - name: Configure CppCheck
         run: |
              if [ "$RUNNER_OS" == "Linux" ]; then
-                cpc_command="cppcheck --enable=all --inline-suppr --force -I include -I /usr/local/include --suppress=duplInheritedMember:/usr/local/include/libfolia/*.h --quiet --error-exitcode=0 ."
+                cpc_opts="--enable=warning,style --inline-suppr --force -I include -I /usr/local/include --quiet --error-exitcode=0"
              else
-               cpc_command="" # cppcheck on acOS is incredibly slow?
+                cpc_opts="--enable=warning,style --inline-suppr --force -I include --check-level=exhaustive --quiet --error-exitcode=0"
              fi
-             echo "cpc_command=$cpc_command" >> $GITHUB_ENV
+             echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
 
       - name: install TiccUtils
         env:
@@ -127,7 +127,7 @@ jobs:
           CXX: ${{ matrix.compiler }}
         run: ./configure
       - name: Static Code-check
-        run: ${{ env.cpc_command }}
+        run: cppcheck ${{ env.cpc_opts }} .
       - name: make
         run: make
       - name: install
