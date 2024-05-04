@@ -1111,8 +1111,14 @@ namespace Tokenizer {
       }
       this->tokenize( *IN, *OUT );
     }
-    if ( IN != &cin ) delete IN;
-    if ( OUT != &cout ) delete OUT;
+    if ( IN != &cin ) {
+      // cppcheck-suppress autovarInvalidDeallocation
+      delete IN;
+    }
+    if ( OUT != &cout ){
+      // cppcheck-suppress autovarInvalidDeallocation
+      delete OUT;
+    }
   }
 
   void TokenizerClass::tokenize( istream& IN, ostream& OUT) {

@@ -635,6 +635,7 @@ pair<istream *,ostream *> runtime_opts::determine_io( const pair<string,string>&
     OUT = new ofstream( ofile );
     if ( !OUT || !OUT->good() ){
       if ( IN != &cin ){
+	// cppcheck-suppress autovarInvalidDeallocation
 	delete IN;
       }
       string mess  = "ucto: problems opening outputfile '" + ofile + "'\n"
