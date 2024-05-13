@@ -40,7 +40,7 @@ jobs:
     needs: notification
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-13]
+        os: [ubuntu-latest, macos-14]
         compiler: [g++, clang++]
 
     steps:
@@ -65,14 +65,13 @@ jobs:
       - name: Install Dependencies
         run: |
              if [ "$RUNNER_OS" == "Linux" ]; then
-                sudo apt-get install libicu-dev libxml2-dev libbz2-dev;
-                sudo apt-get install zlib1g-dev
+                sudo apt-get install libicu-dev libxml2-dev libbz2-dev
+                sudo apt-get install zlib1g-dev libexttextcat-dev
                 sudo apt-get install cppcheck
              else
                 brew install libxml2
                 brew install bzip2
                 brew install zlib
-                brew install libtextcat
                 brew install cppcheck
              fi
       - name: Configure CppCheck
@@ -120,18 +119,19 @@ jobs:
           sudo make install;
           cd ..;
 
-      - name: install libexttextcat
+      - name: install libexttextcat on MacOS
         env:
           CXX: ${{ matrix.compiler }}
         run: |
-          git clone https://github.com/LibreOffice/libexttextcat/
-          cd libexttextcat
-          sh autogen.sh
-          ./configure
-          make
-          sudo make install
-          cd ..
-
+          if [ "$RUNNER_OS" != "Linux" ]; then
+            git clone https://github.com/LibreOffice/libexttextcat/
+            cd libexttextcat
+            sh autogen.sh
+            ./configure
+            make
+            sudo make install
+            cd ..
+          fi
       - name: bootstrap
         run: sh bootstrap.sh
       - name: configure
