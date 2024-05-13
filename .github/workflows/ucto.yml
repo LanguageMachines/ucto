@@ -126,7 +126,7 @@ jobs:
         run: |
           git clone https://github.com/LibreOffice/libexttextcat/
           cd libexttextcat
-	  sh autogen.sh
+          sh autogen.sh
           ./configure
           make
           sudo make install
