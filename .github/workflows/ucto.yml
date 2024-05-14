@@ -2,7 +2,7 @@ name: C/C++ CI
 
 on:
   push:
-    branches: [master, textcat]
+    branches: [master]
     paths:
       - 'src/**'
       - 'include/**'
