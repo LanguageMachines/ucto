@@ -1774,7 +1774,7 @@ namespace Tokenizer {
     }
     else {
       // Some text outside word, paragraphs or sentences (yet)
-      // mabe <div> or <note> or such
+      // maybe <div> or <note> or such
       // there may be embedded Paragraph, Word and Sentence nodes
       // if so, Paragraphs and Sentences should be handled separately
       vector<folia::Sentence*> sv = e->select<folia::Sentence>(false);
@@ -1913,7 +1913,7 @@ namespace Tokenizer {
     else {
       add_provenance_setting( proc.doc() );
     }
-    if  ( tokDebug > 8){
+    if ( tokDebug > 8 ){
       proc.set_dbg_stream( theErrLog );
       proc.set_debug( true );
     }
@@ -1923,10 +1923,14 @@ namespace Tokenizer {
     folia::FoliaElement *p = 0;
     folia::FoliaElement *parent = 0;
     while ( (p = proc.next_text_parent() ) ){
-      //      DBG << "next text parent: " << p << endl;
+      if ( tokDebug > 8 ){
+	DBG << "next text parent: " << p << endl;
+      }
       if ( !parent ){
 	parent = p->parent();
-	//	DBG << "my parent: " << parent << endl;
+	if ( tokDebug > 8 ){
+	  DBG << "my parent: " << parent << endl;
+	}
       }
       if ( already_tokenized ){
 	++sentence_done;
