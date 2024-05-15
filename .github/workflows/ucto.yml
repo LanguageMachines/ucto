@@ -79,7 +79,7 @@ jobs:
              if [ "$RUNNER_OS" == "Linux" ]; then
                 cpc_opts="--enable=warning,style --inline-suppr --force -I include -I /usr/local/include --quiet --error-exitcode=0"
              else
-                cpc_opts="--enable=warning,style --inline-suppr --force -I include --check-level=exhaustive --suppress=*:/usr/local/include/libexttextcat/* --quiet --error-exitcode=0"
+                cpc_opts="--enable=warning,style --inline-suppr --force -I include --check-level=exhaustive --suppress=*:*libexttextcat* --quiet --error-exitcode=0"
              fi
              echo "cpc_opts=$cpc_opts" >> $GITHUB_ENV
 
