@@ -27,7 +27,7 @@ Validated successfully: foliatestout/folia07.xml
 
 foliatestout/folia08.xml:1: XML-error: Document is empty
 
-foliatestout/folia08.xml failed: foliatestout/folia08.xml: No valid FoLiA read
+foliatestout/folia08.xml: No valid FoLiA read
 Validated successfully: foliatestout/folia09.xml
 Validated successfully: foliatestout/folia10.xml
 Validated successfully: foliatestout/folia11.xml
