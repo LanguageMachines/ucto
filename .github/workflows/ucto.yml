@@ -41,7 +41,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-14]
-        compiler: [g++, clang++]
+        compiler: [g++-12, clang++]
 
     steps:
       - name: Cancel Previous Runs
@@ -56,7 +56,7 @@ jobs:
                 sudo apt-get install pkg-config autoconf-archive
              else
                 brew upgrade
-                brew install pkg-config
+                # brew install pkg-config
                 brew install libtool
                 brew install autoconf-archive
                 brew install autoconf
@@ -69,9 +69,9 @@ jobs:
                 sudo apt-get install zlib1g-dev libexttextcat-dev
                 sudo apt-get install cppcheck
              else
-                brew install libxml2
-                brew install bzip2
-                brew install zlib
+                # brew install libxml2
+                # brew install bzip2
+                # brew install zlib
                 brew install cppcheck
              fi
       - name: Configure CppCheck
