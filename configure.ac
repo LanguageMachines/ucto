@@ -11,8 +11,11 @@ AC_CONFIG_HEADERS([config.h])
 SYSCONFDIR=$sysconfdir
 AC_SUBST([SYSCONFDIR])
 
+AX_REQUIRE_DEFINED([AX_CXX_COMPILE_STDCXX_17])
+
 # Checks for programs.
 AC_PROG_CXX( [g++ c++] )
+AX_CXX_COMPILE_STDCXX_17
 
 # use libtool
 LT_INIT

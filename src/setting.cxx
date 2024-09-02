@@ -415,7 +415,7 @@ namespace Tokenizer {
 	  // not escaped
 	  result += "\\";
 	}
-	// fallthrough
+	[[fallthrough]];
       default:
 	result += entry[i];
       }

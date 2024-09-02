@@ -148,7 +148,8 @@ jobs:
         id: check
         env:
           CXX: ${{ matrix.compiler }}
-        run: LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/local/lib make check
+          LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
+        run: make check
         continue-on-error: true
       - name: show log on error
         if: ${{ steps.check.outcome != 'success' }}
