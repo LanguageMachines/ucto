@@ -5,7 +5,7 @@ on:
   push:
     branches:
       - master
-      - actions
+
     paths:
       - 'src/**'
       - 'include/**'
@@ -24,8 +24,6 @@ jobs:
     steps:
       - name: IRC notification
         uses: LanguageMachines/ticcactions/irc-init@v1
-        with:
-          module: ucto
 
   build:
     runs-on: ${{ matrix.os }}
@@ -77,7 +75,6 @@ jobs:
       - name: Notify IRC of build results
         uses: LanguageMachines/ticcactions/irc-status@v1
         with:
-          module: ucto
           branch: ${{ github.ref_name }}
           nickname: ${{ env.nick }}
           status: ${{ env.action_status }}
@@ -98,7 +95,6 @@ jobs:
       - name: Notify IRC of results
         uses: LanguageMachines/ticcactions/irc-status@v1
         with:
-          module: ucto
           branch: ${{ github.ref_name }}
           nickname: ${{ env.nick }}
           step: testing
