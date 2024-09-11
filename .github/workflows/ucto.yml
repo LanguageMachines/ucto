@@ -50,7 +50,6 @@ jobs:
       - uses: actions/checkout@v4.1.1
       - uses: LanguageMachines/ticcactions/cpp-build-env@v1
       - uses: LanguageMachines/ticcactions/cpp-dependencies@v1
-      - uses: LanguageMachines/ticcactions/setup-cppcheck@v1
       - uses: LanguageMachines/ticcactions/irc-nick@v1
 
       - uses: LanguageMachines/ticcactions/cpp-submodule-build@v1
@@ -65,26 +64,13 @@ jobs:
         with:
           module: uctodata
 
-      - name: install libexttextcat
-        if: ${{ env.action_status == '' }}
-        env:
-          CXX: ${{ matrix.compiler }}
-        run: |
-          if [ "$RUNNER_OS" != "Linux" ]; then
-            git clone https://github.com/LibreOffice/libexttextcat/
-            cd libexttextcat
-            sh autogen.sh
-            ./configure
-            make
-            sudo make install
-            cd ..
-          else
-            sudo apt-get install libexttextcat-dev
-          fi
-
+      - uses: LanguageMachines/ticcactions/setup-cppcheck@v1
       - name: Static Code-check
         if: ${{ env.action_status == '' }}
         run: cppcheck ${{ env.cpc_opts }} .
+
+      - name: install libexttextcat
+        uses: LanguageMachines/ticcactions/add-textcat@v1
 
       - uses: LanguageMachines/ticcactions/cpp-safe-build@v1
 
