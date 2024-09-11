@@ -97,6 +97,7 @@ jobs:
         continue-on-error: true
 
       - name: run uctotests
+        if: ${{ env.action_status == '' }}
         env:
           EXPECT: 0
           LD_LIBRARY_PATH: $LD_LIBRARY_PATH:/usr/local/lib
