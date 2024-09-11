@@ -499,12 +499,18 @@ namespace Tokenizer {
     // }
   }
 
-  string get_filename( const string& name ){
+  string get_filename( const string& name , const string customConfigDir = ""){
     string result;
     if ( TiCC::isFile( name ) ){
       result = name;
     }
     else {
+      if (!customConfigDir.empty()) {
+        result = customConfigDir + name;
+        if (TiCC::isFile(result)) {
+          return result;
+        }
+      }
       result = localConfigDir + name;
       if ( !TiCC::isFile( result ) ){
           result = defaultConfigDir + name;
@@ -608,6 +614,14 @@ namespace Tokenizer {
 						{ ORDINALS, "" } };
     string conffile = get_filename( settings_name );
 
+    string customconfdir = TiCC::dirname(settings_name);
+    if (!TiCC::match_back( customconfdir, "/")) {
+        customconfdir += "/";
+    }
+    if (customconfdir == "./") {
+        customconfdir.clear();
+    }
+
     if ( !TiCC::isFile( conffile ) ){
       LOG << "Unable to open configfile: " << conffile << endl;
       return false;
@@ -638,7 +652,7 @@ namespace Tokenizer {
 	    if ( !TiCC::match_back( file, ".rule" ) ){
 	      file += ".rule";
 	    }
-	    file = get_filename( file );
+	    file = get_filename( file, customconfdir);
 	    if ( !read_rules( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
@@ -648,7 +662,7 @@ namespace Tokenizer {
 	    if ( !TiCC::match_back( file, ".filter" ) ){
 	      file += ".filter";
 	    }
-	    file = get_filename( file );
+	    file = get_filename( file, customconfdir );
 	    if ( !read_filters( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
@@ -658,7 +672,7 @@ namespace Tokenizer {
 	    if ( !TiCC::match_back( file, ".quote" ) ){
 	      file += ".quote";
 	    }
-	    file = get_filename( file );
+	    file = get_filename( file, customconfdir );
 	    if ( !read_quotes( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
@@ -668,7 +682,7 @@ namespace Tokenizer {
 	    if ( !TiCC::match_back( file, ".eos" ) ){
 	      file += ".eos";
 	    }
-	    file = get_filename( file );
+	    file = get_filename( file, customconfdir);
 	    if ( !read_eosmarkers( file ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
@@ -678,7 +692,7 @@ namespace Tokenizer {
 	    if ( !TiCC::match_back( file, ".abr" ) ){
 	      file += ".abr";
 	    }
-	    file = get_filename( file );
+	    file = get_filename( file, customconfdir );
 	    if ( !read_abbreviations( file, patterns[ABBREVIATIONS] ) ){
 	      throw uConfigError( "'" + rawline + "' failed", set_file );
 	    }
