@@ -66,6 +66,7 @@ jobs:
           module: uctodata
 
       - name: install libexttextcat on MacOS
+        if: ${{ env.action_status == '' }}
         env:
           CXX: ${{ matrix.compiler }}
         run: |
