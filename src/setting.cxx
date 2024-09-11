@@ -512,11 +512,16 @@ namespace Tokenizer {
         }
       }
       result = localConfigDir + name;
-      if ( !TiCC::isFile( result ) ){
-          result = defaultConfigDir + name;
-          if ( !TiCC::isFile( result ) ){
-            result.clear();
+      try {
+          if ( TiCC::isFile( result ) ){
+              return result;
           }
+      } catch (const exception &e) {
+          //local config dir not readable (Ref: https://github.com/LanguageMachines/ucto/issues/97)..ignore and fall back
+      }
+      result = defaultConfigDir + name;
+      if ( !TiCC::isFile( result ) ){
+        result.clear();
       }
     }
     return result;
