@@ -65,7 +65,7 @@ jobs:
         with:
           module: uctodata
 
-      - name: install libexttextcat on MacOS
+      - name: install libexttextcat
         if: ${{ env.action_status == '' }}
         env:
           CXX: ${{ matrix.compiler }}
@@ -78,6 +78,8 @@ jobs:
             make
             sudo make install
             cd ..
+          else
+            sudo apt-get install libexttextcat-dev
           fi
 
       - name: Static Code-check
