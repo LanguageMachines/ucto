@@ -499,7 +499,7 @@ namespace Tokenizer {
     // }
   }
 
-  string get_filename( const string& name , const string customConfigDir = ""){
+  string get_filename( const string& name , const string& customConfigDir = ""){
     string result;
     if ( TiCC::isFile( name ) ){
       result = name;
