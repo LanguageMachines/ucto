@@ -1,3 +1,19 @@
+0.34 2024-09-12
+[Maarten van Gompel]
+* fall back when local config dir can not be checked for whatever reason
+  https://github.com/LanguageMachines/ucto/issues/97
+* extract custom configuration directory if provided, and fall back to that
+  for includes   https://github.com/LanguageMachines/ucto/issues/96
+* needs ticcutils >= 0.35
+[Ko van der Sloot]
+* force use of c++17
+* minor code updates
+* streamlined Github CI file
+* adapted some foliatests to recent libfolia versions
+* refactored tests:
+  - all shell scripts have the .sh extension now
+  - use folialint or foliadiff to check folia results
+
 0.33 2024-04-26
 [Ko van der Sloot]
 * added a batch mode: https://github.com/LanguageMachines/ucto/issues/94
