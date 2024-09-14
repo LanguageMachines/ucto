@@ -562,8 +562,7 @@ pair<string,string> runtime_opts::create_io_pair( const string& in,
   if ( !input_dir.empty() ){
     in_f = input_dir + in_f;
   }
-  if ( !out.empty() ){
-    out_f = out;
+  if ( !out_f.empty() ){
     if ( !output_dir.empty() ){
       out_f = output_dir + out_f;
     }
