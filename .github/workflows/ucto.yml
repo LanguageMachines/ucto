@@ -90,6 +90,10 @@ jobs:
           cd tests
           ./testaction.sh
           TEST_STAT=$(cat status.tmp)
+          if [ $TEST_STAT != 0 ]
+          then
+            echo "action_status=uctotests" >> $GITHUB_ENV
+          fi
           echo "action_details=$TEST_STAT errors" >> $GITHUB_ENV
         continue-on-error: true
       - name: Notify IRC of results
