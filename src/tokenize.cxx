@@ -525,7 +525,7 @@ namespace Tokenizer {
       return ucto_processor;
     }
     if ( tokDebug > 0 ){
-      cerr << "Init provenance" << endl;
+      DBG << "Init provenance" << endl;
     }
     vector<folia::processor *> procs = doc->get_processors_by_name( "ucto" );
     if ( !procs.empty() ){
