@@ -287,9 +287,10 @@ namespace Tokenizer {
     outputclass("current"),
     text_cat( 0 )
   {
-    theErrLog = new TiCC::LogStream(cerr, "ucto" );
+    theErrLog = new TiCC::LogStream(cerr);
+    theErrLog->set_message( "ucto" );
     theDbgLog = theErrLog;
-    theErrLog->setstamp( StampMessage );
+    theErrLog->set_stamp( StampMessage );
   }
 
   TokenizerClass::~TokenizerClass(){

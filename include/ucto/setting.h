@@ -54,8 +54,8 @@ namespace Tokenizer {
 		   UnicodeString&,
 		   std::vector<UnicodeString>& );
   private:
-    Rule( const Rule& ); // inhibit copies
-    Rule& operator=( const Rule& ); // inhibit copies
+    Rule( const Rule& ) = delete; // inhibit copies
+    Rule& operator=( const Rule& ) = delete; // inhibit copies
   };
 
 

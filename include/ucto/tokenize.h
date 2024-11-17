@@ -319,8 +319,8 @@ namespace Tokenizer {
 
   private:
 
-    TokenizerClass( const TokenizerClass& ); // inhibit copies
-    TokenizerClass& operator=( const TokenizerClass& ); // inhibit copies
+    TokenizerClass( const TokenizerClass& ) = delete; // inhibit copies
+    TokenizerClass& operator=( const TokenizerClass& ) = delete; // inhibit copies
 
     void passthruLine( const UnicodeString&, bool& );
     void passthruLine( const std::string&, bool& );
