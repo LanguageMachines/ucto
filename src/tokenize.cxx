@@ -1001,7 +1001,7 @@ namespace Tokenizer {
       // there is already text at thus level, bail out.
       return;
     }
-    if ( root->isSubClass( folia::Linebreak_t ) ){
+    if ( root->isSubClass<folia::Linebreak>() ){
       // exception
       return;
     }
@@ -1218,7 +1218,7 @@ namespace Tokenizer {
     }
     else {
       const folia::FoliaElement *par = el->parent();
-      if ( par->element_id() == folia::BASE ){
+      if ( par->isinstance<folia::FoLiA>() ){
 	// we went all up without avail...
 	return "";
       }
@@ -1308,7 +1308,7 @@ namespace Tokenizer {
       }
       else if ( (tok.role & BEGINOFSENTENCE)
 		&& root != sent
-		&& root->element_id() == folia::Sentence_t ){
+		&& root->isinstance<folia::Sentence>() ){
 	// Ok, another Sentence in a quote
 	if ( i > 0 && !(toks[i-1].role & BEGINQUOTE) ){
 	  // close the current one, and start a new one.
@@ -1434,7 +1434,7 @@ namespace Tokenizer {
       args["set"] = root->doc()->default_set( folia::AnnotationType::PARAGRAPH );
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
-      if ( root->element_id() == folia::Text_t ){
+      if ( root->isinstance<folia::Text>() ){
 	if  ( tokDebug > 5 ){
 	  DBG << "append_to_folia, add paragraph to Text" << endl;
 	}
@@ -1801,7 +1801,7 @@ namespace Tokenizer {
 	  // multiple sentences. We need an extra Paragraph.
 	  // But first check if this is allowed!
 	  folia::FoliaElement *rt;
-	  if ( e->acceptable(folia::Paragraph_t) ){
+	  if ( e->acceptable<folia::Paragraph>() ){
 	    folia::KWargs args;
 	    string e_id = e->id();
 	    if ( !e_id.empty() ){
