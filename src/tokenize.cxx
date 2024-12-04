@@ -1675,10 +1675,11 @@ namespace Tokenizer {
 					     int& sentence_done ){
     // a Paragraph may contain both Word and Sentence nodes
     // Sentences will be handled
-    vector<folia::Sentence*> sv = p->select<folia::Sentence>(false);
+    vector<folia::Sentence*> sv
+      = p->select<folia::Sentence>(folia::SELECT_FLAGS::LOCAL);
     if ( sv.empty() ){
       // No Sentence, so just text or Words
-      vector<folia::Word*> wv = p->select<folia::Word>(false);
+      vector<folia::Word*> wv = p->select<folia::Word>(folia::SELECT_FLAGS::LOCAL);
       if ( !wv.empty() ){
 	vector<folia::FoliaElement*> ev( wv.begin(), wv.end() );
 	// Words found
@@ -1778,8 +1779,10 @@ namespace Tokenizer {
       // maybe <div> or <note> or such
       // there may be embedded Paragraph, Word and Sentence nodes
       // if so, Paragraphs and Sentences should be handled separately
-      vector<folia::Sentence*> sv = e->select<folia::Sentence>(false);
-      vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
+      vector<folia::Sentence*> sv
+	= e->select<folia::Sentence>(folia::SELECT_FLAGS::LOCAL);
+      vector<folia::Paragraph*> pv
+	= e->select<folia::Paragraph>(folia::SELECT_FLAGS::LOCAL);
       if ( pv.empty() && sv.empty() ){
 	// just words or text
 	UnicodeString text = e->unicode( text_policy );
