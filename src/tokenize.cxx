@@ -287,9 +287,10 @@ namespace Tokenizer {
     outputclass("current"),
     text_cat( 0 )
   {
-    theErrLog = new TiCC::LogStream(cerr, "ucto" );
+    theErrLog = new TiCC::LogStream(cerr);
+    theErrLog->set_message( "ucto" );
     theDbgLog = theErrLog;
-    theErrLog->setstamp( StampMessage );
+    theErrLog->set_stamp( StampMessage );
   }
 
   TokenizerClass::~TokenizerClass(){
@@ -1000,7 +1001,7 @@ namespace Tokenizer {
       // there is already text at thus level, bail out.
       return;
     }
-    if ( root->isSubClass( folia::Linebreak_t ) ){
+    if ( root->isSubClass<folia::Linebreak>() ){
       // exception
       return;
     }
@@ -1217,7 +1218,7 @@ namespace Tokenizer {
     }
     else {
       const folia::FoliaElement *par = el->parent();
-      if ( par->element_id() == folia::BASE ){
+      if ( par->isinstance<folia::FoLiA>() ){
 	// we went all up without avail...
 	return "";
       }
@@ -1307,7 +1308,7 @@ namespace Tokenizer {
       }
       else if ( (tok.role & BEGINOFSENTENCE)
 		&& root != sent
-		&& root->element_id() == folia::Sentence_t ){
+		&& root->isinstance<folia::Sentence>() ){
 	// Ok, another Sentence in a quote
 	if ( i > 0 && !(toks[i-1].role & BEGINQUOTE) ){
 	  // close the current one, and start a new one.
@@ -1433,7 +1434,7 @@ namespace Tokenizer {
       args["set"] = root->doc()->default_set( folia::AnnotationType::PARAGRAPH );
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
-      if ( root->element_id() == folia::Text_t ){
+      if ( root->isinstance<folia::Text>() ){
 	if  ( tokDebug > 5 ){
 	  DBG << "append_to_folia, add paragraph to Text" << endl;
 	}
@@ -1674,10 +1675,11 @@ namespace Tokenizer {
 					     int& sentence_done ){
     // a Paragraph may contain both Word and Sentence nodes
     // Sentences will be handled
-    vector<folia::Sentence*> sv = p->select<folia::Sentence>(false);
+    vector<folia::Sentence*> sv
+      = p->select<folia::Sentence>(folia::SELECT_FLAGS::LOCAL);
     if ( sv.empty() ){
       // No Sentence, so just text or Words
-      vector<folia::Word*> wv = p->select<folia::Word>(false);
+      vector<folia::Word*> wv = p->select<folia::Word>(folia::SELECT_FLAGS::LOCAL);
       if ( !wv.empty() ){
 	vector<folia::FoliaElement*> ev( wv.begin(), wv.end() );
 	// Words found
@@ -1777,8 +1779,10 @@ namespace Tokenizer {
       // maybe <div> or <note> or such
       // there may be embedded Paragraph, Word and Sentence nodes
       // if so, Paragraphs and Sentences should be handled separately
-      vector<folia::Sentence*> sv = e->select<folia::Sentence>(false);
-      vector<folia::Paragraph*> pv = e->select<folia::Paragraph>(false);
+      vector<folia::Sentence*> sv
+	= e->select<folia::Sentence>(folia::SELECT_FLAGS::LOCAL);
+      vector<folia::Paragraph*> pv
+	= e->select<folia::Paragraph>(folia::SELECT_FLAGS::LOCAL);
       if ( pv.empty() && sv.empty() ){
 	// just words or text
 	UnicodeString text = e->unicode( text_policy );
@@ -1800,7 +1804,7 @@ namespace Tokenizer {
 	  // multiple sentences. We need an extra Paragraph.
 	  // But first check if this is allowed!
 	  folia::FoliaElement *rt;
-	  if ( e->acceptable(folia::Paragraph_t) ){
+	  if ( e->acceptable<folia::Paragraph>() ){
 	    folia::KWargs args;
 	    string e_id = e->id();
 	    if ( !e_id.empty() ){
