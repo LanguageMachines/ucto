@@ -1,3 +1,8 @@
+0.35 2024-12-16
+[Ko van der Sloot]
+* require latest ticcutils
+* updated GitHub CI
+
 0.34 2024-09-12
 [Maarten van Gompel]
 * fall back when local config dir can not be checked for whatever reason
