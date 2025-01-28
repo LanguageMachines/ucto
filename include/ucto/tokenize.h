@@ -99,8 +99,8 @@ namespace Tokenizer {
 	   const UnicodeString&,
 	   const std::string& = "" );
     std::string lang_code;                // ISO 639-3 language code
-    std::string texttostring();
-    std::string typetostring();
+    std::string texttostring() const;
+    std::string typetostring() const ;
   };
 
   class TokenizerClass{

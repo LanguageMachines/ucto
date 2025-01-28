@@ -167,8 +167,8 @@ namespace Tokenizer {
   }
 
 
-  std::string Token::texttostring() { return TiCC::UnicodeToUTF8(us); }
-  std::string Token::typetostring() { return TiCC::UnicodeToUTF8(type); }
+  std::string Token::texttostring() const { return TiCC::UnicodeToUTF8(us); }
+  std::string Token::typetostring() const { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << t.type << " : " << t.role  << ": '" << t.us << "' (" << t.lang_code << ")";
