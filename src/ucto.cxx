@@ -373,6 +373,11 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   pass_thru = Opts.extract( "passthru" );
   Opts.extract("normalize", norm_set_string );
   Opts.extract( "separators", separators );
+  Opts.extract( "keep-spaces-inside-quotes", keep_quoted_spaces );
+  if ( keep_quoted_spaces && quotedetection ){
+    throw TiCC::OptionError( "ucto: combining '--keep-spaces-inside-quotes' "
+			     "conflicts with '-Q'" );
+  }
   if ( Opts.extract( 'x', docid ) ){
     throw TiCC::OptionError( "ucto: The option '-x ID' is removed. "
 			     "Please use '-X' and '--id=ID' instead" );
@@ -713,6 +718,7 @@ int main( int argc, char *argv[] ){
 			   "help,detectlanguages:,uselanguages:,"
 			   "textredundancy:,add-tokens:,split,"
 			   "allow-word-corrections,ignore-tag-hints,"
+			   "keep-spaces-inside-quotes,"
 			   "separators:");
     Opts.init(argc, argv );
     if ( Opts.extract( 'h' )

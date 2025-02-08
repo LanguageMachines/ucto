@@ -76,6 +76,7 @@ namespace Tokenizer {
 
   using namespace icu;
   using TiCC::operator<<;
+  bool keep_quoted_spaces = false;
 
   const UChar32 ZWJ = u'\u200D';
 
@@ -154,16 +155,41 @@ namespace Tokenizer {
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
+  UnicodeString filter_ZCARON( const UnicodeString& in ){
+    UnicodeString result;
+    for ( int i=0; i < in.length(); ++i ){
+      UChar32 c = in[i];
+      if ( c == U'Ž' ){
+	c = ' ';
+      }
+      result += c;
+    }
+    return result;
+  }
+
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
-		TokenRole _role, const string& _lang_code ):
-    type(_type), us(_s), role(_role), lang_code(_lang_code) {
+		TokenRole _role,
+		const string& _lang_code ):
+    type(_type), role(_role), lang_code(_lang_code) {
+    if ( keep_quoted_spaces ){
+      us = filter_ZCARON( _s );
+    }
+    else {
+      us = _s;
+    }
   }
 
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
 		const string& _lang_code ):
-    type(_type), us(_s), role(NOROLE), lang_code(_lang_code) {
+    type(_type), role(NOROLE), lang_code(_lang_code) {
+    if ( keep_quoted_spaces ){
+      us = filter_ZCARON( _s );
+    }
+    else {
+      us = _s;
+    }
   }
 
 
@@ -2946,6 +2972,32 @@ namespace Tokenizer {
     }
   }
 
+  UnicodeString replace_quoted_spaces( const UnicodeString& in ){
+    UnicodeString result;
+    UChar32 quote = '\x0';
+    for ( int i=0; i < in.length(); ++i ){
+      UChar32 c = in[i];
+      //      cerr << "bekijk: " << UnicodeString( c ) << endl;
+      if ( c == '"' || c == '\'' ){
+	// found quote
+	//	cerr << "found quote!" << endl;
+	if ( c == quote ){
+	  // so a second one, reset
+	  quote = '\x0';
+	  //	  cerr << "reset quote!" << endl;
+	}
+	else {
+	  quote = c;
+	}
+      }
+      else if ( c == ' ' && quote != '\x0' ){
+	c = U'Ž'; // mark as  Ž
+      }
+      result += c;
+    }
+    return result;
+  }
+
   int TokenizerClass::internal_tokenize_line( const UnicodeString& originput,
 					      const string& _lang ){
     if ( originput.isBogus() ){ //only tokenize valid input
@@ -2971,6 +3023,9 @@ namespace Tokenizer {
 	  << originput << "] (language= " << lang << ")" << endl;
     }
     UnicodeString input = originput;
+    if ( keep_quoted_spaces ){
+      input = replace_quoted_spaces( input );
+    }
     if ( doFilter ){
       input = settings[lang]->filter.filter( input );
     }
@@ -3290,7 +3345,7 @@ namespace Tokenizer {
 	    else {
 	      if ( tokDebug >= 4 ){
 		DBG << "\trecurse, match changes the type:"
-				<< assigned_type << " to " << type << endl;
+		    << assigned_type << " to " << type << endl;
 	      }
 	      TokenRole role = (space ? NOROLE : NOSPACE);
 	      if ( paragraphsignal_next ){
