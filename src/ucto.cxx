@@ -373,7 +373,7 @@ void runtime_opts::fill( TiCC::CL_Options& Opts ){
   pass_thru = Opts.extract( "passthru" );
   Opts.extract("normalize", norm_set_string );
   Opts.extract( "separators", separators );
-  Opts.extract( "keep-spaces-inside-quotes", keep_quoted_spaces );
+  keep_quoted_spaces = Opts.extract( "keep-spaces-inside-quotes" );
   if ( keep_quoted_spaces && quotedetection ){
     throw TiCC::OptionError( "ucto: combining '--keep-spaces-inside-quotes' "
 			     "conflicts with '-Q'" );
