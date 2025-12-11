@@ -1,3 +1,10 @@
+0.36 2025-12-11
+[Ko van der Sloot]
+* added a (tricky, hidden, EXPERIMENTAL) option --keep-spaces-inside-quotes.
+  Allows a limited use to keep quoted values together: "One quote",
+  or ' keep this alive '
+* updated GitHub CI
+
 0.35 2024-12-16
 [Ko van der Sloot]
 * require latest ticcutils
