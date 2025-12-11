@@ -1,5 +1,5 @@
 /*
-  Copyright (c) 2006 - 2024
+  Copyright (c) 2006 - 2026
   CLST - Radboud University
   ILK  - Tilburg University
 
@@ -45,6 +45,7 @@ namespace Tokenizer {
 
   const std::string Version();
   const std::string VersionName();
+  extern bool keep_quoted_spaces;
 
   enum TokenRole {
     NOROLE                      = 0,
@@ -99,8 +100,8 @@ namespace Tokenizer {
 	   const UnicodeString&,
 	   const std::string& = "" );
     std::string lang_code;                // ISO 639-3 language code
-    std::string texttostring();
-    std::string typetostring();
+    std::string texttostring() const;
+    std::string typetostring() const ;
   };
 
   class TokenizerClass{
@@ -272,6 +273,10 @@ namespace Tokenizer {
     bool getXMLInput() const { return xmlin; }
     bool setUndLang( bool b ){ bool r = und_language; und_language = b; return r; };
     bool getUndLang(){ return und_language; };
+
+    bool setKeepQuotedSpaces( bool b ){ bool r = keep_quoted_spaces;
+      keep_quoted_spaces = b; return r; };
+    bool getKeepQuotedSpaces() const { return keep_quoted_spaces; };
 
     const std::string& getInputClass( ) const { return inputclass; }
     const std::string setInputClass( const std::string& cls) {
