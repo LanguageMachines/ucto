@@ -111,11 +111,12 @@ namespace Tokenizer {
     std::vector<Rule *> rules;
     std::map<UnicodeString, Rule *> rulesmap;
     std::map<UnicodeString, int> rules_index;
-    std::string splitter;
+    UnicodeString splitter;
     Quoting quotes;
     TiCC::UniFilter filter;
+    TiCC::UnicodeNormalizer _normalizer;
     std::string set_file; // the name of the settingsfile
-    std::string version;  // the version of the datafile
+    UnicodeString version;  // the version of the datafile
     int tokDebug;
     TiCC::LogStream *theErrLog;
     TiCC::LogStream *theDbgLog;

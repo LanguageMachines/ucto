@@ -291,13 +291,12 @@ namespace Tokenizer {
       return false;
     }
     else {
-      string rawline;
-      while ( getline( f, rawline ) ){
-	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+      UnicodeString line;
+      while ( TiCC::getline( f, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    DBG << "include line = " << rawline << endl;
+	    DBG << "include line = " << line << endl;
 	  }
 	  const int splitpoint = line.indexOf("=");
 	  if ( splitpoint < 0 ){
@@ -329,13 +328,12 @@ namespace Tokenizer {
       return false;
     }
     else {
-      string rawline;
-      while ( getline( f, rawline ) ){
-	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+      UnicodeString line;
+      while ( TiCC::getline( f, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    DBG << "include line = " << rawline << endl;
+	    DBG << "include line = " << line << endl;
 	  }
 	  int splitpoint = line.indexOf(" ");
 	  if ( splitpoint == -1 ){
@@ -371,13 +369,12 @@ namespace Tokenizer {
       return false;
     }
     else {
-      string rawline;
-      while ( getline( f, rawline ) ){
-	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+      UnicodeString line;
+      while ( TiCC::getline( f, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    DBG << "include line = " << rawline << endl;
+	    DBG << "include line = " << line << endl;
 	  }
 	  if ( ( line.startsWith("\\u") && line.length() == 6 ) ||
 	       ( line.startsWith("\\U") && line.length() == 10 ) ){
@@ -433,13 +430,12 @@ namespace Tokenizer {
       return false;
     }
     else {
-      string rawline;
-      while ( getline( f, rawline ) ){
-	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
+      UnicodeString line;
+      while ( TiCC::getline( f, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
-	    DBG << "include line = " << rawline << endl;
+	    DBG << "include line = " << line << endl;
 	  }
 	  line = escape_regex( line );
 	  if ( !abbreviations.isEmpty()){
@@ -499,7 +495,8 @@ namespace Tokenizer {
     // }
   }
 
-  string get_filename( const string& name , const string& customConfigDir = ""){
+  string get_filename( const string& name,
+		       const string& customConfigDir = ""){
     string result;
     if ( TiCC::isFile( name ) ){
       result = name;
@@ -521,6 +518,11 @@ namespace Tokenizer {
       }
     }
     return result;
+  }
+
+  string get_filename( const UnicodeString& name,
+		       const string& customConfigDir = ""){
+    return get_filename( TiCC::UnicodeToUTF8(name), customConfigDir );
   }
 
   void addOrder( vector<UnicodeString>& order,
@@ -548,12 +550,15 @@ namespace Tokenizer {
     }
   }
 
-  void split( const string& version, int& major, int& minor, string& sub ){
-    vector<string> parts = TiCC::split_at( version, "." );
+  void split( const UnicodeString& version,
+	      int& major,
+	      int& minor,
+	      UnicodeString& sub ){
+    vector<UnicodeString> parts = TiCC::split_at( version, "." );
     size_t num = parts.size();
     major = 0;
     minor = 0;
-    sub.clear();
+    sub.remove();
     if ( num == 0 ){
       sub = version;
     }
@@ -644,58 +649,58 @@ namespace Tokenizer {
 	DBG << "config file=" << conffile << endl;
       }
       int rule_count = 0;
-      string rawline;
-      while ( getline( f, rawline ) ){
-	if ( rawline.find( "%include" ) != string::npos ){
-	  string file = rawline.substr( 9 );
+      UnicodeString line;
+      while ( TiCC::getline( f, line ) ){
+	if ( line.indexOf( "%include" ) != -1 ){
+	  UnicodeString file = UnicodeString(line, 9 );
 	  switch ( mode ){
 	  case RULES: {
-	    if ( !TiCC::match_back( file, ".rule" ) ){
+	    if ( !file.endsWith( ".rule" ) ){
 	      file += ".rule";
 	    }
-	    file = get_filename( file, customconfdir);
-	    if ( !read_rules( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", set_file );
+	    string local_file = get_filename( file, customconfdir);
+	    if ( !read_rules( local_file ) ){
+	      throw uConfigError( "'" + line + "' failed", set_file );
 	    }
 	  }
 	    break;
 	  case FILTER:{
-	    if ( !TiCC::match_back( file, ".filter" ) ){
+	    if ( !file.endsWith( ".filter" ) ){
 	      file += ".filter";
 	    }
-	    file = get_filename( file, customconfdir );
-	    if ( !read_filters( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", set_file );
+	    string local_file = get_filename( file, customconfdir );
+	    if ( !read_filters( local_file ) ){
+	      throw uConfigError( "'" + line + "' failed", set_file );
 	    }
 	  }
 	    break;
 	  case QUOTES:{
-	    if ( !TiCC::match_back( file, ".quote" ) ){
+	    if ( !file.endsWith( ".quote" ) ) {
 	      file += ".quote";
 	    }
-	    file = get_filename( file, customconfdir );
-	    if ( !read_quotes( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", set_file );
+	    string local_file = get_filename( file, customconfdir );
+	    if ( !read_quotes( local_file ) ){
+	      throw uConfigError( "'" + line + "' failed", set_file );
 	    }
 	  }
 	    break;
 	  case EOSMARKERS:{
-	    if ( !TiCC::match_back( file, ".eos" ) ){
+	    if ( !file.endsWith( ".eos" ) ){
 	      file += ".eos";
 	    }
-	    file = get_filename( file, customconfdir);
-	    if ( !read_eosmarkers( file ) ){
-	      throw uConfigError( "'" + rawline + "' failed", set_file );
+	    string local_file = get_filename( file, customconfdir);
+	    if ( !read_eosmarkers( local_file ) ){
+	      throw uConfigError( "'" + line + "' failed", set_file );
 	    }
 	  }
 	    break;
 	  case ABBREVIATIONS:{
-	    if ( !TiCC::match_back( file, ".abr" ) ){
+	    if ( !file.endsWith( ".abr" ) ){
 	      file += ".abr";
 	    }
-	    file = get_filename( file, customconfdir );
-	    if ( !read_abbreviations( file, patterns[ABBREVIATIONS] ) ){
-	      throw uConfigError( "'" + rawline + "' failed", set_file );
+	    string local_file = get_filename( file, customconfdir );
+	    if ( !read_abbreviations( local_file, patterns[ABBREVIATIONS] ) ){
+	      throw uConfigError( "'" + line + "' failed", set_file );
 	    }
 	  }
 	    break;
@@ -705,26 +710,27 @@ namespace Tokenizer {
 	  }
 	  continue;
 	}
-	else if ( rawline.find( "%define" ) != string::npos ){
-	  string def = rawline.substr( 8 );
-	  vector<string> parts = TiCC::split_at_first_of( def, " \t", 2 );
+	else if ( line.indexOf( "%define" ) != -1 ){
+	  UnicodeString def = UnicodeString(line, 8 );
+	  vector<UnicodeString> parts = TiCC::split_at_first_of( def, " \t", 2 );
 	  if ( parts.size() < 2 ){
-	    throw uConfigError( "invalid %define: " + rawline, set_file );
+	    throw uConfigError( "invalid %define: " + line, set_file );
 	  }
-	  UnicodeString macro = TiCC::UnicodeFromUTF8(splitter)
-	    + TiCC::UnicodeFromUTF8(parts[0]) + TiCC::UnicodeFromUTF8(splitter);
-	  macros[macro] = TiCC::UnicodeFromUTF8(parts[1]);
+	  UnicodeString macro = splitter + parts[0] + splitter;
+	  macros[macro] = parts[1];
 	  continue;
 	}
-	else if ( rawline.find( "SPLITTER=" ) != string::npos ){
-	  string local_splitter = rawline.substr( 9 );
-	  if ( local_splitter.empty() ) {
-	    throw uConfigError( "invalid SPLITTER value in: " + rawline,
+	else if ( line.indexOf( "SPLITTER=" ) != -1 ){
+	  UnicodeString local_splitter = UnicodeString( line, 9 );
+	  if ( local_splitter.isEmpty() ) {
+	    throw uConfigError( "invalid SPLITTER value in: " + line,
 				set_file );
 	  }
 	  if ( local_splitter[0] == '"'
 	       && local_splitter[local_splitter.length()-1] == '"' ){
-	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
+	    local_splitter = UnicodeString( local_splitter,
+					    1,
+					    local_splitter.length()-2);
 	  }
 	  if ( tokDebug > 5 ){
 	    DBG << "SET SPLITTER: '" << local_splitter << "'" << endl;
@@ -736,7 +742,6 @@ namespace Tokenizer {
 	  continue;
 	}
 
-	UnicodeString line = TiCC::UnicodeFromUTF8(rawline);
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if (line[0] == '[') {
@@ -816,7 +821,7 @@ namespace Tokenizer {
 	      filter.add( line );
 	      break;
 	    case NONE: {
-	      vector<string> parts = TiCC::split_at( rawline, "=" );
+	      vector<UnicodeString> parts = TiCC::split_at( line, "=" );
 	      if ( parts.size() == 2 ) {
 		if ( parts[0] == "version" ){
 		  version = parts[1];
@@ -844,10 +849,9 @@ namespace Tokenizer {
 
       if ( !add_tokens.empty() ){
 	ifstream adt( add_tokens );
-	string line;
-	while ( getline( adt, line ) ){
-	  UnicodeString entry = TiCC::UnicodeFromUTF8(line);
-	  entry = escape_regex( entry );
+	UnicodeString line;
+	while ( TiCC::getline( adt, line ) ){
+	  UnicodeString entry = escape_regex( line );
 	  if ( !entry.isEmpty() ){
 	    if ( !patterns[TOKENS].isEmpty() ){
 	      patterns[TOKENS] += '|';
@@ -858,22 +862,26 @@ namespace Tokenizer {
       }
       // Create Rules for every pattern that is set
       // first the meta rules...
-      for ( const auto& mr : meta_rules ){
-	string::size_type pos = mr.find( "=" );
-	if ( pos == string::npos ){
+      for ( const auto& mrs : meta_rules ){
+	UnicodeString mr = TiCC::UnicodeFromUTF8(mrs,_normalizer);
+	int pos = mr.indexOf( "=" );
+	if ( pos == -1 ){
 	  throw uConfigError( "invalid entry in META-RULES: " + mr,
 			      set_file );
 	}
-	string nam = TiCC::trim( mr.substr( 0, pos ) );
+	UnicodeString nam( mr, 0, pos );
+	nam.trim();
 	if ( nam == "SPLITTER" ){
-	  string local_splitter = mr.substr( pos+1 );
-	  if ( local_splitter.empty() ) {
+	  UnicodeString local_splitter(mr, pos+1);
+	  if ( local_splitter.isEmpty() ) {
 	    throw uConfigError( "invalid SPLITTER value in META-RULES: " + mr,
 				set_file );
 	  }
 	  if ( local_splitter[0] == '"'
 	       && local_splitter[local_splitter.length()-1] == '"' ){
-	    local_splitter = local_splitter.substr(1,local_splitter.length()-2);
+	    local_splitter = UnicodeString( local_splitter,
+					    1,
+					    local_splitter.length()-2 );
 	  }
 	  if ( tokDebug > 5 ){
 	    DBG << "SET SPLITTER: '" << local_splitter << "'" << endl;
@@ -884,20 +892,20 @@ namespace Tokenizer {
 	  splitter = local_splitter;
 	  continue;
 	}
-	UnicodeString name = TiCC::UnicodeFromUTF8( nam );
-	string rule = mr.substr( pos+1 );
+	UnicodeString name = nam;
+	UnicodeString rule( mr, pos+1 );
 	if ( tokDebug > 5 ){
 	  DBG << "SPLIT using: '" << splitter << "'" << endl;
 	}
-	vector<string> parts = TiCC::split_at( rule, splitter );
+	vector<UnicodeString> parts = TiCC::split_at( rule, splitter );
 	for ( auto& str : parts ){
-	  str = TiCC::trim( str );
+	  str.trim();
 	}
 	vector<UnicodeString> new_parts;
 	vector<UnicodeString> undef_parts;
 	bool skip_rule = false;
 	for ( const auto& part : parts ){
-	  UnicodeString meta = TiCC::UnicodeFromUTF8( part );
+	  UnicodeString meta = part;
 	  ConfigMode local_mode = getMode( "[" + meta + "]" );
 	  switch ( local_mode ){
 	  case ORDINALS:
@@ -921,8 +929,7 @@ namespace Tokenizer {
 	    break;
 	  case NONE:
 	  default:
-	    new_parts.push_back( substitute_macros( TiCC::UnicodeFromUTF8(part),
-						    macros ) );
+	    new_parts.push_back( substitute_macros( part, macros ) );
 	    break;
 	  }
 	}
@@ -940,15 +947,15 @@ namespace Tokenizer {
     }
     int major = -1;
     int minor = -1;
-    if ( !version.empty() ){
-      string sub;
+    if ( !version.isEmpty() ){
+      UnicodeString sub;
       split( version, major, minor, sub );
       if ( tokDebug ){
 	DBG << set_file << ": version=" << version << endl;
       }
     }
     if ( major < 0 || minor < 2 ){
-      if ( version.empty() ){
+      if ( version.isEmpty() ){
 	LOG << "WARNING: your datafile for '" + set_file
 	    << "' is missing a version number" << endl;
 	LOG << "         Did you install uctodata version >=0.2 ?" << endl;

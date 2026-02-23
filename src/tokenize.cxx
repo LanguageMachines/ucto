@@ -193,8 +193,8 @@ namespace Tokenizer {
   }
 
 
-  std::string Token::texttostring() const { return TiCC::UnicodeToUTF8(us); }
-  std::string Token::typetostring() const { return TiCC::UnicodeToUTF8(type); }
+  // std::string Token::texttostring() const { return TiCC::UnicodeToUTF8(us); }
+  // std::string Token::typetostring() const { return TiCC::UnicodeToUTF8(type); }
 
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << t.type << " : " << t.role  << ": '" << t.us << "' (" << t.lang_code << ")";
@@ -361,7 +361,7 @@ namespace Tokenizer {
     */
     vector<string> parts = TiCC::split_at( values, "," );
     for ( const auto& val : parts ){
-      norm_set.insert( TiCC::UnicodeFromUTF8( val ) );
+      norm_set.insert( TiCC::UnicodeFromUTF8( val, normalizer ) );
     }
     return true;
   }
@@ -445,7 +445,7 @@ namespace Tokenizer {
 	separators.insert( seps[1] );
       }
       else {
-	UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps );
+	UnicodeString u_seps = TiCC::UnicodeFromUTF8( seps, normalizer );
 	for ( int i=0; i < u_seps.length(); ++i ) {
 	  if ( u_seps[i] == '+' && i == 0 ){
 	    // a '+' in the first position means use spacing separators
@@ -459,7 +459,7 @@ namespace Tokenizer {
 	}
       }
     }
-    return TiCC::UnicodeToUTF8(prev);
+    return TiCC::UnicodeToUTF8( prev, normalizer );
   }
 
   string TokenizerClass::setTextRedundancy( const std::string& tr ){
@@ -724,7 +724,7 @@ namespace Tokenizer {
 	args["name"] = s.second->set_file;
 	args["generate_id"] = "next()";
 	args["type"] = "datasource";
-	args["version"] = s.second->version;
+	args["version"] = TiCC::UnicodeToUTF8(s.second->version);
 	doc->add_processor( args, data_proc );
 	args.clear();
 	args["processor"] = proc->id();
@@ -787,7 +787,8 @@ namespace Tokenizer {
       DBG << "use textCat to guess language from: "
 	  << temp << endl;
     }
-    string language = text_cat->get_language( TiCC::UnicodeToUTF8(temp) );
+    string language
+      = text_cat->get_language( TiCC::UnicodeToUTF8( temp, normalizer ) );
     string result;
     if ( settings.find( language ) != settings.end() ){
       if ( tokDebug > 4 ){
@@ -2244,7 +2245,7 @@ namespace Tokenizer {
 
   string TokenizerClass::getUTF8String( const vector<Token>& v ){
     UnicodeString result = getString( v );
-    return TiCC::UnicodeToUTF8( result );
+    return TiCC::UnicodeToUTF8( result,normalizer );
   }
 
   vector<UnicodeString> TokenizerClass::getSentences() {
@@ -2269,7 +2270,7 @@ namespace Tokenizer {
     vector<string> result;
     std::transform( uv.begin(), uv.end(),
 		    result.begin(),
-		    []( const UnicodeString& us ){ return TiCC::UnicodeToUTF8(us); });
+		    [this]( const UnicodeString& us ){ return TiCC::UnicodeToUTF8(us,normalizer); });
     return result;
   }
 
@@ -3586,7 +3587,7 @@ namespace Tokenizer {
     }
     else {
       set_file = it->second->set_file;
-      version = it->second->version;
+      version = TiCC::UnicodeToUTF8(it->second->version);
       return true;
     }
   }
