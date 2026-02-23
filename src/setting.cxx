@@ -641,7 +641,7 @@ namespace Tokenizer {
       return false;
     }
     else {
-      vector<string> meta_rules;
+      vector<UnicodeString> meta_rules;
       vector<UnicodeString> rules_order;
       ConfigMode mode = NONE;
       set_file = settings_name;
@@ -769,7 +769,7 @@ namespace Tokenizer {
 			rule_count, line, set_file );
 	      break;
 	    case METARULES:
-	      meta_rules.push_back( TiCC::UnicodeToUTF8(line) );
+	      meta_rules.push_back( line );
 	      break;
 	    case ABBREVIATIONS:
 	    case ATTACHEDPREFIXES:
@@ -862,8 +862,7 @@ namespace Tokenizer {
       }
       // Create Rules for every pattern that is set
       // first the meta rules...
-      for ( const auto& mrs : meta_rules ){
-	UnicodeString mr = TiCC::UnicodeFromUTF8(mrs,_normalizer);
+      for ( const auto& mr : meta_rules ){
 	int pos = mr.indexOf( "=" );
 	if ( pos == -1 ){
 	  throw uConfigError( "invalid entry in META-RULES: " + mr,
