@@ -720,7 +720,7 @@ namespace Tokenizer {
 	args["name"] = s.second->set_file;
 	args["generate_id"] = "next()";
 	args["type"] = "datasource";
-	args["version"] = TiCC::UnicodeToUTF8(s.second->version);
+	args["version"] = TiCC::UnicodeToUTF8(s.second->version,normalizer);
 	doc->add_processor( args, data_proc );
 	args.clear();
 	args["processor"] = proc->id();
@@ -1368,7 +1368,7 @@ namespace Tokenizer {
       if ( !ids.empty() ){
 	args["generate_id"] = ids;
       }
-      args["class"] = TiCC::UnicodeToUTF8(tok.type);
+      args["class"] = TiCC::UnicodeToUTF8(tok.type,normalizer);
       if ( tok.role & NOSPACE ){
 	args["space"] = "no";
       }
@@ -1528,7 +1528,7 @@ namespace Tokenizer {
       // New elements
       folia::KWargs args;
       args["xml:id"] = orig->generateId( "tokenized" );
-      args["class"] = TiCC::UnicodeToUTF8(tok.type);
+      args["class"] = TiCC::UnicodeToUTF8(tok.type,normalizer);
       if ( tok.role & NOSPACE ){
 	args["space"] = "no";
       }
@@ -3583,7 +3583,7 @@ namespace Tokenizer {
     }
     else {
       set_file = it->second->set_file;
-      version = TiCC::UnicodeToUTF8(it->second->version);
+      version = TiCC::UnicodeToUTF8(it->second->version,normalizer);
       return true;
     }
   }

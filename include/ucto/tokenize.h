@@ -381,7 +381,7 @@ namespace Tokenizer {
 
     void appendText( folia::FoliaElement * ) const;
 
-    TiCC::UnicodeNormalizer normalizer;
+    mutable TiCC::UnicodeNormalizer normalizer;
     std::string inputEncoding;
 
     const UnicodeString& detect_type( UChar32 );

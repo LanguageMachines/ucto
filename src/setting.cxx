@@ -292,7 +292,7 @@ namespace Tokenizer {
     }
     else {
       UnicodeString line;
-      while ( TiCC::getline( f, line ) ){
+      while ( TiCC::getline( f, _normalizer, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -329,7 +329,7 @@ namespace Tokenizer {
     }
     else {
       UnicodeString line;
-      while ( TiCC::getline( f, line ) ){
+      while ( TiCC::getline( f, _normalizer, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -370,7 +370,7 @@ namespace Tokenizer {
     }
     else {
       UnicodeString line;
-      while ( TiCC::getline( f, line ) ){
+      while ( TiCC::getline( f, _normalizer, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -431,7 +431,7 @@ namespace Tokenizer {
     }
     else {
       UnicodeString line;
-      while ( TiCC::getline( f, line ) ){
+      while ( TiCC::getline( f, _normalizer, line ) ){
 	line.trim();
 	if ((line.length() > 0) && (line[0] != '#')) {
 	  if ( tokDebug >= 5 ){
@@ -650,7 +650,7 @@ namespace Tokenizer {
       }
       int rule_count = 0;
       UnicodeString line;
-      while ( TiCC::getline( f, line ) ){
+      while ( TiCC::getline( f, _normalizer, line ) ){
 	if ( line.indexOf( "%include" ) != -1 ){
 	  UnicodeString file = UnicodeString(line, 9 );
 	  switch ( mode ){
@@ -850,7 +850,7 @@ namespace Tokenizer {
       if ( !add_tokens.empty() ){
 	ifstream adt( add_tokens );
 	UnicodeString line;
-	while ( TiCC::getline( adt, line ) ){
+	while ( TiCC::getline( adt, _normalizer, line ) ){
 	  UnicodeString entry = escape_regex( line );
 	  if ( !entry.isEmpty() ){
 	    if ( !patterns[TOKENS].isEmpty() ){
