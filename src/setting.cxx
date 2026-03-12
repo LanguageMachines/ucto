@@ -344,15 +344,15 @@ namespace Tokenizer {
 				+ " (missing whitespace)",
 				fname );
 	  }
-	  UnicodeString open = UnicodeString( line, 0,splitpoint);
-	  UnicodeString close = UnicodeString( line, splitpoint+1);
-	  open = open.trim().unescape();
-	  close = close.trim().unescape();
-	  if ( open.isEmpty() || close.isEmpty() ){
+	  UnicodeString opening = UnicodeString( line, 0,splitpoint);
+	  UnicodeString closing = UnicodeString( line, splitpoint+1);
+	  opening = opening.trim().unescape();
+	  closing = closing.trim().unescape();
+	  if ( opening.isEmpty() || closing.isEmpty() ){
 	    throw uConfigError( "invalid QUOTES entry: " + line, fname );
 	  }
 	  else {
-	    quotes.add( open, close );
+	    quotes.add( opening, closing );
 	  }
 	}
       }
@@ -804,16 +804,16 @@ namespace Tokenizer {
 				    + " (missing whitespace)",
 				    set_file );
 	      }
-	      UnicodeString open = UnicodeString( line, 0,splitpoint);
-	      UnicodeString close = UnicodeString( line, splitpoint+1);
-	      open = open.trim().unescape();
-	      close = close.trim().unescape();
-	      if ( open.isEmpty() || close.isEmpty() ){
+	      UnicodeString opening = UnicodeString( line, 0,splitpoint);
+	      UnicodeString closing = UnicodeString( line, splitpoint+1);
+	      opening = opening.trim().unescape();
+	      closing = closing.trim().unescape();
+	      if ( opening.isEmpty() || closing.isEmpty() ){
 		throw uConfigError( "invalid QUOTES entry: " + line,
 				    set_file );
 	      }
 	      else {
-		quotes.add( open, close );
+		quotes.add( opening, closing );
 	      }
 	    }
 	      break;

@@ -2483,20 +2483,20 @@ namespace Tokenizer {
       }
     }
     else {
-      UnicodeString close = quotes.lookupOpen( c );
-      if ( !close.isEmpty() ){ // we have a opening quote
+      UnicodeString closing = quotes.lookupOpen( c );
+      if ( !closing.isEmpty() ){ // we have a opening quote
 	if ( tokDebug > 1 ) {
 	  DBG << "[detectQuoteBounds] Opening quote found @i="<< i << ", pushing to stack for resolution later..." << endl;
 	}
 	quotes.push( i, c ); // remember it
       }
       else {
-	UnicodeString open = quotes.lookupClose( c );
-	if ( !open.isEmpty() ) { // we have a closing quote
+	UnicodeString opening = quotes.lookupClose( c );
+	if ( !opening.isEmpty() ) { // we have a closing quote
 	  if (tokDebug > 1 ) {
 	    DBG << "[detectQuoteBounds] Closing quote found @i="<< i << ", attempting to resolve..." << endl;
 	  }
-	  if ( !resolveQuote( i, open, quotes )) {
+	  if ( !resolveQuote( i, opening, quotes )) {
 	    // resolve the matching opening
 	    if (tokDebug > 1 ) {
 	      DBG << "[detectQuoteBounds] Unable to resolve" << endl;
