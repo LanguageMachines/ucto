@@ -18,6 +18,10 @@ on:
   pull_request:
     branches: [master]
 
+  concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true
+
 jobs:
   notification:
     runs-on: ubuntu-latest
@@ -25,10 +29,6 @@ jobs:
     steps:
       - name: IRC notification
         uses: LanguageMachines/ticcactions/irc-init@v1
-      - name: Cancel Previous Runs
-        uses: styfle/cancel-workflow-action@0.12.1
-        with:
-          access_token: ${{ github.token }}
 
   build:
     runs-on: ${{ matrix.os }}
@@ -39,7 +39,7 @@ jobs:
         compiler: [g++ -std=c++17, clang++ -std=c++17]
 
     steps:
-      - uses: actions/checkout@v4.1.1
+      - uses: actions/checkout@v6.0.2
       - uses: LanguageMachines/ticcactions/cpp-build-env@v1
       - uses: LanguageMachines/ticcactions/cpp-dependencies@v1
       - uses: LanguageMachines/ticcactions/irc-nick@v1
