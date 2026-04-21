@@ -849,9 +849,9 @@ namespace Tokenizer {
 
       if ( !add_tokens.empty() ){
 	ifstream adt( add_tokens );
-	UnicodeString line;
-	while ( TiCC::getline( adt, _normalizer, line ) ){
-	  UnicodeString entry = escape_regex( line );
+	UnicodeString token_line;
+	while ( TiCC::getline( adt, _normalizer, token_line ) ){
+	  UnicodeString entry = escape_regex( token_line );
 	  if ( !entry.isEmpty() ){
 	    if ( !patterns[TOKENS].isEmpty() ){
 	      patterns[TOKENS] += '|';
