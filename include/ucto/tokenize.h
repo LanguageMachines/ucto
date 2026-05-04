@@ -235,9 +235,9 @@ namespace Tokenizer {
 
     // set normalization mode
     std::string setNormalization( const std::string& s ) {
-      return normalizer.setMode( s );
+      return _normalizer.setMode( s );
     }
-    std::string getNormalization() const { return normalizer.getMode(); };
+    std::string getNormalization() const { return _normalizer.getMode(); };
 
     // set input encoding
     std::string setInputEncoding( const std::string& );
@@ -381,7 +381,7 @@ namespace Tokenizer {
 
     void appendText( folia::FoliaElement * ) const;
 
-    mutable TiCC::UnicodeNormalizer normalizer;
+    mutable TiCC::UnicodeNormalizer _normalizer;
     std::string inputEncoding;
 
     const UnicodeString& detect_type( UChar32 );
