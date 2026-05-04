@@ -365,7 +365,9 @@ namespace Tokenizer {
 			    bool&,
 			    const std::string& = "" );
 
-    bool detectEos( size_t, const UnicodeString&, const Quoting& ) const;
+    bool detectEos( size_t,
+		    const UnicodeString&,
+		    const Quoting& ) const;
     void detectSentenceBounds( const int offset,
 			       const std::string& = "default" );
     void detectQuotedSentenceBounds( const int offset,
@@ -373,13 +375,14 @@ namespace Tokenizer {
     void detectQuoteBounds( const int,
 			    Quoting& );
 
-    bool resolveQuote( int, const UnicodeString&, Quoting& );
+    bool resolveQuote( int, const UnicodeString&,
+		       Quoting& );
     bool u_isquote( UChar32,
 		    const Quoting& ) const;
     std::string checkBOM( std::istream& );
     void outputTokensDoc_init( folia::Document& ) const;
 
-    void appendText( folia::FoliaElement * ) const;
+    void conditional_add_text( folia::FoliaElement * ) const;
 
     mutable TiCC::UnicodeNormalizer _normalizer;
     std::string inputEncoding;
@@ -431,7 +434,7 @@ namespace Tokenizer {
     //has do we attempt to assign languages?
     bool doDetectLang;
 
-    //has do we percolate text up from <w> to <s> and <p> nodes? (FoLiA)
+    // do we percolate text up from <w> to <s> and <p> nodes? (FoLiA)
     // values should be: 'full', 'minimal' or 'none'
     std::string text_redundancy;
 

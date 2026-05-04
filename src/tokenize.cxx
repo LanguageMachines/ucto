@@ -1015,56 +1015,53 @@ namespace Tokenizer {
     return result;
   }
 
-  void TokenizerClass::appendText( folia::FoliaElement *root ) const {
-    // set the textcontent of root to that of it's children
-    if ( !root ){
-      throw logic_error( "appendText() on empty root" );
+  void TokenizerClass::conditional_add_text( folia::FoliaElement *node ) const {
+    // conditionally set or remove the text on node
+    if ( !node ){
+      throw logic_error( "add_text on empty root" );
     }
-    if ( root->hastext( outputclass ) ){
-      // there is already text at thus level, bail out.
-      return;
-    }
-    if ( root->isSubClass<folia::Linebreak>() ){
-      // exception
-      return;
-    }
-    UnicodeString utxt;
-    try {
-      // so get Untokenized text from the children
-      utxt = root->text( outputclass );
-    }
-    catch (...){
-    }
-    if ( !utxt.isEmpty() ){
-      root->setutext( utxt, outputclass );
-    }
-    else if ( copyclass ){
-      utxt = root->text( inputclass );
+    if ( text_redundancy == "full" ){
+      if ( node->hastext( outputclass ) ){
+	// there is already text at this level,just  bail out.
+	return;
+      }
+      if ( node->isSubClass<folia::Linebreak>() ){
+	// exception, no text on LineBreak
+	return;
+      }
+      UnicodeString utxt;
+      try {
+	// so get Untokenized text from the children
+	utxt = node->text( outputclass );
+      }
+      catch (...){
+      }
       if ( !utxt.isEmpty() ){
-	root->setutext( utxt, outputclass );
+	node->setutext( utxt, outputclass );
+      }
+      else if ( copyclass ){
+	utxt = node->text( inputclass );
+	if ( !utxt.isEmpty() ){
+	  node->setutext( utxt, outputclass );
+	}
+	else {
+	  throw logic_error( "still unable to set outputclass" );
+	}
       }
       else {
-	throw logic_error( "still unable to set outputclass" );
+	LOG << "unable to set text on node <" << node->xmltag() << " id='"
+	    << node->id() << "'>. No text with outputclass= '" << outputclass
+	    << "'" << endl;
+	LOG << "maybe the inputfile is already tokenized, for inputclass='"
+	    << inputclass << "' ?" << endl;
+	LOG << "As a final resort you might try the --copyclass option." << endl;
+	throw logic_error( "unable to set outputclass" );
       }
     }
-    else {
-      LOG << "unable to set text on node <" << root->xmltag() << " id='"
-	  << root->id() << "'>. No text with outputclass= '" << outputclass
-	  << "'" << endl;
-      LOG << "maybe the inputfile is already tokenized, for inputclass='"
-	  << inputclass << "' ?" << endl;
-      LOG << "As a final resort you might try the --copyclass option." << endl;
-      throw logic_error( "unable to set outputclass" );
+    else if ( text_redundancy == "none" ){
+      // remove the textcontent for the outputclass of node
+      node->clear_textcontent( outputclass );
     }
-  }
-
-  void removeText( folia::FoliaElement *root,
-		   const string& outputclass  ){
-    if ( !root ){
-      throw logic_error( "removeText() on empty root" );
-    }
-    // remove the textcontent in outputclass of root
-    root->clear_textcontent( outputclass );
   }
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
@@ -1096,17 +1093,12 @@ namespace Tokenizer {
       }
       append_to_folia( root, buffer, parCount);
     }
-    // make sure to set the text on the last root created
-    if ( text_redundancy == "full" ){
-      appendText( root );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( root, outputclass );
-    }
+    conditional_add_text( root );
     return doc;
   }
 
-  void TokenizerClass::tokenize( const string& ifile, const string& ofile ){
+  void TokenizerClass::tokenize( const string& ifile,
+				 const string& ofile ){
     ostream *OUT = NULL;
     if ( ofile.empty() )
       OUT = &cout;
@@ -1339,13 +1331,7 @@ namespace Tokenizer {
 	  if ( tokDebug > 5 ){
 	    DBG << "[add_words] next embedded sentence" << endl;
 	  }
-	  // honour text_redundancy on the Sentence
-	  if ( text_redundancy == "full" ){
-	    appendText( root );
-	  }
-	  else if ( text_redundancy == "none" ){
-	    removeText( root, outputclass );
-	  }
+	  conditional_add_text( root );
 	  root = root->parent();
 	  const folia::processor *proc
 	    = add_provenance_structure( doc,
@@ -1410,13 +1396,7 @@ namespace Tokenizer {
 	  if ( tokDebug > 5 ){
 	    DBG << "[add_words] End of quote" << endl;
 	  }
-	  // honour text_redundancy on the Sentence
-	  if ( text_redundancy == "full" ){
-	    appendText( root->parent() );
-	  }
-	  else if ( text_redundancy == "none" ){
-	    removeText( root->parent(), outputclass );
-	  }
+	  conditional_add_text( root->parent() );
 	  root = root->parent()->parent(); // so close Sentence too
 	}
 	else {
@@ -1424,12 +1404,7 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( text_redundancy == "full" ){
-      appendText( sent );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( sent, outputclass );
-    }
+    conditional_add_text( sent );
     return result;
   }
 
@@ -1686,12 +1661,7 @@ namespace Tokenizer {
 	sent = popSentence();
       }
     }
-    if ( text_redundancy == "full" ){
-      appendText( s );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( s, outputclass );
-    }
+    conditional_add_text( s );
   }
 
   void TokenizerClass::handle_one_paragraph( folia::Paragraph *p,
@@ -1755,12 +1725,7 @@ namespace Tokenizer {
 	handle_one_sentence( s, sentence_done );
       }
     }
-    if ( text_redundancy == "full" ){
-      appendText( p );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( p, outputclass );
-    }
+    conditional_add_text( p );
   }
 
   void TokenizerClass::handle_one_text_parent( folia::FoliaElement *e,
@@ -1913,12 +1878,7 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( text_redundancy == "full" ){
-      appendText( e );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( e, outputclass );
-    }
+    conditional_add_text( e );
   }
 
   folia::Document *TokenizerClass::tokenize_folia( const string& infile_name ){
@@ -1974,12 +1934,7 @@ namespace Tokenizer {
 	}
       }
     }
-    if ( text_redundancy == "full" ){
-      appendText( parent );
-    }
-    else if ( text_redundancy == "none" ){
-      removeText( parent, outputclass );
-    }
+    conditional_add_text( parent );
     if ( sentence_done == 0 ){
       LOG << "document contains no text in the desired inputclass: "
 	  << inputclass << endl;
