@@ -557,7 +557,7 @@ namespace Tokenizer {
 	    << "Multiple 'ucto' processors have already been run?" << endl;
 	exit( EXIT_FAILURE );
       }
-      // ucto has been used one before, we can't do it completely over again!
+      // ucto has been used once before, we can't do it completely over again!
       if ( !passthru ){
 	// but we probably knew it
 	LOG << "Difficult to tokenize '" << doc->filename()
@@ -825,7 +825,7 @@ namespace Tokenizer {
 	pos = in.indexOf( EOSM[i], pos+1 );
       }
     }
-    // just in case ther is no EOS marker at the the end
+    // just in case ther is no EOS marker at the end
     eos_posses.insert( in.length() -1 );
     // now we gather the results
     vector<UnicodeString> result;
@@ -1016,7 +1016,10 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::conditional_add_text( folia::FoliaElement *node ) const {
-    // conditionally set or remove the text on node
+    /// using the value of \e text_redundancy set or remove the text on node
+    /*!
+      \param node the node set or clear text from
+     */
     if ( !node ){
       throw logic_error( "add_text on empty root" );
     }

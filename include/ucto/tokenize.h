@@ -147,7 +147,7 @@ namespace Tokenizer {
     void tokenizeLine( const UnicodeString&, const std::string& = "" );
     void tokenizeLine( const std::string&, const std::string& = "" );
 
-    // extract 1 sentence from Token vector;
+    // extract 1 sentence from the internal Token vector;
     std::vector<Token> popSentence();
 
     // convert the sentence in a token vector to a UnicodeString
