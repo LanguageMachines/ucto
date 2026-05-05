@@ -3200,6 +3200,16 @@ namespace Tokenizer {
 				     bool space,
 				     const string& lang,
 				     const UnicodeString& assigned_type ) {
+    /// tokenize one 'word' from input
+    /*!
+      \param input a UnicodeString to examine
+      \param space should we set the SPACE role
+      \param lang the language of the word
+      \param assigned_type if empty, this is the first pass, when not,
+      we are re-examining (part of) the input, an must be carefull not
+      to end up in an infinite loop
+      On succesful parsing, a Token will be added to the internal buffer
+     */
     bool recurse = !assigned_type.isEmpty();
 
     int32_t inpLen = input.countChar32();
@@ -3245,7 +3255,7 @@ namespace Tokenizer {
       UChar32 c = input.char32At(0);
       if ( c == SPACE_PLACEHOLDER ){
 	// will be translated back to a single space, ergo an empty token
-	// We don't want that
+	// We don't want that so just skip it
 	return;
       }
       UnicodeString type = detect_type( c );

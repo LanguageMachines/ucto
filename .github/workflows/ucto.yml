@@ -92,6 +92,15 @@ jobs:
           fi
           echo "action_details=$TEST_STAT errors" >> $GITHUB_ENV
         continue-on-error: true
+
+      - name: log problems
+        if: >-
+            ${{ env.action_status == '' &&
+                steps.uctotests.outcome != 'success' }}
+        run: |
+          cat tests/testoutput/*.err
+          cat tests/testoutput/*.diff
+
       - name: Notify IRC of results
         uses: LanguageMachines/ticcactions/irc-status@v1
         with:
