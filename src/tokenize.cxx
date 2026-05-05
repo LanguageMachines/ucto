@@ -123,6 +123,13 @@ namespace Tokenizer {
 
   UnicodeString convert( const string& line,
 			 const string& inputEncoding ){
+    /// convert a string with \e inputEncoding into a UnicodeString
+    /*!
+      \param line int inputstring
+      \param inputEncoding the assumed encodfing
+      \return a valid UnicodeString
+      will throw when the encoding is wrong, or bogus characters are found
+    */
     UnicodeString result;
     if ( !line.empty() ){
       try {
@@ -155,11 +162,21 @@ namespace Tokenizer {
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
-  UnicodeString filter_ZCARON( const UnicodeString& in ){
+  UChar32 SPACE_PLACEHOLDER = U'Ž';
+
+  UnicodeString filter_placeholder( const UnicodeString& in ){
+    /// filter out the SPACE_PACEHOLDER characters
+    /// assuming they were added usiing the hidden --keep-spaces-inside-quotes
+    /// option
+    /*!
+      \param in UnicodeString input
+      \return filtered output, where  the SPACE_PLACEHOLDER
+      is replaced by a space
+    */
     UnicodeString result;
     for ( int i=0; i < in.length(); ++i ){
       UChar32 c = in[i];
-      if ( c == U'Ž' ){
+      if ( c == SPACE_PLACEHOLDER ){
 	c = ' ';
       }
       result += c;
@@ -173,7 +190,7 @@ namespace Tokenizer {
 		const string& _lang_code ):
     type(_type), role(_role), lang_code(_lang_code) {
     if ( keep_quoted_spaces ){
-      us = filter_ZCARON( _s );
+      us = filter_placeholder( _s );
     }
     else {
       us = _s;
@@ -185,7 +202,7 @@ namespace Tokenizer {
 		const string& _lang_code ):
     type(_type), role(NOROLE), lang_code(_lang_code) {
     if ( keep_quoted_spaces ){
-      us = filter_ZCARON( _s );
+      us = filter_placeholder( _s );
     }
     else {
       us = _s;
@@ -513,9 +530,18 @@ namespace Tokenizer {
     }
   }
 
-  string fixup_UTF16( const string& input_line, const string& encoding ){
+  string fixup_UTF16( const string& input_line,
+		      const string& encoding ){
+    /// cleanup a string from unwanted 0 bytes (UTF16) and CR
+    /*!
+      \param input_line the line to fixup
+      \param encoding the encoding
+      \return the cleaned UTF16 result
+
+      this is some hackery to handle exotic input. UTF16 but also CR at end.
+
+    */
     string line = input_line;
-    // some hackery to handle exotic input. UTF-16 but also CR at end.
     string::size_type pos = line.rfind( '\r' );
     if ( pos != string::npos ){
       line.erase( pos );
@@ -2740,6 +2766,12 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::checkBOM( istream& in ){
+    /// check a stream for a Byte Order Marker
+    /// when present, use it to detect the encoding
+    /*!
+      \param in the inputstream
+      \return the detected encoding, or the default inputEncoding if not found
+    */
     string result = inputEncoding;
     if ( &in == &cin ){
       return result;
@@ -2754,15 +2786,16 @@ namespace Tokenizer {
 							&bomLength,
 							&err);
     if ( bomLength ){
+      // so a BOM is found, and an encoding detected
       if ( tokDebug ){
 	DBG << "Autodetected encoding: " << encoding << endl;
       }
       result = encoding;
-      if ( result == "UTF16BE"
-	   || result == "UTF-16BE" ){
+      if ( result == "UTF-16BE" ){
 	result = "UTF16BE";
       }
     }
+    // make sure to position the stream after the BOM
     in.seekg( pos + (streampos)bomLength );
     return result;
   }
@@ -2928,6 +2961,12 @@ namespace Tokenizer {
   }
 
   UnicodeString replace_quoted_spaces( const UnicodeString& in ){
+    /// replace spaces inside quotes by a placeholder
+    /*!
+      \parameter in the inputstring
+      \return a string where every space inside quotes is replaced by a
+      placeholder
+     */
     UnicodeString result;
     UChar32 quote = '\x0';
     for ( int i=0; i < in.length(); ++i ){
@@ -2946,7 +2985,7 @@ namespace Tokenizer {
 	}
       }
       else if ( c == ' ' && quote != '\x0' ){
-	c = U'Ž'; // mark as  Ž
+	c = SPACE_PLACEHOLDER;
       }
       result += c;
     }
@@ -3204,6 +3243,11 @@ namespace Tokenizer {
 	 || special ) {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
+      if ( c == SPACE_PLACEHOLDER ){
+	// will be translated back to a single space, ergo an empty token
+	// We don't want that
+	return;
+      }
       UnicodeString type = detect_type( c );
       if ( tokDebug >= 8 ){
 	DBG << " a single character: " << UnicodeString(c) << " type= "
