@@ -77,7 +77,8 @@ jobs:
           details: ${{ env.action_details }}
         continue-on-error: true
 
-      - name: run uctotests
+      - name: uctotests
+        id: uctotests
         if: ${{ env.action_status == '' }}
         env:
           EXPECT: 0
