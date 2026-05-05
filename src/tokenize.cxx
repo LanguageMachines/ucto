@@ -3203,7 +3203,7 @@ namespace Tokenizer {
     /// tokenize one 'word' from input
     /*!
       \param input a UnicodeString to examine
-      \param space should we set the SPACE role
+      \param space should we set the SPACE role?
       \param lang the language of the word
       \param assigned_type if empty, this is the first pass, when not,
       we are re-examining (part of) the input, an must be carefull not
