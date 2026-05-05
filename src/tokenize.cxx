@@ -200,14 +200,7 @@ namespace Tokenizer {
   Token::Token( const UnicodeString& _type,
 		const UnicodeString& _s,
 		const string& _lang_code ):
-    type(_type), role(NOROLE), lang_code(_lang_code) {
-    if ( keep_quoted_spaces ){
-      us = filter_placeholder( _s );
-    }
-    else {
-      us = _s;
-    }
-  }
+    Token(_type,_s,NOROLE,_lang_code) {}
 
   ostream& operator<< (std::ostream& os, const Token& t ){
     os << t.type << " : " << t.role  << ": '" << t.us << "' (" << t.lang_code << ")";
@@ -215,6 +208,12 @@ namespace Tokenizer {
   }
 
   UnicodeString toUString( const TokenRole& tok ){
+    /// give a UnicodeString representation of a TokenRole
+    /*!
+      \param tok the TokenRole to display
+      \return a UnicodeString representation of \e tok (multiple answers
+      are possible)
+     */
     UnicodeString result;
     if ( tok & NOSPACE){
       result += "NOSPACE ";
@@ -238,11 +237,21 @@ namespace Tokenizer {
   }
 
   ostream& operator<<( ostream& os, const TokenRole& tok ){
+    /// output a representation of a TokenRole to a stream
+    /*!
+      \param os the output stream
+      \param tok the TokenRole to display
+      \return the stream
+     */
     os << toUString( tok );
     return os;
   }
 
   bool TokenizerClass::initialize_textcat(){
+    /// initialize the TextCat module
+    /*!
+      \return true on succes, or false when no working TextCat is installed
+     */
 #ifdef HAVE_TEXTCAT
     if ( text_cat ){
       return text_cat != NEVERLAND;
@@ -269,23 +278,6 @@ namespace Tokenizer {
       text_cat = NEVERLAND; // signal invalidity
       return false;
     }
-    //    text_cat->set_debug( true );
-    // ifstream is( textcat_cfg );
-    // string line;
-    // while ( getline( is, line ) ){
-    //   LOG << line << endl;
-    //   vector<string> v = TiCC::split( line );
-    //   if ( v.size()==2 && v[1] == "nld" ){
-    // 	LOG << "voor nederlands: " << endl;
-    //     ifstream is2( v[0] );
-    // 	string line2;
-    // 	while ( getline( is2, line2 ) ){
-    // 	  LOG << line2 << endl;
-    // 	  break;
-    // 	}
-    // 	LOG << "   done with nederlands" << endl;
-    //   }
-    // }
     return true;
 #else
     LOG << "NO TEXTCAT SUPPORT!" << endl;
@@ -294,6 +286,7 @@ namespace Tokenizer {
   }
 
   TokenizerClass::TokenizerClass():
+    /// construct a TokenizerClass object
     linenum(0),
     inputEncoding( "UTF-8" ),
     space_separated(true),
@@ -328,11 +321,12 @@ namespace Tokenizer {
   {
     theErrLog = new TiCC::LogStream(cerr);
     theErrLog->set_message( "ucto" );
-    theDbgLog = theErrLog;
     theErrLog->set_stamp( StampMessage );
+    theDbgLog = theErrLog;
   }
 
   TokenizerClass::~TokenizerClass(){
+    /// destruct a TokenizerClass object
     Setting *d = 0;
     for ( const auto& s : settings ){
       if ( s.first == "default" ){
@@ -356,6 +350,10 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::reset( const string& lang ){
+    /// reset a TokenizerClass
+    /*!
+      \param lang the language to clear too
+     */
     ucto_processor = 0;
     already_tokenized = false;
     tokens.clear();
@@ -368,7 +366,7 @@ namespace Tokenizer {
   bool TokenizerClass::setNormSet( const std::string& values ){
     /// set the normalization values
     /*!
-      \param values The new stream
+      \param values a comma-separated list of values
       \return true on succes
 
     */
@@ -380,7 +378,7 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
-    /// set the theErrLog stream
+    /// set the theErrLog stream to another stream
     /*!
       \param os The new stream
 
@@ -566,6 +564,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::init_provenance( folia::Document *doc,
 						     folia::processor *parent ) const {
+    /// initialize an Ucto provenance processor for a folia::Document
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     if ( ucto_processor ){
       // already created
       if ( tokDebug > 0 ){
@@ -617,6 +621,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_passthru( folia::Document *doc,
 							     folia::processor *parent ) const {
+    /// add provenance processor for a passthru tokenizer
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc ){
       folia::KWargs args;
@@ -631,6 +641,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_undetermined( folia::Document *doc,
 								 folia::processor *parent ) const {
+    /// add provenance processor for a undetermined language
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc ){
       folia::KWargs args;
@@ -645,6 +661,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_data( folia::Document *doc,
 							 folia::processor* parent ) const {
+    /// add provenance processor for uctodata
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc ){
       if ( !ucto_re_run() ){
@@ -672,6 +694,13 @@ namespace Tokenizer {
   folia::processor *TokenizerClass::add_provenance_structure(  folia::Document *doc,
 							       const folia::AnnotationType type,
 							       folia::processor *parent ) const {
+    /// add a provenance processor for a folia::AnnotationType
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param type the AnnotationType to add
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     folia::processor *proc = init_provenance( doc, parent );
     if ( proc && !ucto_re_run() ){
       if ( !doc->declared( type ) ){
@@ -710,9 +739,18 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
 							      folia::processor *parent ) const {
+    /// add provenance processors for several folia::AnnotationType
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+
+      we just add them, without checking if the AnnotationTypes are used
+     */
     folia::processor *res = 0;
     add_provenance_structure( doc,
-			      folia::AnnotationType::PARAGRAPH, parent );
+			      folia::AnnotationType::PARAGRAPH,
+			      parent );
     add_provenance_structure( doc,
 			      folia::AnnotationType::SENTENCE,
 			      parent );
@@ -724,6 +762,12 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_setting( folia::Document *doc,
 							    folia::processor *parent ) const {
+    /// add a provenance processor for all the ucto language settings
+    /*!
+      \param doc a pointer to a (valid) folia::Document
+      \param parent attach the result to the parent, if available
+      \return the created processor
+     */
     const folia::processor *proc = init_provenance( doc, parent );
     if ( proc && !ucto_re_run() ){
       folia::processor *data_proc = add_provenance_data( doc, parent );
@@ -774,6 +818,11 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::start_document( const string& id ) const {
+    /// create a folia::Documment from scratch
+    /*!
+      \param id an identifier for the document
+      \return a complete folia::Document, including an empty Text node.
+     */
     folia::Document *doc = new folia::Document( "xml:id='" + id + "'" );
     doc->addStyle( "text/xsl", "folia.xsl" );
     if ( tokDebug > 3 ){
@@ -796,6 +845,11 @@ namespace Tokenizer {
 
 #ifdef HAVE_TEXTCAT
   string TokenizerClass::detect( const UnicodeString& line ) {
+    /// detect the language of an inputline
+    /*!
+      \param line the UnicodeString to inspect
+      \return the detected language, or "default" when not found.
+     */
     if ( text_cat == 0 ){
       initialize_textcat();
     }
@@ -833,6 +887,7 @@ namespace Tokenizer {
   }
 #else
   string TokenizerClass::detect( const UnicodeString& ) {
+    /// signal that language detection is impossible
     LOG << "No TextCat support available" << endl;
     return "default";
   }
@@ -840,7 +895,9 @@ namespace Tokenizer {
 
   vector<UnicodeString> TokenizerClass::sentence_split( const UnicodeString& in ){
     /// split a UnicodeString on the standard EOS markers,
-    //  but ONLY when followed by a space. otherwise keep together
+    /// but ONLY when followed by a space. otherwise keep together
+    /// only used as last resort for detecting language in the "und" language
+    /// case (only known use is by Frog)
     set<int> eos_posses;
     UnicodeString EOSM = settings["default"]->eosmarkers;
     // first we collect al the positions of EOS markers
@@ -972,6 +1029,15 @@ namespace Tokenizer {
   }
 
   vector<Token> TokenizerClass::tokenizeOneSentence( istream& IN ){
+    /// extract a vector of Token objects form the internal Token buffer,
+    /*!
+      \param IN the inputstream
+      \return a vector of Tokens
+      This function extracts a vector of Token objects form the internal Token
+      buffer, representing one full sentence.
+      When no more tokens are available, \e IN is consulted to
+      extract additional tokens
+    */
     if  (tokDebug > 0) {
       DBG << "[tokenizeOneSentence()] before countSent " << endl;
     }
@@ -3207,7 +3273,7 @@ namespace Tokenizer {
       \param lang the language of the word
       \param assigned_type if empty, this is the first pass, when not,
       we are re-examining (part of) the input, an must be carefull not
-      to end up in an infinite loop
+      to end up in an infinite loop, so we set the detected type then.
       On succesful parsing, a Token will be added to the internal buffer
      */
     bool recurse = !assigned_type.isEmpty();
@@ -3254,8 +3320,8 @@ namespace Tokenizer {
       //single character, no need to process all rules, do some simpler (faster) detection
       UChar32 c = input.char32At(0);
       if ( c == SPACE_PLACEHOLDER ){
-	// will be translated back to a single space, ergo an empty token
-	// We don't want that so just skip it
+	// 'c' will be translated back to a single space, yielding an empty
+	// token. We don't want that so just skip it
 	return;
       }
       UnicodeString type = detect_type( c );
@@ -3456,10 +3522,19 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::get_data_version() const {
+    /// return the value of the data version
     return UCTODATA_VERSION;
   }
 
-  bool TokenizerClass::init( const string& fname, const string& tname ){
+  bool TokenizerClass::init( const string& fname,
+			     const string& tname ){
+    /// initialize a TokenizerClass object
+    /*!
+      \param fname a language settings file to init from
+      \param tname an additional tokensfile which will be added to the
+      settings
+      \return true on success
+    */
     if ( tokDebug ){
       DBG << "Initiating tokenizer..." << endl;
     }
@@ -3507,6 +3582,13 @@ namespace Tokenizer {
 
   bool TokenizerClass::init( const vector<string>& languages,
 			     const string& tname ){
+    /// initialize a TokenizerClass object for multiple languages
+    /*!
+      \param languages a list of languages to init from, they must be available
+      \param tname an additional tokensfile which will be added to the
+      settings
+      \return true on success
+    */
     if ( tokDebug > 0 ){
       DBG << "Initiating tokenizer from language list..." << endl;
     }
@@ -3569,7 +3651,10 @@ namespace Tokenizer {
   string get_language( const vector<Token>& tv ){
     // examine the assigned languages of ALL tokens.
     // they should all be the same
-    // assign that value
+    /*!
+      \param tv a list of Token objects
+      \return a language, when ALL objects have that same language
+     */
     string result = "default";
     for ( const auto& t : tv ){
       if ( !t.lang_code.empty() && t.lang_code != "default" ){
@@ -3587,6 +3672,14 @@ namespace Tokenizer {
   bool TokenizerClass::get_setting_info( const std::string& language,
 					 std::string& set_file,
 					 std::string& version ) const {
+    /// extract information about the settings of this TokenizerClass object
+    /// for this \e language
+    /*!
+      \param language the current language
+      \param set_file the name of the settingsfile for \e language
+      \param version the version of the settingsfile
+      \return true if a result is found, false if not.
+     */
     set_file.clear();
     version.clear();
     auto const& it = settings.find( language );
