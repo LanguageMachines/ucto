@@ -1370,13 +1370,13 @@ namespace Tokenizer {
 
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
 					   const vector<Token>& toks ) const {
-    // create a vector of folia::Word, and append to a folia::Sentence
+    // create folia::Word from Tokens, and append to a folia::Sentence
     /*!
       \param sent The Sentence object to append to
       \param toks The Token vector to create Words from
 
       This function is complex, as it handles Quotes too. which may
-      lead to the creation of extra Sentences
+      lead to the creation of extra Quote or Sentences nodes
      */
     folia::Document *doc = sent->doc();
     string tok_set;
@@ -1541,6 +1541,14 @@ namespace Tokenizer {
   folia::FoliaElement *TokenizerClass::append_to_folia( folia::FoliaElement *root,
 							const vector<Token>& tv,
 							int& p_count ) const {
+    // create folia::FoliaElement from Tokens, and append to folia node
+    /*!
+      \param sent The FoliaElement to append to
+      \param toks The Token vector to create more Sentences from
+
+      may append additional Paragraph elements
+
+     */
     if ( !root || !root->doc() ){
       throw logic_error( "missing root" );
     }
@@ -1563,6 +1571,7 @@ namespace Tokenizer {
       args["xml:id"] = root->doc()->id() + ".p." + TiCC::toString(++p_count);
       folia::Paragraph *p = new folia::Paragraph( args, root->doc() );
       if ( root->isinstance<folia::Text>() ){
+	// so no paragraphs yet
 	if  ( tokDebug > 5 ){
 	  DBG << "append_to_folia, add paragraph to Text" << endl;
 	}
@@ -1622,6 +1631,12 @@ namespace Tokenizer {
   void TokenizerClass::correct_element( folia::FoliaElement *orig,
 					const vector<Token>& toks,
 					const string& tok_set ) const {
+    /// use a vector of  Tokens create a folia::Correction
+    /*!
+      \param orig The FoliaElement to correct
+      \param toks the tokens to create a correction
+      \param tok_set the setname for corrections
+     */
     vector<folia::FoliaElement*> sV;
     vector<folia::FoliaElement*> cV;
     vector<folia::FoliaElement*> oV;
@@ -1685,16 +1700,22 @@ namespace Tokenizer {
 
   vector<Token> TokenizerClass::correct_elements( folia::FoliaElement *e,
 						  const vector<folia::FoliaElement*>& wv ) {
+    /// use a vector of Tokens to create a folia::Correction
+    /*!
+      \param e The FoliaElement to correct
+      \param wv a vector of new elements
+      \return a vector of Tokens
+     */
     // correct_elements may be called directly from Frog, so make sure to set TP
     text_policy.set_class( inputclass );
     vector<Token> result;
-    // correct only when the sentence is in the desired language
+    // correct only when the input node is in the desired language
     string s_la;
     if ( e->has_annotation<folia::LangAnnotation>() ){
       s_la = e->annotation<folia::LangAnnotation>()->cls();
     }
     if ( !s_la.empty() && settings.find(s_la) == settings.end() ){
-      // the Sentence already has a language code, and it
+      // the element already has a language code, and it
       // is NOT what we search for.
       // just ignore it
       if ( tokDebug > 0 ){
@@ -1735,10 +1756,10 @@ namespace Tokenizer {
 
   void TokenizerClass::handle_one_sentence( folia::Sentence *s,
 					    int& sentence_done ){
-    // check feasibility
     if ( tokDebug > 1 ){
       DBG << "handle_one_sentence: " << s << endl;
     }
+    // check feasibility
     if ( inputclass != outputclass && outputclass == "current" ){
       if ( s->hastext( outputclass ) ){
 	throw uLogicError( "cannot set text with class='current' on node "
@@ -1796,18 +1817,29 @@ namespace Tokenizer {
 
   void TokenizerClass::handle_one_paragraph( folia::Paragraph *p,
 					     int& sentence_done ){
-    // a Paragraph may contain both Word and Sentence nodes
-    // Sentences will be handled
+    // while tokenizing FoLiA, handle a Paragraph node
+    /*!
+      \param p the folia::Paragraph
+      \param sentence_done the number of sentences handled
+
+      a Paragraph may contain Sentence nodes, Word nodes or only text
+
+      If Sentences ara available, we process those. Otherwise if Words are
+      present we handle them, otherwise we attempt to tokenize the text.
+
+      \note Mixed content of Sentence's and Words is not handled
+    */
+
     vector<folia::Sentence*> sv
       = p->select<folia::Sentence>(folia::SELECT_FLAGS::LOCAL);
     if ( sv.empty() ){
-      // No Sentence, so just text or Words
+      // No Sentences, so just text or Words
       vector<folia::Word*> wv = p->select<folia::Word>(folia::SELECT_FLAGS::LOCAL);
       if ( !wv.empty() ){
-	vector<folia::FoliaElement*> ev( wv.begin(), wv.end() );
 	// Words found
+	vector<folia::FoliaElement*> ev( wv.begin(), wv.end() );
 	if ( doWordCorrection ){
-	  if ( correct_elements( p, ev ).empty() ){
+	  if ( !correct_elements( p, ev ).empty() ){
 	    ++sentence_done;
 	  }
 	}
@@ -1817,12 +1849,13 @@ namespace Tokenizer {
 	// No Words too, handle text, if any
 	UnicodeString text = p->unicode( text_policy );
 	if ( tokDebug > 0 ){
-	  DBG << "handle_one_paragraph:" << text << endl;
+	  DBG << "handle_one_paragraph, text=" << text << endl;
 	}
 	tokenizeLine( text );
 	vector<Token> toks = popSentence();
 	const folia::processor *proc = 0;
 	while ( !toks.empty() ){
+	  // loop as long as we can extract Sentences
 	  if ( proc == 0 ){
 	    proc = add_provenance_structure( p->doc(),
 					     folia::AnnotationType::SENTENCE );
@@ -1850,7 +1883,7 @@ namespace Tokenizer {
       if ( tokDebug > 1 ){
 	DBG << "found some Sentences " << sv << endl;
       }
-      // For now wu just IGNORE loose words (backward compatability)
+      // For now we just IGNORE loose words (backward compatability)
       for ( const auto& s : sv ){
 	handle_one_sentence( s, sentence_done );
       }
@@ -1866,6 +1899,10 @@ namespace Tokenizer {
     /// In the latter case, we construct a Sentence from the text, and
     /// a Paragraph if more then one Sentence is found
     ///
+    /*!
+      \param e the FoliaElement to process
+      \param sentence_done the number of sentences handled
+     */
     if ( inputclass != outputclass && outputclass == "current" ){
       if ( e->hastext( outputclass ) ){
 	throw uLogicError( "cannot set text with class='current' on node "
@@ -1875,17 +1912,18 @@ namespace Tokenizer {
     }
     if ( e->xmltag() == "w" ){
       // SKIP! already tokenized into words!
+      // nothing to do here
     }
     else if ( e->xmltag() == "s" ){
-      // OK a text in a sentence
+      // OK a sentence, process it
       if ( tokDebug > 2 ){
-	DBG << "found text in a sentence " << e << endl;
+	DBG << "found a sentence " << e << endl;
       }
       handle_one_sentence( dynamic_cast<folia::Sentence*>(e),
 			   ++sentence_done );
     }
     else if ( e->xmltag() == "p" ){
-      // OK a longer text in some paragraph, maybe more sentences
+      // OK a paragraph, maybe with more sentences
       if ( tokDebug > 2 ){
 	DBG << "found text in a paragraph " << e << endl;
       }
@@ -1893,7 +1931,7 @@ namespace Tokenizer {
 			    sentence_done );
     }
     else {
-      // Some text outside word, paragraphs or sentences (yet)
+      // Some other node than word, paragraph or sentence
       // maybe <div> or <note> or such
       // there may be embedded Paragraph, Word and Sentence nodes
       // if so, Paragraphs and Sentences should be handled separately
@@ -1902,7 +1940,7 @@ namespace Tokenizer {
       vector<folia::Paragraph*> pv
 	= e->select<folia::Paragraph>(folia::SELECT_FLAGS::LOCAL);
       if ( pv.empty() && sv.empty() ){
-	// just words or text
+	// assume just text
 	UnicodeString text = e->unicode( text_policy );
 	if ( tokDebug > 1 ){
 	  DBG << "tok-" << e->xmltag() << ":" << text << endl;
@@ -1923,6 +1961,7 @@ namespace Tokenizer {
 	  // But first check if this is allowed!
 	  folia::FoliaElement *rt;
 	  if ( e->acceptable<folia::Paragraph>() ){
+	    // create a pargraph to add sents
 	    folia::KWargs args;
 	    string e_id = e->id();
 	    if ( !e_id.empty() ){
@@ -1939,6 +1978,7 @@ namespace Tokenizer {
 	    rt = p;
 	  }
 	  else {
+	    // NO Paragraph is allowed here. just add sents to e
 	    rt = e;
 	  }
 	  for ( const auto& sent : sents ){
@@ -2012,6 +2052,11 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize_folia( const string& infile_name ){
+    /// create a new folia::Document from an input file
+    /*!
+      \param infile_name the name of an input file
+      \return a folia::Document
+     */
     reset(); // when starting a new inputfile, we must reset provenance et.al.
     if ( inputclass == outputclass
 	 && !doWordCorrection ){
@@ -2076,6 +2121,11 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenize_folia( const string& infile_name,
 				       const string& outfile_name ){
+    /// create a folia::Document from an input file and write to an output file
+    /*!
+      \param infile_name the name of an input file
+      \param outfile_name the name of an output file
+     */
     if ( tokDebug > 0 ){
       DBG << "[tokenize_folia] (" << infile_name << ","
 	  << outfile_name << ")" << endl;
@@ -2201,12 +2251,18 @@ namespace Tokenizer {
     return result;
   }
 
-  int TokenizerClass::countSentences( bool forceentirebuffer ) {
-    //Return the number of *completed* sentences in the token buffer
+  int TokenizerClass::countSentences( bool force_entirebuffer ) {
+    // Return the number of *completed* sentences in the token buffer
+    /*!
+      \param force_entirebuffer make sure to set ENDOFSENTENCE on last token
+      \return number of completed sentences in the internal Token buffer
 
-    //Performs  extra sanity checks at the same time! Making sure
-    //BEGINOFSENTENCE and ENDOFSENTENCE always pair up, and that TEMPENDOFSENTENCE roles
-    //are converted to proper ENDOFSENTENCE markers
+      Performs  extra sanity checks at the same time!
+
+      Making sure BEGINOFSENTENCE and ENDOFSENTENCE always pair up, and that
+      TEMPENDOFSENTENCE roles are converted to proper ENDOFSENTENCE markers
+    */
+
 
     short quotelevel = 0;
     int count = 0;
@@ -2229,7 +2285,7 @@ namespace Tokenizer {
       if (token.role & NEWPARAGRAPH) quotelevel = 0;
       if (token.role & BEGINQUOTE) quotelevel++;
       if (token.role & ENDQUOTE) quotelevel--;
-      if ( forceentirebuffer
+      if ( force_entirebuffer
 	   && (token.role & TEMPENDOFSENTENCE)
 	   && (quotelevel == 0)) {
 	//we thought we were in a quote, but we're not... No end quote was found and an end is forced now.
@@ -2246,7 +2302,7 @@ namespace Tokenizer {
 	  DBG << "[countSentences] SENTENCE #" << count << " found" << endl;
 	}
       }
-      if ( forceentirebuffer
+      if ( force_entirebuffer
 	   && ( tok_cnt == size - 1)
 	   && !(token.role & ENDOFSENTENCE) )  {
 	//last token of buffer
@@ -2265,6 +2321,8 @@ namespace Tokenizer {
   }
 
   vector<Token> TokenizerClass::popSentence( ) {
+    /// extract a Token vector representing one sentence from the internal
+    /// token buffer. Make sure to keep quotes balanced
     vector<Token> outToks;
     const int size = tokens.size();
     if ( size != 0 ){
@@ -2286,7 +2344,8 @@ namespace Tokenizer {
 	  ++quotelevel;
 	}
 
-	if ((tokens[i].role & ENDOFSENTENCE) && (quotelevel == 0)) {
+	if ( (tokens[i].role & ENDOFSENTENCE)
+	     && (quotelevel == 0)) {
 	  size_t end = i;
 	  if (tokDebug >= 1){
 	    DBG << "[tokenize] extracted sentence, begin=" << begin
@@ -2313,6 +2372,11 @@ namespace Tokenizer {
   }
 
   UnicodeString TokenizerClass::getString( const vector<Token>& v ){
+    /// extract a UnicodeString from a Token vector
+    /*!
+      \param v a vector of tokens
+      \return the accumulated string values of each Token
+     */
     if ( !v.empty() ){
       //This only makes sense in non-verbose mode, force verbose=false
       const bool tv = verbose;
@@ -2325,11 +2389,20 @@ namespace Tokenizer {
   }
 
   string TokenizerClass::getUTF8String( const vector<Token>& v ){
+    /// extract a UTF8 encode string from a Token vector
+    /*!
+      \param v a vector of tokens
+      \return the accumulated string UTF8 values of each Token
+     */
     UnicodeString result = getString( v );
     return TiCC::UnicodeToUTF8( result,_normalizer );
   }
 
   vector<UnicodeString> TokenizerClass::getSentences() {
+    /// get all available sentences from the internal Token buffer
+    /*!
+      \return a vector of UnicodeString, each element is a tokenized sentence
+     */
     vector<UnicodeString> sentences;
     if  (tokDebug > 0) {
       DBG << "[getSentences()] before countSent " << endl;
@@ -2347,6 +2420,10 @@ namespace Tokenizer {
   }
 
   vector<string> TokenizerClass::getUTF8Sentences() {
+    /// get all available sentences from the internal Token buffer
+    /*!
+      \return a vector of UTF8 strings, each element is a tokenized sentence
+     */
     vector<UnicodeString> uv = getSentences();
     vector<string> result;
     std::transform( uv.begin(), uv.end(),
@@ -2355,8 +2432,14 @@ namespace Tokenizer {
     return result;
   }
 
-  // FBK: return true if character is a quote.
-  bool TokenizerClass::u_isquote( UChar32 c, const Quoting& quotes ) const {
+  bool TokenizerClass::u_isquote( UChar32 c,
+				  const Quoting& quotes ) const {
+    /// check if a character is a quote.
+    /*!
+      \param c the character te check
+      \param quotes the current defined quotes
+      \return when \b c is a known quote
+     */
     bool quote = false;
     if ( u_hasBinaryProperty( c, UCHAR_QUOTATION_MARK )
 	 || c == '`'
@@ -2385,6 +2468,11 @@ namespace Tokenizer {
   //MOSTLY THE SAME AS ABOVE, EXCEPT WITHOUT CHECK FOR PUNCTUATION
   //BECAUSE: '"Hoera!", zei de man' MUST NOT BE SPLIT ON ','..
   bool is_BOS( UChar32 c ){
+    /// check if a character may be a BeginOfSentence
+    /*!
+      \param c the character to test
+      \return true if \b c is a BeginOfSentence in our character set
+     */
     bool is_bos = false;
     UBlockCode s = ublock_getCode(c);
     //test for languages that distinguish case
