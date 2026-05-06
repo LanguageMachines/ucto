@@ -123,7 +123,7 @@ namespace Tokenizer {
 
   UnicodeString convert( const string& line,
 			 const string& inputEncoding ){
-    /// convert a string with \e inputEncoding into a UnicodeString
+    /// convert a string with \b inputEncoding into a UnicodeString
     /*!
       \param line int inputstring
       \param inputEncoding the assumed encodfing
@@ -211,7 +211,7 @@ namespace Tokenizer {
     /// give a UnicodeString representation of a TokenRole
     /*!
       \param tok the TokenRole to display
-      \return a UnicodeString representation of \e tok (multiple answers
+      \return a UnicodeString representation of \b tok (multiple answers
       are possible)
      */
     UnicodeString result;
@@ -430,13 +430,17 @@ namespace Tokenizer {
       \return the previous value
 
       A '+' signals that space-like characters are to be used as separators
+
       A "-+" value of seps signals ONLY a '+' will separate
-      Otherwise a \e seps line starting with '+' means that space-like
+
+      Otherwise a \b seps line starting with '+' means that space-like
       characters, and all the following are separators
 
       e.g.:
       seps="+" means split on spaces (the default)
+
       seps="|[]" means only split on '|', '[' and ']'
+
       seps="+|" means split on spaces AND '|'
     */
     UnicodeString prev;
@@ -479,7 +483,7 @@ namespace Tokenizer {
       \param tr The desired text_redundancy
       \return the old value
 
-      Valid values for \e tr are: "full", "minimal" and "none"
+      Valid values for \b tr are: "full", "minimal" and "none"
     */
     if ( tr == "none" || tr == "minimal" || tr == "full" ){
       string s = text_redundancy;
@@ -1033,9 +1037,11 @@ namespace Tokenizer {
     /*!
       \param IN the inputstream
       \return a vector of Tokens
+
       This function extracts a vector of Token objects form the internal Token
       buffer, representing one full sentence.
-      When no more tokens are available, \e IN is consulted to
+
+      When no more tokens are available, \b IN is consulted to
       extract additional tokens
     */
     if  (tokDebug > 0) {
@@ -1108,7 +1114,7 @@ namespace Tokenizer {
   }
 
   void TokenizerClass::conditional_add_text( folia::FoliaElement *node ) const {
-    /// using the value of \e text_redundancy set or remove the text on node
+    /// using the value of \b text_redundancy set or remove the text on node
     /*!
       \param node the node set or clear text from
      */
@@ -1160,13 +1166,20 @@ namespace Tokenizer {
   }
 
   folia::Document *TokenizerClass::tokenize( istream& IN ) {
+    /// create a tokenized folia::Document  from a stream
+    /*!
+      \param IN en inputstream
+      \return a fully tokenized folia::Document, with provenance and all
+     */
     reset(); // when starting a new inputfile, we must reset provenance et.al.
-    inputEncoding = checkBOM( IN );
-    folia::Document *doc = start_document( docid );
-    folia::FoliaElement *root = doc->doc()->index(0);
+    inputEncoding = checkBOM( IN );  // may remove the dreaded BOM
+    folia::Document *doc = start_document( docid ); // get started
+    folia::FoliaElement *root = doc->getRoot();
     int parCount = 0;
     vector<Token> buffer;
     do {
+      // extract sentences as Token vectors from IN.
+      // and append them to the Document
       if ( tokDebug > 0 ){
 	DBG << "[tokenize] looping on stream" << endl;
       }
@@ -1183,6 +1196,7 @@ namespace Tokenizer {
       DBG << "[tokenize] end of stream reached" << endl;
     }
     if (!buffer.empty()){
+      // check the internal Token buffer for the last Tokens
       if ( tokDebug > 1 ){
 	DBG << "[tokenize] remainder=" << buffer << endl;
       }
@@ -1194,6 +1208,14 @@ namespace Tokenizer {
 
   void TokenizerClass::tokenize( const string& ifile,
 				 const string& ofile ){
+    // tokenize an input file into an outputfile
+    /*!
+      \param ifile the input file, when empty read from cin
+      \param ofile the output file, when empty write to cout
+
+      both files can be in FoLiA format, steered by \b xmlin and \b xmlout
+      flags in the TokenizerClass object
+     */
     ostream *OUT = NULL;
     if ( ofile.empty() )
       OUT = &cout;
@@ -1232,8 +1254,15 @@ namespace Tokenizer {
     }
   }
 
-  void TokenizerClass::tokenize( istream& IN, ostream& OUT) {
-    if (xmlout) {
+  void TokenizerClass::tokenize( istream& IN,
+				 ostream& OUT ) {
+    /// tokenize an input stream into an output stream
+    /*!
+      \param IN the input stream
+      \param OUT the output stream
+     */
+
+    if ( xmlout ) {
       folia::Document *doc = tokenize( IN );
       OUT << doc;
       OUT.flush();
@@ -1242,6 +1271,7 @@ namespace Tokenizer {
 #ifdef DO_READLINE
     else if ( &IN == &cin && isatty(0) ){
       // interactive use on a terminal (quite a hack..)
+      // not for FoLiA input!
       const char *prompt = "ucto> ";
       int i = 0;
       while ( true ){
@@ -1338,9 +1368,16 @@ namespace Tokenizer {
     }
   }
 
-  vector<folia::Word*> TokenizerClass::append_to_sentence( folia::Sentence *sent,
-							   const vector<Token>& toks ) const {
-    vector<folia::Word*> result;
+  void TokenizerClass::append_to_sentence( folia::Sentence *sent,
+					   const vector<Token>& toks ) const {
+    // create a vector of folia::Word, and append to a folia::Sentence
+    /*!
+      \param sent The Sentence object to append to
+      \param toks The Token vector to create Words from
+
+      This function is complex, as it handles Quotes too. which may
+      lead to the creation of extra Sentences
+     */
     folia::Document *doc = sent->doc();
     string tok_set;
     if ( passthru ){
@@ -1358,7 +1395,6 @@ namespace Tokenizer {
 	}
 	set_language( sent, "und" );
 	sent->setutext( line, outputclass );
-	return result;
       }
       else if ( tc_lc != "default" ){
 	tok_set = config_prefix() + tc_lc;
@@ -1477,7 +1513,7 @@ namespace Tokenizer {
 	  cerr << "Word(" << args << ") creation failed: " << e.what() << endl;
 	  exit(EXIT_FAILURE);
 	}
-	result.push_back( w );
+
 	w->setutext( ws, outputclass );
 	if ( tokDebug > 5 ){
 	  DBG << "add_result, created a word: " << w << "(" << ws << ")" << endl;
@@ -1500,7 +1536,6 @@ namespace Tokenizer {
       }
     }
     conditional_add_text( sent );
-    return result;
   }
 
   folia::FoliaElement *TokenizerClass::append_to_folia( folia::FoliaElement *root,
@@ -1570,13 +1605,13 @@ namespace Tokenizer {
     /*!
       \param d The FoliaElement that libfolia will handle us
       \param tp The TextPolicy at hand. This function has been registered in
-      \em tp
+      \b tp
       \return a UnicodeString which we will mark specially so that we know
       that this string is to be handled as a separate token
 
       This function will be called by libfolia's text() functions on
       encountering a tag="token" attribute in a TextContent.
-      It has to be registered in \em tp
+      It has to be registered in \b tp
      */
     UnicodeString tmp_result = text( d, tp );
     tmp_result = ZWJ + tmp_result;
@@ -3673,10 +3708,10 @@ namespace Tokenizer {
 					 std::string& set_file,
 					 std::string& version ) const {
     /// extract information about the settings of this TokenizerClass object
-    /// for this \e language
+    /// for this \b language
     /*!
       \param language the current language
-      \param set_file the name of the settingsfile for \e language
+      \param set_file the name of the settingsfile for \b language
       \param version the version of the settingsfile
       \return true if a result is found, false if not.
      */

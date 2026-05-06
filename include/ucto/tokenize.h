@@ -334,8 +334,8 @@ namespace Tokenizer {
 					  const std::vector<Token>& tv,
 					  int& p_count ) const;
 
-    std::vector<folia::Word*> append_to_sentence( folia::Sentence *,
-						  const std::vector<Token>& ) const;
+    void append_to_sentence( folia::Sentence *,
+			     const std::vector<Token>& ) const;
     void correct_element( folia::FoliaElement *,
 			  const std::vector<Token>&,
 			  const std::string& ) const;
