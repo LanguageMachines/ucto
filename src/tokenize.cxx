@@ -1368,6 +1368,24 @@ namespace Tokenizer {
     }
   }
 
+  folia::Sentence *TokenizerClass::add_sentence( folia::FoliaElement *node ) const {
+    folia::Document *doc = node->doc();
+    const folia::processor *proc2
+      = add_provenance_structure( doc,
+				  folia::AnnotationType::SENTENCE );
+    folia::KWargs args2;
+    string node_id = node->id();
+    if ( !node_id.empty() ){
+      args2["generate_id"] = node_id;
+    }
+    if ( proc2 ){
+      args2["processor"] = proc2->id();
+    }
+    args2["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
+    folia::Sentence *ns = node->add_child<folia::Sentence>( args2 );
+    return ns;
+  }
+
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
 					   const vector<Token>& toks ) const {
     // create folia::Word from Tokens, and append to a folia::Sentence
@@ -1430,23 +1448,10 @@ namespace Tokenizer {
 	}
 	args["set"] = doc->default_set( folia::AnnotationType::QUOTE );
 	folia::FoliaElement *quote = root->add_child<folia::Quote>( args );
-	string quote_id = quote->id();
 	// might need a new Sentence
 	if ( i+1 < toks.size()
 	     && toks[i+1].role & BEGINOFSENTENCE ){
-	  const folia::processor *proc2
-	    = add_provenance_structure( doc,
-					folia::AnnotationType::SENTENCE );
-	  folia::KWargs args2;
-	  if ( !quote_id.empty() ){
-	    args2["generate_id"] = quote_id;
-	  }
-	  if ( proc2 ){
-	    args2["processor"] = proc2->id();
-	  }
-	  args2["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *ns = quote->add_child<folia::Sentence>( args2 );
-	  root = ns;
+	  root = add_sentence( quote );
 	}
 	else {
 	  root = quote;
@@ -1463,21 +1468,7 @@ namespace Tokenizer {
 	    DBG << "[add_words] next embedded sentence" << endl;
 	  }
 	  conditional_add_text( root );
-	  root = root->parent();
-	  const folia::processor *proc
-	    = add_provenance_structure( doc,
-					folia::AnnotationType::SENTENCE );
-	  folia::KWargs args;
-	  string id = get_parent_id(root);
-	  if ( !id.empty() ){
-	    args["generate_id"] = id;
-	  }
-	  if ( proc ){
-	    args["processor"] = proc->id();
-	  }
-	  args["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *ns = root->add_child<folia::Sentence>( args );
-	  root = ns;
+	  root = add_sentence( root->parent() );
 	}
       }
       folia::KWargs args;
@@ -1590,19 +1581,7 @@ namespace Tokenizer {
       }
       root = p;
     }
-    const folia::processor *proc
-      = add_provenance_structure( root->doc(),
-				  folia::AnnotationType::SENTENCE );
-    folia::KWargs args;
-    if ( proc ){
-      args["processor"] = proc->id();
-    }
-    args["set"] = root->doc()->default_set( folia::AnnotationType::SENTENCE );
-    args["generate_id"] = root->id();
-    folia::Sentence *s = root->add_child<folia::Sentence>( args );
-    if  ( tokDebug > 5 ){
-      DBG << "append_to_folia, created Sentence" << s << endl;
-    }
+    folia::Sentence *s = add_sentence( root );
     append_to_sentence( s, tv );
     return root;
   }
@@ -1853,23 +1832,9 @@ namespace Tokenizer {
 	}
 	tokenizeLine( text );
 	vector<Token> toks = popSentence();
-	const folia::processor *proc = 0;
 	while ( !toks.empty() ){
 	  // loop as long as we can extract Sentences
-	  if ( proc == 0 ){
-	    proc = add_provenance_structure( p->doc(),
-					     folia::AnnotationType::SENTENCE );
-	  }
-	  string p_id = p->id();
-	  folia::KWargs args;
-	  if ( proc ){
-	    args["processor"] = proc->id();
-	  }
-	  args["set"] = p->doc()->default_set(folia::AnnotationType::SENTENCE);
-	  if ( !p_id.empty() ){
-	    args["generate_id"] = p_id;
-	  }
-	  folia::Sentence *s = p->add_child<folia::Sentence>( args );
+	  folia::Sentence *s = add_sentence( p );
 	  append_to_sentence( s, toks );
 	  if  (tokDebug > 0){
 	    DBG << "created a new sentence: " << s << endl;
@@ -1982,19 +1947,7 @@ namespace Tokenizer {
 	    rt = e;
 	  }
 	  for ( const auto& sent : sents ){
-	    folia::KWargs args;
-	    string p_id = rt->id();
-	    if ( !p_id.empty() ){
-	      args["generate_id"] = p_id;
-	    }
-	    const folia::processor *proc
-	      = add_provenance_structure( e->doc(),
-					  folia::AnnotationType::SENTENCE );
-	    if ( proc ){
-	      args["processor"] =  proc->id();
-	    }
-	    args["set"] = e->doc()->default_set( folia::AnnotationType::SENTENCE );
-	    folia::Sentence *s = rt->add_child<folia::Sentence>( args );
+	    folia::Sentence *s = add_sentence( rt );
 	    append_to_sentence( s, sent );
 	    ++sentence_done;
 	    if  (tokDebug > 0){
@@ -2004,23 +1957,7 @@ namespace Tokenizer {
 	}
 	else {
 	  // 1 sentence, connect directly.
-	  folia::KWargs args;
-	  string e_id = e->id();
-	  if ( e_id.empty() ){
-	    e_id = e->generateId( e->xmltag() );
-	    args["xml:id"] = e_id + ".s.1";
-	  }
-	  else {
-	    args["generate_id"] = e_id;
-	  }
-	  const folia::processor *proc
-	    = add_provenance_structure( e->doc(),
-					folia::AnnotationType::SENTENCE );
-	  if ( proc ){
-	    args["processor"] =  proc->id();
-	  }
-	  args["set"] = e->doc()->default_set( folia::AnnotationType::SENTENCE );
-	  folia::Sentence *s = e->add_child<folia::Sentence>( args );
+	  folia::Sentence *s = add_sentence( e );
 	  append_to_sentence( s, sents[0] );
 	  ++sentence_done;
 	  if  (tokDebug > 0){
@@ -2690,7 +2627,12 @@ namespace Tokenizer {
 
   void TokenizerClass::detectSentenceBounds( const int offset,
 					     const string& lang ){
-    //find sentences
+    /// scan the internal Token buffer and mark Sentences
+    /*!
+      \param offset starting point in the buffer
+      \param lang the language, determines which settings to use
+     */
+
     string method;
     if ( detectQuotes ){
       method = "[detectSentenceBounds-(quoted)]";
@@ -2722,7 +2664,8 @@ namespace Tokenizer {
 		  << i << endl;
 	    }
 	    // we set a temporary EOS marker,
-	    // to be resolved later when full quote is found.
+	    // to be resolved later in countSentences() when full quote is
+	    // found.
 	    tokens[i].role |= TEMPENDOFSENTENCE;
 	    // If previous token is also TEMPENDOFSENTENCE,
 	    // it stops being so in favour of this one
@@ -2801,6 +2744,7 @@ namespace Tokenizer {
   }
 
   bool TokenizerClass::is_separator( UChar32 c ){
+    /// check if a character is a know separator
     bool result = false;
     if ( space_separated ){
       result = u_isspace( c );
@@ -2809,7 +2753,8 @@ namespace Tokenizer {
     return result;
   }
 
-  void TokenizerClass::passthruLine( const UnicodeString& input, bool& bos ) {
+  void TokenizerClass::passthruLine( const UnicodeString& input,
+				     bool& bos ) {
     if (tokDebug) {
       DBG << "[passthruLine] input: line=[" << input << "]" << endl;
     }

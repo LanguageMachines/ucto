@@ -364,6 +364,7 @@ namespace Tokenizer {
     void tokenize_one_line( const UnicodeString&,
 			    bool&,
 			    const std::string& = "" );
+    folia::Sentence *add_sentence( folia::FoliaElement * ) const;
 
     bool detectEos( size_t,
 		    const UnicodeString&,
