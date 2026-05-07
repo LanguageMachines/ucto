@@ -743,7 +743,7 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
 							      folia::processor *parent ) const {
-    /// add provenance processors for several folia::AnnotationType
+    /// add provenance processors for several very common folia::AnnotationType
     /*!
       \param doc a pointer to a (valid) folia::Document
       \param parent attach the result to the parent, if available
@@ -1369,26 +1369,37 @@ namespace Tokenizer {
   }
 
   folia::Sentence *TokenizerClass::add_sentence( folia::FoliaElement *node ) const {
+    /// create Sentence en connect it to \b node, making sure provenance is ok
+    /*!
+      \param node the node to add a Sentence to
+      \return the newly created Sentence
+
+      We must make sure that the provenance and annotation settings in the
+      parent document are correct
+     */
+
     folia::Document *doc = node->doc();
-    const folia::processor *proc2
+    // first check or add provenance
+    const folia::processor *proc
       = add_provenance_structure( doc,
 				  folia::AnnotationType::SENTENCE );
-    folia::KWargs args2;
+    // now setup the arguments for the Sentence
+    folia::KWargs args;
     string node_id = node->id();
     if ( !node_id.empty() ){
-      args2["generate_id"] = node_id;
+      args["generate_id"] = node_id;
     }
-    if ( proc2 ){
-      args2["processor"] = proc2->id();
+    if ( proc ){
+      args["processor"] = proc->id();
     }
-    args2["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
-    folia::Sentence *ns = node->add_child<folia::Sentence>( args2 );
+    args["set"] = doc->default_set( folia::AnnotationType::SENTENCE );
+    folia::Sentence *ns = node->add_child<folia::Sentence>( args );
     return ns;
   }
 
   void TokenizerClass::append_to_sentence( folia::Sentence *sent,
 					   const vector<Token>& toks ) const {
-    // create folia::Word from Tokens, and append to a folia::Sentence
+    // create folia::Words from Tokens, and append those to a folia::Sentence
     /*!
       \param sent The Sentence object to append to
       \param toks The Token vector to create Words from
@@ -1733,37 +1744,50 @@ namespace Tokenizer {
     return result;
   }
 
-  void TokenizerClass::handle_one_sentence( folia::Sentence *s,
+  void TokenizerClass::handle_one_sentence( folia::Sentence *input_sentence,
 					    int& sentence_done ){
+    /// tokenize the text of a folia::Sentence
+    /*!
+      \param input_sentence the Sentence to examine
+      \param sentence_done count of processed sentences
+
+      a Sentence may contain Word nodes or only text
+
+      If Words are present we handle them, otherwise we attempt
+      to tokenize the text.
+
+      \note Mixed content of Sentence's and Words is not handled
+
+    */
     if ( tokDebug > 1 ){
-      DBG << "handle_one_sentence: " << s << endl;
+      DBG << "handle_one_sentence: " << input_sentence << endl;
     }
     // check feasibility
     if ( inputclass != outputclass && outputclass == "current" ){
-      if ( s->hastext( outputclass ) ){
+      if ( input_sentence->hastext( outputclass ) ){
 	throw uLogicError( "cannot set text with class='current' on node "
-			   + s->id() +
+			   + input_sentence->id() +
 			   " because it already has text in that class." );
       }
     }
-    vector<folia::Word *> wv = s->words( inputclass );
+    vector<folia::Word *> wv = input_sentence->words( inputclass );
     if ( wv.empty() ){
-      wv = s->words();
+      wv = input_sentence->words(); // try default class
     }
     if ( !wv.empty() ){
-      // there are already words.
+      // so we have words.
       if ( doWordCorrection ){
 	// we are allowed to correct those
 	vector<folia::FoliaElement*> ev(wv.begin(),wv.end());
-	if ( !correct_elements( s, ev ).empty() ){
+	if ( !correct_elements( input_sentence, ev ).empty() ){
 	  ++sentence_done;
 	}
       }
     }
     else {
       string s_la;
-      if ( s->has_annotation<folia::LangAnnotation>() ){
-	s_la = s->annotation<folia::LangAnnotation>()->cls();
+      if ( input_sentence->has_annotation<folia::LangAnnotation>() ){
+	s_la = input_sentence->annotation<folia::LangAnnotation>()->cls();
       }
       if ( !s_la.empty()
 	   && settings.find(s_la) == settings.end() ){
@@ -1771,32 +1795,34 @@ namespace Tokenizer {
 	// is NOT what we search for.
 	// just ignore it
 	if ( tokDebug > 0 ){
-	  DBG << "skip sentence " << s->id() << " with unsupported language "
+	  DBG << "skip sentence " << input_sentence->id() << " with unsupported language "
 	      << s_la << endl;
 	}
 	return;
       }
-      UnicodeString text = s->unicode( text_policy );
+      UnicodeString text = input_sentence->unicode( text_policy );
       if ( tokDebug > 0 ){
 	DBG << "handle_one_sentence() from string: '" << text << "'" << endl;
       }
       tokenizeLine( text );
+      // tokenizing may split the text into 0 or more subsentences!
+      // or include some quotation
       vector<Token> sent = popSentence();
       while ( sent.size() > 0 ){
-	append_to_sentence( s, sent );
-	if  (tokDebug > 0){
-	  DBG << "created a new sentence: " << s << endl;
+	append_to_sentence( input_sentence, sent );
+	if  ( tokDebug > 0 ){
+	  DBG << "appended a new sentence to: " << input_sentence << endl;
 	}
 	++sentence_done;
 	sent = popSentence();
       }
     }
-    conditional_add_text( s );
+    conditional_add_text( input_sentence );
   }
 
   void TokenizerClass::handle_one_paragraph( folia::Paragraph *p,
 					     int& sentence_done ){
-    // while tokenizing FoLiA, handle a Paragraph node
+    // tokenizing the text of a folia::Paragraph node
     /*!
       \param p the folia::Paragraph
       \param sentence_done the number of sentences handled
