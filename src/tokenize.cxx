@@ -743,6 +743,11 @@ namespace Tokenizer {
 
   folia::processor *TokenizerClass::add_provenance_structure( folia::Document *doc,
 							      folia::processor *parent ) const {
+    /// DEPRECATED!
+    /// this function was only added for use in Frog.
+    /// better don't use it!
+    /// just call the normal add_provenance_structure() function
+
     /// add provenance processors for several very common folia::AnnotationType
     /*!
       \param doc a pointer to a (valid) folia::Document
