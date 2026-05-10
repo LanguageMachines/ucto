@@ -107,7 +107,7 @@ namespace Tokenizer {
   bool TokenizerClass::setLangDetection( bool what ){
     /// set the doDetectLang option
     /*!
-      \param what The new value.
+      \param[in] what The new value.
       \return the old value
 
       When we set doDetectLang to true, we must assure that TextCat is
@@ -125,8 +125,8 @@ namespace Tokenizer {
 			 const string& inputEncoding ){
     /// convert a string with \b inputEncoding into a UnicodeString
     /*!
-      \param line int inputstring
-      \param inputEncoding the assumed encodfing
+      \param[in] line int inputstring
+      \param[in] inputEncoding the assumed encodfing
       \return a valid UnicodeString
       will throw when the encoding is wrong, or bogus characters are found
     */
@@ -169,7 +169,7 @@ namespace Tokenizer {
     /// assuming they were added usiing the hidden --keep-spaces-inside-quotes
     /// option
     /*!
-      \param in UnicodeString input
+      \param[in] in UnicodeString input
       \return filtered output, where  the SPACE_PLACEHOLDER
       is replaced by a space
     */
@@ -210,7 +210,7 @@ namespace Tokenizer {
   UnicodeString toUString( const TokenRole& tok ){
     /// give a UnicodeString representation of a TokenRole
     /*!
-      \param tok the TokenRole to display
+      \param[in] tok the TokenRole to display
       \return a UnicodeString representation of \b tok (multiple answers
       are possible)
      */
@@ -239,8 +239,8 @@ namespace Tokenizer {
   ostream& operator<<( ostream& os, const TokenRole& tok ){
     /// output a representation of a TokenRole to a stream
     /*!
-      \param os the output stream
-      \param tok the TokenRole to display
+      \param[in,out] os the output stream
+      \param[in] tok the TokenRole to display
       \return the stream
      */
     os << toUString( tok );
@@ -352,7 +352,7 @@ namespace Tokenizer {
   bool TokenizerClass::reset( const string& lang ){
     /// reset a TokenizerClass
     /*!
-      \param lang the language to clear too
+      \param[in] lang the language to clear too
      */
     ucto_processor = 0;
     already_tokenized = false;
@@ -366,7 +366,7 @@ namespace Tokenizer {
   bool TokenizerClass::setNormSet( const std::string& values ){
     /// set the normalization values
     /*!
-      \param values a comma-separated list of values
+      \param[in] values a comma-separated list of values
       \return true on succes
 
     */
@@ -380,7 +380,7 @@ namespace Tokenizer {
   void TokenizerClass::setErrorLog( TiCC::LogStream *os ) {
     /// set the theErrLog stream to another stream
     /*!
-      \param os The new stream
+      \param[in] os The new stream
 
       Cleans up the old ErrLog stream, except when still in use
     */
@@ -394,7 +394,7 @@ namespace Tokenizer {
   void TokenizerClass::setDebugLog( TiCC::LogStream *os ) {
     /// set the theDbgLog stream
     /*!
-      \param os The new stream
+      \param[in] os The new stream
 
       Cleans up the old DbgLog stream, except when still in use
       May also set the debug_stream for TextCat, if applicable
@@ -414,7 +414,7 @@ namespace Tokenizer {
   string TokenizerClass::setInputEncoding( const std::string& enc ){
     /// set the encoding
     /*!
-      \param enc The desired encoding. Should be supported bu ICU
+      \param[in] enc The desired encoding. Should be supported bu ICU
       \return the old value
     */
     string old = inputEncoding;
@@ -425,7 +425,7 @@ namespace Tokenizer {
   string TokenizerClass::setSeparators( const std::string& seps ){
     /// set the separators used to 'split' inputlines
     /*!
-      \param seps A list of separator characters, will be added to
+      \param[in] seps A list of separator characters, will be added to
       the already known ones (if any)
       \return the previous value
 
@@ -480,7 +480,7 @@ namespace Tokenizer {
   string TokenizerClass::setTextRedundancy( const std::string& tr ){
     /// set the text_redundancy value
     /*!
-      \param tr The desired text_redundancy
+      \param[in] tr The desired text_redundancy
       \return the old value
 
       Valid values for \b tr are: "full", "minimal" and "none"
@@ -499,7 +499,7 @@ namespace Tokenizer {
   string TokenizerClass::setDocID( const string& id ) {
     /// set the docid value for FoLiA output
     /*!
-      \param id The desired docid. Should be a valid NCName.
+      \param[in] id The desired docid. Should be a valid NCName.
       \return the old value
     */
     const std::string s = docid;
@@ -516,7 +516,7 @@ namespace Tokenizer {
   bool TokenizerClass::set_tc_debug( bool b ){
     /// set/unset the TexCat debug stream
     /*!
-      \param b a boolean used to signal set/unset
+      \param[in] b a boolean used to signal set/unset
       \return the old value
 
       Also makes sure TextCat is initialized
@@ -536,8 +536,8 @@ namespace Tokenizer {
 		      const string& encoding ){
     /// cleanup a string from unwanted 0 bytes (UTF16) and CR
     /*!
-      \param input_line the line to fixup
-      \param encoding the encoding
+      \param[in] input_line the line to fixup
+      \param[in] encoding the encoding
       \return the cleaned UTF16 result
 
       this is some hackery to handle exotic input. UTF16 but also CR at end.
@@ -570,8 +570,8 @@ namespace Tokenizer {
 						     folia::processor *parent ) const {
     /// initialize an Ucto provenance processor for a folia::Document
     /*!
-      \param doc a pointer to a (valid) folia::Document
-      \param parent attach the result to the parent, if available
+      \param[in] doc a pointer to a (valid) folia::Document
+      \param[in] parent attach the result to the parent, if available
       \return the created processor
      */
     if ( ucto_processor ){
@@ -3128,7 +3128,7 @@ namespace Tokenizer {
   UnicodeString replace_quoted_spaces( const UnicodeString& in ){
     /// replace spaces inside quotes by a placeholder
     /*!
-      \parameter in the inputstring
+      \param in the inputstring
       \return a string where every space inside quotes is replaced by a
       placeholder
      */
@@ -3774,9 +3774,9 @@ namespace Tokenizer {
     /// extract information about the settings of this TokenizerClass object
     /// for this \b language
     /*!
-      \param language the current language
-      \param set_file the name of the settingsfile for \b language
-      \param version the version of the settingsfile
+      \param[in] language the current language
+      \param[out] set_file the name of the settingsfile for \b language
+      \param[out] version the version of the settingsfile
       \return true if a result is found, false if not.
      */
     set_file.clear();
