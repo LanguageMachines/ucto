@@ -162,7 +162,8 @@ namespace Tokenizer {
   const UnicodeString type_unknown = "UNKNOWN";
   const UnicodeString type_unanalyzed = "UNANALYZED";
 
-  UChar32 SPACE_PLACEHOLDER = U'Ž';
+  UChar32 SPACE_PLACEHOLDER = U'ǯ';  // LATIN SMALL LETTER EZH WITH CARON
+  // found in languages: sami4 [Skolt Sámi]; (sorry Finland)
 
   UnicodeString filter_placeholder( const UnicodeString& in ){
     /// filter out the SPACE_PACEHOLDER characters
