@@ -167,26 +167,24 @@ namespace Tokenizer {
 
   UnicodeString filter_placeholder( const UnicodeString& in ){
     /// filter out the SPACE_PACEHOLDER characters
-    /// assuming they were added usiing the hidden --keep-spaces-inside-quotes
+    /// assuming they were added using the hidden --keep-spaces-inside-quotes
     /// option
     /*!
       \param[in] in UnicodeString input
       \return filtered output, where  the SPACE_PLACEHOLDER
-      is replaced by a space
+      is replaced by a space. Leading and trailing spaces are removed!
     */
     UnicodeString result;
     for ( int i=0; i < in.length(); ++i ){
       UChar32 c = in[i];
       if ( c == SPACE_PLACEHOLDER ){
-	if ( !result.isEmpty() ){
-	  result += " ";
-	}
+	result += " ";
       }
       else {
 	result += c;
       }
     }
-    return result;
+    return result.trim();
   }
 
   Token::Token( const UnicodeString& _type,
