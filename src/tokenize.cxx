@@ -3136,26 +3136,44 @@ namespace Tokenizer {
       placeholder
      */
     UnicodeString result;
-    UChar32 quote = '\x0';
+    bool s_q=false;
+    bool d_q=false;
     for ( int i=0; i < in.length(); ++i ){
       UChar32 c = in[i];
       //      cerr << "bekijk: " << UnicodeString( c ) << endl;
       if ( c == '"' || c == '\'' ){
-	// found quote
-	//	cerr << "found quote!" << endl;
-	if ( c == quote ){
-	  // so a second one, reset
-	  quote = '\x0';
-	  //	  cerr << "reset quote!" << endl;
+	if ( c == '\'' ){
+	  //	cerr << "found single quote!" << endl;
+	  // found a single quote
+	  if ( s_q ){
+	    s_q = false;
+	  }
+	  else {
+	    s_q = true;
+	  }
 	}
-	else {
-	  quote = c;
+	else if ( c == '"' ){
+	  /// found double quote
+	  //	cerr << "found double quote!" << endl;
+	  if ( d_q ){
+	    d_q = false;
+	  }
+	  else {
+	    d_q = true;
+	  }
 	}
+	result += c;
       }
-      else if ( c == ' ' && quote != '\x0' ){
-	c = SPACE_PLACEHOLDER;
+      else if ( s_q || d_q ){
+	if ( c == ' ' ){
+	  c = SPACE_PLACEHOLDER;
+	}
+	result += c;
       }
-      result += c;
+      else {
+      	result += c;
+      }
+      //      cerr << "result = [" << result << "]" << endl;
     }
     return result;
   }
