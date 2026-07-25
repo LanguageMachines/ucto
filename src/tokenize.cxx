@@ -184,7 +184,7 @@ namespace Tokenizer {
 	result += c;
       }
     }
-    return result.trim();
+    return result;
   }
 
   Token::Token( const UnicodeString& _type,
