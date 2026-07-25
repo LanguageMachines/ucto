@@ -178,9 +178,13 @@ namespace Tokenizer {
     for ( int i=0; i < in.length(); ++i ){
       UChar32 c = in[i];
       if ( c == SPACE_PLACEHOLDER ){
-	c = ' ';
+	if ( !result.isEmpty() ){
+	  result += " ";
+	}
       }
-      result += c;
+      else {
+	result += c;
+      }
     }
     return result;
   }
