@@ -2395,12 +2395,20 @@ namespace Tokenizer {
     /*!
       \return a vector of UTF8 strings, each element is a tokenized sentence
      */
-    vector<UnicodeString> uv = getSentences();
-    vector<string> result;
-    std::transform( uv.begin(), uv.end(),
-		    result.begin(),
-		    [this]( const UnicodeString& us ){ return TiCC::UnicodeToUTF8(us,_normalizer); });
-    return result;
+    vector<string> sentences;
+    if  (tokDebug > 0) {
+      DBG << "[getUTF8Sentences()] before countSent " << endl;
+    }
+    int numS = countSentences(true); // force buffer to end with END_OF_SENTENCE
+    if  (tokDebug > 0) {
+      DBG << "[getUTF8Sentences] found " << numS << " sentence(s)" << endl;
+    }
+    for (int i = 0; i < numS; i++) {
+      vector<Token> v = popSentence( );
+      UnicodeString tmp = getString( v );
+      sentences.push_back( TiCC::UnicodeToUTF8(tmp) );
+    }
+    return sentences;
   }
 
   bool TokenizerClass::u_isquote( UChar32 c,
